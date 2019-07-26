@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+  <joined-subclass name="INTUSOFT.Data.NewDbModel.eye_fundus_image" table="eye_fundus_image" extends="obs">
+    <key column="eye_fundus_image_id" not-null="true" on-delete="cascade" />
+	<!--<property name="obs_id" type="int" column="obs_id" not-null="true" length="11" />-->
+  <!--<property name="obs_id" class="obs" />-->
+  <property name="eyeSide" type="char" column="eye_side" not-null="false" length="1" />
+  <!--<property name="cdrAnnotationAvailable" type="boolean" not-null="true" column="cdr_present" />
+  <property name="annotationsAvailable" type="boolean"  not-null="true" column="is_annotated" />-->
+  <property name="cdrAnnotationAvailable" type="boolean" not-null="true" formula="case when exists (select * from eye_fundus_image_annotation a where a.cdr_present = 1 and a.eye_fundus_image_id = eye_fundus_image_id and a.voided = 0) then 1 else 0 end" />
+  <property name="annotationsAvailable" type="boolean"  not-null="true" formula="case when exists (select * from eye_fundus_image_annotation a where a.eye_fundus_image_id = eye_fundus_image_id and a.voided = 0) then 1 else 0 end" />
+  <property name="dilatedEye" type="boolean" column="dilated_eye" />
+	<property name="cameraSetting" type="String" column="camera_settings" not-null="false" />
+  <property name="maskSetting" type="String" column="mask_settings" not-null="false" />
+	<many-to-one name="lastAccessedBy" class="users" column="last_accessed_by" />
+	<property name="lastAccessedDate" type="datetime" column="last_accessed_date" length="19" />
+  <many-to-one name="machine" class="machine" column="machine_id" />
+   <set name="eye_fundus_image_annotations"  cascade="save-update" table="eye_fundus_image_annotation" inverse="true" sort="natural">
+    <key not-null="true" column="eye_fundus_image_id" />
+    <one-to-many class="eye_fundus_image_annotation" />
+  </set>
+</joined-subclass>
+</hibernate-mapping>

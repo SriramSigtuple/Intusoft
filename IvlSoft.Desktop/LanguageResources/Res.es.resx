@@ -1,0 +1,1947 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActivePat_Label_Text" xml:space="preserve">
+    <value>Paciente activo</value>
+  </data>
+  <data name="AddCupPointsWarning" xml:space="preserve">
+    <value>Agregue puntos de copa dentro del límite del disco</value>
+  </data>
+  <data name="AddDiscPointsWarning" xml:space="preserve">
+    <value>Agregue puntos de disco fuera del límite de taza</value>
+  </data>
+  <data name="Address1_Label_Text" xml:space="preserve">
+    <value>Dirección 1 :</value>
+  </data>
+  <data name="Address2_Label_Text" xml:space="preserve">
+    <value>Dirección 2 :</value>
+  </data>
+  <data name="AddressDetails_Text" xml:space="preserve">
+    <value>detalles de dirección</value>
+  </data>
+  <data name="Address_Line1_text" xml:space="preserve">
+    <value>Línea 1</value>
+  </data>
+  <data name="Address_Line2_text" xml:space="preserve">
+    <value>Línea 2</value>
+  </data>
+  <data name="Address_Text" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="AddVisitImages_Button_Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="AdminCredentialsWarning_Header" xml:space="preserve">
+    <value>Administración</value>
+  </data>
+  <data name="AdminCredentialsWarning_Text" xml:space="preserve">
+    <value>Inicie sesión como administrador para agregar y eliminar usuarios.</value>
+  </data>
+  <data name="AdminCredentialsWarning_Text2" xml:space="preserve">
+    <value>Inicie sesión como administrador para cambiar el nombre de usuario, la contraseña y el rol.</value>
+  </data>
+  <data name="Admin_addition_text" xml:space="preserve">
+    <value>Adición de administrador / usuario</value>
+  </data>
+  <data name="Adobe_acrobat_Text" xml:space="preserve">
+    <value>Adobe Acrobat Reader no encontrado</value>
+  </data>
+  <data name="Advacesearch_cancelbtn_text" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Advacesearch_okbtn_text" xml:space="preserve">
+    <value>Hecho</value>
+  </data>
+  <data name="Advacesearch_tolbl_text" xml:space="preserve">
+    <value>Hasta la fecha</value>
+  </data>
+  <data name="AdvanceSearchLinklabel_ToolTipText" xml:space="preserve">
+    <value>Haga clic para avanzar en la búsqueda</value>
+  </data>
+  <data name="Advancesearch_fromlbl_text" xml:space="preserve">
+    <value>Partir de la fecha</value>
+  </data>
+  <data name="AdvanceSearch_linklabel_Text" xml:space="preserve">
+    <value>Búsqueda avanzada</value>
+  </data>
+  <data name="Advancesearch_options_text" xml:space="preserve">
+    <value>Opciones de búsqueda</value>
+  </data>
+  <data name="AdvanceSearch_Text" xml:space="preserve">
+    <value>Búsqueda avanzada</value>
+  </data>
+  <data name="Age_Label_Text" xml:space="preserve">
+    <value>DoB / Age</value>
+  </data>
+  <data name="Age_radio_button_Text" xml:space="preserve">
+    <value>Años</value>
+  </data>
+  <data name="AlertPatientDetailsEdit_Text" xml:space="preserve">
+    <value>¿Quieres salir de la operación actual?</value>
+  </data>
+  <data name="AllPatients_Label_Text" xml:space="preserve">
+    <value>Pacientes</value>
+  </data>
+  <data name="AnnotationClear_Header_Text" xml:space="preserve">
+    <value>Borrar anotación</value>
+  </data>
+  <data name="AnnotationClear_Message_Text" xml:space="preserve">
+    <value>¿Seguro que quieres borrar la anotación?</value>
+  </data>
+  <data name="AnnotationDelete_Header_Text" xml:space="preserve">
+    <value>Eliminar anotación</value>
+  </data>
+  <data name="AnnotationDelete_Message_Text" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar la anotación?</value>
+  </data>
+  <data name="AnnotationNo_Images" xml:space="preserve">
+    <value>Se seleccionó más de una imagen. Seleccione solo una imagen.</value>
+  </data>
+  <data name="AnnotationWarning_Header" xml:space="preserve">
+    <value>Anotación</value>
+  </data>
+  <data name="AnnotationWarning_Header_Text" xml:space="preserve">
+    <value>Guardar anotación</value>
+  </data>
+  <data name="AnnotationWarning_Message_Text" xml:space="preserve">
+    <value>¿Quieres guardar la anotación actual?</value>
+  </data>
+  <data name="AnnotationWarning_Text" xml:space="preserve">
+    <value>Algunos archivos necesarios para abrir la anotación no están presentes. Realice una nueva comprobación de los archivos instalados o póngase en contacto con el proveedor del servicio.</value>
+  </data>
+  <data name="Annotation_Comments_Text" xml:space="preserve">
+    <value>Comentarios de la anotación</value>
+  </data>
+  <data name="Annotation_Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Annotation_Delete" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Annotation_Details_Text" xml:space="preserve">
+    <value>Detalles de anotación</value>
+  </data>
+  <data name="Annotation_Header_Text" xml:space="preserve">
+    <value>Anotaciones</value>
+  </data>
+  <data name="Annotation_Image_Warning_Text" xml:space="preserve">
+    <value>No hay imágenes seleccionadas Seleccione una imagen para abrir la herramienta de anotación.</value>
+  </data>
+  <data name="Annotation_MaxTools_Warning_Text" xml:space="preserve">
+    <value>Solo cinco anotaciones permitidas.</value>
+  </data>
+  <data name="Annotation_Text" xml:space="preserve">
+    <value>Anotación</value>
+  </data>
+  <data name="Annotation_Time" xml:space="preserve">
+    <value>Hora</value>
+  </data>
+  <data name="Annotation_View" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="Anterior_Btn_Text" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="ApplicableForJpg_Text" xml:space="preserve">
+    <value>Aplicable solo para formato jpg.</value>
+  </data>
+  <data name="Back2Search_Button_Text" xml:space="preserve">
+    <value>Volver a buscar</value>
+  </data>
+  <data name="BackToSearch_Alert_Text" xml:space="preserve">
+    <value>¿Quieres ir a la búsqueda de pacientes?</value>
+  </data>
+  <data name="BackwardButtonDisable_ToolTipText" xml:space="preserve">
+    <value>Sin página anterior</value>
+  </data>
+  <data name="BackwardButtonEnable_ToolTipText" xml:space="preserve">
+    <value>Pagina anterior</value>
+  </data>
+  <data name="BlueFilter_Text" xml:space="preserve">
+    <value>Azul</value>
+  </data>
+  <data name="BlueFilter_ToolTipText" xml:space="preserve">
+    <value>Mostrar Blue Channel</value>
+  </data>
+  <data name="blueGain_Label_Text" xml:space="preserve">
+    <value>Blue Gain:</value>
+  </data>
+  <data name="Browse_Button_Text" xml:space="preserve">
+    <value>Vistazo</value>
+  </data>
+  <data name="CalculateCDRButton_ToolTipText" xml:space="preserve">
+    <value>Medida CDR</value>
+  </data>
+  <data name="CalculateCDR_btn" xml:space="preserve">
+    <value>Medida CDR</value>
+  </data>
+  <data name="CameraOff_ToolTipText" xml:space="preserve">
+    <value>La cámara está desconectada. Verifique el cable de la cámara.</value>
+  </data>
+  <data name="CameraOn_ToolTipText" xml:space="preserve">
+    <value>La cámara está conectada</value>
+  </data>
+  <data name="CameraWarningUsb2_0ToolTipText" xml:space="preserve">
+    <value>Cámara conectada al puerto USB 2.0</value>
+  </data>
+  <data name="Camera_Status" xml:space="preserve">
+    <value>Cámara</value>
+  </data>
+  <data name="Camera_Text" xml:space="preserve">
+    <value>Cámara:</value>
+  </data>
+  <data name="Cancelconfirmation_Text" xml:space="preserve">
+    <value>¿Quieres cancelar la operación?</value>
+  </data>
+  <data name="Cancel_Button_Text" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="CaptureBtn_Resume_Text" xml:space="preserve">
+    <value>Currículum</value>
+  </data>
+  <data name="CapturedFail_Warning_Text" xml:space="preserve">
+    <value>Captura Falló. Categoría de falla:</value>
+  </data>
+  <data name="Capture_Button_Text" xml:space="preserve">
+    <value>Capturar</value>
+  </data>
+  <data name="CapturFailed_Text" xml:space="preserve">
+    <value>Fallo capturado</value>
+  </data>
+  <data name="CDRWarning_Header_Text" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="CDRwarning_Text" xml:space="preserve">
+    <value>Algunos archivos necesarios para abrir la herramienta de glaucoma no están presentes. Realice una revisión de los archivos instalados o comuníquese con el proveedor del servicio.</value>
+  </data>
+  <data name="CDR_Disc_Deletion_Header" xml:space="preserve">
+    <value>Eliminación de disco</value>
+  </data>
+  <data name="CDR_Disc_Deletion_Text" xml:space="preserve">
+    <value>La eliminación del disco eliminará también la marca de taza. ¿Quieres continuar?</value>
+  </data>
+  <data name="CDR_measurements_Text" xml:space="preserve">
+    <value>Mediciones de discos de copa</value>
+  </data>
+  <data name="CDR_Text" xml:space="preserve">
+    <value>CDR</value>
+  </data>
+  <data name="CentralRetina_Text" xml:space="preserve">
+    <value>Retina central</value>
+  </data>
+  <data name="Channel_Confirmation" xml:space="preserve">
+    <value>¿Quieres guardar los cambios?</value>
+  </data>
+  <data name="Channel_Header" xml:space="preserve">
+    <value>Guardar cambios</value>
+  </data>
+  <data name="CharactersText" xml:space="preserve">
+    <value>Caracteres</value>
+  </data>
+  <data name="City_Label_Text" xml:space="preserve">
+    <value>Ciudad:</value>
+  </data>
+  <data name="Clearconfirmation_Org_Text" xml:space="preserve">
+    <value>¿Quieres borrar los detalles de la organización?</value>
+  </data>
+  <data name="Clearconfirmation_Text" xml:space="preserve">
+    <value>¿Quieres borrar los detalles del paciente?</value>
+  </data>
+  <data name="Clearconfirmation_User_Text" xml:space="preserve">
+    <value>¿Quieres borrar los detalles del usuario?</value>
+  </data>
+  <data name="ClearFields_Conformation_Header_Text" xml:space="preserve">
+    <value>Borrar cambios</value>
+  </data>
+  <data name="ClearFields_Conformation_Text" xml:space="preserve">
+    <value>¿Estás seguro de que quieres borrar los cambios realizados?</value>
+  </data>
+  <data name="Clear_Button_Text" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="Clear_Logo_Btn_Text" xml:space="preserve">
+    <value>Logotipo claro</value>
+  </data>
+  <data name="Clear_PatientEditFields" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="Closed_Text" xml:space="preserve">
+    <value>Cerrado</value>
+  </data>
+  <data name="ColorFilter_Text" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ColorFilter_ToolTipText" xml:space="preserve">
+    <value>Mostrar canal de color</value>
+  </data>
+  <data name="Comments_Label_Text" xml:space="preserve">
+    <value>Comentarios:</value>
+  </data>
+  <data name="Comport_Text" xml:space="preserve">
+    <value>ComPort:</value>
+  </data>
+  <data name="CompressionRatio_Text" xml:space="preserve">
+    <value>Índice de compresión</value>
+  </data>
+  <data name="ConflictWarning_Text1" xml:space="preserve">
+    <value>¿Quieres hacer esto por quedarte?</value>
+  </data>
+  <data name="ConflictWarning_Text2" xml:space="preserve">
+    <value>conflictos?</value>
+  </data>
+  <data name="Connected_Text" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="Conslutation_Text" xml:space="preserve">
+    <value>Consulta</value>
+  </data>
+  <data name="Consultations_Label_Text" xml:space="preserve">
+    <value>Consultas</value>
+  </data>
+  <data name="CopyAndReplaceDialog_Text" xml:space="preserve">
+    <value>Copiar archivos</value>
+  </data>
+  <data name="CopyAndReplaceWarning_Text" xml:space="preserve">
+    <value>Ya hay un archivo con el mismo nombre en esta ubicación.</value>
+  </data>
+  <data name="CopyAndReplace_Text" xml:space="preserve">
+    <value>Copiar y reemplazar</value>
+  </data>
+  <data name="CopyButKeepBothFiles_Text" xml:space="preserve">
+    <value>Copiar pero mantener ambos archivos</value>
+  </data>
+  <data name="Country_Label_Text" xml:space="preserve">
+    <value>País :</value>
+  </data>
+  <data name="CreatePatientButton_ToolTipText" xml:space="preserve">
+    <value>Crear nuevo paciente</value>
+  </data>
+  <data name="cupArea_Text" xml:space="preserve">
+    <value>Área de la Copa</value>
+  </data>
+  <data name="CustomMsg_No_Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="CustomMsg_RestartLater_Text" xml:space="preserve">
+    <value>Reiniciar más tarde</value>
+  </data>
+  <data name="CustomMsg_RestartNow_Text" xml:space="preserve">
+    <value>Reiniciar ahora</value>
+  </data>
+  <data name="CustomMsg_Yes_Text" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="DatabaseConnectedToolTip_Text" xml:space="preserve">
+    <value>La base de datos está conectada.</value>
+  </data>
+  <data name="DatabaseNotConnectedProperlyHeader_Text" xml:space="preserve">
+    <value>Conexión a la base</value>
+  </data>
+  <data name="DatabaseNotConnectedProperly_Text" xml:space="preserve">
+    <value>La base de datos no está conectada.</value>
+  </data>
+  <data name="DatabaseNotConnectedToolTip_Text" xml:space="preserve">
+    <value>La base de datos no está conectada.</value>
+  </data>
+  <data name="Database_Label_Text" xml:space="preserve">
+    <value>Conexión</value>
+  </data>
+  <data name="DateFormat_Text" xml:space="preserve">
+    <value>dd / MM / aaaa</value>
+  </data>
+  <data name="DB_creation_waring_text" xml:space="preserve">
+    <value>Algunos archivos necesarios para ejecutar la aplicación no se han instalado correctamente. Por favor vuelva a instalar la aplicación.</value>
+  </data>
+  <data name="DecreaseBrightnessButton_ToolTipText" xml:space="preserve">
+    <value>Disminuir el brillo</value>
+  </data>
+  <data name="DecreaseContrastButton_ToolTipText" xml:space="preserve">
+    <value>Disminuir el contraste</value>
+  </data>
+  <data name="DecreaseZoomButton_ToolTipText" xml:space="preserve">
+    <value>Disminuir el zoom</value>
+  </data>
+  <data name="defaultAddress1_Textbox_Text" xml:space="preserve">
+    <value># Plano no, cruz,</value>
+  </data>
+  <data name="defaultAddress2_Textbox_Text" xml:space="preserve">
+    <value>Nombre de la calle, nombre del área</value>
+  </data>
+  <data name="defaultCity_Textbox_Text" xml:space="preserve">
+    <value>Ciudad</value>
+  </data>
+  <data name="defaultComments_Textbox_Text" xml:space="preserve">
+    <value>Comentarios</value>
+  </data>
+  <data name="defaultCountry_Textbox_Text" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="defaultEmail_Textbox_Text" xml:space="preserve">
+    <value>abc@def.com</value>
+  </data>
+  <data name="defaultFirstName_Textbox_Text" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="defaultHealthStatus_Textbox_Text" xml:space="preserve">
+    <value>Estado de salud</value>
+  </data>
+  <data name="defaultIncome_Textbox_Text" xml:space="preserve">
+    <value>10000</value>
+  </data>
+  <data name="defaultLandLine_Textbox_Text" xml:space="preserve">
+    <value>37484848</value>
+  </data>
+  <data name="defaultLastName_Textbox_Text" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="defaultMobile_Textbox_Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="defaultOccupation_Textbox_Text" xml:space="preserve">
+    <value>Ocupación</value>
+  </data>
+  <data name="DefaultOtherOccupation_Text" xml:space="preserve">
+    <value>Especifique otra ocupación</value>
+  </data>
+  <data name="defaultPincode_Textbox_Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="defaultReferredBy_Textbox_Text" xml:space="preserve">
+    <value>Referido por</value>
+  </data>
+  <data name="defaultState_Textbox_Text" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="defaultstdCode_Textbox_Text" xml:space="preserve">
+    <value>80</value>
+  </data>
+  <data name="DeleteCell_ToolTipText" xml:space="preserve">
+    <value>Haga clic para eliminar la visita</value>
+  </data>
+  <data name="DeleteMsg" xml:space="preserve">
+    <value>¿Quieres eliminar las imágenes seleccionadas?</value>
+  </data>
+  <data name="DeleteMsg_SingleImage_Text" xml:space="preserve">
+    <value>¿Quieres borrar la imagen seleccionada?</value>
+  </data>
+  <data name="DeletePatDetailsButton_ToolTipText" xml:space="preserve">
+    <value>Eliminar detalles del paciente</value>
+  </data>
+  <data name="DeletePatientConfirmation_Text" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar al paciente? Todos los detalles relacionados con el paciente serán eliminados.</value>
+  </data>
+  <data name="DeleteUserConfirmation_Text" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar al usuario? Todos los detalles relacionados con el usuario serán eliminados.</value>
+  </data>
+  <data name="DeleteUserHeader_Text" xml:space="preserve">
+    <value>Borrar usuario</value>
+  </data>
+  <data name="DeleteVisitConfirmation_Text" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar esta consulta?</value>
+  </data>
+  <data name="DeleteVisitHeader_Text" xml:space="preserve">
+    <value>Eliminar consulta</value>
+  </data>
+  <data name="DeleteVisits_Button_Text" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="DeleteVisit_Button_Text" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Delete_Button_Text" xml:space="preserve">
+    <value>Eliminar consulta</value>
+  </data>
+  <data name="Delete_Patient_Button_Text" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Delete_Patient_Select_Patient" xml:space="preserve">
+    <value>Seleccione un paciente para eliminar.</value>
+  </data>
+  <data name="Delete_Select_Patient" xml:space="preserve">
+    <value>Seleccione un paciente y luego elimine una visita.</value>
+  </data>
+  <data name="Delete_Select_Visit" xml:space="preserve">
+    <value>Seleccione una visita y luego elimine.</value>
+  </data>
+  <data name="Delete_Successful_Message" xml:space="preserve">
+    <value>Detalles de miembros eliminados con éxito</value>
+  </data>
+  <data name="Delete_Successful_Message_Title" xml:space="preserve">
+    <value>Eliminar exitosamente</value>
+  </data>
+  <data name="Device_Settings_Text" xml:space="preserve">
+    <value>Configuración de dispositivo</value>
+  </data>
+  <data name="DirectoryDoesnotExistWarning_Text" xml:space="preserve">
+    <value>¿Quieres crear un directorio?</value>
+  </data>
+  <data name="DirectoryDoesnotExist_Header" xml:space="preserve">
+    <value>El directorio no existe</value>
+  </data>
+  <data name="DisableZoomButton_ToolTipText" xml:space="preserve">
+    <value>Desactivar zoom</value>
+  </data>
+  <data name="DiscardChangesHeader_Text" xml:space="preserve">
+    <value>Eliminar cambios</value>
+  </data>
+  <data name="DiscardChanges_Text" xml:space="preserve">
+    <value>¿Desea descartar cambios?</value>
+  </data>
+  <data name="DiscArea_Text" xml:space="preserve">
+    <value>Área del disco</value>
+  </data>
+  <data name="Disconnected_Text" xml:space="preserve">
+    <value>Desconectado</value>
+  </data>
+  <data name="dob_radio_button_Text" xml:space="preserve">
+    <value>DoB</value>
+  </data>
+  <data name="DontCopy_Text" xml:space="preserve">
+    <value>No copiar</value>
+  </data>
+  <data name="DrawCupButton_ToolTipText" xml:space="preserve">
+    <value>Dibujar puntos de taza</value>
+  </data>
+  <data name="drawCup_Text" xml:space="preserve">
+    <value>copa</value>
+  </data>
+  <data name="DrawDiscButton_ToolTipText" xml:space="preserve">
+    <value>Dibujar puntos de disco</value>
+  </data>
+  <data name="DrawDiscPointsButton_ToolTipText" xml:space="preserve">
+    <value>Edit Disc or Cup Points</value>
+  </data>
+  <data name="drawDisc_Text" xml:space="preserve">
+    <value>disco</value>
+  </data>
+  <data name="DrawTools_Text" xml:space="preserve">
+    <value>Dibujar herramientas</value>
+  </data>
+  <data name="EditDiscPointsText" xml:space="preserve">
+    <value>Modificar</value>
+  </data>
+  <data name="EllipseButton_ToolTipText" xml:space="preserve">
+    <value>Dibujar elipse</value>
+  </data>
+  <data name="Ellipse_Btn_Text" xml:space="preserve">
+    <value>elipse</value>
+  </data>
+  <data name="EmailCancelledText" xml:space="preserve">
+    <value>El correo electrónico ha sido cancelado</value>
+  </data>
+  <data name="EmailEmptyText" xml:space="preserve">
+    <value>La identificación del correo no debe estar vacía</value>
+  </data>
+  <data name="EmailErrorText" xml:space="preserve">
+    <value>Error de envío de correo electrónico</value>
+  </data>
+  <data name="EmailFromAddressInvalidText" xml:space="preserve">
+    <value>Ingrese la dirección válida de</value>
+  </data>
+  <data name="EmailSemicolonNotPresentText" xml:space="preserve">
+    <value>La identificación del correo tiene que terminar con punto y coma</value>
+  </data>
+  <data name="EmailSentText" xml:space="preserve">
+    <value>E-mail ha sido enviado</value>
+  </data>
+  <data name="EmailToAddressInvalidText" xml:space="preserve">
+    <value>Ingrese el válido para dirigirse</value>
+  </data>
+  <data name="Email_Label_Text" xml:space="preserve">
+    <value>Email :</value>
+  </data>
+  <data name="Email_suggestion_Text" xml:space="preserve">
+    <value>ej .: abc@gmail.com</value>
+  </data>
+  <data name="Emr_Btn_Text" xml:space="preserve">
+    <value>Archivos</value>
+  </data>
+  <data name="EnableZoomButton_ToolTipText" xml:space="preserve">
+    <value>Habilitar Zoom</value>
+  </data>
+  <data name="Equal_Text" xml:space="preserve">
+    <value>=</value>
+  </data>
+  <data name="ErrorMessage_Text" xml:space="preserve">
+    <value>Mensaje de error</value>
+  </data>
+  <data name="Error_Message_Header" xml:space="preserve">
+    <value>Por favor revisa lo siguiente.</value>
+  </data>
+  <data name="Escape_Message_Header" xml:space="preserve">
+    <value>Cierra la aplicación</value>
+  </data>
+  <data name="Escape_Message_Text" xml:space="preserve">
+    <value>¿Seguro que quieres cerrar la aplicación?</value>
+  </data>
+  <data name="ExportAnnotationButton_ToolTipText" xml:space="preserve">
+    <value>Exportar el informe anotado</value>
+  </data>
+  <data name="ExportCDRButton_ToolTipText" xml:space="preserve">
+    <value>Exportar el informe CDR</value>
+  </data>
+  <data name="ExportCompleted_Text" xml:space="preserve">
+    <value>La exportación de imágenes ha sido completada.</value>
+  </data>
+  <data name="ExportImages_Text" xml:space="preserve">
+    <value>Exportar imagen</value>
+  </data>
+  <data name="ExportReport_Text" xml:space="preserve">
+    <value>Reporte de exportacion</value>
+  </data>
+  <data name="Export_Button_Text" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="Export_Report_Text" xml:space="preserve">
+    <value>La exportación del informe está completa.</value>
+  </data>
+  <data name="Exposure_Label_Text" xml:space="preserve">
+    <value>Intensidad de captura:</value>
+  </data>
+  <data name="FFA_Color_Text" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="FFA_Text" xml:space="preserve">
+    <value>FFA</value>
+  </data>
+  <data name="FileAlreadyExistSaveConfirmation" xml:space="preserve">
+    <value>El archivo ya existe. ¿Quieres reemplazar la imagen?</value>
+  </data>
+  <data name="FileLabel_Text" xml:space="preserve">
+    <value>Archivo</value>
+  </data>
+  <data name="FileNameExample_Text" xml:space="preserve">
+    <value>Ej .: OD1</value>
+  </data>
+  <data name="FileName_Text" xml:space="preserve">
+    <value>Nombre del archivo</value>
+  </data>
+  <data name="FileTools_Gbx_Text" xml:space="preserve">
+    <value>Herramientas de archivo</value>
+  </data>
+  <data name="Filter_Text" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="FirmwareHeader_Text" xml:space="preserve">
+    <value>Actualización de firmware</value>
+  </data>
+  <data name="FirmwareVersion_Text" xml:space="preserve">
+    <value>Versión de firmware</value>
+  </data>
+  <data name="FirmwareWarning_Text" xml:space="preserve">
+    <value>Por favor actualice el último Firmware.</value>
+  </data>
+  <data name="FirstButtonDisable_ToolTipText" xml:space="preserve">
+    <value>Ya en la primera página</value>
+  </data>
+  <data name="FirstButtonEnable_ToolTipText" xml:space="preserve">
+    <value>Ir a la primera página</value>
+  </data>
+  <data name="FirstNameSpace_Text" xml:space="preserve">
+    <value>El primer nombre no puede comenzar con el espacio.</value>
+  </data>
+  <data name="FirstName_Label_Text" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="FirstName_Text" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="FlashExp_Label_Text" xml:space="preserve">
+    <value>Exposición Flash</value>
+  </data>
+  <data name="FlashGain_Label_Text" xml:space="preserve">
+    <value>Ganancia de Flash:</value>
+  </data>
+  <data name="Flash_Button_Text" xml:space="preserve">
+    <value>Destello</value>
+  </data>
+  <data name="Flash_Intesnity_Label_Text" xml:space="preserve">
+    <value>Intensidad de captura:</value>
+  </data>
+  <data name="FolderBrowser_Text" xml:space="preserve">
+    <value>Navegador de carpetas</value>
+  </data>
+  <data name="FolderPath_Empty_Text" xml:space="preserve">
+    <value>La ruta de la carpeta no debe estar vacía</value>
+  </data>
+  <data name="FolderPath_Warning_Header" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="FolderPath_Warning_Text" xml:space="preserve">
+    <value>La ruta de la carpeta no es válida</value>
+  </data>
+  <data name="Folder_Text" xml:space="preserve">
+    <value>Ruta de la carpeta</value>
+  </data>
+  <data name="Format_Text" xml:space="preserve">
+    <value>Formato de imagen</value>
+  </data>
+  <data name="ForwardButtonDisable_ToolTipText" xml:space="preserve">
+    <value>No siguiente página</value>
+  </data>
+  <data name="ForwardButtonEnable_ToolTipText" xml:space="preserve">
+    <value>Siguiente página</value>
+  </data>
+  <data name="FrameRate_Text" xml:space="preserve">
+    <value>Cuadros por segundo :</value>
+  </data>
+  <data name="FreeDrawButton_ToolTipText" xml:space="preserve">
+    <value>Sorteo gratis</value>
+  </data>
+  <data name="FreeDraw_Btn_Text" xml:space="preserve">
+    <value>Gratis</value>
+  </data>
+  <data name="gain_Label_Text" xml:space="preserve">
+    <value>Ganancia de Flash:</value>
+  </data>
+  <data name="Gender_Female" xml:space="preserve">
+    <value>Hembra</value>
+  </data>
+  <data name="Gender_Label_Text" xml:space="preserve">
+    <value>Género</value>
+  </data>
+  <data name="Gender_Male" xml:space="preserve">
+    <value>Masculino</value>
+  </data>
+  <data name="GeneralObservationsText" xml:space="preserve">
+    <value>Observaciones generales:</value>
+  </data>
+  <data name="GeneralObservationText" xml:space="preserve">
+    <value>Observaciones generales</value>
+  </data>
+  <data name="GlaucomaTool_EditCupPoints" xml:space="preserve">
+    <value>Mover puntos</value>
+  </data>
+  <data name="GlaucomaTool_EditDiscPoints" xml:space="preserve">
+    <value>Mover puntos</value>
+  </data>
+  <data name="GlaucomaTool_Image_Warning_Text" xml:space="preserve">
+    <value>No hay archivos seleccionados. Seleccione una imagen para abrir la herramienta CDR.</value>
+  </data>
+  <data name="GlaucomaTool_SaveConfirmation" xml:space="preserve">
+    <value>¿Quieres guardar el marcado actual?</value>
+  </data>
+  <data name="GlaucomaTool_Text" xml:space="preserve">
+    <value>CDR</value>
+  </data>
+  <data name="GlobalPropertyImage_Path_Key" xml:space="preserve">
+    <value>IntusoftLogoPath</value>
+  </data>
+  <data name="GlobalPropertyImage_Path_Value" xml:space="preserve">
+    <value>Icons_Images \ logo.jpg</value>
+  </data>
+  <data name="GreenFilter_Text" xml:space="preserve">
+    <value>Verde</value>
+  </data>
+  <data name="GreenFilter_ToolTipText" xml:space="preserve">
+    <value>Mostrar canal verde</value>
+  </data>
+  <data name="greenGain_Label_Text" xml:space="preserve">
+    <value>Green Gain:</value>
+  </data>
+  <data name="HealthStatus_Label_Text" xml:space="preserve">
+    <value>Estado de salud :</value>
+  </data>
+  <data name="Height_Label_Text" xml:space="preserve">
+    <value>Altura en pies) :</value>
+  </data>
+  <data name="HelpFileWarning_Header" xml:space="preserve">
+    <value>Archivo de ayuda</value>
+  </data>
+  <data name="HelpFileWarning_Text" xml:space="preserve">
+    <value>El archivo no está presente para mostrar.</value>
+  </data>
+  <data name="HighLiveGain_Text" xml:space="preserve">
+    <value>Alto</value>
+  </data>
+  <data name="HorizontalCDR_Text" xml:space="preserve">
+    <value>CDR horizontal</value>
+  </data>
+  <data name="HorizontalCupLength_Text" xml:space="preserve">
+    <value>Longitud horizontal de la taza</value>
+  </data>
+  <data name="HorizontalDiscLength_Text" xml:space="preserve">
+    <value>Longitud de disco horizontal</value>
+  </data>
+  <data name="ImageButton_ToolTipText" xml:space="preserve">
+    <value>Click to Live Imaging</value>
+  </data>
+  <data name="ImagesInImageRepo_Text" xml:space="preserve">
+    <value>Las imágenes de esta visita no están presentes / eliminadas.</value>
+  </data>
+  <data name="ImageViewer_AddAnnotaions2Images_Button_Text" xml:space="preserve">
+    <value>Anotar</value>
+  </data>
+  <data name="ImageViewer_BlueChannel_Button_Text" xml:space="preserve">
+    <value>segundo</value>
+  </data>
+  <data name="ImageViewer_Brightness_Label_Text" xml:space="preserve">
+    <value>Brillo:</value>
+  </data>
+  <data name="ImageViewer_ChangeEyeSide_Label_Text" xml:space="preserve">
+    <value>Cambiar el lado del ojo</value>
+  </data>
+  <data name="ImageViewer_Contrast_Label_Text" xml:space="preserve">
+    <value>Contraste:</value>
+  </data>
+  <data name="ImageViewer_Decrease_Button_Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ImageViewer_ExportImages_Button_Text" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="ImageViewer_GenerateNewReport_Button_Text" xml:space="preserve">
+    <value>Informe</value>
+  </data>
+  <data name="ImageViewer_GreenChannel_Button_Text" xml:space="preserve">
+    <value>GRAMO</value>
+  </data>
+  <data name="ImageViewer_Increase_Button_Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="ImageViewer_leftSide_Button_Text" xml:space="preserve">
+    <value>OS</value>
+  </data>
+  <data name="ImageViewer_PostProcessing_Label_Text" xml:space="preserve">
+    <value>Herramientas de imagen</value>
+  </data>
+  <data name="ImageViewer_RedChannel_Button_Text" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="ImageViewer_RemovePostProcessing_Button_Text" xml:space="preserve">
+    <value>Eliminar cambios</value>
+  </data>
+  <data name="ImageViewer_ReportsCreated_Label_Text" xml:space="preserve">
+    <value>Informes creados</value>
+  </data>
+  <data name="ImageViewer_rightSide_Button_Text" xml:space="preserve">
+    <value>OD</value>
+  </data>
+  <data name="ImageViewer_SaveAs_Button_Text" xml:space="preserve">
+    <value>Guardar como</value>
+  </data>
+  <data name="ImageViewer_Save_Button_Text" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="ImageViewer_ShowChannel_Label_Text" xml:space="preserve">
+    <value>Mostrar canal</value>
+  </data>
+  <data name="ImageViewer_Zoom_Label_Text" xml:space="preserve">
+    <value>Zoom Lupa</value>
+  </data>
+  <data name="Image_Deleted" xml:space="preserve">
+    <value>Se han eliminado una o más imágenes, no se puede abrir el informe.</value>
+  </data>
+  <data name="Image_Storage_Text" xml:space="preserve">
+    <value>Almacenamiento de imágenes</value>
+  </data>
+  <data name="Imaging_btn_Text" xml:space="preserve">
+    <value>Imágenes</value>
+  </data>
+  <data name="IncreaseBrightnessButton_ToolTipText" xml:space="preserve">
+    <value>Aumentar el brillo</value>
+  </data>
+  <data name="IncreaseContrastButton_ToolTipText" xml:space="preserve">
+    <value>Aumentar contraste</value>
+  </data>
+  <data name="IncreaseZoomButton_ToolTipText" xml:space="preserve">
+    <value>Aumentar el zoom</value>
+  </data>
+  <data name="Inferior_Text" xml:space="preserve">
+    <value>I</value>
+  </data>
+  <data name="Information_Text" xml:space="preserve">
+    <value>Información</value>
+  </data>
+  <data name="IntensityToolTipTitle_Text" xml:space="preserve">
+    <value>Configuraciones recomendadas</value>
+  </data>
+  <data name="IntuCloudButton_ToolTipText" xml:space="preserve">
+    <value>Ir a la nube</value>
+  </data>
+  <data name="Intucloud_btn_Text" xml:space="preserve">
+    <value>IntuCloud</value>
+  </data>
+  <data name="InvalidMrn_Text" xml:space="preserve">
+    <value>MRN inválido</value>
+  </data>
+  <data name="IR_Button_Text" xml:space="preserve">
+    <value>IR</value>
+  </data>
+  <data name="IR_Intensity_Label_Text" xml:space="preserve">
+    <value>Intensidad en vivo:</value>
+  </data>
+  <data name="IvlSettings_Text" xml:space="preserve">
+    <value>Configuraciones de IntuSoft</value>
+  </data>
+  <data name="Landline_Label_Text" xml:space="preserve">
+    <value>Línea fija:</value>
+  </data>
+  <data name="Landscape_Text" xml:space="preserve">
+    <value>Paisaje</value>
+  </data>
+  <data name="LastButtonDisable_ToolTipText" xml:space="preserve">
+    <value>Ya en la última página</value>
+  </data>
+  <data name="LastButtonEnable_ToolTipText" xml:space="preserve">
+    <value>Ir a la última página</value>
+  </data>
+  <data name="LastName_Label_Text" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="LastName_space_Text" xml:space="preserve">
+    <value>El apellido no puede comenzar con el espacio.</value>
+  </data>
+  <data name="LastName_Text" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="LeftEyeObservationsText" xml:space="preserve">
+    <value>Observaciones de OS (ojo izquierdo):</value>
+  </data>
+  <data name="LeftEyeObservationText" xml:space="preserve">
+    <value>Resultados del ojo izquierdo</value>
+  </data>
+  <data name="Left_Side" xml:space="preserve">
+    <value>Lado izquierdo</value>
+  </data>
+  <data name="LineDrawButton_ToolTipText" xml:space="preserve">
+    <value>Line Draw</value>
+  </data>
+  <data name="LineDraw_Btn_Text" xml:space="preserve">
+    <value>Línea</value>
+  </data>
+  <data name="LiveGain_Label_Text" xml:space="preserve">
+    <value>Ganancia en vivo:</value>
+  </data>
+  <data name="LiveImagingDisabled_ToolTipText" xml:space="preserve">
+    <value>Verifique las conexiones de la cámara y la alimentación. Las imágenes solo se pueden realizar si es la fecha actual y si tanto la cámara como la alimentación están conectadas.</value>
+  </data>
+  <data name="LiveImagingEnabled_ToolTipText" xml:space="preserve">
+    <value>Comenzar imágenes</value>
+  </data>
+  <data name="LiveSource_Gbx_Text" xml:space="preserve">
+    <value>Fuente en vivo</value>
+  </data>
+  <data name="Login_Login_Button_Text" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Login_Password_Label_Text" xml:space="preserve">
+    <value>Contraseña:</value>
+  </data>
+  <data name="Login_Password_Validation_Message" xml:space="preserve">
+    <value>Por favor introduce una contraseña válida.</value>
+  </data>
+  <data name="Login_Password_Validation_Title" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Login_Username_Label_Text" xml:space="preserve">
+    <value>Nombre de usuario:</value>
+  </data>
+  <data name="Login_Validation_Message" xml:space="preserve">
+    <value>Por favor ingrese un nombre de usuario y contraseña válidos.</value>
+  </data>
+  <data name="Login_Validation_Message_Title" xml:space="preserve">
+    <value>Login - Mensaje</value>
+  </data>
+  <data name="logOut_label_Text" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="LowLiveGain_Text" xml:space="preserve">
+    <value>Bajo</value>
+  </data>
+  <data name="mandatory_GroupBox_Text" xml:space="preserve">
+    <value>Detalles de usuario</value>
+  </data>
+  <data name="MaxAnnotation_Char_Text" xml:space="preserve">
+    <value>(Máx. 85 caracteres por comentario)</value>
+  </data>
+  <data name="MaxComments_Text" xml:space="preserve">
+    <value>(Max 100 caracteres)</value>
+  </data>
+  <data name="MaxHealthStatus_Text" xml:space="preserve">
+    <value>(Max 50 caracteres)</value>
+  </data>
+  <data name="MaximumText" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="MediumLiveGain_Text" xml:space="preserve">
+    <value>Medicina</value>
+  </data>
+  <data name="Millimeter_Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="Mobile_Lable_Text" xml:space="preserve">
+    <value>Móvil:</value>
+  </data>
+  <data name="Mobile_suggestion_Text" xml:space="preserve">
+    <value>ej .: +91 9009098989</value>
+  </data>
+  <data name="ModificationDateTime_text" xml:space="preserve">
+    <value>Fecha de modificación</value>
+  </data>
+  <data name="ModifyPatDetailsButton_ToolTipText" xml:space="preserve">
+    <value>Modificar detalles del paciente</value>
+  </data>
+  <data name="Modify_Select_Patient" xml:space="preserve">
+    <value>Seleccione un paciente y luego modifique.</value>
+  </data>
+  <data name="MotorFocus_Text" xml:space="preserve">
+    <value>Enfocado</value>
+  </data>
+  <data name="MotorSteps_Text" xml:space="preserve">
+    <value>Pasos del motor:</value>
+  </data>
+  <data name="MrnToolTip_lbl" xml:space="preserve">
+    <value>Numero de historia CLINICA</value>
+  </data>
+  <data name="Mrn_Label_Text" xml:space="preserve">
+    <value>MRN:</value>
+  </data>
+  <data name="Mrn_text" xml:space="preserve">
+    <value>MRN</value>
+  </data>
+  <data name="MydMode_Text" xml:space="preserve">
+    <value>Modo midriático</value>
+  </data>
+  <data name="MysqlServiceAvailableToolTip_Text" xml:space="preserve">
+    <value>El servicio Mysql se está ejecutando.</value>
+  </data>
+  <data name="MysqlServiceNotAvailableToolTip_Text" xml:space="preserve">
+    <value>El servicio Mysql no está disponible.</value>
+  </data>
+  <data name="Mysql_ServiceNotAvailableHeader_Text" xml:space="preserve">
+    <value>Servicio Mysql</value>
+  </data>
+  <data name="Mysql_ServiceNotAvailable_Text" xml:space="preserve">
+    <value>El servicio Mysql no está disponible. Por favor reinstale o reconfigure mysql.</value>
+  </data>
+  <data name="Name_Label_Text" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Nasal_Text" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="NewConsultationButton_ToolTipText" xml:space="preserve">
+    <value>Agregar nueva consulta</value>
+  </data>
+  <data name="NewConsultation_Button_Text" xml:space="preserve">
+    <value>Nuevo</value>
+  </data>
+  <data name="New_Consultation_Select_Patient" xml:space="preserve">
+    <value>Seleccione un paciente y luego cree una consulta</value>
+  </data>
+  <data name="NoImageHeader_Text" xml:space="preserve">
+    <value>Sin imagen presente</value>
+  </data>
+  <data name="NoImagesSelected_Label_Text" xml:space="preserve">
+    <value>No hay imagen seleccionada Por favor selecciona una imagen.</value>
+  </data>
+  <data name="NonMydMode_Text" xml:space="preserve">
+    <value>Modo no midriático</value>
+  </data>
+  <data name="Non_mandatory_GroupBox_Text" xml:space="preserve">
+    <value>Detalles de comunicación</value>
+  </data>
+  <data name="NoOfImagesToBeSelected_Header" xml:space="preserve">
+    <value>Número de imágenes</value>
+  </data>
+  <data name="NoOfImagesToBeSelected_Text1" xml:space="preserve">
+    <value>No se puede seleccionar más de</value>
+  </data>
+  <data name="NoOfImagesToBeSelected_Text2" xml:space="preserve">
+    <value>imágenes</value>
+  </data>
+  <data name="NotMentioned_Text" xml:space="preserve">
+    <value>No mencionado</value>
+  </data>
+  <data name="No_of_Images_Text" xml:space="preserve">
+    <value># Imágenes</value>
+  </data>
+  <data name="No_of_Reports_Text" xml:space="preserve">
+    <value># Informes</value>
+  </data>
+  <data name="ObservationSpacingText" xml:space="preserve">
+    <value>-------------------------------------</value>
+  </data>
+  <data name="Occupation_Label_Text" xml:space="preserve">
+    <value>Ocupación</value>
+  </data>
+  <data name="ODOSCrashWaring_Header" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="ODOSCrashWaring_Text" xml:space="preserve">
+    <value>El archivo está siendo utilizado por otro proceso.</value>
+  </data>
+  <data name="OD_Tool_Tip_Text" xml:space="preserve">
+    <value>OD (lado derecho)</value>
+  </data>
+  <data name="Off_Text" xml:space="preserve">
+    <value>APAGADO</value>
+  </data>
+  <data name="Ok_Text" xml:space="preserve">
+    <value>DE ACUERDO</value>
+  </data>
+  <data name="On_Text" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="OpenFileLocation_Text" xml:space="preserve">
+    <value>Abrir localización de archivo</value>
+  </data>
+  <data name="OpenFile_Text" xml:space="preserve">
+    <value>Abrir documento</value>
+  </data>
+  <data name="Open_Text" xml:space="preserve">
+    <value>Abierto</value>
+  </data>
+  <data name="OpticDisc_Text" xml:space="preserve">
+    <value>Disco óptico</value>
+  </data>
+  <data name="OrganizationLogo_Key" xml:space="preserve">
+    <value>Logotipo de la organización</value>
+  </data>
+  <data name="Organization_Address_Property_Text" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="Organization_Address_Text" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="Organization_Email_Property_Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Organization_ID_Property_Text" xml:space="preserve">
+    <value>ID de organización</value>
+  </data>
+  <data name="Organization_ID_Text" xml:space="preserve">
+    <value>ID de organización</value>
+  </data>
+  <data name="Organization_Mobile_Property_Text" xml:space="preserve">
+    <value>No móviles</value>
+  </data>
+  <data name="Organization_Name_Property_Text" xml:space="preserve">
+    <value>Nombre de la Organización</value>
+  </data>
+  <data name="Organization_Name_Text" xml:space="preserve">
+    <value>Nombre de la Organización</value>
+  </data>
+  <data name="Orgnaization_Id_Required_Header" xml:space="preserve">
+    <value>ID de la organización</value>
+  </data>
+  <data name="Orgnaization_Id_Required_Text" xml:space="preserve">
+    <value>ID de organización es obligatorio.</value>
+  </data>
+  <data name="Orientation_Lbl_Text" xml:space="preserve">
+    <value>Orientación</value>
+  </data>
+  <data name="OS_Tool_Tip_Text" xml:space="preserve">
+    <value>Sistema operativo (lado izquierdo)</value>
+  </data>
+  <data name="Password_Label_Text" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Password_Warning_Text" xml:space="preserve">
+    <value>La contraseña no puede estar vacía o tener menos de 6 caracteres. Ingrese una contraseña válida.</value>
+  </data>
+  <data name="PatFirstNameSearch_ToolTipText" xml:space="preserve">
+    <value>Ingrese el primer nombre</value>
+  </data>
+  <data name="PatientDetailsAddress_Label_Text" xml:space="preserve">
+    <value>Dirección:</value>
+  </data>
+  <data name="PatientDetailsAge_Label_Text" xml:space="preserve">
+    <value>Años :</value>
+  </data>
+  <data name="PatientDetailsFirstName_LabelText" xml:space="preserve">
+    <value>Nombre de pila :</value>
+  </data>
+  <data name="PatientDetailsGender_Label_Text" xml:space="preserve">
+    <value>Género:</value>
+  </data>
+  <data name="PatientDetailsLastName_Label_Text" xml:space="preserve">
+    <value>Apellido :</value>
+  </data>
+  <data name="Patient_Details_Text" xml:space="preserve">
+    <value>Detalles del paciente</value>
+  </data>
+  <data name="Patient_Warning_Header" xml:space="preserve">
+    <value>Paciente</value>
+  </data>
+  <data name="PatLastNameSearch_ToolTipText" xml:space="preserve">
+    <value>Ingrese el apellido</value>
+  </data>
+  <data name="PatMRNSearch_ToolTipText" xml:space="preserve">
+    <value>Ingrese el MRN</value>
+  </data>
+  <data name="Pat_Consultations_Text" xml:space="preserve">
+    <value>Consulta</value>
+  </data>
+  <data name="Pat_Details_Text" xml:space="preserve">
+    <value>Detalles del paciente</value>
+  </data>
+  <data name="PeripheralRetina_Text" xml:space="preserve">
+    <value>Retina periférica</value>
+  </data>
+  <data name="PinCode_Label_Text" xml:space="preserve">
+    <value>Código PIN :</value>
+  </data>
+  <data name="Pincode_suggestion_Text" xml:space="preserve">
+    <value>Ej .: 560001</value>
+  </data>
+  <data name="Play_Btn_Text" xml:space="preserve">
+    <value>Jugar</value>
+  </data>
+  <data name="PleaeRetry_Text" xml:space="preserve">
+    <value>Por favor, intenta de nuevo</value>
+  </data>
+  <data name="Portrait_Text" xml:space="preserve">
+    <value>Retrato</value>
+  </data>
+  <data name="Posterior_Btn_Text" xml:space="preserve">
+    <value>Posterior</value>
+  </data>
+  <data name="PowerCameraDisconnected_Text" xml:space="preserve">
+    <value>La alimentación o la cámara está desconectada. Verifique las conexiones y vuelva a intentarlo.</value>
+  </data>
+  <data name="PowerOff_ToolTipText" xml:space="preserve">
+    <value>La energía está desconectada. Verifique el cable de alimentación.</value>
+  </data>
+  <data name="PowerOn_ToolTipText" xml:space="preserve">
+    <value>El poder está conectado</value>
+  </data>
+  <data name="Power_Status" xml:space="preserve">
+    <value>Poder</value>
+  </data>
+  <data name="Power_Text" xml:space="preserve">
+    <value>Poder :</value>
+  </data>
+  <data name="Preview_Btn_Text" xml:space="preserve">
+    <value>Avance</value>
+  </data>
+  <data name="PrintAnnotationButton_ToolTipText" xml:space="preserve">
+    <value>Imprima la imagen anotada</value>
+  </data>
+  <data name="PrintCdrAlert_Text1" xml:space="preserve">
+    <value>Por favor agregue puntos de taza antes de imprimir.</value>
+  </data>
+  <data name="PrintCDRButton_ToolTipText" xml:space="preserve">
+    <value>Imprime las medidas</value>
+  </data>
+  <data name="Printer_Settings_Text" xml:space="preserve">
+    <value>Configuración de la impresora</value>
+  </data>
+  <data name="Print_Btn_Text" xml:space="preserve">
+    <value>Impresión</value>
+  </data>
+  <data name="Print_PrintPreview_Button_Text" xml:space="preserve">
+    <value>Vista previa de impresión</value>
+  </data>
+  <data name="Print_Print_Button_Text" xml:space="preserve">
+    <value>Impresión</value>
+  </data>
+  <data name="Program_01" xml:space="preserve">
+    <value>IntuSoft ya está funcionando</value>
+  </data>
+  <data name="RecordButton_ToolTipText" xml:space="preserve">
+    <value>Ir a los registros</value>
+  </data>
+  <data name="RectangleButton_ToolTipText" xml:space="preserve">
+    <value>Dibujar Rectángulo</value>
+  </data>
+  <data name="Rectangle_Btn_Text" xml:space="preserve">
+    <value>Rectángulo</value>
+  </data>
+  <data name="RedFilter_Text" xml:space="preserve">
+    <value>rojo</value>
+  </data>
+  <data name="RedFilter_ToolTipText" xml:space="preserve">
+    <value>Mostrar canal rojo</value>
+  </data>
+  <data name="redGain_Label_Text" xml:space="preserve">
+    <value>Red Gain:</value>
+  </data>
+  <data name="Red_Filter_Selected_Tool_Tip_Text" xml:space="preserve">
+    <value>De vuelta al color</value>
+  </data>
+  <data name="ReferredBy_Label_Text" xml:space="preserve">
+    <value>Referido por :</value>
+  </data>
+  <data name="RegistrationDateTime_text" xml:space="preserve">
+    <value>Fecha de Registro</value>
+  </data>
+  <data name="Registration_Children_Label_Text" xml:space="preserve">
+    <value>Número de niños</value>
+  </data>
+  <data name="Registration_DateOfBirth_Label_Text" xml:space="preserve">
+    <value>Fecha de nacimiento</value>
+  </data>
+  <data name="Registration_Error_Message" xml:space="preserve">
+    <value>Registro fallido</value>
+  </data>
+  <data name="Registration_Error_Message_Title" xml:space="preserve">
+    <value>Error de registro</value>
+  </data>
+  <data name="Registration_FirstName_Required_Text" xml:space="preserve">
+    <value>El primer nombre es obligatorio. Ingrese un Nombre válido.</value>
+  </data>
+  <data name="Registration_HealthStatus_Label_Text" xml:space="preserve">
+    <value>Estado de salud</value>
+  </data>
+  <data name="Registration_HealthStatus_Select_Text" xml:space="preserve">
+    <value>Por favor seleccione estado de salud.</value>
+  </data>
+  <data name="Registration_LastName_is_Required_Text" xml:space="preserve">
+    <value>El apellido es obligatorio. Ingrese un apellido válido.</value>
+  </data>
+  <data name="Registration_MaritalStatus_Label_Text" xml:space="preserve">
+    <value>Género</value>
+  </data>
+  <data name="Registration_MaritalStatus_Select_Text" xml:space="preserve">
+    <value>Género requerido. Seleccione Género.</value>
+  </data>
+  <data name="Registration_MRN_IS_Required" xml:space="preserve">
+    <value>MRN no se encuentra. Ingrese un MRN válido.</value>
+  </data>
+  <data name="Registration_Name_Label_Text" xml:space="preserve">
+    <value>Nombre de pila</value>
+  </data>
+  <data name="Registration_Occupation_Label_Text" xml:space="preserve">
+    <value>Ocupacion:</value>
+  </data>
+  <data name="Registration_Occupation_Select_Text" xml:space="preserve">
+    <value>Por favor seleccione una ocupación</value>
+  </data>
+  <data name="Registration_Register_Button_Text" xml:space="preserve">
+    <value>Nuevo</value>
+  </data>
+  <data name="Registration_Role_Header_Text" xml:space="preserve">
+    <value>Rol del usuario</value>
+  </data>
+  <data name="Registration_Role_Select_Text" xml:space="preserve">
+    <value>Rol requerido. Seleccione Rol</value>
+  </data>
+  <data name="Registration_Salary_Label_Text" xml:space="preserve">
+    <value>Salario (INR):</value>
+  </data>
+  <data name="Registration_Successful_Message" xml:space="preserve">
+    <value>Nuevo miembro registrado con éxito!</value>
+  </data>
+  <data name="Registration_Successful_Message_Title" xml:space="preserve">
+    <value>Registro exitoso</value>
+  </data>
+  <data name="Registration_UserName_Is_Required" xml:space="preserve">
+    <value>Nombre de usuario es obligatorio. Ingrese un Nombre de usuario válido.</value>
+  </data>
+  <data name="Reload_btn_Text" xml:space="preserve">
+    <value>Deshacer</value>
+  </data>
+  <data name="Reload_Confirmation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemovePostProcessingButton_ToolTipText" xml:space="preserve">
+    <value>Eliminar publicaciones posteriores</value>
+  </data>
+  <data name="Removing_Deleted_Image_Header" xml:space="preserve">
+    <value>Imagen eliminada</value>
+  </data>
+  <data name="Removing_Deleted_Image_Text" xml:space="preserve">
+    <value>La imagen ha sido eliminada.</value>
+  </data>
+  <data name="Reported_By_Text" xml:space="preserve">
+    <value>Reportado por</value>
+  </data>
+  <data name="ReportMainHeading_Text" xml:space="preserve">
+    <value>report.mainHeading</value>
+  </data>
+  <data name="ReportMax_Charecters" xml:space="preserve">
+    <value>(Max 85 caracteres)</value>
+  </data>
+  <data name="ReportPatientMedicalHistory" xml:space="preserve">
+    <value>Historial médico del paciente / Comentarios:</value>
+  </data>
+  <data name="ReportpdfFile_Text" xml:space="preserve">
+    <value>Report.pdf</value>
+  </data>
+  <data name="ReportStatusExisting_Label_Text" xml:space="preserve">
+    <value>Informe guardado, no se permiten modificaciones, solo se permite imprimir, exportar y enviar por correo electrónico.</value>
+  </data>
+  <data name="ReportStatusNew_Label_Text" xml:space="preserve">
+    <value>Nuevo reporte</value>
+  </data>
+  <data name="ReporttPdfFileOpenHeader_Text" xml:space="preserve">
+    <value>Impresión</value>
+  </data>
+  <data name="ReporttPdfFileOpenMessage_Text" xml:space="preserve">
+    <value>Los recursos están siendo utilizados por otro proceso.</value>
+  </data>
+  <data name="ReportWarning_Text" xml:space="preserve">
+    <value>Algunos archivos necesarios para abrir el informe no están presentes. Realice una nueva comprobación de los archivos instalados o póngase en contacto con el proveedor del servicio.</value>
+  </data>
+  <data name="Report_Age_Text" xml:space="preserve">
+    <value>Años:</value>
+  </data>
+  <data name="Report_Comments_Text" xml:space="preserve">
+    <value>Comentarios:</value>
+  </data>
+  <data name="Report_DateTemplate_Text" xml:space="preserve">
+    <value>Fecha:</value>
+  </data>
+  <data name="Report_Date_Text" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="Report_Delete_Text" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="Report_Doctor_Text" xml:space="preserve">
+    <value>Doctor:</value>
+  </data>
+  <data name="Report_Gender_Text" xml:space="preserve">
+    <value>Género:</value>
+  </data>
+  <data name="Report_Header" xml:space="preserve">
+    <value>Social Member Club - Miembros</value>
+  </data>
+  <data name="Report_Images_Text" xml:space="preserve">
+    <value>Informar imágenes</value>
+  </data>
+  <data name="Report_Image_Size_Text" xml:space="preserve">
+    <value>Tamaño de la imagen</value>
+  </data>
+  <data name="Report_Image_WarningHeader_Text" xml:space="preserve">
+    <value>Informe</value>
+  </data>
+  <data name="Report_Image_WarningMsg_Text" xml:space="preserve">
+    <value>No hay imágenes seleccionadas Seleccione una imagen para crear un informe</value>
+  </data>
+  <data name="Report_Name_Text" xml:space="preserve">
+    <value>Nombre:</value>
+  </data>
+  <data name="Report_Save_Header_Text" xml:space="preserve">
+    <value>Salida</value>
+  </data>
+  <data name="Report_Save_Message_Text" xml:space="preserve">
+    <value>¿Quieres guardar el informe?</value>
+  </data>
+  <data name="Report_Settings_Text" xml:space="preserve">
+    <value>Configuración de informes</value>
+  </data>
+  <data name="Report_Slno_Text" xml:space="preserve">
+    <value>Si. No</value>
+  </data>
+  <data name="Report_text" xml:space="preserve">
+    <value>Informe</value>
+  </data>
+  <data name="Report_Time_Text" xml:space="preserve">
+    <value>Hora</value>
+  </data>
+  <data name="Report_View_Cell_Text" xml:space="preserve">
+    <value>ver</value>
+  </data>
+  <data name="Report_View_Text" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="ResetMotorSensorBtn_Text" xml:space="preserve">
+    <value>Restablecer sensor del motor</value>
+  </data>
+  <data name="ResetSearchLinklabel_ToolTipText" xml:space="preserve">
+    <value>Haga clic para restablecer la búsqueda</value>
+  </data>
+  <data name="ResetSearch_Button_Text" xml:space="preserve">
+    <value>Restablecer búsqueda</value>
+  </data>
+  <data name="Reset_Text" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="RestartApplication_Text" xml:space="preserve">
+    <value>IntuSoft se reiniciará para aplicar los cambios actuales</value>
+  </data>
+  <data name="RestoreFactaroySettings_btn_Text" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="Resume_Button_Text" xml:space="preserve">
+    <value>Currículum</value>
+  </data>
+  <data name="resuming_Lable_Text" xml:space="preserve">
+    <value>Reanudando el modo en vivo en</value>
+  </data>
+  <data name="RetryAgainText" xml:space="preserve">
+    <value>Reintentar nuevamente</value>
+  </data>
+  <data name="ReTypePassword_Label_Text" xml:space="preserve">
+    <value>Confirmar contraseña</value>
+  </data>
+  <data name="Retype_Password_Message_Header" xml:space="preserve">
+    <value>Confirmar contraseña</value>
+  </data>
+  <data name="Retype_Password_Message_Text" xml:space="preserve">
+    <value>Contraseñas no coincidentes Por favor, vuelva a escribir la contraseña.</value>
+  </data>
+  <data name="RightEyeObservationsText" xml:space="preserve">
+    <value>Observaciones de OD (ojo derecho)</value>
+  </data>
+  <data name="RightEyeObservationText" xml:space="preserve">
+    <value>Resultados del ojo derecho</value>
+  </data>
+  <data name="Right_Side" xml:space="preserve">
+    <value>Lado derecho</value>
+  </data>
+  <data name="RimArea_Text" xml:space="preserve">
+    <value>Área del borde</value>
+  </data>
+  <data name="Role_gridview_text" xml:space="preserve">
+    <value>Papel</value>
+  </data>
+  <data name="SaveAnnotationButton_ToolTipText" xml:space="preserve">
+    <value>Guarde la imagen anotada</value>
+  </data>
+  <data name="SaveAsCompleted_Text" xml:space="preserve">
+    <value>La imagen ha sido guardada</value>
+  </data>
+  <data name="SaveAs_Text" xml:space="preserve">
+    <value>Guardar como</value>
+  </data>
+  <data name="SaveAs_Warning_Header" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="SaveAs_Warning_Text" xml:space="preserve">
+    <value>El nombre de archivo tiene algunos caracteres no válidos o espacios en blanco. Por favor ingrese un nombre de archivo válido</value>
+  </data>
+  <data name="SaveCdrAlert_Text" xml:space="preserve">
+    <value>Por favor agregue puntos de taza antes de guardar.</value>
+  </data>
+  <data name="SaveCDRButton_ToolTipText" xml:space="preserve">
+    <value>Guarde las mediciones</value>
+  </data>
+  <data name="SaveCDRheader_Text" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="SaveConfirmation_Text" xml:space="preserve">
+    <value>¿Quieres guardar la imagen?</value>
+  </data>
+  <data name="SaveHeader_Text" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Search_Refresh_Button_Text" xml:space="preserve">
+    <value>Refrescar</value>
+  </data>
+  <data name="Search_Search_Button_Text" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="Server_Label_Text" xml:space="preserve">
+    <value>Servidor</value>
+  </data>
+  <data name="SettingsWarning_Header_Text" xml:space="preserve">
+    <value>Reiniciar aplicación</value>
+  </data>
+  <data name="SettingsWarning_Message_Text" xml:space="preserve">
+    <value>Reinicie la aplicación para guardar e implementar los cambios.</value>
+  </data>
+  <data name="Settings_Button_Text" xml:space="preserve">
+    <value>Configuraciones</value>
+  </data>
+  <data name="Side_Change_Msg" xml:space="preserve">
+    <value>¿Quieres cambiar el lado de la imagen?</value>
+  </data>
+  <data name="Size_Lbl_Text" xml:space="preserve">
+    <value>tamaño</value>
+  </data>
+  <data name="Software_Name" xml:space="preserve">
+    <value>IntuSoft</value>
+  </data>
+  <data name="StartFFAButton_ToolTipText" xml:space="preserve">
+    <value>Comience FFA</value>
+  </data>
+  <data name="startFFA_Text" xml:space="preserve">
+    <value>Comience FFA</value>
+  </data>
+  <data name="State_Lable_Text" xml:space="preserve">
+    <value>Estado :</value>
+  </data>
+  <data name="stopFFA_Text" xml:space="preserve">
+    <value>Detener FFA</value>
+  </data>
+  <data name="Superior_Text" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="System_Error_Message" xml:space="preserve">
+    <value>Oops! Error del sistema. Por favor contacte al administrador.</value>
+  </data>
+  <data name="System_Error_Message_Title" xml:space="preserve">
+    <value>Mensaje de error</value>
+  </data>
+  <data name="TelemedUpload_Button_Text" xml:space="preserve">
+    <value>Carga Telemed</value>
+  </data>
+  <data name="Temperature_Label_Text" xml:space="preserve">
+    <value>Temperatura:</value>
+  </data>
+  <data name="Temporal_Text" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="ThumbnailFirstName" xml:space="preserve">
+    <value>Imagen</value>
+  </data>
+  <data name="Thumbnail_Delete_Confirmation_Message" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar las imágenes?</value>
+  </data>
+  <data name="Tint_Label_Text" xml:space="preserve">
+    <value>Tinte:</value>
+  </data>
+  <data name="TouchedDateTime_Text" xml:space="preserve">
+    <value>Fecha de toque</value>
+  </data>
+  <data name="Uniquemrn_text" xml:space="preserve">
+    <value>Ingrese un MRN válido o MRN único</value>
+  </data>
+  <data name="Unique_UserName_Header_Text" xml:space="preserve">
+    <value>Nombre de usuario</value>
+  </data>
+  <data name="Unique_UserName_Text" xml:space="preserve">
+    <value>Ingrese un nombre de usuario válido o único</value>
+  </data>
+  <data name="Update_Button_Text" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Update_CancelUpdate" xml:space="preserve">
+    <value>Cancelar la edición</value>
+  </data>
+  <data name="Update_Error_Message_Title" xml:space="preserve">
+    <value>Error de actualización</value>
+  </data>
+  <data name="Update_SaveUpdate" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Update_Successful_Message" xml:space="preserve">
+    <value>Detalles de miembros actualizados con éxito</value>
+  </data>
+  <data name="Update_Successful_Message_Title" xml:space="preserve">
+    <value>Actualización exitosa</value>
+  </data>
+  <data name="UploadImage_Size_Warning_Header" xml:space="preserve">
+    <value>Tamaño de la imagen</value>
+  </data>
+  <data name="UploadImage_Size_Warning_Text" xml:space="preserve">
+    <value>Cargue la imagen del tamaño 10kb y la resolución de 320 * 240</value>
+  </data>
+  <data name="UploadOrgLogo_Text" xml:space="preserve">
+    <value>Subir Logo</value>
+  </data>
+  <data name="UserName_Text" xml:space="preserve">
+    <value>Nombre de usuario</value>
+  </data>
+  <data name="userProfilePic_Suggestion_Text" xml:space="preserve">
+    <value>Subir imagen de 10kb y resolución de 320 * 240</value>
+  </data>
+  <data name="User_Add_Text" xml:space="preserve">
+    <value>Registrar usuario</value>
+  </data>
+  <data name="User_Delete_Text" xml:space="preserve">
+    <value>Borrar usuario</value>
+  </data>
+  <data name="User_Details_Text" xml:space="preserve">
+    <value>Detalles de usuario</value>
+  </data>
+  <data name="User_Photo_lbl_Text" xml:space="preserve">
+    <value>Imagen de perfil de usuario</value>
+  </data>
+  <data name="User_Update_Text" xml:space="preserve">
+    <value>Editar detalles del usuario</value>
+  </data>
+  <data name="Val1" xml:space="preserve">
+    <value>-15 a -5</value>
+  </data>
+  <data name="Val2" xml:space="preserve">
+    <value>-5 a +5</value>
+  </data>
+  <data name="Val3" xml:space="preserve">
+    <value>5 a 15</value>
+  </data>
+  <data name="Val4" xml:space="preserve">
+    <value>- 10 a +5</value>
+  </data>
+  <data name="Val5" xml:space="preserve">
+    <value>5 a 15</value>
+  </data>
+  <data name="Valid_Age" xml:space="preserve">
+    <value>Ingrese una edad válida. La edad debe ser mayor que 2 y Menor que 100</value>
+  </data>
+  <data name="Valid_FirstName" xml:space="preserve">
+    <value>El primer nombre no puede estar vacío ni en blanco. Ingrese un Nombre válido.</value>
+  </data>
+  <data name="Valid_First_Name" xml:space="preserve">
+    <value>Ingrese un Nombre válido.</value>
+  </data>
+  <data name="Valid_LastName" xml:space="preserve">
+    <value>El apellido no puede estar vacío o en blanco, ingrese un apellido válido.</value>
+  </data>
+  <data name="Valid_Last_Name" xml:space="preserve">
+    <value>Ingrese un apellido válido</value>
+  </data>
+  <data name="Version_Text" xml:space="preserve">
+    <value>Versión</value>
+  </data>
+  <data name="VerticalCDR_Text" xml:space="preserve">
+    <value>CDR vertical</value>
+  </data>
+  <data name="VerticalCupLength_Text" xml:space="preserve">
+    <value>Longitud de taza vertical</value>
+  </data>
+  <data name="VerticalDiscLength_Text" xml:space="preserve">
+    <value>Longitud de disco vertical</value>
+  </data>
+  <data name="ViewImageAddAnnotationToolTipText" xml:space="preserve">
+    <value>Agregar anotación</value>
+  </data>
+  <data name="ViewImageExportImages_Button_ToolTipText" xml:space="preserve">
+    <value>Exportar imagen / s</value>
+  </data>
+  <data name="ViewImageMeasureCDRToolTipText" xml:space="preserve">
+    <value>Medida CDR</value>
+  </data>
+  <data name="ViewImageReportToolTipText" xml:space="preserve">
+    <value>Agregar nuevo informe</value>
+  </data>
+  <data name="ViewImageSaveAs_Button_ToolTipText" xml:space="preserve">
+    <value>Guardar imagen como</value>
+  </data>
+  <data name="ViewImageSave_Button_ToolTipText" xml:space="preserve">
+    <value>Guardar imagen</value>
+  </data>
+  <data name="ViewImagesDisabled_ToolTipText" xml:space="preserve">
+    <value>No hay imágenes para ver</value>
+  </data>
+  <data name="ViewImagesEnabled_ToolTipText" xml:space="preserve">
+    <value>Click para ver</value>
+  </data>
+  <data name="ViewPatFullInfoButton_ToolTipText" xml:space="preserve">
+    <value>Mostrar información completa</value>
+  </data>
+  <data name="ViewPatFullInfo_Button_Text" xml:space="preserve">
+    <value>informaci</value>
+  </data>
+  <data name="ViewVisitImages_Button_Text" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="ViewVisitReports_Button_Text" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="View_Full_Info_Text" xml:space="preserve">
+    <value>Detalles del paciente</value>
+  </data>
+  <data name="VisitsAddImages_ColName" xml:space="preserve">
+    <value>Añadir imágenes</value>
+  </data>
+  <data name="VisitsDeleteVisits_ColName" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="VisitsViewImages_ColName" xml:space="preserve">
+    <value>Ver imágenes</value>
+  </data>
+  <data name="VisitsViewReports_ColName" xml:space="preserve">
+    <value>Ver los informes</value>
+  </data>
+  <data name="Visit_Date_Text" xml:space="preserve">
+    <value>Fecha de visita</value>
+  </data>
+  <data name="Visit_Time_Text" xml:space="preserve">
+    <value>Tiempo de visita</value>
+  </data>
+  <data name="WebCamDetection_Warning_Header" xml:space="preserve">
+    <value>Cámara web</value>
+  </data>
+  <data name="WebCamDetection_Warning_Text" xml:space="preserve">
+    <value>No hay cámara web presente para tomar la imagen.</value>
+  </data>
+  <data name="Weight_Label_Text" xml:space="preserve">
+    <value>Peso (Kgs):</value>
+  </data>
+  <data name="DiagnosisSaveText" xml:space="preserve">
+    <value>El diagnóstico se ha salvado</value>
+  </data>
+  <data name="LeftEyeDiagnosisRegion_Lbl_Text" xml:space="preserve">
+    <value>Región de diagnóstico del ojo izquierdo</value>
+  </data>
+  <data name="LeftEyeDiagnosis_Lbl_Text" xml:space="preserve">
+    <value>Diagnóstico del ojo izquierdo</value>
+  </data>
+  <data name="RightEyeDiagnosisRegion_Lbl_Text" xml:space="preserve">
+    <value>Región de diagnóstico de ojo derecho</value>
+  </data>
+  <data name="RighttEyeDiagnosis_Lbl_Text" xml:space="preserve">
+    <value>Diagnosis del ojo derecho</value>
+  </data>
+  <data name="Diagnosis_Lbl_Text" xml:space="preserve">
+    <value>Diagnóstico</value>
+  </data>
+  <data name="Diagnosis_Clear_Text" xml:space="preserve">
+    <value>¿Quieres borrar todo el diagnóstico?</value>
+  </data>
+  <data name="Diagnosis_Warning_Text" xml:space="preserve">
+    <value>Esto eliminará todo el diagnóstico guardado</value>
+  </data>
+  <data name="AddDiagnosisButtonText" xml:space="preserve">
+    <value>Diagnosis</value>
+  </data>
+  <data name="AddDiagnosisButtonToolTipText" xml:space="preserve">
+    <value>Diagnóstico</value>
+  </data>
+  <data name="OutOf_Text" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="Page_Lbl_text" xml:space="preserve">
+    <value>Página</value>
+  </data>
+  <data name="OneOfTheServicesNotRunning_Text" xml:space="preserve">
+    <value>Uno de los servicios no se está ejecutando correctamente. Por favor, póngase en contacto con la persona de servicio.</value>
+  </data>
+  <data name="ImagingMode_txt" xml:space="preserve">
+    <value>Modos de imagen:</value>
+  </data>
+  <data name="SaveDiagnosisConfirmation_Text" xml:space="preserve">
+    <value>¿Quieres guardar el diagnóstico?</value>
+  </data>
+  <data name="PrerequisitesNotInstalled_Text" xml:space="preserve">
+    <value>Instale las dependencias mencionadas anteriormente o póngase en contacto con el servicio de Intuvision con respecto al problema.</value>
+  </data>
+  <data name="PrerequisitesWarning_Header_Text" xml:space="preserve">
+    <value>dependencias no están instalados</value>
+  </data>
+  <data name="LeftEye_Lbl_Text" xml:space="preserve">
+    <value>Left Eye</value>
+  </data>
+  <data name="RightEye_Lbl_Text" xml:space="preserve">
+    <value>Right Eye</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ZoomIn_Text" xml:space="preserve">
+    <value>Zoom In</value>
+  </data>
+  <data name="ZoomOut_Text" xml:space="preserve">
+    <value>Zoom Out</value>
+  </data>
+  <data name="ZoomReset_Text" xml:space="preserve">
+    <value>Zoom Reset</value>
+  </data>
+  <data name="ChangeEyeSideOnlyForColorImage_Text" xml:space="preserve">
+    <value>The applied filters will get reset.</value>
+  </data>
+  <data name="filterResetWarning_Text" xml:space="preserve">
+    <value>Filter reset warning</value>
+  </data>
+</root>

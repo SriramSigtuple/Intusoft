@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="patient_identifier_type" table="patient_identifier_type">
+	<id name="patientIdentifierTypeId" type="int" column="patient_identifier_type_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">patient_identifier_type_patient_identifier_type_id_seq</param>
+		</generator>
+    </id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" />
+	
+	<property name="name" type="String" column="name" not-null="true" length="50" />
+    <property name="description" type="String" column="description"  length="65535"  />
+    <property name="format" type="String" column="format" length="255" />
+    <property name="formatDescription" type="String" column="format_description" length="250" />
+    <property name="required" type="boolean" column="required" not-null="true"/>
+    <property name="validator" type="String" column="validator" length="200"/>
+    
+    <many-to-one name="creator" class="users" column="created_by" not-null="true" />
+    <property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />
+  <many-to-one name="lastModifiedBy" class="users" column="last_modified_by" />
+  <property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+    <many-to-one name="retiredBy" class="users" column="retired_by" />
+	<property name="retiredDate" type="datetime" column="retired_date" length="19" />
+	<property name="retiredReason" type="String" column="retired_reason" length="255" />
+	<property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+</class>
+</hibernate-mapping>

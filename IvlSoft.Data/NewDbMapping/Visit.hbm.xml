@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="visit" table="visit" batch-size="25">
+	<id name="visitId" type="int" column="visit_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">visit_visit_id_seq</param>
+		</generator>
+	</id>
+	<!--<property name="uuid" type="String" column="uuid" length="38" unique="true" />-->
+	<property name="createdDate" type="datetime" column="start_datetime" not-null="true" length="19" />
+	<property name="endDateTime" type="datetime" column="end_datetime" length="19" />
+	<many-to-one name="createdBy" class="users" not-null="true" column="created_by" />
+	<!--<property name="date_started" type="datetime" column="date_started" not-null="true" length="19" insert="false" update="false"/>-->
+	<property name="voided" type="Boolean" column="voided" length="1" not-null="true" />
+	<many-to-one name="voidedBy" class="users" column="voided_by" />
+	<property name="voidedDate" type="datetime" column="voided_date" length="19" />
+	<property name="voidedReason" type="String" column="voided_reason" length="255" />
+  <many-to-one name="lastModifiedBy" class="users" column="last_modified_by" />
+	<property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+	<many-to-one name="lastAccessedBy" class="users" column="last_accessed_by" />
+	<property name="lastAccessedDate" type="datetime" column="last_accessed_date" length="19" />
+	<!-- Associations -->
+	<many-to-one name="patient" class="Patient" not-null="true" column="patient_id" />
+		<!-- bi-directional one-to-many association to Obs -->
+	<!--<set name="obs" inverse="true" cascade="all" order-by="concept_id" access="field" >
+		<key column="visit_id" />
+		<one-to-many class="obs" />
+	</set>-->
+  <set name="observations"  cascade="save-update" table="eye_fundus_image" inverse="true" sort="natural">
+    <key not-null="true" column="visit_id" />
+    <one-to-many class="eye_fundus_image" />
+  </set>
+  <set name="reports"  cascade="save-update" table="report" inverse="true" sort="natural">
+    <key not-null="true" column="visit_id" />
+    <one-to-many class="report" />
+  </set>
+</class>
+</hibernate-mapping>

@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{957DD705-84E3-4544-A179-FB5C71B83400}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>INTUSOFT.Data</RootNamespace>
+    <AssemblyName>INTUSOFT.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common">
+      <HintPath>..\Common\bin\$(Configuration)\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\library\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.EventHandler">
+      <HintPath>..\EventHandler\bin\$(Configuration)\INTUSOFT.EventHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\library\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SQLite, Version=1.0.98.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\x86\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common.cs" />
+    <Compile Include="CustomInterceptor.cs" />
+    <Compile Include="DataBaseServiceAndConnection.cs" />
+    <Compile Include="Enumdetails\CityEnum.cs" />
+    <Compile Include="Enumdetails\CountryEnum.cs" />
+    <Compile Include="Enumdetails\HealthStatusEnum.cs" />
+    <Compile Include="Enumdetails\GenderEnum.cs" />
+    <Compile Include="Enumdetails\ObservationAttributeType.cs" />
+    <Compile Include="Enumdetails\OccupationEnum.cs" />
+    <Compile Include="Enumdetails\PatientAttributeType.cs" />
+    <Compile Include="Enumdetails\Role.cs" />
+    <Compile Include="Enumdetails\Salary.cs" />
+    <Compile Include="Enumdetails\StateEnum.cs" />
+    <Compile Include="Enumdetails\UserImage.cs" />
+    <Compile Include="Extension\ListExtension.cs" />
+    <Compile Include="HibernateLazyIntitialization.cs" />
+    <Compile Include="Mapping\AddressMap.cs" />
+    <Compile Include="Mapping\AnnotationMap.cs" />
+    <Compile Include="Mapping\ImageMap.cs" />
+    <Compile Include="Mapping\PatientMap.cs" />
+    <Compile Include="Mapping\ReportMap.cs" />
+    <Compile Include="Mapping\VisitMap.cs" />
+    <Compile Include="Model\Address.cs" />
+    <Compile Include="Model\AnnotationModel.cs" />
+    <Compile Include="Model\ImageModel.cs" />
+    <Compile Include="Model\Patient.cs" />
+    <Compile Include="Model\ReportModel.cs" />
+    <Compile Include="Model\VisitModel.cs" />
+    <Compile Include="NewDbModel\AddressModel.cs" />
+    <Compile Include="NewDbModel\BaseModel.cs" />
+    <Compile Include="NewDbModel\Concept.cs" />
+    <Compile Include="NewDbModel\concept_class.cs" />
+    <Compile Include="NewDbModel\concept_complex.cs" />
+    <Compile Include="NewDbModel\concept_datatype.cs" />
+    <Compile Include="NewDbModel\concept_set.cs" />
+    <Compile Include="NewDbModel\eye_fundus_image.cs" />
+    <Compile Include="NewDbModel\eye_fundus_image_annotation.cs" />
+    <Compile Include="NewDbModel\global_property.cs" />
+    <Compile Include="NewDbModel\machine.cs" />
+    <Compile Include="NewDbModel\note.cs" />
+    <Compile Include="NewDbModel\obs.cs" />
+    <Compile Include="NewDbModel\ObservationAttribute.cs" />
+    <Compile Include="NewDbModel\ObservationAttributeType.cs" />
+    <Compile Include="NewDbModel\organization.cs" />
+    <Compile Include="NewDbModel\PatientDiagnosis.cs" />
+    <Compile Include="NewDbModel\patient_identifier.cs" />
+    <Compile Include="NewDbModel\patient_identifier_type.cs" />
+    <Compile Include="NewDbModel\Person.cs" />
+    <Compile Include="NewDbModel\NewPatient.cs" />
+    <Compile Include="NewDbModel\person_attribute.cs" />
+    <Compile Include="NewDbModel\person_attribute_type.cs" />
+    <Compile Include="NewDbModel\privilege.cs" />
+    <Compile Include="NewDbModel\report.cs" />
+    <Compile Include="NewDbModel\ReportType.cs" />
+    <Compile Include="NewDbModel\Role.cs" />
+    <Compile Include="NewDbModel\role_privilege.cs" />
+    <Compile Include="NewDbModel\role_role.cs" />
+    <Compile Include="NewDbModel\sync_outbox.cs" />
+    <Compile Include="NewDbModel\users.cs" />
+    <Compile Include="NewDbModel\user_property.cs" />
+    <Compile Include="NewDbModel\user_role.cs" />
+    <Compile Include="NewDbModel\visit.cs" />
+    <Compile Include="NewDbModel\voided.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\NHibernateHelper.cs" />
+    <Compile Include="Repository\NibernateHelper.cs" />
+    <Compile Include="Repository\OldRepositories.cs" />
+    <Compile Include="Repository\Repositories.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NewDbMapping\Concept.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\ConceptClass.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\ConceptDatatype.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\ConceptSet.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\EyeFundusImage.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\GlobalProperty.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Machine.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Note.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Obs.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Patient.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\PatientIdentifier.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\PatientIdentifierType.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Person.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\PersonAddress.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\PersonAttribute.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\PersonAttributeType.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Privilege.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Role.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\SyncOutboxRecord.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\User.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\Visit.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NewDbMapping\Report.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NewDbMapping\ReportType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NewDbMapping\NewAnnotation.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NewDbMapping\Organization.hbm.xml" />
+    <Content Include="Mapping\Annotation.hbm.xml" />
+    <Content Include="Mapping\Images.hbm.xml" />
+    <Content Include="Mapping\patient.hbm.xml" />
+    <Content Include="Mapping\Report.hbm.xml" />
+    <Content Include="Mapping\visits.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\patient_diagnosis.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="NewDbMapping\UserRole.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,184 @@
+<ReportTemplate><Orientation>PORTRAIT</Orientation><NoOfImg>4</NoOfImg><Layout>
+<ControlProperties >
+  <Name>TextBox10</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_TextBox</Type>
+  <X>90</X>
+  <Y>120</Y>
+  <Width>220</Width>
+  <Height>24</Height>
+  <Text>Comments</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$comment</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label8</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>191</X>
+  <Y>84</Y>
+  <Width>60</Width>
+  <Height>16</Height>
+  <Text>Gender:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label6</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>209</X>
+  <Y>59</Y>
+  <Width>37</Width>
+  <Height>16</Height>
+  <Text>Age:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label16</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>248</X>
+  <Y>59</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label16</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$age</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label17</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>249</X>
+  <Y>84</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label17</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$gender</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label4</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>13</X>
+  <Y>91</Y>
+  <Width>42</Width>
+  <Height>16</Height>
+  <Text>MRN:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label15</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>60</X>
+  <Y>91</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label15</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$mrn</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label11</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>6</X>
+  <Y>125</Y>
+  <Width>79</Width>
+  <Height>16</Height>
+  <Text>Comments:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label19</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>465</X>
+  <Y>63</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label19</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$date</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label18</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>424</X>
+  <Y>62</Y>
+  <Width>42</Width>
+  <Height>16</Height>
+  <Text>Date:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label14</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>60</X>
+  <Y>58</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label14</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$name</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label2</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>11</X>
+  <Y>55</Y>
+  <Width>48</Width>
+  <Height>16</Height>
+  <Text>Name:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label13</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>202</X>
+  <Y>6</Y>
+  <Width>171</Width>
+  <Height>25</Height>
+  <Text>IntuVision Labs,.</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>16</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>ImgBox20</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_ImageTable</Type>
+  <X>17</X>
+  <Y>174</Y>
+  <Width>524</Width>
+  <Height>516</Height>
+  <Text />
+  <ForeColor>ControlText</ForeColor>
+  <FontName>Microsoft Sans Serif</FontName>
+  <FontSize>8</FontSize>
+  <ImageName />
+  <BindingType />
+</ControlProperties></Layout></ReportTemplate>

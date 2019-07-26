@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="machine" table="machine">
+	<cache usage="read-write"/>
+	<id name="machineId" type="int" column="machine_id">
+		<generator class="native">
+			<param name="sequence">machine_machine_id_seq</param>
+		</generator>
+	</id>
+	<property name="uuid"  column="uuid" type="String" length="38" unique="true" />
+	<property name="name" column="name" type="String" not-null="true" length="50" />
+	<property name="description"  column="description" type="String" length="255" />
+	<property name="serialNumber" column="serial_number" type="String" length="50" />
+	<property name="modelNumber" column="model_number" type="String" length="50" />
+</class>
+</hibernate-mapping>

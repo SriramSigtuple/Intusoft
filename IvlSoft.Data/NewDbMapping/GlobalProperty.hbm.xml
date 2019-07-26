@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="global_property" table="global_property">
+	<!--<cache usage="read-write"/>-->
+	<id name="key" type="String" column="global_property_id" length="255">
+		<!--<generator class="assigned" />-->
+	</id>
+	<property name="value" type="String" column="value" not-null="false" length="65535" />
+	<property name="description" type="String" not-null="false" length="65535" />
+</class>	
+</hibernate-mapping>

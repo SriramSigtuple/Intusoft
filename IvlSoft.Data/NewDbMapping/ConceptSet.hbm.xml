@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+	<class name="concept_set" table="concept_set" batch-size="25">
+	<id name="conceptSetId" type="int" column="concept_set_id">
+		<generator class="native">
+			<param name="sequence">concept_set_concept_set_id_seq</param>
+		</generator>
+	</id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true"  />
+	<property name="sortWeight" type="double" column="sort_weight" length="22" not-null="true"/>
+
+	<!--<many-to-one name="concept" class="Concept" column="concept_id" not-null="true"	/>-->
+					
+	<!-- bi-directional many-to-one association to Concept -->
+	<!--<many-to-one name="concept_set" class="Concept" column="concept_set" not-null="true" />-->
+</class>
+</hibernate-mapping>

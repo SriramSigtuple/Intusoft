@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="note" table="note" batch-size="25">
+	<id name="noteId" type="int" column="note_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">note_note_id_seq</param>
+		</generator>
+	</id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" not-null="true" />
+	
+	<property name="text" type="String" column="text" not-null="true" length="512" />
+	<many-to-one name="patientId" class="Patient" column="patient_id" not-null="true" />
+	
+	<many-to-one name="creator" class="users" column="creator" not-null="true" />
+	<property name="createdDate" type="datetime" column="date_created" not-null="true" length="19" />
+	<many-to-one name="changedBy" class="users" column="changed_by" />
+	<property name="changedDate" type="datetime" column="date_changed" length="19" />
+	<property name="voided" type="Boolean" column="voided" not-null="false" length="1" />
+	<property name="voidedDate" type="datetime" column="date_voided" not-null="false" length="19" />
+	<many-to-one name="voidedBy" class="users" column="voided_by" not-null="false" />
+	<property name="voidedReason" type="String" column="void_reason" length="255" />
+</class>
+</hibernate-mapping>

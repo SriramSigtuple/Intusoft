@@ -1,0 +1,95 @@
+2017/05/10 19:58:20 ----
+2017/05/10 19:58:20 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 19:59:32 PDF file writer is closing
+2017/05/10 20:03:20 ----
+2017/05/10 20:03:20 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:03:22 PDF file writer is closing
+2017/05/10 20:13:39 ----
+2017/05/10 20:13:39 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:36:30 ----
+2017/05/10 20:36:30 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:36:55 PDF file writer is closing
+2017/05/10 20:38:40 ----
+2017/05/10 20:38:40 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:38:49 PDF file writer is closing
+2017/05/10 20:38:58 ----
+2017/05/10 20:38:58 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:39:40 PDF file writer is closing
+2017/05/10 20:42:43 ----
+2017/05/10 20:42:43 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:44:57 ----
+2017/05/10 20:44:57 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:47:02 ----
+2017/05/10 20:47:02 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:47:29 PDF file writer is closing
+2017/05/10 20:47:47 ----
+2017/05/10 20:47:47 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:47:56 PDF file writer is closing
+2017/05/10 20:48:07 ----
+2017/05/10 20:48:07 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/10 20:48:26 PDF file writer is closing
+2017/05/11 12:06:24 ----
+2017/05/11 12:06:24 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 12:13:19 ----
+2017/05/11 12:13:19 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 12:13:48 PDF file writer is closing
+2017/05/11 12:14:08 ----
+2017/05/11 12:14:08 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 12:14:10 The process cannot access the file 'C:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\Work\ArticleExample.pdf' because it is being used by another process.
+2017/05/11 12:14:10    at PdfFileWriter.PdfDocument.ConstructorHelper(Double Width, Double Height, Double ScaleFactor, String FileName, Stream OutputStream) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\PdfDocument.cs:line 698
+2017/05/11 12:14:10    at PdfFileWriter.PdfDocument..ctor(PaperType PaperType, Boolean Landscape, UnitOfMeasure UnitOfMeasure, String FileName) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\PdfDocument.cs:line 603
+2017/05/11 12:14:10    at TestPdfFileWriter.ArticleExample.Test(Boolean Debug, String FileName) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\ArticleExample.cs:line 62
+2017/05/11 12:14:10    at TestPdfFileWriter.TestPdfFileWriter.OnArticleExample(Object sender, EventArgs e) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\TestPdfFileWriter.cs:line 86
+2017/05/11 12:14:35 PDF file writer is closing
+2017/05/11 12:14:43 ----
+2017/05/11 12:14:43 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 12:15:13 ----
+2017/05/11 12:15:13 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 12:15:15 The process cannot access the file 'C:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\Work\ArticleExample.pdf' because it is being used by another process.
+2017/05/11 12:15:15    at PdfFileWriter.PdfDocument.ConstructorHelper(Double Width, Double Height, Double ScaleFactor, String FileName, Stream OutputStream) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\PdfDocument.cs:line 698
+2017/05/11 12:15:15    at PdfFileWriter.PdfDocument..ctor(PaperType PaperType, Boolean Landscape, UnitOfMeasure UnitOfMeasure, String FileName) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\PdfDocument.cs:line 603
+2017/05/11 12:15:15    at TestPdfFileWriter.ArticleExample.Test(Boolean Debug, String FileName) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\ArticleExample.cs:line 62
+2017/05/11 12:15:15    at TestPdfFileWriter.TestPdfFileWriter.OnArticleExample(Object sender, EventArgs e) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\TestPdfFileWriter.cs:line 86
+2017/05/11 12:15:32 PDF file writer is closing
+2017/05/11 15:58:50 ----
+2017/05/11 15:58:51 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 15:59:11 PDF file writer is closing
+2017/05/11 15:59:30 ----
+2017/05/11 15:59:30 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:00:07 ----
+2017/05/11 16:00:07 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:01:01 PDF file writer is closing
+2017/05/11 16:02:58 ----
+2017/05/11 16:02:58 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:03:56 ----
+2017/05/11 16:03:56 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:13:36 ----
+2017/05/11 16:13:36 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:13:38 PDF file writer is closing
+2017/05/11 16:13:52 ----
+2017/05/11 16:13:52 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:15:40 PDF file writer is closing
+2017/05/11 16:18:34 ----
+2017/05/11 16:18:34 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:18:40 Value of '0' is not valid for 'emSize'. 'emSize' should be greater than 0 and less than or equal to System.Single.MaxValue.
+Parameter name: emSize
+2017/05/11 16:18:40    at PdfFileWriter.PdfChart.CreateFont(String FontFamilyName, FontStyle FontStyle, Double FontSize, FontSizeUnit Unit) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\PdfChart.cs:line 247
+2017/05/11 16:18:40    at TestPdfFileWriter.ArticleExample.DrawChart() in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\ArticleExample.cs:line 445
+2017/05/11 16:18:40    at TestPdfFileWriter.ArticleExample.Test(Boolean Debug, String FileName) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\ArticleExample.cs:line 107
+2017/05/11 16:18:40    at TestPdfFileWriter.TestPdfFileWriter.OnArticleExample(Object sender, EventArgs e) in c:\Users\Sriram\Downloads\PdfFileWriter_src\PdfFileWriter\TestPdfFileWriter\TestPdfFileWriter.cs:line 86
+2017/05/11 16:18:44 PDF file writer is closing
+2017/05/11 16:19:05 ----
+2017/05/11 16:19:05 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:21:17 ----
+2017/05/11 16:21:17 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:22:22 ----
+2017/05/11 16:22:22 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:23:19 PDF file writer is closing
+2017/05/11 16:23:25 ----
+2017/05/11 16:23:25 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:23:58 ----
+2017/05/11 16:23:58 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:24:33 ----
+2017/05/11 16:24:33 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited
+2017/05/11 16:25:27 ----
+2017/05/11 16:25:27 PdfFileWriter-Revision 1.19.1 2016/07/27-© 2013-2016 Granotech Limited

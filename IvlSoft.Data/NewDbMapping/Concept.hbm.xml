@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="Concept" table="concept" batch-size="25">
+	<cache usage="read-write"/>
+	<id name="conceptId" type="int" column="concept_id" unsaved-value="undefined"></id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" />
+	<property name="shortName" type="String" column="short_name" not-null="false" length="255" />
+	<property name="fullySpecifiedName" type="String" column="fully_specified_name" not-null="false" length="255" />
+	<property name="description" type="String" length="65535" not-null="true"/>
+	<property name="set" type="Boolean" column="is_set" length="1" not-null="true" />
+
+	<!--<many-to-one name="datatype" class="concept_datatype" not-null="true" >
+		<column name="datatype_id" />
+	</many-to-one>-->
+
+	<!--<many-to-one name="conceptClass" class="concept_class" not-null="true">
+		<column name="class_id" />
+	</many-to-one>-->
+
+	<!-- This will need to be changed to  if we ever have a subobject that would need to store/load this 
+		 (Right now ConceptComplex, and ConceptDerived objects do not have child concepts (aka, are not sets) -->
+	<!--<set name="conceptSets" table="concept_set" lazy="true" cascade="all,delete-orphan" order-by="sort_weight asc" inverse="true" batch-size="25">
+		<key not-null="true"><column name="concept_set" /></key>
+		<one-to-many class="concept_set"/>
+	</set>-->
+	
+	<joined-subclass name="concept_complex" table="concept_complex" extends="Concept" >
+		<key column="concept_id" not-null="true" on-delete="cascade" />
+		<property name="handler" type="String" column="handler_name" length="255"/>
+	</joined-subclass>	
+</class>
+</hibernate-mapping>

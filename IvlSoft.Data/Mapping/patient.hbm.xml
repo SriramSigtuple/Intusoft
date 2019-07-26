@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.Model">
+
+  <class name="Patient" table="Patient">
+    <id name="ID">
+      <column name=" PatientID "/>
+      <generator class="native"/>
+    </id>
+    <property name="MRN" />
+    <property name="FirstName"/>
+    <property name="LastName"/>
+    <property name="Gender"/>
+    <property name="DOB"/>
+   
+    
+    <property name="Occupation"/>
+    <property name="Address"/>
+    <property name="City"/>
+    <property name="State"/>
+    <property name="Country"/>
+    <property name="Pincode"/>
+    <property name="Height"/>
+    <property name="Weight"/>
+    <property name="Landline"/>
+    <property name="Mobile"/>
+    <property name="BloodGroup"/>
+    <property name="ReferredBy"/>
+    <property name="Comments"/>
+    <property name="PatientPhoto"/>
+    <property name="HistoryAilments" column="HistoryOfAilments"/>
+    <property name="NoOfVisits"/>
+    <property name="HideShowRow" column="HideShow"/>
+    <property name="Income"/>
+    <property name="Email"/>
+    <property name="RegistrationDateTime"/>
+    <property name="Land_Code"/>
+
+  </class>
+
+</hibernate-mapping>

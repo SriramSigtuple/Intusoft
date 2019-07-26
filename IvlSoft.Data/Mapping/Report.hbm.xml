@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.Model">
+
+  <class name="Report" table="Report">
+    <id name="ID">
+      <column name=" ReportID " />
+      <generator class="native" />
+    </id>
+    <property name="NoOfImages"  not-null ="false" />
+    <property name="HideShowRow"  not-null ="false"/>
+    <property name="Comments"  not-null ="false" />
+    <property name="ReferredBy" not-null ="false" />
+    <property name="ReferredTo" not-null ="false"  />
+    <property name="DeviceOperator"  not-null ="false" />
+    <property name="Email"  not-null ="false" />
+    <property name="ReportDateTime" column ="Report_date"  not-null ="false" />
+    <property name="ReportBy"  not-null ="false" />
+    <property name="ReportXML"  not-null ="false" />
+    <property name="VisitID" column ="Report_VisitID"   not-null ="false" />
+    <property name="PatID" column="Report_PatID"    not-null ="false" />
+
+    <!--<many-to-one name="VisitID" fetch="select"   not-null ="false" />
+    <many-to-one name="ImageID" fetch="select"   not-null ="false" />-->
+    
+  </class>
+
+</hibernate-mapping>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="patient_identifier" table="patient_identifier">
+	<id name="patientIdentifierId" type="int" column="patient_identifier_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">patient_identifier_patient_identifier_id_seq</param>
+		</generator>
+	</id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" />
+	
+	<many-to-one name="patient" column="patient_id" class="Patient"/>
+	<property name="value" column="value" type="String" length="50"/>
+	<many-to-one name="type" lazy="no-proxy" class="patient_identifier_type" column="identifier_type_id"/>
+  <!--<many-to-one name="identifier_type" class="patient_identifier_type" column="identifier_type"/>-->
+
+  <property name="preferred" column="preferred" type="boolean" not-null="true" />
+
+	<!--<many-to-one name="creator" class="users" column="creator" not-null="true"/>-->
+  <many-to-one name="createdBy" lazy="no-proxy" class="users" column="created_by" not-null="true"/>
+
+  <property name="createdDate" type="datetime" column="created_date" not-null="true" />
+	
+	<many-to-one name="voidedBy" lazy="no-proxy" class="users" column="voided_by" />
+  <!--<many-to-one name="voided_by" class="users" column="voided_by" />-->
+
+  <property name="voidedDate" type="datetime" column="voided_date"/>
+	<property name="voided" type="boolean" not-null="true" />
+	<property name="voidedReason" type="String" column="voided_reason" length="255"/>
+	
+	<!--<many-to-one name="changed_by" class="users" column="changed_by" />-->
+  <many-to-one name="lastModifiedBy" lazy="no-proxy" class="users" column="last_modified_by" />
+
+  <property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+</class>
+</hibernate-mapping>

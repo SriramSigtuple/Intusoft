@@ -1,0 +1,348 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
+using System.IO;
+using Common;
+using ReportUtils;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+
+namespace IVLReport
+{
+   public static class UploadImages
+    {
+       private static readonly Logger Exception_Log = LogManager.GetLogger("ExceptionLog");
+
+       public static void UploadImagesDetails(List<KeyValuePair<string,string>> Details)
+       {
+
+          Upload(Details);
+       }
+      static  string token = "";
+     static JToken result;
+        public  static  void Upload(List<KeyValuePair<string,string>>Details)
+        {
+            System.Uri myUri = new System.Uri("https://netraservice.azurewebsites.net/login");
+            //HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(myUri);
+            //webRequest.Method = "POST";
+            //webRequest.ContentType = "application/x-www-form-urlencoded";
+            //webRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), webRequest);
+            GetToken();
+            System.Threading.Thread.Sleep(5000);
+            int count = 0;
+            DataModel _dataModel = DataModel.GetInstance();
+            foreach (JProperty release in result )
+            {
+                if (count == 1)
+                    token = release.Value.ToString();
+                count++;
+            }
+            for (int i = 0; i < _dataModel.CurrentImgFiles.Length; i++)
+            {
+                ImageData imageDataArr = new ImageData();
+                FileInfo finf = new FileInfo(_dataModel.CurrentImgFiles[i]);
+                imageDataArr.baseName = finf.Name;
+                //imageDataArr[0].imgData = "data:image/jpeg;base64," + ConvertImageURLToBase64(finf.FullName);
+                imageDataArr.imgData = ConvertImageURLToBase64(finf.FullName);
+                string ImgKey = string.Empty;
+                string ImgNameKey = string.Empty;
+                if (_dataModel.CurrentImageNames[i].Contains("OS"))
+                {
+                    ImgKey = "imgLeftData";
+                    ImgNameKey = "imgLeftName";
+                }
+                else
+                {
+                    ImgKey = "imgRightData";
+                    ImgNameKey = "imgRightName";
+                }
+                Details.Add(new KeyValuePair<string, string>(ImgKey, imageDataArr.imgData));
+                Details.Add(new KeyValuePair<string, string>(ImgNameKey, finf.Name));
+                //string imgDataStr = JsonConvert.SerializeObject( imageDataArr);
+
+            }
+            //string base64URL = ConvertImageURLToBase64("");
+            ////base64URL = "data:image/jpeg;base64," + base64URL;
+            //  Console.WriteLine(base64URL);
+              SendImage(token, "",Details);   
+        }
+        public static async void GetToken()
+        {
+            List<KeyValuePair<string, string>> values = new List<KeyValuePair<string, string>>();
+            values.Add(new KeyValuePair<string, string>("username", "netraimage"));
+            values.Add(new KeyValuePair<string, string>("password", "31jC4Smj"));
+            values.Add(new KeyValuePair<string, string>("apiRequestType", "Hospital"));
+
+            result = await PostFormUrlEncoded("https://netraservice.azurewebsites.net/login", values);
+
+           
+            Console.WriteLine(result);
+        }
+        public static  void SendImage(string token, string base64Str ,List<KeyValuePair<string,string>> Details)
+        {
+            Details.Add(new KeyValuePair<string, string>("token", token));
+            uploadImage(Details);
+            
+        }
+        public static async Task<JToken> PostFormUrlEncoded(string url, IEnumerable<KeyValuePair<string, string>> postData)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var content = new FormUrlEncodedContent(postData))
+                {
+                    //content.Headers.Clear();
+                    //content.Headers.Add("Content-Type", "multipart/form-data");
+                    //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://netraservice.azurewebsites.net/login");
+                    //HttpResponseMessage response = await httpClient.SendAsync(request);
+                    HttpResponseMessage response;
+                    string resultResponse = string.Empty;
+                    try
+                    {
+                        response = await httpClient.PostAsync("https://netraservice.azurewebsites.net/login", content);
+                        System.Threading.Thread.Sleep(5500);
+                        resultResponse = await response.Content.ReadAsStringAsync();
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        Common.ExceptionLogWriter.WriteLog(ex, Exception_Log);
+                        
+                    }
+                    return (JToken)JsonConvert.DeserializeObject(resultResponse);
+                    
+                }
+
+            }
+        }
+        static void uploadImage(List<KeyValuePair<string,string>> uploadValues)
+        {
+            //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.netra.ai/v1/doAnalysis");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.netra.ai/v1/doPatientAnalysis");
+               httpWebRequest.ContentType = "application/json";
+               httpWebRequest.Method = "POST";
+              // string requestBody = string.Format("{{\"token\":\"{0}\",\"image\":\"{1}\",\"imageName\":\"{2}\"}}", token, base64, "DIAB_RETINA");
+               string requestBody = "{"; 
+           
+            for (int i = 0; i < uploadValues.Count; i++)
+               {
+                   string iterValue2UploadStr = "\"" + uploadValues[i].Key + "\""+":" + "\"" + uploadValues[i].Value + "\"";
+                   if (i < uploadValues.Count - 1)
+                       iterValue2UploadStr += ",";
+                   requestBody += iterValue2UploadStr;
+               }
+            requestBody += "}";
+         string firstName= uploadValues[uploadValues.FindIndex(x=>x.Key == "firstName")].Value;
+         string lastName = uploadValues[uploadValues.FindIndex(x => x.Key == "lastName")].Value;
+         string dob = uploadValues[uploadValues.FindIndex(x => x.Key == "dob")].Value;
+         string gender = uploadValues[uploadValues.FindIndex(x => x.Key == "gender")].Value;
+         string patientID = uploadValues[uploadValues.FindIndex(x => x.Key == "patientID")].Value;
+
+         //ImageData leftData = new ImageData();
+         //leftData.baseName = "leftImage.jpg";
+         string leftData = uploadValues[uploadValues.FindIndex(x => x.Key == "imgLeftData")].Value;
+         string rightData = uploadValues[uploadValues.FindIndex(x => x.Key == "imgRightData")].Value;
+         string imgRightName = uploadValues[uploadValues.FindIndex(x => x.Key == "imgRightName")].Value;
+         string imgLeftName = uploadValues[uploadValues.FindIndex(x => x.Key == "imgLeftName")].Value;
+         //string imgLeftData = JsonConvert.SerializeObject(leftData);
+
+         //ImageData[] imgLeftDataArray = new ImageData[1];
+         //imgLeftDataArray[0] = leftData;
+         //string imgLeftData = JsonConvert.SerializeObject(imgLeftDataArray);
+
+         //ImageData rightData = new ImageData();
+         //rightData.baseName = "rightImage.jpg";
+         //rightData.imgData = uploadValues[uploadValues.FindIndex(x => x.Key == "imgRightData")].Value;
+
+         //ImageData[] imgRightDataArray = new ImageData[1];
+         //imgRightDataArray[0] = rightData;
+         //string imgRightData = JsonConvert.SerializeObject(imgRightDataArray);
+         //string imgRightData = JsonConvert.SerializeObject(rightData);
+         string emailID = uploadValues[uploadValues.FindIndex(x => x.Key == "emailID")].Value;
+         string phoneCode = uploadValues[uploadValues.FindIndex(x => x.Key == "phoneCode")].Value;
+         string phoneNumber = uploadValues[uploadValues.FindIndex(x => x.Key == "phoneNumber")].Value;
+            
+            
+            //string requestBody1 = string.Format("{{\"token\":\"{0}\",\"firstName\":\"{1}\",\"lastName\":\"{2}\",\"dob\":\"{3}\",\"gender\":\"{4}\",\"patientID\":\"{5}\",\"imgLeftData\":\"{6}\",\"imgRightData\":\"{7}\",\"emailID\":\"{8}\",\"phoneCode\":\"{9}\",\"phoneNumber\":\"{10}\"}}", 
+            //    token,firstName,lastName,dob,gender,patientID,imgLeftData,imgRightData,emailID,phoneCode,phoneNumber);// base64, "DIAB_RETINA");
+         string requestBody1 = "{\"token\":\"" + token + "\", \"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\", \"dob\":\"" + dob + "\", \"gender\":\"" + gender + "\", \"patientID\":\"" + patientID + "\", \"emailID\":\"" + emailID + "\", \"phoneCode\":\"" + phoneCode + "\", \"phoneNumber\":\"" + phoneNumber + "\", \"imgLeftData\": \"data:image/jpeg;base64," + leftData + "\", \"imgLeftName\":\""+imgLeftName+"\", \"imgRightData\": \"data:image/jpeg;base64," + rightData + "\", \"imgRightName\":\""+imgRightName+"\"}";
+         //string requestBody1 = "{\"token\":\"" + token + "\", \"firstName\":\"" + firstName + "\", \"lastName\":\"" + lastName + "\", \"dob\":\"" + dob + "\", \"gender\":\"" + gender + "\", \"patientID\":\"" + patientID + "\", \"emailID\":\"" + emailID + "\", \"phoneCode\":\"" + phoneCode + "\", \"phoneNumber\":\"" + phoneNumber + "\", \"imgLeftData\":\"" + imgLeftData + "\", \"imgRightData\":\"" + imgRightData + "\"}";
+               using (var streamWriter = (new StreamWriter( httpWebRequest.GetRequestStream())))
+               {
+                   streamWriter.Write(requestBody1);
+                   streamWriter.Flush();
+                   streamWriter.Close();
+               }
+
+               var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+               using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+               {
+                   var result = streamReader.ReadToEnd();
+
+                   if (result.Contains("200"))
+                       CustomMessageBox.Show("Files Uploaded to cloud successfully", "Uploading to Cloud", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);//.GetValue("name"));
+               }
+
+        }
+        static void GetRequestStreamCallback(IAsyncResult callbackResult)
+        {
+            HttpWebRequest webRequest = (HttpWebRequest)callbackResult.AsyncState;
+            Stream postStream = webRequest.EndGetRequestStream(callbackResult);
+            string requestBody = string.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"apiRequestType\":\"{2}\"}}", "anil@intuvisionlabs.com", "Gt#8$DkMy","DIAB_RETINA");
+            byte[] byteArray = Encoding.UTF8.GetBytes(requestBody);
+            postStream.Write(byteArray, 0, byteArray.Length);
+            postStream.Close();
+
+            webRequest.BeginGetResponse(new AsyncCallback(GetResponseStreamCallback), webRequest);
+        }
+
+        static   void GetResponseStreamCallback(IAsyncResult callbackResult)
+        {
+            HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
+            HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
+            using (StreamReader httpWebStreamReader = new StreamReader(response.GetResponseStream()))
+            {
+                string result = httpWebStreamReader.ReadToEnd();
+                Console.WriteLine(result);
+            }
+        }
+
+
+
+
+        //public static void Main()
+        //{
+
+        //    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://api.netra.ai/v1/getToken");
+        //    //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://reqres.in/api/users");
+        //    httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+        //    httpWebRequest.Method = "POST";
+        //    //System.Collections.Generic.Dictionary<String, string> values = new System.Collections.Generic.Dictionary<string, string>();
+
+        //        //HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(myUri);
+        //        //webRequest.Method = "POST";
+        //        //webRequest.ContentType = "application/x-www-form-urlencoded";
+        //        //webRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), webRequest);
+
+        //    //values.Add("username", "anil@intuvisionlabs.com");
+        //    //values.Add("password", "Gt#8$DkMy");
+        //    //values.Add("apiRequestType", "DIAB_RETINA");
+        //    //using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        //    string json = string.Empty;
+        //    using (var streamWriter = (httpWebRequest.GetRequestStream()))
+        //    {
+
+        //         json = string.Format("{{\"username\":\"{0}\",\"password\":\"{1}\",\"apiRequestType\":\"{2}\"}}", "anil@intuvisionlabs.com", "Gt#8$DkMy", "DIAB_RETINA");
+        //        //string json = "{{\"username\":\"anil@intuvisionlabs.com\"," +
+        //        //              "\"password\":\"Gt#8$DkMy\"," + "\"apiRequestType\":\"DIAB_RETINA\"}}";
+        //        byte[] byteArray = Encoding.UTF8.GetBytes(json);
+
+        //        streamWriter.Write(byteArray, 0, byteArray.Length);
+        //        streamWriter.Flush();
+
+        //        streamWriter.Close();
+
+        //        //streamWriter.Write(json);
+        //        //streamWriter.Flush();
+        //        //streamWriter.Close();
+        //    }
+
+        //    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+        //    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        //    {
+        //        var result = streamReader.ReadToEnd();
+
+        //        Console.WriteLine("Hello {0}", result);
+        //    }
+
+        //    //string urlForBase64 = "http://www.gravatar.com/avatar/6810d91caff032b202c50701dd3af745?d=identicon&r=PG";
+
+        //    //Program P = new Program();
+
+        //    //string base64String = P.ConvertImageURLToBase64(urlForBase64);
+
+        //    //Console.WriteLine("Hello {0}", base64String);
+
+        //}
+
+       
+
+        ////void GetRequestStreamCallback(IAsyncResult callbackResult)
+        ////{
+        ////    HttpWebRequest webRequest = (HttpWebRequest)callbackResult.AsyncState;
+        ////    Stream postStream = webRequest.EndGetRequestStream(callbackResult);
+
+        ////    string requestBody = string.Format("{{\"username\":\"{0}\",\"password\":\"{1}\"}}", usernameBox.Text, passBox.Text);
+        ////    byte[] byteArray = Encoding.UTF8.GetBytes(requestBody);
+           
+        ////    postStream.Write(byteArray, 0, byteArray.Length);
+        ////    postStream.Close();
+
+        ////    webRequest.BeginGetResponse(new AsyncCallback(GetResponseStreamCallback), webRequest);
+        ////}
+
+        ////void GetResponseStreamCallback(IAsyncResult callbackResult)
+        ////{
+        ////    HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
+        ////    HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
+        ////    using (StreamReader httpWebStreamReader = new StreamReader(response.GetResponseStream()))
+        ////    {
+        ////        string result = httpWebStreamReader.ReadToEnd();
+        ////        Debug.WriteLine(result);
+        ////    }
+        ////}
+
+     public static String ConvertImageURLToBase64(String url)
+     {
+         StringBuilder _sb = new StringBuilder();
+
+         Byte[] _byte = GetImage(url);
+
+         _sb.Append(Convert.ToBase64String(_byte, 0, _byte.Length));
+
+         return _sb.ToString();
+     }
+
+     private static byte[] GetImage(string url)
+     {
+         Stream stream = null;
+         byte[] buf;
+
+         try
+         {
+             //WebProxy myProxy = new WebProxy();
+             //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+             //HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+             buf = File.ReadAllBytes(@url);
+             //bm.Save(stream,ImageFormat.Jpeg);
+
+             //using (BinaryReader br = new BinaryReader(stream))
+             //{
+             //    int len = (int)(response.ContentLength);
+             //    buf = br.ReadBytes(len);
+             //    br.Close();
+             //}
+
+             //stream.Close();
+             //response.Close();
+         }
+         catch (Exception exp)
+         {
+             buf = null;
+         }
+
+         return (buf);
+     }
+	
+
+    } 
+   
+   
+   }
+

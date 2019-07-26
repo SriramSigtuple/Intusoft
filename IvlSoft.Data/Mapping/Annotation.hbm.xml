@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.Model">
+
+  <class name="AnnotationModel" table="Annotation">
+    <id name="ID">
+      <column name=" AnnotationID " />
+      <generator class="native" />
+    </id>
+    <property name="TypeOfAnnotation"  not-null ="false" />
+    <property name="HideShowRow"  not-null ="false"/>
+    <property name="CentreX"  not-null ="false" />
+    <property name="CentreY"  not-null ="false" />
+    <property name="Width" not-null ="false" />
+    <property name="Height" not-null ="false"  />
+    <property name="Comments" not-null ="false" />
+    <property name="AnnotationBy" column="Annotation By"  />
+    <property name="ImageID" column ="Annote_ImageID"   not-null ="false" />
+  </class>
+
+</hibernate-mapping>

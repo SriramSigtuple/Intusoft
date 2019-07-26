@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{3DE3745A-657A-4E8F-A2D7-E845D3EC8F97}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Common</RootNamespace>
+    <AssemblyName>Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="INTUSOFT.EventHandler">
+      <HintPath>..\EventHandler\bin\$(Configuration)\INTUSOFT.EventHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\library\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdobeInsalledValidator.cs" />
+    <Compile Include="CommonMethods.cs" />
+    <Compile Include="CustomCopyAndReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomCopyAndReplace.Designer.cs">
+      <DependentUpon>CustomCopyAndReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomFolderBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomFolderBrowser.Designer.cs">
+      <DependentUpon>CustomFolderBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionLog.cs" />
+    <Compile Include="ExceptionLogWriting.cs" />
+    <Compile Include="LogClass.cs" />
+    <Compile Include="ValidatorDatas\EmailData.cs" />
+    <Compile Include="LoadSaveImage.cs" />
+    <Compile Include="ValidatorDatas\ObservationData.cs" />
+    <Compile Include="PatientDetailsForCommandLineArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PatientDetailsJson.cs" />
+    <Compile Include="ValidatorDatas\EmailValidatorData.cs" />
+    <Compile Include="Validators\EmailValidator.cs" />
+    <Compile Include="Validators\FileNameFolderPathValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomCopyAndReplace.resx">
+      <DependentUpon>CustomCopyAndReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomFolderBrowser.resx">
+      <DependentUpon>CustomFolderBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

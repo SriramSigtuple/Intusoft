@@ -1,0 +1,14 @@
+<ReportTemplate><Orientation>LANDSCAPE</Orientation><NoOfImg>1</NoOfImg><Layout>
+<ControlProperties >
+  <Name>Label0</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>6</X>
+  <Y>361</Y>
+  <Width>51</Width>
+  <Height>16</Height>
+  <Text>Label0</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties></Layout></ReportTemplate>

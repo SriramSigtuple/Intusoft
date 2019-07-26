@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<joined-subclass name="INTUSOFT.Data.NewDbModel.Patient" table="patient" extends="Person">
+	<key column="patient_id" not-null="true" on-delete="cascade" />
+	<property name="historyAilments" type="String" column="history_ailments" length="3000" />
+	<many-to-one name="referredBy" class="Person" column="referred_by" />
+
+
+  <!--<many-to-one name="creator" lazy="no-proxy" class="users" />-->
+  <many-to-one name="patientCreatedBy" column="created_by" class="users" fetch="join"/>
+	<property name="patientCreatedDate" type="datetime" column="created_date" not-null="true" length="19" />
+  <!--<many-to-one name="changed_by" lazy="no-proxy" class="users" column="changed_by" />-->
+  <many-to-one name="patientLastModifiedBy" fetch="join" class="users" column="last_modified_by" />
+	<property name="patientLastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+	<property name="voided" type="boolean" not-null="true" />
+  <many-to-one name="patientVoidedBy" fetch="join" class="users" column="voided_by" />
+  <!--<many-to-one name="voided_by" lazy="no-proxy" class="users" column="voided_by" />-->
+	<property name="patientVoidedDate" type="datetime" column="voided_date" length="19" />
+	<property name="patientVoidedReason" type="String" column="voided_reason" length="255" />
+  <many-to-one name="patientLastSentBy" class="users" column="last_sent_by" />
+  <property name="patientLastSentDate" type="datetime" column="last_sent_date" length="19" />
+
+	 <!--Associations  
+	 bi-directional one-to-many association to PatientIdentifier 
+	 list is unsorted due so that its put into a LinkedHashSet which uses .hashcode() instead of .compareTo()--> 
+	<set name="identifiers"  cascade="save-update" table="patient_identifier" inverse="true" sort="natural">
+		<key not-null="true" column="patient_id" />
+		<one-to-many class="patient_identifier" />
+	</set>
+  <set name="diagnosis"  cascade="save-update" table="patient_diagnosis" inverse="true" sort="natural">
+    <key not-null="true" column="patient_id" />
+    <one-to-many class="PatientDiagnosis" />
+  </set>
+  <set name="visits"  cascade="save-update" table="visit" inverse="true" sort="natural">
+    <key not-null="true" column="patient_id" />
+    <one-to-many class="visit" />
+  </set>
+  <set name="observations"  cascade="save-update" table="eye_fundus_image" inverse="true" sort="natural">
+    <key not-null="true" column="patient_id" />
+    <one-to-many class="eye_fundus_image" />
+  </set>
+</joined-subclass>
+</hibernate-mapping>

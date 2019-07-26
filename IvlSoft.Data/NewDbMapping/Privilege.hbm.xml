@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="privilege" table="privilege">
+	<id name="privilegeId" type="String" column="privilege_id" length="250">
+		<generator class="assigned" />
+	</id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" />
+	<property name="description" type="String" column="description" length="250" />
+</class>
+</hibernate-mapping>

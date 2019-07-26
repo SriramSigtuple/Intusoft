@@ -1,0 +1,236 @@
+<ReportTemplate><Orientation>PORTRAIT</Orientation><NoOfImg>1</NoOfImg><Layout>
+<ControlProperties >
+  <Name>Label25</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>361</X>
+  <Y>700</Y>
+  <Width>86</Width>
+  <Height>16</Height>
+  <Text>Powered by:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label24</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>94</X>
+  <Y>682</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label24</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$disclaimer</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label23</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>9</X>
+  <Y>680</Y>
+  <Width>77</Width>
+  <Height>16</Height>
+  <Text>Disclaimer:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label14</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>60</X>
+  <Y>58</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label14</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$name</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>TextBox10</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_TextBox</Type>
+  <X>90</X>
+  <Y>155</Y>
+  <Width>212</Width>
+  <Height>36</Height>
+  <Text>Comments</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$comment</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label13</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>202</X>
+  <Y>6</Y>
+  <Width>171</Width>
+  <Height>25</Height>
+  <Text>IntuVision Labs,.</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>16</FontSize>
+  <BindingType>$hospital</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label22</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>405</X>
+  <Y>99</Y>
+  <Width>69</Width>
+  <Height>16</Height>
+  <Text>Operator:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label19</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>465</X>
+  <Y>61</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label19</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$date</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label18</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>424</X>
+  <Y>61</Y>
+  <Width>42</Width>
+  <Height>16</Height>
+  <Text>Date:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label4</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>15</X>
+  <Y>99</Y>
+  <Width>42</Width>
+  <Height>16</Height>
+  <Text>MRN:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label15</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>60</X>
+  <Y>99</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label15</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$mrn</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label17</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>250</X>
+  <Y>95</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label17</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$gender</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label8</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>191</X>
+  <Y>95</Y>
+  <Width>60</Width>
+  <Height>16</Height>
+  <Text>Gender:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label11</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>6</X>
+  <Y>162</Y>
+  <Width>79</Width>
+  <Height>16</Height>
+  <Text>Comments:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label6</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>209</X>
+  <Y>59</Y>
+  <Width>37</Width>
+  <Height>16</Height>
+  <Text>Age:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label16</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>248</X>
+  <Y>59</Y>
+  <Width>59</Width>
+  <Height>16</Height>
+  <Text>Label16</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType>$age</BindingType>
+</ControlProperties>
+<ControlProperties >
+  <Name>Label2</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>11</X>
+  <Y>55</Y>
+  <Width>48</Width>
+  <Height>16</Height>
+  <Text>Name:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>ImgBox26</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_ImageTable</Type>
+  <X>10</X>
+  <Y>208</Y>
+  <Width>544</Width>
+  <Height>452</Height>
+  <Text />
+  <ForeColor>ControlText</ForeColor>
+  <FontName>Microsoft Sans Serif</FontName>
+  <FontSize>8</FontSize>
+  <ImageName />
+  <BindingType />
+</ControlProperties></Layout></ReportTemplate>

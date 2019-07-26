@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7ED8DDE9-D8B0-42D8-A00C-049477ACD4A5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EEPROM</RootNamespace>
+    <AssemblyName>EEPROM</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config_UC.designer.cs">
+      <DependentUpon>Config_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EEPROM_Data_Types.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EEPROM_Props.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\CameraSettings\CameraSettings.cs" />
+    <Compile Include="Settings\CameraSettings\ImageSizeSettings.cs" />
+    <Compile Include="Settings\CurrentSettings\CurrentVoltageSettings.cs" />
+    <Compile Include="Settings\CurrentSettings\FirmwareSettings.cs" />
+    <Compile Include="Settings\CurrentSettings\MotorSettings.cs" />
+    <Compile Include="Settings\DeviceDetailsSettings.cs" />
+    <Compile Include="Settings\EEPROMSettings.cs" />
+    <Compile Include="Settings\Features.cs" />
+    <Compile Include="Settings\InstallationDetailsSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\BrightnessContrastSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\ClaheSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\ColorCorrectionSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\HotSpotCorrectionSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\ImageShiftSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\LUTSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\MaskSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\PostProcessingSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\UnsharpSettings.cs" />
+    <Compile Include="Settings\PostProcessingSettings\VignattingSettings.cs" />
+    <Compile Include="Settings_UCL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Settings_UCL.Designer.cs">
+      <DependentUpon>Settings_UCL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Variables.cs" />
+    <Compile Include="XmlLeaf_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="XmlLeaf_UC.designer.cs">
+      <DependentUpon>XmlLeaf_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XmlReadWrite.cs" />
+    <EmbeddedResource Include="Config_UC.resx">
+      <DependentUpon>Config_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Settings_UCL.resx">
+      <DependentUpon>Settings_UCL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XmlLeaf_UC.resx">
+      <DependentUpon>XmlLeaf_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

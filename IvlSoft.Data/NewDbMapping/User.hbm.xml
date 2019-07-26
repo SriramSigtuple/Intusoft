@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="users" table="users">
+	<cache usage="read-write"/>
+	<id name="userId" type="Int32" column="user_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">users_user_id_seq</param>
+		</generator>
+	</id>
+	<property name="uuid" type="String" column="uuid" length="38" unique="true" />
+  <property name="username" type="String" column="username" unique="true" />
+  <property name="password" type="String" column="password" />
+  <many-to-one name="person" class="Person" column="person_id" not-null="true"  cascade="save-update" />
+	<property name="systemId" type="String" not-null="true" column="system_id" length="50"/>
+  <many-to-one name="createdBy" fetch="join" column="created_by"  class="users" not-null="false"/>
+  <property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />
+  <many-to-one name="lastModifiedBy" fetch="join" class="users" column="last_modified_by"/>
+  <property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+  <property name="voided" type="boolean" column="retired" length="1" not-null="true" />
+  <many-to-one name="retiredBy" fetch="join" class="users" column="retired_by" />
+  <property name="retiredDate" type="datetime" column="retired_date" length="19" />
+  <property name="retiredReason" type="String" column="retired_reason" length="255" />
+  <!--<many-to-one name="createdBy" class="users"  column="created_by" not-null="true"/>
+  <property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />--><!--
+  <many-to-one name="lastModifiedBy" class="users" column="last_modified_by"/>
+  <property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+  <property name="retired" type="boolean" column="retired" length="1" not-null="true" />
+  <many-to-one name="retiredBy" class="users" column="retired_by" />
+  <property name="retiredDate" type="datetime" column="retired_date" length="19" />
+  <property name="retiredReason" type="String" column="retired_reason" length="300" />-->
+	<!-- Associations -->
+	<!-- bi-directional many-to-many association to Role -->
+    <set name="roles" table="user_role"  cascade="save-update,merge,evict">
+		<key>
+      <column name="user_id"/>
+    </key>
+		<many-to-many class="Role">
+      <column name="role_id"/>
+    </many-to-many>
+	</set>
+
+	<!--<map name="userProperties" table="user_property" lazy="true" cascade="save-update,merge,evict">
+		<key column="user_id" not-null="true"/>
+		<map-key column="property" type="String" length="100"/>
+		<element column="property_value" type="String" length="255"/>
+	</map>-->
+</class>
+</hibernate-mapping>

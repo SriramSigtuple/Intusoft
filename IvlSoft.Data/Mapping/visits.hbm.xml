@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.Model">
+
+  <class name="VisitModel" table="Visit">
+    <id name="ID">
+      <column name=" VisitID " />
+      <generator class="native" />
+    </id>
+    <property name="VisitDateTime" column="VisitDateTime" not-null ="false"  />
+    <property name="NoOfImages" not-null ="false" />
+    <property name="NoOfReports" not-null ="false"  />
+    <property name="Comments" not-null ="false"  />
+    <property name="RSph"  not-null ="false" />
+    <property name="RCyl" not-null ="false"  />
+    <property name="RAxis" not-null ="false"  />
+    <property name="LSph" not-null ="false"  />
+    <property name="LCyl" not-null ="false" />
+    <property name="LAxis" not-null ="false" />
+    <property name="SBp" not-null ="false" />
+    <property name="DBp"  not-null ="false" />
+    <property name="BloodSugar" not-null ="false" />
+    <property name="ReferredBy" not-null ="false"/>
+    <property name="ReferredTo" not-null ="false"/>
+    <property name="DeviceOperator"  not-null ="false"/>
+    <property name="HideShowRow" column="HideShow" not-null ="false"/>
+    <property name="PatientID" column="Visit_PatID"  not-null ="false"/>
+
+    <!--<many-to-one name="EmrID" fetch="select"  not-null ="false"/>-->
+  </class>
+
+</hibernate-mapping>

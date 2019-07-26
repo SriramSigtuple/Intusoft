@@ -1,0 +1,146 @@
+<ReportTemplate><Orientation>LANDSCAPE</Orientation><NoOfImg>1</NoOfImg><Layout>
+<ControlProperties >
+  <Name>Label10</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>752</X>
+  <Y>701</Y>
+  <Width>86</Width>
+  <Height>16</Height>
+  <Text>Powered by:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label8</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>6</X>
+  <Y>697</Y>
+  <Width>77</Width>
+  <Height>16</Height>
+  <Text>Disclaimer:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label3</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>8</X>
+  <Y>119</Y>
+  <Width>137</Width>
+  <Height>16</Height>
+  <Text>Comments: Cataract</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label5</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>11</X>
+  <Y>76</Y>
+  <Width>132</Width>
+  <Height>16</Height>
+  <Text>Age/Gender: 30 / M</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label1</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>11</X>
+  <Y>46</Y>
+  <Width>48</Width>
+  <Height>16</Height>
+  <Text>Name:</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label2</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>60</X>
+  <Y>47</Y>
+  <Width>49</Width>
+  <Height>16</Height>
+  <Text>Sriram</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label4</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>326</X>
+  <Y>11</Y>
+  <Width>278</Width>
+  <Height>25</Height>
+  <Text>Agarwal Hospital,Bangalore</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>16</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label6</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>709</X>
+  <Y>58</Y>
+  <Width>122</Width>
+  <Height>16</Height>
+  <Text>Date:14-Jan-2015</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Label7</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Label</Type>
+  <X>714</X>
+  <Y>94</Y>
+  <Width>95</Width>
+  <Height>16</Height>
+  <Text>Operator: Anil</Text>
+  <ForeColor>Black</ForeColor>
+  <FontName>Arial</FontName>
+  <FontSize>10</FontSize>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>Bitmap11</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_Bitmap</Type>
+  <X>840</X>
+  <Y>11</Y>
+  <Width>92</Width>
+  <Height>40</Height>
+  <Text />
+  <ForeColor>ControlText</ForeColor>
+  <FontName>Microsoft Sans Serif</FontName>
+  <FontSize>8</FontSize>
+  <ImageName>logo.png</ImageName>
+  <BindingType />
+</ControlProperties>
+<ControlProperties >
+  <Name>ImgBox11</Name>
+  <Type>IVLTemplateCreator.IVLControls.IVL_ImageTable</Type>
+  <X>14</X>
+  <Y>161</Y>
+  <Width>836</Width>
+  <Height>500</Height>
+  <Text />
+  <ForeColor>ControlText</ForeColor>
+  <FontName>Microsoft Sans Serif</FontName>
+  <FontSize>8</FontSize>
+  <ImageName />
+  <BindingType />
+</ControlProperties></Layout></ReportTemplate>

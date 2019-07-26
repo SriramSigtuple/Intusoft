@@ -1,0 +1,896 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0450FA60-C08F-4163-B953-80426F3576A0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>INTUSOFT.Desktop</RootNamespace>
+    <AssemblyName>IntuSoft</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;x64</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;x64</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ImageResources\LogoImageResources\IntuSoft.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Annotation">
+      <HintPath>..\Annotation\bin\$(Platform)\$(Configuration)\Annotation.dll</HintPath>
+    </Reference>
+    <Reference Include="BCrypt.Net, Version=0.1.5073.29922, Culture=neutral, PublicKeyToken=6bcd409ee6bc9292, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\BCrypt.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandLine">
+      <HintPath>..\library\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common\bin\$(Configuration)\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="EEPROM, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EEPROM\bin\$(Configuration)\EEPROM.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI">
+      <HintPath>..\library\Emgu.CV.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI.GL">
+      <HintPath>..\library\Emgu.CV.UI.GL.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.UI.resources">
+      <HintPath>..\library\Emgu.CV.UI.resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV.World">
+      <HintPath>..\library\Emgu.CV.World.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.Configuration">
+      <HintPath>..\IVLConfiguration\bin\$(Configuration)\INTUSOFT.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.Custom.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\FormsInheritance\bin\$(Configuration)\INTUSOFT.Custom.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IvlSoft.Data\bin\$(Configuration)\INTUSOFT.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.EventHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EventHandler\bin\$(Configuration)\INTUSOFT.EventHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.Imaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Camera\bin\$(Platform)\$(Configuration)\INTUSOFT.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="INTUSOFT.ThumbnailModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\INTUSOFT.ThumbnailModule\bin\$(Configuration)\INTUSOFT.ThumbnailModule.dll</HintPath>
+    </Reference>
+    <Reference Include="IVLReport, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IVLReport\bin\$(Platform)\$(Configuration)\IVLReport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>$(SolutionDir)\library\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfFileWriter, Version=1.1.16.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\bin\$(Configuration)\PdfFileWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReportUtils">
+      <HintPath>..\ReportUtils\bin\$(Configuration)\ReportUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg">
+      <HintPath>..\library\Svg.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\$(Platform)\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CaptureLog.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="EmrViewModel.cs" />
+    <Compile Include="Enums\DiagnosisEnum.cs" />
+    <Compile Include="Forms\AdvanceSerach_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\AdvanceSerach_UC.Designer.cs">
+      <DependentUpon>AdvanceSerach_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CaptureFailureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CaptureFailureForm.Designer.cs">
+      <DependentUpon>CaptureFailureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ConfigSettings_UCL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigSettings_UCL.Designer.cs">
+      <DependentUpon>ConfigSettings_UCL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DiagnosisForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DiagnosisForm.designer.cs">
+      <DependentUpon>DiagnosisForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DiagnosisUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\DiagnosisUC.designer.cs">
+      <DependentUpon>DiagnosisUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EEPROM_Window.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EEPROM_Window.Designer.cs">
+      <DependentUpon>EEPROM_Window.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GradientForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GradientForm.designer.cs">
+      <DependentUpon>GradientForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GradientFormControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GradientFormControl.Designer.cs" />
+    <Compile Include="Forms\LiveGainExposureCalculation.cs" />
+    <Compile Include="Forms\LiveImageControls45_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveImageControls45_UC.Designer.cs">
+      <DependentUpon>LiveImageControls45_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LiveImageControlsPrime_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveImageControlsPrime_UC.Designer.cs">
+      <DependentUpon>LiveImageControlsPrime_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PatientDetails_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PatientDetails_UC.Designer.cs">
+      <DependentUpon>PatientDetails_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CreateModifyPatient_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CreateModifyPatient_UC.Designer.cs">
+      <DependentUpon>CreateModifyPatient_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CreatePatientDetails_form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreatePatientDetails_form.Designer.cs">
+      <DependentUpon>CreatePatientDetails_form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EmrManage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EmrManage.Designer.cs">
+      <DependentUpon>EmrManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Imaging_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Imaging_UC.Designer.cs">
+      <DependentUpon>Imaging_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\IvlMainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\IvlMainWindow.Designer.cs">
+      <DependentUpon>IvlMainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LiveImageControls_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveImageControls_UC.Designer.cs">
+      <DependentUpon>LiveImageControls_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Login_UCL.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Login_UCL.Designer.cs">
+      <DependentUpon>Login_UCL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplitScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplitScreen.Designer.cs">
+      <DependentUpon>SplitScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.Designer.cs">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Themes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Themes.Designer.cs">
+      <DependentUpon>Themes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewImageControls_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewImageControls_UC.Designer.cs">
+      <DependentUpon>ViewImageControls_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImageCaptureSplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageCaptureSplashScreen.Designer.cs">
+      <DependentUpon>ImageCaptureSplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IVLVariables.cs" />
+    <Compile Include="LanguageResources\Res.es.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Res.es.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PatDetails_UC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PatDetails_UC.Designer.cs">
+      <DependentUpon>PatDetails_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\AdvanceSerach_UC.resx">
+      <DependentUpon>AdvanceSerach_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CaptureFailureForm.resx">
+      <DependentUpon>CaptureFailureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ConfigSettings_UCL.resx">
+      <DependentUpon>ConfigSettings_UCL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiagnosisForm.resx">
+      <DependentUpon>DiagnosisForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiagnosisUC.resx">
+      <DependentUpon>DiagnosisUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EEPROM_Window.resx">
+      <DependentUpon>EEPROM_Window.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GradientForm.resx">
+      <DependentUpon>GradientForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LiveImageControls45_UC.resx">
+      <DependentUpon>LiveImageControls45_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LiveImageControlsPrime_UC.resx">
+      <DependentUpon>LiveImageControlsPrime_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PatientDetails_UC.resx">
+      <DependentUpon>PatientDetails_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CreateModifyPatient_UC.resx">
+      <DependentUpon>CreateModifyPatient_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CreatePatientDetails_form.resx">
+      <DependentUpon>CreatePatientDetails_form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EmrManage.resx">
+      <DependentUpon>EmrManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Imaging_UC.resx">
+      <DependentUpon>Imaging_UC.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\IvlMainWindow.resx">
+      <DependentUpon>IvlMainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LiveImageControls_UC.resx">
+      <DependentUpon>LiveImageControls_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Login_UCL.resx">
+      <DependentUpon>Login_UCL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplitScreen.resx">
+      <DependentUpon>SplitScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Themes.resx">
+      <DependentUpon>Themes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewImageControls_UC.resx">
+      <DependentUpon>ViewImageControls_UC.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageCaptureSplashScreen.resx">
+      <DependentUpon>ImageCaptureSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageResources\Res.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageResources\Res.es.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Res.es.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PatDetails_UC.resx">
+      <DependentUpon>PatDetails_UC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="BatchScripts\InsertReportTypes.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Intusoft-runtime.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="BatchScripts\mysqlServiceStart.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BatchScripts\mysqlServiceStop.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\nLog.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="startInusoft.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ImageResources\AnnotationImageResources\Draw_Arrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\AnnotationImageResources\Draw_Circle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\AnnotationImageResources\Draw_Freehand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\AnnotationImageResources\Draw_Line.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\AnnotationImageResources\Draw_Rectangle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Camera-Error2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Camera-OFF.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Camera-ON.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Database_Connected_01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Database_No Connection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Database_Server_Running.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Database_Server_Stopped.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Power-OFF.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ConnectionStatusImageResources\Power-ON.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\AddCupPoints_3D.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\AddDiscPoints_3D.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\cdr.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\ISNT_OD.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\ISNT_OS.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CDR_ImageResources\Move.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CloudImageResources\cloud.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\CloudImageResources\Export2Cloud.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\cancel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Delete_Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\diagnosis.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Email-Images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Email-Report.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Export_Image_Square.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\open.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\PrintIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\print.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\SaveIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Save-As Icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\save.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\Trash_Delete.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\Blue-Channel.png" />
+    <Content Include="ImageResources\FilterImageResources\Blue.jpg" />
+    <Content Include="ImageResources\FilterImageResources\Blue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\BlueNegative.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\BlueOld.png" />
+    <Content Include="ImageResources\FilterImageResources\Color.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\Contrast+.png" />
+    <Content Include="ImageResources\FilterImageResources\Green Channel.png" />
+    <Content Include="ImageResources\FilterImageResources\Green.jpg" />
+    <Content Include="ImageResources\FilterImageResources\Green.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\GreenNegative.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\GreenOld.png" />
+    <Content Include="ImageResources\FilterImageResources\Red Channel.png" />
+    <Content Include="ImageResources\FilterImageResources\Red.jpg" />
+    <Content Include="ImageResources\FilterImageResources\Red.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\RedNegative.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\RedOld.png" />
+    <Content Include="ImageResources\FilterImageResources\Zoom In.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\Zoom Out.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\ZoomEnable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\zoomDisable.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\ZoomIN.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\ZoomOut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\FilterImageResources\ZoomReset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Add Table_new.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Insert Text Box_new.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\ISNT_OS.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Label_new.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\logo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\newLogo1.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Open-Load_new.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\openFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Picture-Box Icon_New.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Print Icon_New.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\r.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\Save Icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IconsReportTools\table.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\brightness.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\contrast.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\ZoomDecrease.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\zoomIn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\zoomIncrease.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ImageToolsResources\zoomOut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\brightnessDecrease.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\brightnessIncrease.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\ContrastDecrease.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\ContrastIncrease.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\High_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\Low_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\IntensityImageResources\Med_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\45+.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\45.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\CompanyLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\hospitalLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\I-45-45+.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\I-Nano.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\I-Prime.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\IntuSoft.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\logo1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\logo1_not.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\newLogo1.ico" />
+    <Content Include="ImageResources\LogoImageResources\Prime.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\ReportLogo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\ReportLogo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\signature.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\AA.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Add Patient_02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Delete Consultation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Delete Patient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Edit Patient Info.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\i-info.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\New Consultation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Patients.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Records1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\PatientDetailsImageResources\Records1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ToolsResources\AddAnnotation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ToolsResources\AddReport.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\ToolsResources\CDR.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQLs\Change_person_atrribute_valueSize.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQLs\Grant_All_Previleges.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Test1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\i-info.png" />
+    <Content Include="SQLs\Alter_Intsoft_MRS.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQLs\create_Intsoft_MRS.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\logo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\Edit_ImageResources\edit_delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReleaseNotes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Camera\CameraModule.csproj">
+      <Project>{BB6F2057-E3AC-4037-8F58-75BC87DE9A9D}</Project>
+      <Name>CameraModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformName)\*.dll" "$(TargetDir)"
+copy "$(SolutionDir)ReportTemplateCreator\bin\$(PlatformName)\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
+xcopy /s/y "$(SolutionDir)library\$(PlatformTarget)\$(Configuration)\*.*" "$(TargetDir)" 
+xcopy /s/y "$(SolutionDir)AdobeCheckOSVersionInfo\bin\$(Configuration)\AdobeCheckOSVersionInfo.exe" "$(TargetDir)" 
+copy "$(SolutionDir)DbPortingProject\bin\$(PlatformName)\$(Configuration)\DBPorting.exe" "$(TargetDir)"
+copy "$(SolutionDir)library\SQLite.Interop.dll" "$(TargetDir)"
+copy "$(SolutionDir)\DesignSurfaceExt\DesignSurfaceExt\bin\$(Configuration)\DesignSurfaceExt2.dll" "$(TargetDir)"
+copy "$(SolutionDir)\pDesigner\pDesigner\bin\$(Configuration)\pDesigner.dll" "$(TargetDir)"
+copy "$(SolutionDir)\DesignSurfaceManagerExt\DesignSurfaceManagerExt\bin\$(Configuration)\DesignSurfaceManagerExt.dll" "$(TargetDir)"
+copy "$(SolutionDir)\RulerControl\bin\$(Configuration)\RulerControl.dll" "$(TargetDir)"
+copy "$(SolutionDir)\ToolBoxLib\bin\$(Configuration)\ToolBoxLib.dll"  "$(TargetDir)"
+copy "$(SolutionDir)\ImageListView\bin\$(Configuration)\ImageListView.dll" "$(TargetDir)"
+copy "$(ProjectDir)Resources\Nlog.config" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy "$(SolutionDir)ReportTemplates\*.*" "$(TargetDir)ReportTemplates" /Y /I /E</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

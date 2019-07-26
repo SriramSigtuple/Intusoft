@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="obs" table="observation" batch-size="25">
+	<id name="observationId" type="int" column="observation_id" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">obs_obs_id_seq</param>
+		</generator>
+	</id>
+	<!--<property name="uuid" type="String" column="uuid" length="38" unique="true" />-->
+	<!--<property name="person_id" type="int" length="11" column="person_id" not-null="true" insert="false" update="false" />-->
+	<property name="takenDateTime" type="datetime" column="taken_datetime" not-null="true" length="19" />
+	<property name="value" type="String" column="value" length="65535" />
+	<property name="comments" type="String" column="comment" length="255" />
+	
+	<many-to-one name="createdBy" class="users" column="created_by" not-null="true" />
+	<property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />
+	
+	<property name="voided" type="Boolean" column="voided" length="1" not-null="true" />
+	<many-to-one name="voidedBy" class="users" column="voided_by" />
+	<property name="voidedDate" type="datetime" column="voided_date" length="19" />
+	<property name="voidedReason" type="String" column="voided_reason" length="255" />
+  <many-to-one name="lastSentBy" class="users" column="last_sent_by" />
+  <property name="lastSentDate" type="datetime" column="last_sent_date" length="19" />
+	
+	<many-to-one name="lastModifiedBy" class="users" column="last_modified_by" />
+  <property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
+  <!--<one-to-one
+         name="eye_fundus_image"                                
+         class="eye_fundus_image"                                  
+         property-ref="eye_fundus_image_id"
+         cascade="save-update"
+/>-->
+	<!-- Associations -->
+
+	<many-to-one name="patient"  class="Patient" not-null="true" column="patient_id" />
+	<many-to-one name="concept"  class="Concept" not-null="true" column="concept_id" />
+	<many-to-one name="visit"  class="visit" not-null="true" column="visit_id" />
+		
+	<!-- many-to-one association from this obs to its parent grouping obs -->
+	<!-- insert/update=false because the groupMembers set is doing the saving for us -->
+	<!--<many-to-one name="obs_group_id" class="obs" column="obs_group_id" insert="true" update="true"/>-->
+		
+	<!-- one-to-many association to all obs in this grouping -->
+	<!--<set name="groupMembers"  inverse="true" cascade="all" order-by="obs_id" access="field" batch-size="25">
+		<key column="obs_group_id" />
+		<one-to-many class="obs" />
+	</set>--> 
+</class>	
+</hibernate-mapping>

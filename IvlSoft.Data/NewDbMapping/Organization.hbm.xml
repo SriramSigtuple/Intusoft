@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                  assembly="INTUSOFT.Data"
+                  namespace="INTUSOFT.Data.NewDbModel">
+<class name="organization" table="organization">
+	<!--<cache usage="read-write"/>-->
+	<id name="property" type="String" column="property_id" length="255">
+		<!--<generator class="assigned" />-->
+	</id>
+	<property name="property_value" type="String" column="value" not-null="false" length="65535" />
+</class>	
+</hibernate-mapping>
