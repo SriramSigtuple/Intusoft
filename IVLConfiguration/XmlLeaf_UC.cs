@@ -174,6 +174,7 @@ namespace INTUSOFT.Configuration
                         {
                             textBox.Dock = DockStyle.Left;
                         }
+                       
                         //textBox.Leave += new System.EventHandler(textBox_Leave);
                         textBox.KeyDown += new KeyEventHandler(textBox_KeyDown);
                         textBox.KeyPress += textBox_KeyPress;
@@ -377,7 +378,11 @@ namespace INTUSOFT.Configuration
                             //    textBox.Size = new Size(val1.Trim().Length * 25, 10);
                             //}
                         }
-                        textBox.Text = val;
+                    if (lbl.Contains("Password"))
+                    {
+                        textBox.PasswordChar = '*';
+                    }
+                    textBox.Text = val;
                         textBox.MaxLength = controlProps.length;
                         textBox.TextChanged += textBox_TextChanged;
                         if (!string.IsNullOrEmpty(controlProps.range) && controlProps.range != "0to200000")

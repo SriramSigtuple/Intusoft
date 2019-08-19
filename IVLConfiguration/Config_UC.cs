@@ -318,6 +318,9 @@ namespace INTUSOFT.Configuration
 
         private void save_btn_Click(object sender, EventArgs e)
         {
+            // This code is added to save the MD5 password to config
+            XmlReadWrite.SetValueIterate(XmlReadWrite.StringArrForPassword[1], XmlReadWrite.StringArrForPassword[2].GetMd5Hash());
+
             XmlConfigUtility.Serialize(ConfigVariables._ivlConfig, IVLConfig.fileName);
          }
 

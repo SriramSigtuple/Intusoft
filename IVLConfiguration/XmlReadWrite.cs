@@ -16,6 +16,8 @@ namespace INTUSOFT.Configuration
     public class XmlReadWrite
     {
         public String fileName = null;
+        public static string password = string.Empty;
+        public static string[] StringArrForPassword = new string[3];
         MemoryStream memStream ;
         XmlSerializer xmlSerialization;
         public XmlReadWrite()
@@ -207,6 +209,15 @@ namespace INTUSOFT.Configuration
             string[] parts = node.Split('.');
             //for (int i = 0; i < parts.Length; i++)
             {
+                #region code temproarily maintain the password until it is saved as MD5 in config for first release of Drishti Integration
+                if (parts[parts.Length - 1].Contains("Password"))
+                {
+                    StringArrForPassword[0] = parts[0];
+                    StringArrForPassword[1] = parts[1];
+                    StringArrForPassword[2] = val.ToString();
+                }
+                #endregion
+
                 SetValueIterate(parts[parts.Length - 1],val.ToString());
                 isSaved = false;
                 //break;

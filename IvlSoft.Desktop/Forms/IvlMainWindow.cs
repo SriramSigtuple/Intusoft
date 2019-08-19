@@ -1143,8 +1143,11 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == Keys.Enter)
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Login)
-                    loginScreen.Login();
+                #region Removed Login functionality for QA- 2099
+                //if (IVLVariables.pageDisplayed == PageDisplayed.Login)
+                //    loginScreen.Login();
+                #endregion
+
             }
             else if (keyData == (Keys.Alt | Keys.I))
             {
@@ -2013,24 +2016,24 @@ namespace INTUSOFT.Desktop.Forms
         private void SetPanels()
         {
             PagePanel_p.Controls.Clear();
-            //emr.Dock = DockStyle.Fill;
-            //try
-            //{
-            //    PagePanel_p.Controls.Add(emr);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
-            //isEmr = true;
-            //Image_btn.Enabled = false;
-            //emr.Show();
-            
+            emr.Dock = DockStyle.Fill;
+            try
+            {
+                PagePanel_p.Controls.Add(emr);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            IVLVariables.pageDisplayed = PageDisplayed.Emr;
+            Image_btn.Enabled = false;
+            emr.Show();
+
             #region this has to be implemented later when login screen has been added
-            loginScreen.Dock = DockStyle.Fill;
-            PagePanel_p.Controls.Add(loginScreen);
-            //isEmr = true;
-            loginScreen.Show();
+            //loginScreen.Dock = DockStyle.Fill;
+            //PagePanel_p.Controls.Add(loginScreen);
+            ////isEmr = true;
+            //loginScreen.Show();
             //commented to remove login screen at startup of the application by sriram on october 16th 2015
             //loginScreen.Dock = DockStyle.Fill;
             //loginScreen.Show();
@@ -2161,12 +2164,16 @@ namespace INTUSOFT.Desktop.Forms
 
         private void IvlMainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ShiftKey)
-            {
-                if (thumbnail_tblpnl.Visible)
-                    thumbnailUI1.isShiftKeyPressed = true;
-            }
-            else if (e.KeyCode == Keys.ControlKey)
+            #region The shift key is disabled to handle issue QA-2115
+            //if (e.KeyCode == Keys.ShiftKey)
+            //{
+            //    if (thumbnail_tblpnl.Visible)
+            //        thumbnailUI1.isShiftKeyPressed = true;
+            //}
+            //else 
+            #endregion
+
+            if (e.KeyCode == Keys.ControlKey)
             {
                 if (thumbnail_tblpnl.Visible)
                     thumbnailUI1.isControlKeyPressed = true;

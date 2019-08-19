@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActivePat_Label_Text" xml:space="preserve">
+  <data name="uu" xml:space="preserve">
     <value>Active Patient</value>
   </data>
   <data name="AddCupPointsWarning" xml:space="preserve">
@@ -1952,9 +1952,18 @@
     <value>AI Reports</value>
   </data>
   <data name="UploadButton_Text" xml:space="preserve">
-    <value>Push to Cloud</value>
+    <value>Upload</value>
   </data>
   <data name="UploadConfirmation_Text" xml:space="preserve">
     <value>Files pushed to uploader successfully</value>
+  </data>
+  <data name="AnalysisHeader_Text" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="CloudAnalsysisPendingStatus_Text" xml:space="preserve">
+    <value>Analysis is in progress. Please try again after some time.</value>
+  </data>
+  <data name="CloudAnalysisFailed_Text" xml:space="preserve">
+    <value>Analysis Failed</value>
   </data>
 </root>

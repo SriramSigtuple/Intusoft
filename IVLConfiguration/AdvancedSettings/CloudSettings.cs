@@ -103,6 +103,22 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             set { api_status_url = value; }
         }
 
+        private static IVLControlProperties username = null;
+
+        public IVLControlProperties Username 
+        {
+            get { return username; }
+            set { username = value; }
+        }
+
+        private static IVLControlProperties password = null;
+
+        public IVLControlProperties Password
+        {
+            get { return password; }
+            set { password = value; }
+        }
+
         public CloudSettings()
         {
             API_URL = new IVLControlProperties();
@@ -196,6 +212,21 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             ActiveDirPath.val = "Active File Directory";
             ActiveDirPath.control = "System.Windows.Forms.TextBox";
             ActiveDirPath.text = "Active Dir Path";
+
+            Username = new IVLControlProperties();
+            Username.name = "username";
+            Username.type = "string";
+            Username.val = "";
+            Username.control = "System.Windows.Forms.TextBox";
+            Username.text = "Username";
+
+            Password = new IVLControlProperties();
+            Password.name = "password";
+            Password.type = "string";
+            Password.val = "";
+            Password.control = "System.Windows.Forms.TextBox";
+            Password.text = "Password";
+
         }
     }
 }

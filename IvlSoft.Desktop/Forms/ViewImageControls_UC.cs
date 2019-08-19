@@ -3236,8 +3236,9 @@ namespace INTUSOFT.Desktop.Forms
             cloudModel.LoginModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
             cloudModel.LoginModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_LOGIN_URL.val;
 
-            cloudModel.LoginModel.username = NewDataVariables.Active_User.username;
-            cloudModel.LoginModel.password = NewDataVariables.Active_User.password;
+            cloudModel.LoginModel.username = IVLVariables.CurrentSettings.CloudSettings.Username.val;
+            cloudModel.LoginModel.password = IVLVariables.CurrentSettings.CloudSettings.Password.val;
+
             cloudModel.LoginModel.device_id = IVLVariables.CurrentSettings.CameraSettings.DeviceID.val;
 
             Dictionary<string, object> kvp = new Dictionary<string, object>();
@@ -3750,24 +3751,61 @@ namespace INTUSOFT.Desktop.Forms
 
                 INTUSOFT.Data.NewDbModel.report reportVal = NewDataVariables._Repo.GetById<report>(Convert.ToInt32(Reports_dgv.Rows[e.RowIndex].Cells["reportId"].Value));
                 ReportCreatedDateTime = reportVal.createdDate;
-                getReportDetails();
+                if (reportVal.isCloudReport)
 
-
-                string reportXml = reportVal.dataJson;
-
-                if (_report.readXML(reportXml))
                 {
-                    try
+                  List<CloudAnalysisReport> cloudReports =  NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", reportVal).ToList();
+                    if (cloudReports.Any())
                     {
-                        _report.ShowDialog();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw;
+                        if (cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.Completed)
+                        {
+                            getReportDetails();
+                            string reportXml = reportVal.dataJson;
+                            if (_report.readXML(reportXml))
+                            {
+                                try
+                                {
+                                    _report.ShowDialog();
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw;
+                                }
+                            }
+                            else
+                                this.Cursor = Cursors.Default;
+                        }
+                        else if(cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.Failed)
+                        {
+                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("CloudAnalysisFailed_Text", IVLVariables.LangResourceCultureInfo)
+                                , IVLVariables.LangResourceManager.GetString("AnalysisHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                        }
+                        else
+                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("CloudAnalsysisPendingStatus_Text", IVLVariables.LangResourceCultureInfo)
+                               , IVLVariables.LangResourceManager.GetString("AnalysisHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
                     }
                 }
                 else
-                    this.Cursor = Cursors.Default;
+                {
+                    getReportDetails();
+
+                    string reportXml = reportVal.dataJson;
+
+                    if (_report.readXML(reportXml))
+                    {
+                        try
+                        {
+                            _report.ShowDialog();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw;
+                        }
+                    }
+                    else
+                        this.Cursor = Cursors.Default;
+                }
+
             }
         }
 
