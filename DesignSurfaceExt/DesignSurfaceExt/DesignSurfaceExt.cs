@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using System.Drawing;
-using ReportUtils;
+﻿using ReportUtils;
+using System;
 using System.ComponentModel;
-using System.Windows.Forms;
+using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace DesignSurfaceExt {
+namespace DesignSurfaceExt
+{
 
-//- this class adds to a .NET 
-//-     DesignSurface instance
-//- the following facilities:
-//-     * TabOrder
-//-     * UndoEngine
-//-     * Cut/Copy/Paste/Delete commands
-//-
-//- DesignSurfaceExt
-//-     |
-//-     +--|DesignSurface|
-//-     |
-//-     +--|TabOrder|
-//-     |
-//-     +--|UndoEngine|
-//-     |
-//-     +--|Cut/Copy/Paste/Delete commands|
-//-
-public class DesignSurfaceExt : DesignSurface, IDesignSurfaceExt {
+    //- this class adds to a .NET 
+    //-     DesignSurface instance
+    //- the following facilities:
+    //-     * TabOrder
+    //-     * UndoEngine
+    //-     * Cut/Copy/Paste/Delete commands
+    //-
+    //- DesignSurfaceExt
+    //-     |
+    //-     +--|DesignSurface|
+    //-     |
+    //-     +--|TabOrder|
+    //-     |
+    //-     +--|UndoEngine|
+    //-     |
+    //-     +--|Cut/Copy/Paste/Delete commands|
+    //-
+    public class DesignSurfaceExt : DesignSurface, IDesignSurfaceExt {
     private const string _Name_ = "DesignSurfaceExt";
 
     

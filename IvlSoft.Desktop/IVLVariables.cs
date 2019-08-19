@@ -10,9 +10,15 @@ using System.Globalization;
 using System.Resources;
 using Common;
 using INTUSOFT.Configuration;
+using System.IO;
+
 namespace INTUSOFT.Desktop
 {
         public enum GainLevels { Low, Medium, High };
+    public enum PageDisplayed {Login, Emr, Image };
+    public enum CloudReportStatus {Intialized = 1,Uploading, Processing, Completed, Failed};
+
+    public enum DirectoryEnum { OutboxDir, ActiveDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
 
     public static class IVLVariables
     {
@@ -37,6 +43,7 @@ namespace INTUSOFT.Desktop
         public static CultureInfo LangResourceCultureInfo;            //declare culture info
         public static Exception2StringConverter ExceptionLog;
         public static string appDirPathName = string.Empty;
+        public static PageDisplayed pageDisplayed = PageDisplayed.Login;
 
         public static Settings CurrentSettings
         {
@@ -128,6 +135,36 @@ namespace INTUSOFT.Desktop
             set { IVLVariables.gradientColorValues = value; }
         }
         public static Themes IVLThemes;
+
+
+        public static string GetCloudDirPath(DirectoryEnum directoryEnum)
+        {
+            var dirName = string.Empty;
+            switch (directoryEnum)
+            {
+                case DirectoryEnum.OutboxDir:
+                    dirName = CurrentSettings.CloudSettings.OutboxPath.val;
+                    break;
+                case DirectoryEnum.ActiveDir:
+                    dirName = CurrentSettings.CloudSettings.ActiveDirPath.val;
+                    break;
+                case DirectoryEnum.SentItemsDir:
+                    dirName = CurrentSettings.CloudSettings.SentItemsPath.val;
+                    break;
+                case DirectoryEnum.ProcessedDir:
+                    dirName = CurrentSettings.CloudSettings.ProcessedPath.val;
+                    break;
+                case DirectoryEnum.InboxDir:
+                    dirName = CurrentSettings.CloudSettings.InboxPath.val;
+                    break;
+                case DirectoryEnum.ReadDir:
+                    dirName = CurrentSettings.CloudSettings.ReadPath.val;
+                    break;
+
+            }
+            return Path.Combine(CurrentSettings.CloudSettings.CloudPath.val, dirName);
+
+        }
     }
 
     

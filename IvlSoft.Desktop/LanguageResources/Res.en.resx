@@ -659,10 +659,10 @@
     <value>Not mentioned</value>
   </data>
   <data name="No_of_Images_Text" xml:space="preserve">
-    <value># Images</value>
+    <value> Images</value>
   </data>
   <data name="No_of_Reports_Text" xml:space="preserve">
-    <value># Reports</value>
+    <value> Reports</value>
   </data>
   <data name="Occupation_Label_Text" xml:space="preserve">
     <value>Occupation</value>
@@ -1947,5 +1947,14 @@
   </data>
   <data name="filterResetWarning_Text" xml:space="preserve">
     <value>Filter reset warning</value>
+  </data>
+  <data name="No_of_AIReports_Text" xml:space="preserve">
+    <value>AI Reports</value>
+  </data>
+  <data name="UploadButton_Text" xml:space="preserve">
+    <value>Push to Cloud</value>
+  </data>
+  <data name="UploadConfirmation_Text" xml:space="preserve">
+    <value>Files pushed to uploader successfully</value>
   </data>
 </root>

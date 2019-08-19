@@ -35,7 +35,8 @@ namespace INTUSOFT.Data.NewDbModel
             string jsonData,
             users Creator,
             users ChangedBy,
-            Patient Patient, 
+            Patient Patient,
+            bool IsCloudReport,
             DateTime dateCreated,
             DateTime dateChanged,
             bool Voided,
@@ -60,6 +61,7 @@ namespace INTUSOFT.Data.NewDbModel
              voided=Voided,
              voidedBy = VoidedBy,
              voidedReason = voidedReason,
+             isCloudReport = IsCloudReport,
              uuid=UUID
             };
         }
@@ -68,6 +70,7 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual visit visit { get; set; }
 
         public virtual int reportId { get; set; }
+        public virtual bool isCloudReport { get; set; }
 
         public virtual users createdBy { get; set; }
 

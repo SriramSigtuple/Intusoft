@@ -1,36 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Management;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.IO;
-using System.Printing;
-using System.Xml.Serialization;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Drawing.Printing;
-using Microsoft.Win32;
-using ReportUtils;
-using ReportUtils.ReportEnums;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using INTUSOFT.ThumbnailModule;
-using PdfFileWriter;
-using Common;
+﻿using Common;
 using Common.ValidatorDatas;
 using INTUSOFT.Custom.Controls;
-using System.Threading;
+using Newtonsoft.Json;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
+using ReportUtils;
+using ReportUtils.ReportEnums;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web.Script.Serialization;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 namespace IVLReport
 {
     public partial class Report : BaseGradientForm
@@ -1296,50 +1281,58 @@ namespace IVLReport
         /// <param name="e"></param>
         public void saveReport(EventArgs e)
         {
-            if (isNew)
-            {
-                JsonReportModel jsonModel = new JsonReportModel();
-                for (int i = 0; i < _dataModel.CurrentImgFiles.Length; i++)
-                {
-                    Observations rm = new Observations();
-                    rm.imageFile = _dataModel.CurrentImgFiles[i];
-                    rm.imageName = _dataModel.CurrentImageNames[i];
-                    jsonModel.reportDetails.Add(rm);
-                }
-                jsonModel.currentOrientation = LayoutDetails.Current.Orientation;
-                //the below code is to add if new items added in the template with binding will get  saved to the database.
-                for (int i = 0; i < _dataModel.ReportData.Count; i++)
-                {
-                    KeyValuePair<string, object> val = _dataModel.ReportData.ElementAt(i);
-                    if (val.Key.Contains("$"))
-                    {
-                        string keyVal = val.Key.Replace("$", "");
-                        if (!string.IsNullOrEmpty(keyVal))
-                            jsonModel.reportValues.Add(new KVData(keyVal, val.Value));
-                        //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
-                    }
-                }
-                //jsonModel.comments = genObs_tbx.Text;//This code has been added to save the general observation in the json report data.
-                //jsonModel.MedHistory = comments_tbx.Text;//This code has been added to save the comments in the json report data.
-                //jsonModel.rightEyeObs = rightEyeObs_tbx.Text;//This code has been added to save the right eye comments in the json report data.
-                //jsonModel.leftEyeObs = leftEyeObs_tbx.Text;//This code has been added to save the  left eye comments in the json report data.
-                //jsonModel.doctor = doctor_tbx.Text;//This code has been added to save the doctor in the json report data.
-               
-                string jsonReport = "";
-                var json = JsonConvert.SerializeObject(jsonModel);
-                jsonReport = json.ToString();
-                Dictionary<string, object> repoval = new Dictionary<string, object>();
-                repoval.Add("xml", jsonReport);
-                repoval.Add("dateTime", DateTime.Now);
-                repoval.Add("IsModifed", true);
-                repoval.Add("IsJsonFormat", isJsonFormat);
-                isNew = false;
-                isTextChanged = false;
+
                 if (reportSavedEvent != null)
-                    reportSavedEvent(repoval, e);
+                    reportSavedEvent(createReport(), e);
                 isJsonFormat = true;
-            }
         }
+    public Dictionary<string,object> createReport()
+    {
+        if (isNew)
+
+            {
+            JsonReportModel jsonModel = new JsonReportModel();
+            for (int i = 0; i < _dataModel.CurrentImgFiles.Length; i++)
+            {
+                Observations rm = new Observations();
+                rm.imageFile = _dataModel.CurrentImgFiles[i];
+                rm.imageName = _dataModel.CurrentImageNames[i];
+                jsonModel.reportDetails.Add(rm);
+            }
+            jsonModel.currentOrientation = LayoutDetails.Current.Orientation;
+            //the below code is to add if new items added in the template with binding will get  saved to the database.
+            for (int i = 0; i < _dataModel.ReportData.Count; i++)
+            {
+                KeyValuePair<string, object> val = _dataModel.ReportData.ElementAt(i);
+                if (val.Key.Contains("$"))
+                {
+                    string keyVal = val.Key.Replace("$", "");
+                    if (!string.IsNullOrEmpty(keyVal))
+                        jsonModel.reportValues.Add(new KVData(keyVal, val.Value));
+                    //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
+                }
+            }
+            //jsonModel.comments = genObs_tbx.Text;//This code has been added to save the general observation in the json report data.
+            //jsonModel.MedHistory = comments_tbx.Text;//This code has been added to save the comments in the json report data.
+            //jsonModel.rightEyeObs = rightEyeObs_tbx.Text;//This code has been added to save the right eye comments in the json report data.
+            //jsonModel.leftEyeObs = leftEyeObs_tbx.Text;//This code has been added to save the  left eye comments in the json report data.
+            //jsonModel.doctor = doctor_tbx.Text;//This code has been added to save the doctor in the json report data.
+
+            string jsonReport = "";
+            var json = JsonConvert.SerializeObject(jsonModel);
+            jsonReport = json.ToString();
+            Dictionary<string, object> repoval = new Dictionary<string, object>();
+            repoval.Add("xml", jsonReport);
+            repoval.Add("dateTime", DateTime.Now);
+            repoval.Add("IsModifed", true);
+            repoval.Add("IsJsonFormat", isJsonFormat);
+            isNew = false;
+            isTextChanged = false;
+                return repoval;
+
+        }
+          return  new Dictionary<string, object>();
+    }
 
         /// <summary>
         /// Creates a PDF file.

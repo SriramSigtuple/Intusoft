@@ -109,6 +109,41 @@ COMMIT;
 
 START TRANSACTION;
 USE `dbName`;
+DELIMITER $$
+drop procedure if exists addCloudAnalysisReportTable;
+CREATE PROCEDURE addCloudAnalysisReportTable() 
+BEGIN
+DECLARE colName INT;
+SELECT count(table_name) INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'intunewmodel'
+    AND table_name = 'cloud_analysis_report';
+
+IF colName = 0 THEN 
+   CREATE TABLE `cloud_analysis_report` (
+  `cloud_analysis_report_id` SMALLINT NOT NULL AUTO_INCREMENT,
+ `left_eye_impression` VARCHAR(300) NULL,
+ `right_eye_impression` VARCHAR(300) NULL,
+ `report_id` BIGINT(20) NOT NULL,
+ `cloud_analysis_report_status` INT(1) NOT NULL DEFAULT 1,
+ `last_modified_date` datetime DEFAULT NULL,
+  `voided` tinyint(1) NOT NULL DEFAULT '0',
+  `created_date` datetime DEFAULT NULL,
+  `analysis_filename` VARCHAR(300) NULL,
+ PRIMARY KEY (`cloud_analysis_report_id`),
+ constraint `report_table_Report_id`
+ foreign key (`report_id`)
+ references `report` (`report_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+END IF; 
+END$$
+DELIMITER ;
+CALL addCloudAnalysisReportTable() ;
+COMMIT;
+
+
+START TRANSACTION;
+USE `dbName`;
 INSERT INTO `concept` VALUES (12,'EyeFundusDiagnosis','','EYE FUNDUS DIAGNOSIS',0,3,4,'8a29dd87-b2ab-4a1a-8462-4ce57a9a1c26')
 On duplicate key update concept_id ='12',short_name ='EyeFundusDiagnosis',description ='',fully_specified_name ='EYE FUNDUS DIAGNOSIS',is_set =0,datatype_id =3,class_id =4,uuid ='8a29dd87-b2ab-4a1a-8462-4ce57a9a1c26';
 COMMIT;
@@ -119,6 +154,24 @@ USE `dbName` ;
 ALTER TABLE `report` MODIFY COLUMN data_json LONGTEXT;
 COMMIT;
 
-
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
+drop procedure if exists add_isCloudReportCol;
+CREATE PROCEDURE add_isCloudReportCol() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'intunewmodel'
+    AND table_name = 'report'
+AND column_name = 'is_cloud_report';
+IF colName is null THEN 
+    ALTER TABLE  report ADD is_cloud_report INT(1) NOT NULL  DEFAULT 0;
+END IF; 
+END$$
+DELIMITER ;
+CALL add_isCloudReportCol();
+COMMIT;
 
 

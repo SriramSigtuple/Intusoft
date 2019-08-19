@@ -32,7 +32,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.PagePanel_p = new System.Windows.Forms.Panel();
+            this.thumbnail_tblpnl = new System.Windows.Forms.TableLayoutPanel();
+            this.uploader_ts = new System.Windows.Forms.ToolStrip();
+            this.PushToOutbox_btn = new System.Windows.Forms.ToolStripButton();
             this.thumbnailUI1 = new INTUSOFT.ThumbnailModule.ThumbnailUI();
+            this.noOfImagesSelected_lbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStrip4 = new System.Windows.Forms.ToolStrip();
@@ -66,6 +70,8 @@
             this.Header_lbl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.thumbnail_tblpnl.SuspendLayout();
+            this.uploader_ts.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.toolStrip4.SuspendLayout();
@@ -108,7 +114,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 86.60072F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.39928F));
             this.tableLayoutPanel2.Controls.Add(this.PagePanel_p, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.thumbnailUI1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.thumbnail_tblpnl, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(166, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -127,14 +133,75 @@
             this.PagePanel_p.Size = new System.Drawing.Size(947, 673);
             this.PagePanel_p.TabIndex = 3;
             // 
+            // thumbnail_tblpnl
+            // 
+            this.thumbnail_tblpnl.ColumnCount = 1;
+            this.thumbnail_tblpnl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.thumbnail_tblpnl.Controls.Add(this.uploader_ts, 0, 2);
+            this.thumbnail_tblpnl.Controls.Add(this.thumbnailUI1, 0, 0);
+            this.thumbnail_tblpnl.Controls.Add(this.noOfImagesSelected_lbl, 0, 1);
+            this.thumbnail_tblpnl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.thumbnail_tblpnl.Location = new System.Drawing.Point(956, 3);
+            this.thumbnail_tblpnl.Name = "thumbnail_tblpnl";
+            this.thumbnail_tblpnl.RowCount = 3;
+            this.thumbnail_tblpnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.34621F));
+            this.thumbnail_tblpnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.686479F));
+            this.thumbnail_tblpnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.1159F));
+            this.thumbnail_tblpnl.Size = new System.Drawing.Size(142, 673);
+            this.thumbnail_tblpnl.TabIndex = 4;
+            this.thumbnail_tblpnl.Visible = false;
+            // 
+            // uploader_ts
+            // 
+            this.uploader_ts.BackColor = System.Drawing.Color.Transparent;
+            this.uploader_ts.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.uploader_ts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uploader_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.uploader_ts.ImageScalingSize = new System.Drawing.Size(56, 56);
+            this.uploader_ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PushToOutbox_btn});
+            this.uploader_ts.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.uploader_ts.Location = new System.Drawing.Point(0, 577);
+            this.uploader_ts.Name = "uploader_ts";
+            this.uploader_ts.Padding = new System.Windows.Forms.Padding(0);
+            this.uploader_ts.Size = new System.Drawing.Size(142, 96);
+            this.uploader_ts.TabIndex = 8;
+            this.uploader_ts.Text = "toolStrip3";
+            // 
+            // PushToOutbox_btn
+            // 
+            this.PushToOutbox_btn.AutoSize = false;
+            this.PushToOutbox_btn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.PushToOutbox_btn.ForeColor = System.Drawing.Color.Black;
+            this.PushToOutbox_btn.Image = ((System.Drawing.Image)(resources.GetObject("PushToOutbox_btn.Image")));
+            this.PushToOutbox_btn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PushToOutbox_btn.Margin = new System.Windows.Forms.Padding(20, 1, 0, 2);
+            this.PushToOutbox_btn.Name = "PushToOutbox_btn";
+            this.PushToOutbox_btn.Size = new System.Drawing.Size(90, 90);
+            this.PushToOutbox_btn.Text = "Push to Cloud";
+            this.PushToOutbox_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.PushToOutbox_btn.ToolTipText = "View";
+            this.PushToOutbox_btn.Click += new System.EventHandler(this.PushToOutbox_btn_Click);
+            // 
             // thumbnailUI1
             // 
+            this.thumbnailUI1.AutoScroll = true;
             this.thumbnailUI1.BackColor = System.Drawing.Color.Transparent;
             this.thumbnailUI1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.thumbnailUI1.Location = new System.Drawing.Point(956, 3);
+            this.thumbnailUI1.Location = new System.Drawing.Point(3, 3);
             this.thumbnailUI1.Name = "thumbnailUI1";
-            this.thumbnailUI1.Size = new System.Drawing.Size(142, 673);
-            this.thumbnailUI1.TabIndex = 4;
+            this.thumbnailUI1.Size = new System.Drawing.Size(136, 527);
+            this.thumbnailUI1.TabIndex = 5;
+            // 
+            // noOfImagesSelected_lbl
+            // 
+            this.noOfImagesSelected_lbl.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.noOfImagesSelected_lbl.AutoSize = true;
+            this.noOfImagesSelected_lbl.Location = new System.Drawing.Point(9, 548);
+            this.noOfImagesSelected_lbl.Name = "noOfImagesSelected_lbl";
+            this.noOfImagesSelected_lbl.Size = new System.Drawing.Size(123, 13);
+            this.noOfImagesSelected_lbl.TabIndex = 7;
+            this.noOfImagesSelected_lbl.Text = "No Of Images Selected: ";
             // 
             // panel1
             // 
@@ -403,6 +470,7 @@
             this.logOut_lbl.AutoSize = true;
             this.logOut_lbl.BackColor = System.Drawing.Color.Transparent;
             this.logOut_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logOut_lbl.LinkColor = System.Drawing.Color.White;
             this.logOut_lbl.Location = new System.Drawing.Point(73, -2);
             this.logOut_lbl.Name = "logOut_lbl";
             this.logOut_lbl.Size = new System.Drawing.Size(55, 13);
@@ -551,6 +619,10 @@
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.IvlMainWindow_KeyUp);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.thumbnail_tblpnl.ResumeLayout(false);
+            this.thumbnail_tblpnl.PerformLayout();
+            this.uploader_ts.ResumeLayout(false);
+            this.uploader_ts.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
@@ -599,7 +671,6 @@
         private System.Windows.Forms.Label Date_lbl;
         private System.Windows.Forms.Label Time_lbl;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private ThumbnailModule.ThumbnailUI thumbnailUI1;
         private System.Windows.Forms.LinkLabel logOut_lbl;
         private System.Windows.Forms.Label Header_lbl;
         private System.Windows.Forms.Panel panel3;
@@ -622,6 +693,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.ToolStrip toolStrip4;
         private System.Windows.Forms.ToolStripButton emr_btn;
-
+        private System.Windows.Forms.TableLayoutPanel thumbnail_tblpnl;
+        private ThumbnailModule.ThumbnailUI thumbnailUI1;
+        private System.Windows.Forms.Label noOfImagesSelected_lbl;
+        private System.Windows.Forms.ToolStrip uploader_ts;
+        private System.Windows.Forms.ToolStripButton PushToOutbox_btn;
     }
 }

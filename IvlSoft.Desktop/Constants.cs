@@ -13,7 +13,7 @@ namespace INTUSOFT.Desktop
         public const string flashProgrammerVersion = "Renesas Electronics Corporation (HmseUsb) RenesasUSB";
         public const string mysqlVersion = "MySQL Server 5.7";
         public const string servicePackVersion = "Service Pack 1";
-        public const string cameraVersionText = "(07/08/2017 1.0.0.9332)";
+        public const string cameraVersionText = "(07/26/2017 1.0.0.9432)";
         public const string vcredistributable2015 = "Microsoft Visual C++ 2015 Redistributable";
         public const string vcredistributable2013 = "Microsoft Visual C++ 2013 Redistributable";
         public const string cameraDriverVersion = @"Windows Driver Package - Hangzhou ToupTek Photonics Co., ";

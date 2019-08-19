@@ -129,6 +129,7 @@
     <Compile Include="Model\VisitModel.cs" />
     <Compile Include="NewDbModel\AddressModel.cs" />
     <Compile Include="NewDbModel\BaseModel.cs" />
+    <Compile Include="NewDbModel\CloudAnalysisReport.cs" />
     <Compile Include="NewDbModel\Concept.cs" />
     <Compile Include="NewDbModel\concept_class.cs" />
     <Compile Include="NewDbModel\concept_complex.cs" />
@@ -264,6 +265,7 @@
     <EmbeddedResource Include="NewDbMapping\patient_diagnosis.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="NewDbMapping\CloudAnalysisReport.hbm.xml" />
     <Content Include="NewDbMapping\UserRole.hbm.xml" />
   </ItemGroup>
   <ItemGroup />

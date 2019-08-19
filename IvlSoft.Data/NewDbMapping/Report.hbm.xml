@@ -16,6 +16,7 @@
   <property name="voidedDate" type="datetime" column="voided_date" length="19" />
 	<property name="voidedReason" type="String" column="voided_reason" length="255" />
   <property name="dataJson" type="String" column="data_json" />
+  <property name="isCloudReport" type="Boolean" column="is_cloud_report" length ="1" not-null="true" />
   <many-to-one name="Patient" class="Patient" column="patient_id" />
   <many-to-one name="lastModifiedBy" class="users" column="last_modified_by" />
 	<property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />

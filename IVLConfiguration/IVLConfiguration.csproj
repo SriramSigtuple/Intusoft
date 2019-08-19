@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AdvancedSettings\AnnotationColorSelection.cs" />
     <Compile Include="AdvancedSettings\CameraSettings.cs" />
+    <Compile Include="AdvancedSettings\CloudSettings.cs" />
     <Compile Include="AdvancedSettings\EmailSettings.cs" />
     <Compile Include="AdvancedSettings\FirmwareSettings.cs" />
     <Compile Include="AdvancedSettings\ImageNameSettings.cs" />

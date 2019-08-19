@@ -1,36 +1,27 @@
-﻿using System;
+﻿using Common;
+using Common.ValidatorDatas;
+using Common.Validators;
+using INTUSOFT.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NLog;
+using ReportUtils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using System.IO.Compression;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using ReportUtils;
-using Common.ValidatorDatas;
-using Newtonsoft.Json;
-using Common;
-using Common.Validators;
-using System.Net;
-using System.Net.Mail;
-using Newtonsoft.Json.Linq;
-using INTUSOFT.EventHandler;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
-using INTUSOFT.Configuration;
 namespace IVLReport
 {
-     
+
     public partial class EmailWindow : Form
     {
         private static readonly Logger Exception_Log = LogManager.GetLogger("ExceptionLog");
@@ -344,8 +335,12 @@ namespace IVLReport
                     Dictionary<string, string> credentials = new Dictionary<string, string>();
                     int count = 0;
                     _WaitCursor(new EventArgs(), false);
+                    if (vendorVal == "Mandaraa")
+                    {
+                     //var cloudVals =   GetModelsForMandaraUpload();
+                    }
 
-                    if (vendorVal == "Vendor1")
+                 else   if (vendorVal == "Vendor1")
                     {
                         AddAttachment(ReportFileName);// To create zip file to upload to chironX cloud
                         FileInfo finf = new FileInfo(attachmentPath);
@@ -368,10 +363,6 @@ namespace IVLReport
 
                         //GetToken();
                         //System.Threading.Thread.Sleep(20000);
-
-                    }
-                    else if (vendorVal == "Vendor3")
-                    {
 
                     }
 
@@ -502,6 +493,7 @@ namespace IVLReport
             _WaitCursor(new EventArgs(), true);
         }
 
+       
         public static String ConvertImageURLToBase64(String url)
         {
             StringBuilder _sb = new StringBuilder();

@@ -2,14 +2,30 @@
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace INTUSOFT.ThumbnailModule
 {
     public class ThumbnailFlowLayoutPanel : FlowLayoutPanel
     {
-        public List<int> selectedThumbnails = new List<int>();
         public int TotalThumbnails = 0;
         public List<string> SelectedThumbnailFileNames = new List<string>();
-        
+        public delegate void CountChanged();
+        public event CountChanged _CountChangedEvent;
+        public ObservableCollection<int> SelectedThumbnails = new ObservableCollection<int>();
+
+        public ThumbnailFlowLayoutPanel()
+        {
+            
+            SelectedThumbnails.CollectionChanged += SelectedThumbnails_CollectionChanged;
+        }
+
+        private void SelectedThumbnails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _CountChangedEvent?.Invoke();
+
+        }
+
         protected override Point ScrollToControl(Control activeControl)
             {
             //this.AutoScroll = true;

@@ -76,6 +76,7 @@
     <Compile Include="ExceptionLog.cs" />
     <Compile Include="ExceptionLogWriting.cs" />
     <Compile Include="LogClass.cs" />
+    <Compile Include="MD5Helper.cs" />
     <Compile Include="ValidatorDatas\EmailData.cs" />
     <Compile Include="LoadSaveImage.cs" />
     <Compile Include="ValidatorDatas\ObservationData.cs" />

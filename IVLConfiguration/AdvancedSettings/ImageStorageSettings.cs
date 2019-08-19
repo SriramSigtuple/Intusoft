@@ -77,6 +77,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             set { ExportImagePath = value; }
         }
 
+
         private static IVLControlProperties IslocalStorange = null;
 
         public IVLControlProperties _IslocalStorange
@@ -91,6 +92,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             get { return IsRemoteStorage; }
             set { IsRemoteStorage = value; }
         }
+
         private static IVLControlProperties ArchivingPeriodicity = null;
 
         public IVLControlProperties _ArchivingPeriodicity
@@ -206,6 +208,8 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             _LocalProcessedImagePath.val = @"C:\IVLImageRepo\Images";
             _LocalProcessedImagePath.control = "System.Windows.Forms.TextBox";
             _LocalProcessedImagePath.text = "Local Processed Image Path";
+
+          
 
             _NumberingFormat = new IVLControlProperties();
             _NumberingFormat.name = "NumberingFormat";

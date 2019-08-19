@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 //using INTUSOFT.EventHandler;
 //using INTUSOFT.Data.Repository;
 //using INTUSOFT.Data.Model;
 using System.IO;
-using Common;
+using System.Windows.Forms;
 //using INTUSOFT.Desktop.Properties;
 namespace INTUSOFT.ThumbnailModule
 {
@@ -27,6 +23,9 @@ namespace INTUSOFT.ThumbnailModule
         public event SendFocusBackToParent sendFocusBackToParent;
         public delegate void ThumbnailImgSelected(KeyValuePair<string, string> ThumbnailFileName, EventArgs e);
         public event ThumbnailImgSelected thumbnailImgSelected;
+
+        public delegate void ThumbnailCountChangedDelegate(int count);
+        public event ThumbnailCountChangedDelegate _ThumbnailCountChangedDelegate;
         //public delegate void AddThumbnail(Dictionary<string, object> s);
         //public event AddThumbnail AddThumbnailEvent;
         public delegate void ImageAdded(Dictionary<string, object> s);
@@ -76,6 +75,7 @@ namespace INTUSOFT.ThumbnailModule
             this.thumbnail_FLP.AutoScroll = false;
             this.AutoScroll = true;
             corrupted_images = new List<int>();
+            thumbnail_FLP._CountChangedEvent += Thumbnail_FLP__CountChangedEvent;
             //    imageRepo = new ImageRepository();
             //_eventHandler = IVLEventHandler.getInstance();
             //_eventHandler.Register(__eventHandler.ThumbnailAdd, new NotificationHandler(AddThumbnailEvent));
@@ -89,6 +89,13 @@ namespace INTUSOFT.ThumbnailModule
             m_Controller.corruptedImages += m_Controller_corruptedImages;
             image_names = new List<string>();
         }
+
+        private void Thumbnail_FLP__CountChangedEvent()
+        {
+            if(_ThumbnailCountChangedDelegate != null)
+            _ThumbnailCountChangedDelegate(thumbnail_FLP.SelectedThumbnails.Count);
+        }
+
         public void verticalSroll(ImageViewer img)
         {
 
@@ -109,7 +116,7 @@ namespace INTUSOFT.ThumbnailModule
         public void ResetThumbnailUI()
         {
             this.thumbnail_FLP.Controls.Clear();
-            this.thumbnail_FLP.selectedThumbnails.Clear();
+            this.thumbnail_FLP.SelectedThumbnails.Clear();
             //This below code is added by Darshan in order solve defect nos 0000329 and 0000322
             this.thumbnail_FLP.SelectedThumbnailFileNames.Clear();
             this.thumbnail_FLP.TotalThumbnails = 0;
@@ -157,14 +164,14 @@ namespace INTUSOFT.ThumbnailModule
             List<string> ImageNames = new List<string>();
             ControlCollection items = thumbnail_FLP.Controls;
             //this code has been added to arrange the the selected thumbnails in the order in which we selected
-            for (int i = 0; i < thumbnail_FLP.selectedThumbnails.Count; i++)
+            for (int i = 0; i < thumbnail_FLP.SelectedThumbnails.Count; i++)
             {
                 for (int j = 0; j < items.Count; j++)
                 {
                     if (items[j] is ImageViewer)
                     {
                         ImageViewer imgView = items[j] as ImageViewer;
-                        if (imgView.Index == thumbnail_FLP.selectedThumbnails[i])
+                        if (imgView.Index == thumbnail_FLP.SelectedThumbnails[i])
                         {
                             fileNames.Add(imgView.ImageLocation);
                             ImageNames.Add(imgView.label1.Text);
@@ -190,6 +197,7 @@ namespace INTUSOFT.ThumbnailModule
             retValFileNames.Add("ImageNames", ImageNames);
             return retValFileNames;
         }
+
         public void AddThumbnailEvent(Dictionary<string, object> val)
         {
             isThumbnailAddEvent = true;
@@ -264,10 +272,10 @@ namespace INTUSOFT.ThumbnailModule
 
         public void thumbnailDelete()
         {
-            if (thumbnail_FLP.selectedThumbnails.Count != 0)
+            if (thumbnail_FLP.SelectedThumbnails.Count != 0)
             {
                 DialogResult dia;
-                if (thumbnail_FLP.selectedThumbnails.Count == 1)
+                if (thumbnail_FLP.SelectedThumbnails.Count == 1)
                 {
                     anotherWindowOpen(true);
                     dia = CustomMessageBox.Show(this.DeleteSingleImageMsg, "Warning", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Warning);
@@ -320,7 +328,7 @@ namespace INTUSOFT.ThumbnailModule
             if (!this.Visible)
             {
                 this.thumbnail_FLP.Controls.Clear();
-                this.thumbnail_FLP.selectedThumbnails.Clear();
+                this.thumbnail_FLP.SelectedThumbnails.Clear();
             }
         }
         private void m_Controller_OnAdd(object sender, ThumbnailControllerEventArgs e)
@@ -501,6 +509,7 @@ namespace INTUSOFT.ThumbnailModule
         private void displayThumbnailImage(ThumbnailData val)
         {
             EventArgs e = new EventArgs();
+            
             if (showImgFromThumbnail != null)
                 showImgFromThumbnail(val, e);
         }
@@ -508,7 +517,7 @@ namespace INTUSOFT.ThumbnailModule
         private void ControlKeyThumbNailSelection(ImageViewer sender)
         {
             m_ActiveImageViewer = (ImageViewer)sender;
-            if (this.thumbnail_FLP.selectedThumbnails.Contains(m_ActiveImageViewer.Index))
+            if (this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
             {
                 m_ActiveImageViewer.IsActive = false;
                 int imagename_index;
@@ -527,7 +536,7 @@ namespace INTUSOFT.ThumbnailModule
                 //        imagename_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
                 //    }
                 image_names.Remove(m_ActiveImageViewer.ImageLocation);
-                this.thumbnail_FLP.selectedThumbnails.Remove(m_ActiveImageViewer.Index);
+                this.thumbnail_FLP.SelectedThumbnails.Remove(m_ActiveImageViewer.Index);
                 this.thumbnail_FLP.SelectedThumbnailFileNames.Remove(m_ActiveImageViewer.ImageLocation);
                 Dictionary<string, object> thumbNailDic = new Dictionary<string, object>();
                 if (image_names.Count != 0)
@@ -558,6 +567,7 @@ namespace INTUSOFT.ThumbnailModule
                 //if (this.thumbnail_FLP.SelectedThumbnailFileNames.Count < NoOfImagesToBeSelected)
                 {
                     m_ActiveImageViewer.IsActive = true;
+
                     //this.thumbnail_FLP.AutoScrollPosition = m_ActiveImageViewer.Location; 
                     {
                         if (!image_names.Contains(m_ActiveImageViewer.ImageLocation))//This condition has been added to prevent the unnecessary addition same image into image_names when the image is already present.
@@ -569,8 +579,8 @@ namespace INTUSOFT.ThumbnailModule
                         data.Name = m_ActiveImageViewer.ImageName;
                         displayThumbnailImage(data);
                     }
-                    if (!this.thumbnail_FLP.selectedThumbnails.Contains(m_ActiveImageViewer.Index))
-                    this.thumbnail_FLP.selectedThumbnails.Add(m_ActiveImageViewer.Index);
+                    if (!this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
+                    this.thumbnail_FLP.SelectedThumbnails.Add(m_ActiveImageViewer.Index);
 
                     if (!this.thumbnail_FLP.SelectedThumbnailFileNames.Contains(m_ActiveImageViewer.ImageLocation))//checks if SelectedThumbnailFileNames contains ImageLocation, if it doesn't contain , then adds the ImageLocation.By Ashutosh 06-09-2017.
                     {
@@ -588,20 +598,20 @@ namespace INTUSOFT.ThumbnailModule
             m_ActiveImageViewer = (ImageViewer)sender;
             int startIndx = 0;
             int endIndx = 0;
-            if (this.thumbnail_FLP.selectedThumbnails.Count == 0)
+            if (this.thumbnail_FLP.SelectedThumbnails.Count == 0)
             {
                 Thumbnail_noshiftcntrlSelection(sender);
             }
             else
             {
-                if (m_ActiveImageViewer.Index > this.thumbnail_FLP.selectedThumbnails[0])
+                if (m_ActiveImageViewer.Index > this.thumbnail_FLP.SelectedThumbnails[0])
                 {
-                    startIndx = this.thumbnail_FLP.selectedThumbnails[0];
+                    startIndx = this.thumbnail_FLP.SelectedThumbnails[0];
                     endIndx = m_ActiveImageViewer.Index;
                 }
                 else
                 {
-                    endIndx = this.thumbnail_FLP.selectedThumbnails[0];
+                    endIndx = this.thumbnail_FLP.SelectedThumbnails[0];
                     startIndx = m_ActiveImageViewer.Index;
                 }
             }
@@ -631,8 +641,8 @@ namespace INTUSOFT.ThumbnailModule
                                 //verticalSroll(tempImgViewer);
                                 tempImgViewer.IsActive = true;
                                 //this.thumbnail_FLP.AutoScrollPosition = new Point(tempImgViewer.Location.X, tempImgViewer.Location.Y+10); 
-                                if (!this.thumbnail_FLP.selectedThumbnails.Contains(tempImgViewer.Index))
-                                this.thumbnail_FLP.selectedThumbnails.Add(tempImgViewer.Index);
+                                if (!this.thumbnail_FLP.SelectedThumbnails.Contains(tempImgViewer.Index))
+                                this.thumbnail_FLP.SelectedThumbnails.Add(tempImgViewer.Index);
                                 if (!this.thumbnail_FLP.SelectedThumbnailFileNames.Contains(tempImgViewer.ImageLocation))//checks if SelectedThumbnailFileNames contains ImageLocation, if it doesn't contain , then adds the ImageLocation.By Ashutosh 06-09-2017.
                                 {
                                     this.thumbnail_FLP.SelectedThumbnailFileNames.Add(tempImgViewer.ImageLocation);
@@ -666,7 +676,7 @@ namespace INTUSOFT.ThumbnailModule
                                 image_names.Clear();
                             }
 
-                            this.thumbnail_FLP.selectedThumbnails.Remove(tempViewer.Index);
+                            this.thumbnail_FLP.SelectedThumbnails.Remove(tempViewer.Index);
                             this.thumbnail_FLP.SelectedThumbnailFileNames.Remove(tempViewer.ImageLocation);
                         }
                     }
@@ -674,9 +684,9 @@ namespace INTUSOFT.ThumbnailModule
                 m_ActiveImageViewer.IsActive = true;
                 if (!image_names.Contains(m_ActiveImageViewer.ImageLocation))
                     image_names.Add(m_ActiveImageViewer.ImageLocation);
-                if (!this.thumbnail_FLP.selectedThumbnails.Contains(m_ActiveImageViewer.Index))
+                if (!this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
                 {
-                    this.thumbnail_FLP.selectedThumbnails.Add(m_ActiveImageViewer.Index);
+                    this.thumbnail_FLP.SelectedThumbnails.Add(m_ActiveImageViewer.Index);
                 }
                 if (!this.thumbnail_FLP.SelectedThumbnailFileNames.Contains(m_ActiveImageViewer.ImageLocation))//checks if SelectedThumbnailFileNames contains ImageLocation, if it doesn't contain , then adds the ImageLocation.By Ashutosh 06-09-2017.
 
@@ -775,7 +785,7 @@ namespace INTUSOFT.ThumbnailModule
             img.Add("ImageIds", removedImageIds);
             img.Add("ImageLocations", removeImageFilePaths);
             deleteimgs(img);
-            this.thumbnail_FLP.selectedThumbnails.Clear();
+            this.thumbnail_FLP.SelectedThumbnails.Clear();
             this.thumbnail_FLP.SelectedThumbnailFileNames.Clear();
             thumbnail_FLP.TotalThumbnails = this.thumbnail_FLP.Controls.Count;
             ImageViewer[] item2 = new ImageViewer[thumbnail_FLP.Controls.Count];//to update the items in thumbnail after deleting image.By Ashutosh 11-08-2017.
@@ -861,11 +871,11 @@ namespace INTUSOFT.ThumbnailModule
         }
         public void ThumbnailUpArrow()
         {
-            if (thumbnail_FLP.selectedThumbnails.Count != 0)
+            if (thumbnail_FLP.SelectedThumbnails.Count != 0)
             {
                 int index = 0;
-                if (thumbnail_FLP.selectedThumbnails[0] < thumbnail_FLP.TotalThumbnails)
-                    index = ++thumbnail_FLP.selectedThumbnails[0];
+                if (thumbnail_FLP.SelectedThumbnails.Count <= thumbnail_FLP.TotalThumbnails)
+                    index = thumbnail_FLP.SelectedThumbnails[thumbnail_FLP.SelectedThumbnails.Count-1] -1;
                 foreach (Control item in thumbnail_FLP.Controls)
                 {
                     if (item is ImageViewer)
@@ -895,10 +905,10 @@ namespace INTUSOFT.ThumbnailModule
         {
             int index = 0;
             //The Below if statement has been added by Darshan to solve Defect no 0000526: Unselected all the thumbnails,Arrow click and crash is appearing.
-            if (thumbnail_FLP.selectedThumbnails.Count != 0)
+            if (thumbnail_FLP.SelectedThumbnails.Count != 0)
             {
-                if (thumbnail_FLP.selectedThumbnails[0] > 1)
-                    index = --thumbnail_FLP.selectedThumbnails[0];
+                if (thumbnail_FLP.SelectedThumbnails[thumbnail_FLP.SelectedThumbnails.Count-1] > 1)
+                    index = thumbnail_FLP.SelectedThumbnails[thumbnail_FLP.SelectedThumbnails.Count - 1] -1;
                 foreach (Control item in thumbnail_FLP.Controls)
                 {
                     if (item is ImageViewer)

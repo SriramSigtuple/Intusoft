@@ -624,6 +624,11 @@ namespace INTUSOFT.Desktop.Forms
                }
            }
        }
+
+        public void Push2Cloud()
+        {
+            viewImagingControl.CreateCloudFileInOutbox();
+        }
        Bitmap tempBm;
        private void updateOverlay(string s, Args arg)
        {

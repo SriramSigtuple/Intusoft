@@ -1,44 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using INTUSOFT.Data.Enumdetails;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using INTUSOFT.Desktop.Properties;
-using INTUSOFT.EventHandler;
-using INTUSOFT.ThumbnailModule;
-using INTUSOFT.Data.NewDbModel;
-using System.Drawing.Drawing2D;
-using INTUSOFT.Custom.Controls;
-using Emgu.CV;
-using Svg;
-using Emgu.CV.Structure;
-using Emgu.Util;
-using Annotation;
-using INTUSOFT.Data.Repository;
-using IVLReport;
-using System.Runtime.Serialization;
-using Annotation;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml;
-using System.Globalization;
-using System.Xml.Serialization;
-using INTUSOFT.Imaging;
-using System.Drawing.Imaging;
-using INTUSOFT.Data.Extension;
+﻿using Annotation;
+using Cloud_Models.Models;
 using Common;
 using Common.ValidatorDatas;
-using INTUSOFT.Data;
-using System.Text.RegularExpressions;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using INTUSOFT.Data.Extension;
+using INTUSOFT.Data.NewDbModel;
+using INTUSOFT.Data.Repository;
+using INTUSOFT.EventHandler;
+using INTUSOFT.Imaging;
+using INTUSOFT.ThumbnailModule;
+using IVLReport;
 using Newtonsoft.Json;
+using NLog;
+using Svg;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace INTUSOFT.Desktop.Forms
 {
@@ -83,7 +72,7 @@ namespace INTUSOFT.Desktop.Forms
         CustomFolderBrowser customFolderBrowser;// = CustomFolderBrowser.GetInstance();// new CustomFolderBrowser();
         Dictionary<string, object> customFolderData = new Dictionary<string, object>();
         DateTime ReportCreatedDateTime;
-Image redFilterSelected, greenFilterSelected, blueFilterSelected;
+        Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         Image redFilter, greenFilter, blueFilter;
         #endregion
         public ViewImageControls_UC()
@@ -103,7 +92,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             eventHandler.Register(eventHandler.SaveImgChanges, new NotificationHandler(Saveimg_changes));
             eventHandler.Register(eventHandler.CreateReportEvent, new NotificationHandler(createReportEvent));
             thumbnailData = new ThumbnailData();
-            
+
 
             toolStrip3.Renderer = new Custom.Controls.FormToolStripRenderer();
             toolStrip2.Renderer = new Custom.Controls.FormToolStripRenderer();
@@ -175,7 +164,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 blueFilter = Image.FromFile(blueFilterLogoPath); //Blue filter Image;
                 showBlueChannel_btn.Image = blueFilter;
             }
-            
+
             if (File.Exists(zoomIncreaseLogoImage))
                 increaseZoom_btn.Image = Image.FromFile(zoomIncreaseLogoImage);
             if (File.Exists(zoomDecreaseLogoImage))
@@ -210,18 +199,18 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
 
             if (IVLVariables.isCommandLineAppLaunch)
             {
-//                this.tableLayoutPanel1.Controls.Remove(panel2);
+                //                this.tableLayoutPanel1.Controls.Remove(panel2);
                 this.tableLayoutPanel1.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
                 this.tableLayoutPanel8.RowStyles[8] = new RowStyle(SizeType.Percent, 0f);
                 this.tableLayoutPanel8.RowStyles[9] = new RowStyle(SizeType.Percent, 0f);
                 this.tableLayoutPanel8.RowStyles[10] = new RowStyle(SizeType.Percent, 0f);
             }
-           // Reports_dgv.Enabled = !IVLVariables.isCommandLineAppLaunch;
-           // file_lbl.Enabled = !IVLVariables.isCommandLineAppLaunch;
+            // Reports_dgv.Enabled = !IVLVariables.isCommandLineAppLaunch;
+            // file_lbl.Enabled = !IVLVariables.isCommandLineAppLaunch;
         }
 
 
-        
+
 
         #region public methods
 
@@ -304,7 +293,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             else if (Screen.PrimaryScreen.Bounds.Width == 1366)
             {
                 showRedChannel_btn.Size = showGreenChannel_btn.Size = showBlueChannel_btn.Size = new Size(52, 47);
-                save_btn.Size = saveAs_btn.Size = exportImages_btn.Size = new Size(50,60);
+                save_btn.Size = saveAs_btn.Size = exportImages_btn.Size = new Size(50, 60);
                 decreaseBrightnessToolStrip.ImageScalingSize = new Size(24, 24);
                 decreaseContrastToolStrip.ImageScalingSize = new Size(24, 24);
                 decreaseZoomToolStrip.ImageScalingSize = new Size(24, 24);
@@ -321,7 +310,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             }
         }
 
-        
+
 
         /// <summary>
         /// Initializes the OriginalBm and modifyingBm to picBox
@@ -409,8 +398,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         {
             try
             {
-               
-                if (IVLVariables.isValueChanged )              
+
+                if (IVLVariables.isValueChanged)
                 {
                     IVLVariables.IsAnotherWindowOpen = true;
                     DialogResult res = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("Channel_Confirmation", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Channel_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.YesNoCancel, CustomMessageBoxIcon.Question);
@@ -443,9 +432,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
-          
+
         }
 
         /// <summary>
@@ -476,7 +465,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -488,7 +477,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             try
             {
                 Reports_dgv.ForeColor = Color.Black;
-                if (NewDataVariables.Reports == null)
+                //if (NewDataVariables.Reports == null)
                     NewDataVariables.Reports = NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit).Where(x => x.voided == false).ToList();
                 NewDataVariables.Reports = NewDataVariables.Reports.OrderBy(x => x.createdDate).ToList();
                 NewDataVariables.Reports.Reverse();
@@ -537,7 +526,19 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 for (int i = 0; i < NewDataVariables.Reports.Count; i++)
                 {
                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
+                    CloudAnalysisReport c = null;
+                    if(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList().Any())
+                     c = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList()[0];
+                    if(!NewDataVariables.Reports[i].isCloudReport)
                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
+                   else
+                    {
+                        if (c != null)
+                        {
+                            CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
+                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g");
+                        }
+                    }
                     //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
                     if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
                     {
@@ -566,37 +567,37 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 }
                 else
                     if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                {
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
+
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
+
+                    foreach (DataGridViewColumn c in Reports_dgv.Columns)
                     {
-                        //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-
-                        Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
-                        Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
-                        Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
-
-                        foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                        {
-                            c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                        }
+                        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
                     }
-                    else
+                }
+                else
                         if (Screen.PrimaryScreen.Bounds.Width == 1280)
-                        {
-                            //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-                            Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
-                            Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                            Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
-                            foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                            {
-                                c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                            }
-                        }
+                {
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
+                    foreach (DataGridViewColumn c in Reports_dgv.Columns)
+                    {
+                        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
+                    }
+                }
                 Reports_dgv.Refresh();
                 reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
             }
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -622,24 +623,24 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 }
                 if (!dir_in.Exists)
                     dir_in.Create();
-                
-                   IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(modifyingBm,dir_in.FullName,(ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), IVLVariables.CurrentSettings.ImageStorageSettings._ImageSaveFormat.val.ToLower()),Convert.ToInt32(IVLVariables.CurrentSettings.ImageStorageSettings._compressionRatio.val));
-                    //if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings._IsPng.val))
-                    //{
-                    //    //save_filename = dir_in.FullName + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddhhmmss") + ".png";
-                    //    //string[] save_filename_db_array = save_filename.Split('\\');
-                    //    //save_filename_DB = save_filename_db_array[save_filename_db_array.Length - 1];
-                    //   // Image<Bgr, byte> tempbm = new Image<Bgr, byte>(modifyingBm);
-                    //    //Bitmap temp2 = tempbm.ToBitmap();
-                    //    //temp2.Save(save_filename, ImageFormat.Png);
-                    //}
-                    //else
-                    //{
-                    //    save_filename = dir_in.FullName + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddhhmmss") + ".jpg";
-                    //    string[] save_filename_db_array = save_filename.Split('\\');
-                    //    save_filename_DB = save_filename_db_array[save_filename_db_array.Length - 1];
-                    //    modifyingBm.Save(save_filename, ImageFormat.Jpeg);
-                    //}
+
+                IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(modifyingBm, dir_in.FullName, (ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), IVLVariables.CurrentSettings.ImageStorageSettings._ImageSaveFormat.val.ToLower()), Convert.ToInt32(IVLVariables.CurrentSettings.ImageStorageSettings._compressionRatio.val));
+                //if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings._IsPng.val))
+                //{
+                //    //save_filename = dir_in.FullName + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddhhmmss") + ".png";
+                //    //string[] save_filename_db_array = save_filename.Split('\\');
+                //    //save_filename_DB = save_filename_db_array[save_filename_db_array.Length - 1];
+                //   // Image<Bgr, byte> tempbm = new Image<Bgr, byte>(modifyingBm);
+                //    //Bitmap temp2 = tempbm.ToBitmap();
+                //    //temp2.Save(save_filename, ImageFormat.Png);
+                //}
+                //else
+                //{
+                //    save_filename = dir_in.FullName + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddhhmmss") + ".jpg";
+                //    string[] save_filename_db_array = save_filename.Split('\\');
+                //    save_filename_DB = save_filename_db_array[save_filename_db_array.Length - 1];
+                //    modifyingBm.Save(save_filename, ImageFormat.Jpeg);
+                //}
                 Args arg = new Args();
                 if (leftSide_btn.BackColor == Color.Yellow)
                     arg["side"] = 1;
@@ -678,9 +679,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 //    eyeFundusImage.machine = machine_id;
                 //    NewIVLDataMethods.AddEyeFundusImage(eyeFundusImage);
                 //    arg["id"] = newObs.observationId;
-                   
+
                 //    NewIVLDataMethods.UpdateVisit();
-                    
+
                 //    PatientDetais_update();
                 //}
                 //else
@@ -693,14 +694,14 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 eventHandler.Notify(eventHandler.ImageUrlToDb, arg);
                 IVLVariables.isValueChanged = false;
                 eventHandler.Notify(eventHandler.ThumbnailSelected, arg);
-                ThumbnailUI.isValueChanged = false; 
-                
+                ThumbnailUI.isValueChanged = false;
+
                 this.Cursor = Cursors.Default;
             }
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -717,7 +718,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -752,7 +753,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -772,7 +773,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -793,7 +794,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -814,21 +815,21 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             string warningText = string.Empty;
                             try
                             {
-                                 warningText = IVLVariables.LangResourceManager.GetString("filterResetWarning_Text", IVLVariables.LangResourceCultureInfo);
+                                warningText = IVLVariables.LangResourceManager.GetString("filterResetWarning_Text", IVLVariables.LangResourceCultureInfo);
 
                             }
                             catch (Exception ex)
                             {
-                                
+
                                 throw;
                             }
-                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ChangeEyeSideOnlyForColorImage_Text", IVLVariables.LangResourceCultureInfo),warningText , CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ChangeEyeSideOnlyForColorImage_Text", IVLVariables.LangResourceCultureInfo), warningText, CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
                             CurrentChannelDisplayed = Channels.Color;
                         }
                         RGBbackgroundcolor();
                         //This below code is added by Darshan on 21-08-2015 to solve Defect no 0000593: The highlighting should be done on the channel display button.
                         IVLVariables.iscolorChange = false;
-                        
+
                         if (IVLVariables.isZoomEnabled)
                             eventHandler.Notify(eventHandler.EnableZoomMagnification, new Args());
                         //This code has been changed by Darshan on 26-11-2015 to get the zoom magnifier value from settings window.
@@ -845,7 +846,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -857,7 +858,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         {
             byte[] bytes = null;
             AnnotationXMLProperties anno = null;
-            
+
             try
             {
                 //bytes = Convert.FromBase64String(AnnotationXml);
@@ -969,7 +970,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
         #endregion
@@ -1092,8 +1093,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
 
 
 
-            
-#region custom folder dictionary population
+
+            #region custom folder dictionary population
             // added the data to the customFolderData dictionary
             customFolderData.Add("ImageFormat", IVLVariables.CurrentSettings.ImageStorageSettings._ImageSaveFormat.range);
             customFolderData.Add("_compressionRatio", IVLVariables.CurrentSettings.ImageStorageSettings._compressionRatio.range);
@@ -1116,7 +1117,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             customFolderData.Add("FolderPath_Warning_Text", IVLVariables.LangResourceManager.GetString("FolderPath_Warning_Text", IVLVariables.LangResourceCultureInfo));
             customFolderData.Add("FolderPath_Warning_Header", IVLVariables.LangResourceManager.GetString("FolderPath_Warning_Header", IVLVariables.LangResourceCultureInfo));
             customFolderData.Add("SaveAsCompleted_Text", IVLVariables.LangResourceManager.GetString("SaveAsCompleted_Text", IVLVariables.LangResourceCultureInfo));
-            customFolderData.Add("SaveAs_Warning_Text", IVLVariables.LangResourceManager.GetString("SaveAs_Warning_Text", IVLVariables.LangResourceCultureInfo));            
+            customFolderData.Add("SaveAs_Warning_Text", IVLVariables.LangResourceManager.GetString("SaveAs_Warning_Text", IVLVariables.LangResourceCultureInfo));
             customFolderData.Add("SaveAs_Warning_Header", IVLVariables.LangResourceManager.GetString("SaveAs_Warning_Header", IVLVariables.LangResourceCultureInfo));
             customFolderData.Add("FolderPath_Empty_Text", IVLVariables.LangResourceManager.GetString("FolderPath_Empty_Text", IVLVariables.LangResourceCultureInfo));
             customFolderData.Add("OpenFileLocation_Text", IVLVariables.LangResourceManager.GetString("OpenFileLocation_Text", IVLVariables.LangResourceCultureInfo));// adding key to dictionary.ashutosh 24/7 IVLVariables.LangResourceCultureInfo-An object that represents the culture for which the resource is localized.
@@ -1124,8 +1125,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             customFolderData.Add("DirectoryDoesnotExistWarning_Text", IVLVariables.LangResourceManager.GetString("DirectoryDoesnotExistWarning_Text", IVLVariables.LangResourceCultureInfo));//adding keey to the dictionary for directory does not exists text.
             customFolderData.Add("DirectoryDoesnotExist_Header", IVLVariables.LangResourceManager.GetString("DirectoryDoesnotExist_Header", IVLVariables.LangResourceCultureInfo));//adding keey to the dictionary for directory does not exists header.
 
-#endregion
-                //customFolderBrowser.CustomFolderData= customFolderData;
+            #endregion
+            //customFolderBrowser.CustomFolderData= customFolderData;
         }
 
         /// <summary>
@@ -1183,7 +1184,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -1205,8 +1206,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                     else
                         reportDic.Add("$NameOfTheReport", IVLVariables.CurrentSettings.ReportSettings.FundusReportText.val.ToString());// if not present then key and value are added.By Ashutosh 17-08-2017
 
-                    reportDic.Add("Color1",IVLVariables.GradientColorValues.Color1);
-                    reportDic.Add("Color2",IVLVariables.GradientColorValues.Color2);
+                    reportDic.Add("Color1", IVLVariables.GradientColorValues.Color1);
+                    reportDic.Add("Color2", IVLVariables.GradientColorValues.Color2);
                     reportDic.Add("ForeColor", IVLVariables.GradientColorValues.FontForeColor);
                     reportDic.Add("ColorAngle", IVLVariables.GradientColorValues.ColorAngle);
 
@@ -1257,10 +1258,10 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 maskDetailsOfImages[i] = eyefi.maskSetting;//string maskSetting given to string array maskDetailsOfImages. By Ashutosh 22-08-2017
                                 cameraDetailsOfImages[i] = eyefi.cameraSetting;//string cameraSetting given to string array maskDetailsOfImages. By Ashutosh 31-08-2017
                             }
-                           Patient p = NewDataVariables.GetCurrentPat();
-                            reportDic.Add("$FirstName",p.firstName);
+                            Patient p = NewDataVariables.GetCurrentPat();
+                            reportDic.Add("$FirstName", p.firstName);
                             reportDic.Add("$LastName", p.lastName);
-                            
+
                             reportDic.Add("$PhoneNumber", p.primaryPhoneNumber);
                             reportDic.Add("$emailID", p.primaryEmailId);
                             reportDic.Add("$dob", p.birthdate);
@@ -1268,7 +1269,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             reportDic.Add("$Age", IVLVariables.patAge.ToString());
                             reportDic.Add("$MRN", IVLVariables.MRN);
                             reportDic.Add("$Gender", IVLVariables.patGender);
-
+                            reportDic.Add("$PatID", IVLVariables.ActivePatID);
+                            reportDic.Add("$VisitID", IVLVariables.ActiveVisitID);
                             EmailsData mailData = new EmailsData();
                             mailData.EmailTo = IVLVariables.CurrentSettings.EmailSettings.EmailToList.val;
                             mailData.EmailReplyTo = IVLVariables.CurrentSettings.EmailSettings.EmailReplyToList.val;
@@ -1297,7 +1299,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             }
 
 
-                                #endregion
+                            #endregion
 
                             reportDic.Add("$MedHistory", string.Empty);
                             reportDic.Add("$Comments", string.Empty);
@@ -1484,7 +1486,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         reportDic.Add("$showEmailReportButton", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowEmailReportButton.val));
                         reportDic.Add("$showEmailTelemedButton", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowEmailTelemedButton.val));
                         reportDic.Add("$showAutoAnalysisButton", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowAutoAnalysisButton.val));
-                        reportDic.Add("$showEmailImagesButtonText",(IVLVariables.LangResourceManager.GetString("NoOfImagesToBeSelected_Text2",IVLVariables.LangResourceCultureInfo)));
+                        reportDic.Add("$showEmailImagesButtonText", (IVLVariables.LangResourceManager.GetString("NoOfImagesToBeSelected_Text2", IVLVariables.LangResourceCultureInfo)));
                         reportDic.Add("$showEmailReportButtonText", (IVLVariables.LangResourceManager.GetString("Report_Image_WarningHeader_Text", IVLVariables.LangResourceCultureInfo)));
                         reportDic.Add("$showEmailTelemedButtonText", (IVLVariables.LangResourceManager.GetString("TelemedUpload_Button_Text", IVLVariables.LangResourceCultureInfo)));
                         reportDic.Add("$showGenObs", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowGenObs.val));
@@ -1579,9 +1581,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                     ImagePath = thumbnailData.fileName;
                 else
                     if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
-                        ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-                    else
-                        ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                    ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                else
+                    ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
 
                 if (!noImageSelected_lbl.Visible && File.Exists(ImagePath))
                 {
@@ -1600,7 +1602,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -1647,7 +1649,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
         #endregion
@@ -1719,7 +1721,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         if (str[0] == "OS")
                             thumbnailData.side = 1;
                         else
-                            thumbnailData.side = 0;    
+                            thumbnailData.side = 0;
                     }
                     else
                     {
@@ -1728,9 +1730,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             thumbnailData.side = 1;
                         else
                             thumbnailData.side = 0;
-                    
+
                     }
-                    
+
                     if (thumbnailData.side == 1)
                     {
                         leftSide_btn.BackColor = Color.Yellow;
@@ -1798,7 +1800,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -1812,7 +1814,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             string ImagePath = string.Empty;
             if (IVLVariables.isCommandLineAppLaunch)
                 ImagePath = thumbnailData.fileName;
-            else if(NewDataVariables.Active_Obs != null)
+            else if (NewDataVariables.Active_Obs != null)
             {
                 if (!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
                     ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
@@ -2002,7 +2004,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         /// </summary>
         /// <param name="reportVal"></param>
         /// <param name="e"></param>
-        void 
+        void
             _report_reportSavedEvent(Dictionary<string, object> reportVal, EventArgs e)
         {
             if (Convert.ToBoolean(IVLVariables.CurrentSettings.UISettings.ViewImaging._ReportWindowClose.val))
@@ -2038,7 +2040,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 report.createdBy = user;
                 report.report_type = rept;
                 report.Patient = NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0];
-                NewDataVariables.Patients.Where(x=>x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(y=>y.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].reports.Add(report);
+                NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(y => y.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].reports.Add(report);
                 //NewDataVariables.Active_Visit.reports.Add(report);
                 //NewIVLDataMethods.AddReport(report);
                 //NewIVLDataMethods.UpdateVisit();
@@ -2061,13 +2063,13 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             string ImagePath = string.Empty;
             if (IVLVariables.isCommandLineAppLaunch)
                 ImagePath = thumbnailData.fileName;
-            else if(NewDataVariables.Active_Obs != null)
+            else if (NewDataVariables.Active_Obs != null)
             {
                 if (!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
                     ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
                 else
                     ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-            } 
+            }
             if (!String.IsNullOrEmpty(ImagePath))
             {
                 if (!noImageSelected_lbl.Visible && File.Exists(ImagePath))
@@ -2113,7 +2115,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                     ImagePath = thumbnailData.fileName;
                 else if (NewDataVariables.Active_Obs != null)
                 {
-                    if(!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
+                    if (!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
                         ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
                     else
                         ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
@@ -2179,7 +2181,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         CustomFolderBrowser.export = false;
                         customFolderBrowser = new CustomFolderBrowser();
                         if (thumbnailData.Name != null)
-                            CustomFolderBrowser.fileName = thumbnailData.Name.Replace(" ", "_"); 
+                            CustomFolderBrowser.fileName = thumbnailData.Name.Replace(" ", "_");
                         customFolderBrowser.CustomFolderData = customFolderData; //assigning the customFolderData dictionary to the CustomFolderData dictionary
                         customFolderBrowser.ShowImageExportButtons(); //to resize the custom folder browser
                         CustomFolderBrowser.ImageSavingbtn += customFolderBrowser_ImageSavingbtn; // subscribing to the event _ImageSavingbtn
@@ -2248,7 +2250,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 {
                     string fileFullPath = customFolderBrowser.folderPath + Path.DirectorySeparatorChar + CustomFolderBrowser.fileName;
                     CustomFolderBrowser.fileNames = new string[] { fileFullPath + "." + customFolderBrowser.imageFormat };
-                    IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(modifyingBm, fileFullPath, (ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), customFolderBrowser.imageFormat), customFolderBrowser.compressionRatio,true);
+                    IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(modifyingBm, fileFullPath, (ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), customFolderBrowser.imageFormat), customFolderBrowser.compressionRatio, true);
                     CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("SaveAsCompleted_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("SaveAs_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Information);
                 }
                 this.Cursor = Cursors.Default;
@@ -2256,7 +2258,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -2468,7 +2470,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         //ImageModel img = DataVariables._imageRepo.GetById(IVLVariables.ActiveImageID);
                         //This below code has been added by Darshan on 22-08-2015 to support Advance Searching.
                         Args arg = new Args();//OD and OS in the thumbnail view is not changing so it is initialized before the image has been updated
-                       
+
                         if (!IVLVariables.isCommandLineAppLaunch)
                         {
                             NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
@@ -2483,7 +2485,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             arg["id"] = thumbnailData.id;
                             arg["isannotated"] = thumbnailData.isAnnotated;
                             arg["isCDR"] = thumbnailData.isCDR;// This line has been added to handle the crash  when iscdr is missing od and os changed by sriram on september 24 2015
-                            
+
                         }
 
                         if (isLeft)
@@ -2502,7 +2504,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 pat.patientLastModifiedDate = DateTime.Now;
 
                                 pat.observations.ToList()[pat.observations.ToList().FindIndex(x => x.observationId == NewDataVariables.Active_Obs.observationId)] = NewDataVariables.Active_Obs;
-                                NewDataVariables.Active_Visit.observations.ToList()[NewDataVariables.Active_Visit.observations.ToList().FindIndex(x => x.observationId == NewDataVariables.Active_Obs.observationId)]= NewDataVariables.Active_Obs;
+                                NewDataVariables.Active_Visit.observations.ToList()[NewDataVariables.Active_Visit.observations.ToList().FindIndex(x => x.observationId == NewDataVariables.Active_Obs.observationId)] = NewDataVariables.Active_Obs;
                                 NewDataVariables.Active_Visit.lastModifiedDate = DateTime.Now;
                                 pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0] = NewDataVariables.Active_Visit;
                                 NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x => x.personId == NewDataVariables.Active_Patient)] = pat;
@@ -2520,7 +2522,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             leftSide_btn.BackColor = Color.Khaki;
                             if (!IVLVariables.isCommandLineAppLaunch)
                             {
-                            
+
                                 NewDataVariables.Active_Obs.eyeSide = 'R';
                                 Patient pat = NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0];
                                 NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
@@ -2561,19 +2563,19 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             if (NewDataVariables.Active_Obs.maskSetting != null)
                             {
                                 maskSettings = (INTUSOFT.Imaging.MaskSettings)Deserialize(typeof(INTUSOFT.Imaging.MaskSettings), NewDataVariables.Active_Obs.maskSetting);
-                                if(maskSettings == null)
+                                if (maskSettings == null)
                                     maskSettings = (INTUSOFT.Imaging.MaskSettings)JsonConvert.DeserializeObject(NewDataVariables.Active_Obs.maskSetting, typeof(INTUSOFT.Imaging.MaskSettings));
                             }
                             if (NewDataVariables.Active_Obs.cameraSetting != null)
                             {
                                 capturedImageCameraSettings = (INTUSOFT.Imaging.CaptureLog)Deserialize(typeof(INTUSOFT.Imaging.CaptureLog), NewDataVariables.Active_Obs.cameraSetting);
-                                if(capturedImageCameraSettings == null)
+                                if (capturedImageCameraSettings == null)
                                     capturedImageCameraSettings = (INTUSOFT.Imaging.CaptureLog)JsonConvert.DeserializeObject(NewDataVariables.Active_Obs.cameraSetting, typeof(INTUSOFT.Imaging.CaptureLog));
                             }
                             if (maskSettings != null)
                             {
 
-                                IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, maskSettings,true);
+                                IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, maskSettings, true);
                             }
                             else
                             {
@@ -2584,11 +2586,11 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 maskSettings1.maskHeight = Convert.ToInt32(IVLVariables.CurrentSettings.PostProcessingSettings.MaskSettings.CaptureMaskHeight.val);
                                 maskSettings1.maskCentreX = Convert.ToInt32(IVLVariables.CurrentSettings.CameraSettings._ImageOpticalCentreX.val);
                                 maskSettings1.maskCentreY = Convert.ToInt32(IVLVariables.CurrentSettings.CameraSettings._ImageOpticalCentreY.val);
-                                IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, maskSettings1,true);
+                                IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, maskSettings1, true);
                             }
                         }
                         else
-                            IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, IVLVariables.ivl_Camera.camPropsHelper._Settings.PostProcessingSettings.maskSettings,true);
+                            IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyMask(ref OriginalBm, IVLVariables.ivl_Camera.camPropsHelper._Settings.PostProcessingSettings.maskSettings, true);
 
                         Bitmap thumbnailBM = null;
                         if (Convert.ToBoolean(IVLVariables.CurrentSettings.PostProcessingSettings.MaskSettings._ApplyLogo.val))
@@ -2610,7 +2612,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             }
                             else
                             {
-                                if(thumbnailData.side == 0)
+                                if (thumbnailData.side == 0)
                                 {
                                     thumbnailName = "OD 01";
                                     left = LeftRightPosition.Right;
@@ -2621,7 +2623,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                     left = LeftRightPosition.Left;
                                 }
                             }
-                                IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyLogo(ref OriginalBm, thumbnailName, Color.Black, left);//ApplyLogo takes 3 agruments . Here empty string and black colour passed. By Ashutosh 29-08-2017.
+                            IVLVariables.ivl_Camera.camPropsHelper.PostProcessing.ApplyLogo(ref OriginalBm, thumbnailName, Color.Black, left);//ApplyLogo takes 3 agruments . Here empty string and black colour passed. By Ashutosh 29-08-2017.
                         }
                         {
                             if (System.IO.File.Exists(thumbnailData.fileName))
@@ -2631,7 +2633,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 string[] strArr = finf.Name.Split('.');
 
                                 string thumbnailName = finf.DirectoryName + System.IO.Path.DirectorySeparatorChar + strArr[0] + "_tb." + strArr[1];
-                     
+
                                 if (System.IO.File.Exists(thumbnailName))
                                 {
                                     System.IO.File.Delete(thumbnailName);
@@ -2652,15 +2654,15 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 str[0] = "OS";
                             else
                                 str[0] = "OD";
-                            string fileName = string.Join("_",str);
+                            string fileName = string.Join("_", str);
                             finf = new FileInfo(finf.Directory.FullName + Path.DirectorySeparatorChar + fileName);
-                           thumbnailData.fileName = finf.FullName;
-                           arg["ImgLoc"] = thumbnailData.fileName;
+                            thumbnailData.fileName = finf.FullName;
+                            arg["ImgLoc"] = thumbnailData.fileName;
                         }
                         FileInfo finf1 = new FileInfo(thumbnailData.fileName);
 
-                            string[] strArr1 = finf1.Name.Split('.');
-                            IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(OriginalBm, finf1.DirectoryName + Path.DirectorySeparatorChar + strArr1[0], (ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), IVLVariables.CurrentSettings.ImageStorageSettings._ImageSaveFormat.val.ToLower()), Convert.ToInt32(IVLVariables.CurrentSettings.ImageStorageSettings._compressionRatio.val), true);
+                        string[] strArr1 = finf1.Name.Split('.');
+                        IVLVariables.ivl_Camera.camPropsHelper.SaveImage2Dir(OriginalBm, finf1.DirectoryName + Path.DirectorySeparatorChar + strArr1[0], (ImageSaveFormat)Enum.Parse(typeof(ImageSaveFormat), IVLVariables.CurrentSettings.ImageStorageSettings._ImageSaveFormat.val.ToLower()), Convert.ToInt32(IVLVariables.CurrentSettings.ImageStorageSettings._compressionRatio.val), true);
 
                         //OriginalBm.Save(thumbnailData.fileName);
 
@@ -2680,7 +2682,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             catch (Exception ex)
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -2691,45 +2693,45 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         /// <param name="e"></param>
         private void rightSide_btn_Click(object sender, EventArgs e)
         {
-             IVLVariables.IsAnotherWindowOpen = true;
-             string ImagePath = string.Empty;
-             if (IVLVariables.isCommandLineAppLaunch)
-                 ImagePath = thumbnailData.fileName;
-             else if (NewDataVariables.Active_Obs != null)
-             {
-                 if (!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
-                     ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-                 else
-                     ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-             }
+            IVLVariables.IsAnotherWindowOpen = true;
+            string ImagePath = string.Empty;
+            if (IVLVariables.isCommandLineAppLaunch)
+                ImagePath = thumbnailData.fileName;
+            else if (NewDataVariables.Active_Obs != null)
+            {
+                if (!Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
+                    ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                else
+                    ImagePath = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+            }
             if (!String.IsNullOrEmpty(ImagePath))
-             {
-                 if (!IsFileLocked(new FileInfo(ImagePath)))
-                 {
-                     if (!noImageSelected_lbl.Visible && File.Exists(ImagePath))
-                     {
-                         noofimages();
-                         if (images.Length > 1)
-                         {
-                             CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("AnnotationNo_Images", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Right_Side", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Warning);
-                         }
-                         else
-                         {
-                             if (rightSide_btn.BackColor != Color.Yellow)
-                             {
-                                 ChangeEyeSide(false);
-                             }
-                             //if(result == DialogResult.No)
-                             //   return;
-                         }
-                     }
-                 }
-                 else
-                 {
-                     CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ODOSCrashWaring_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("ODOSCrashWaring_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Warning);
-                 }
-                 IVLVariables.IsAnotherWindowOpen = false;
-             }
+            {
+                if (!IsFileLocked(new FileInfo(ImagePath)))
+                {
+                    if (!noImageSelected_lbl.Visible && File.Exists(ImagePath))
+                    {
+                        noofimages();
+                        if (images.Length > 1)
+                        {
+                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("AnnotationNo_Images", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Right_Side", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            if (rightSide_btn.BackColor != Color.Yellow)
+                            {
+                                ChangeEyeSide(false);
+                            }
+                            //if(result == DialogResult.No)
+                            //   return;
+                        }
+                    }
+                }
+                else
+                {
+                    CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ODOSCrashWaring_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("ODOSCrashWaring_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Warning);
+                }
+                IVLVariables.IsAnotherWindowOpen = false;
+            }
         }
 
         /// <summary>
@@ -3003,9 +3005,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 reportDic.Add("$ExportAnnotationButtonText", IVLVariables.LangResourceManager.GetString("Export_Button_Text", IVLVariables.LangResourceCultureInfo));
                                 reportDic.Add("$ZoomInText", IVLVariables.LangResourceManager.GetString("ZoomIn_Text", IVLVariables.LangResourceCultureInfo));
                                 reportDic.Add("$ZoomOutText", IVLVariables.LangResourceManager.GetString("ZoomOut_Text", IVLVariables.LangResourceCultureInfo));
-                                reportDic.Add("$ZoomResetText", IVLVariables.LangResourceManager.GetString("ZoomReset_Text", IVLVariables.LangResourceCultureInfo));                    
-                                
-                                
+                                reportDic.Add("$ZoomResetText", IVLVariables.LangResourceManager.GetString("ZoomReset_Text", IVLVariables.LangResourceCultureInfo));
+
+
                                 if (reportDic.ContainsKey("$NameOfTheReport"))//checks if key $NameOfTheReport is present .By Ashutosh 17-08-2017
                                     reportDic["$NameOfTheReport"] = IVLVariables.CurrentSettings.ReportSettings.NameOfAnnotationReport.val.ToString();// if present then it's value is replaced.By Ashutosh 17-08-2017
                                 else
@@ -3014,9 +3016,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                                 if (reportDic.ContainsKey("$currentTemplate"))
                                 {
                                     reportDic.Remove("$currentTemplate");
-                                
-                                } 
-                                reportDic.Add("$currentTemplate",IVLVariables.appDirPathName+ Path.DirectorySeparatorChar+@"ReportTemplates\Annotation\Normal\Annotation_LsA4.xml");
+
+                                }
+                                reportDic.Add("$currentTemplate", IVLVariables.appDirPathName + Path.DirectorySeparatorChar + @"ReportTemplates\Annotation\Normal\Annotation_LsA4.xml");
                                 string[] annotation_name = { IVLVariables.LangResourceManager.GetString("Annotation_Date", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Annotation_Time", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Annotation_View", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Annotation_Delete", IVLVariables.LangResourceCultureInfo), IVLVariables.Operator, IVLVariables.LangResourceManager.GetString("Reported_By_Text", IVLVariables.LangResourceCultureInfo) };
                                 reportDic.Add("$CreatedFiles", annotation_name as string[]);
                                 reportDic.Add("$is24hrformat", Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val));
@@ -3051,7 +3053,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                     }
                     else
                         CustomMessageBoxPopUp(string.Format(IVLVariables.LangResourceManager.GetString("Annotation_Image_Warning_Text", IVLVariables.LangResourceCultureInfo)), string.Format(IVLVariables.LangResourceManager.GetString("AnnotationWarning_Header", IVLVariables.LangResourceCultureInfo)), CustomMessageBoxIcon.Warning);
-                        //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("Annotation_Image_Warning_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("AnnotationWarning_Header", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxIcon.Warning);
+                    //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("Annotation_Image_Warning_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("AnnotationWarning_Header", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxIcon.Warning);
                     arg["isDefault"] = true;
                     eventHandler.Notify(eventHandler.UpdateMainWindowCursor, arg);//added to make the default cursor to appear by kishore on 18 September 2017.
                 }
@@ -3068,10 +3070,10 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
 
         private void CustomMessageBoxPopUp(string text, string header, CustomMessageBoxIcon msgBoxIcons)
         {
-           DialogResult res = CustomMessageBox.Show(text,header,msgBoxIcons);
-           if (res == DialogResult.OK)
-               IVLVariables.IsAnotherWindowOpen = false;
-            
+            DialogResult res = CustomMessageBox.Show(text, header, msgBoxIcons);
+            if (res == DialogResult.OK)
+                IVLVariables.IsAnotherWindowOpen = false;
+
         }
 
         private void CustomMessageBoxPopUp(string text, string header, CustomMessageBoxButtons msgBoxButtons, CustomMessageBoxIcon msgBoxIcons)
@@ -3114,7 +3116,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         {
             if (!(bool)e["isAnnotationUpdate"])
             {
-                
+
                 string annoXml = e["xml"] as string;
                 NewDataVariables.Active_Obs.annotationsAvailable = true;
                 INTUSOFT.Data.NewDbModel.eye_fundus_image_annotation annotation = new INTUSOFT.Data.NewDbModel.eye_fundus_image_annotation();
@@ -3129,7 +3131,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 annotation.dataXml = annoXml;
                 annotation.comments = e["Comments"] as string;
                 NewDataVariables.Active_Obs.eye_fundus_image_annotations.Add(annotation);
-                    //NewIVLDataMethods.AddAnnotation(annotation);
+                //NewIVLDataMethods.AddAnnotation(annotation);
                 //NewDataVariables._Repo.Update<eye_fundus_image>(NewDataVariables.Active_Obs);//This code has been added to update the active image model after its isannoted status has been chnanged.
                 //PatientDetais_update();
                 annotatedImage();
@@ -3137,7 +3139,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             }
             else
             {
-                NewDataVariables.Active_Annotation = NewDataVariables.Annotations.Where(x=>x.eyeFundusImageAnnotationId == (Convert.ToInt32(e["annotationID"]))).ToList()[0];
+                NewDataVariables.Active_Annotation = NewDataVariables.Annotations.Where(x => x.eyeFundusImageAnnotationId == (Convert.ToInt32(e["annotationID"]))).ToList()[0];
                 string annoXml = e["xml"] as string;
                 NewDataVariables.Active_Annotation.dataXml = annoXml;
                 NewIVLDataMethods.UpdatePatient();
@@ -3170,13 +3172,124 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 CreateReport();
             else
             {
-                CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("Report_Image_WarningMsg_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Report_Image_WarningHeader_Text", IVLVariables.LangResourceCultureInfo),CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Warning);
+                CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("Report_Image_WarningMsg_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Report_Image_WarningHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Warning);
             }
             //this.Cursor = Cursors.Default;
             arg["isDefault"] = true;
             eventHandler.Notify(eventHandler.UpdateMainWindowCursor, arg);//added to make the default cursor to appear by kishore on 18 September 2017.
         }
 
+        public void CreateCloudFileInOutbox()
+        {
+            noofimages();
+
+            if (images.Length <= Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._noOfImagesForReport.val))
+            {
+                CloudModel cloudModel = PopulateModelsForMandaraUpload();
+                var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
+                var outboxFilePath = Path.Combine( IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir) , DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
+                File.WriteAllText(outboxFilePath, cloudModelJson);
+                CloudAnalysisReport car = NewDataVariables._Repo.GetById<CloudAnalysisReport>(cloudModel.cloudID);
+                car.fileName = new FileInfo(outboxFilePath).Name;
+                NewDataVariables._Repo.Update<CloudAnalysisReport>(car);
+                CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString()+" " +IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                showExisitingReports();
+            }
+            else
+            {
+                CustomMessageBoxPopUp(NoOfImagesToBeSelectedText1 + " " + NoOfImagesToBeSelected.ToString() + " " + NoOfImagesToBeSelectedText2, NoOfImagesToBeSelectedHeader, CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+            }
+        }
+        private CloudModel PopulateModelsForMandaraUpload()
+        {
+            INTUSOFT.Data.NewDbModel.report report = new INTUSOFT.Data.NewDbModel.report();
+            report.dataJson = "";
+            report.createdDate = DateTime.Now;
+            report.visit = NewDataVariables.Active_Visit;
+            //This code has been added to insert user id into the table has to be removed once user or admin has been added and has be replaced by active user.
+            users user = users.CreateNewUsers();
+            user.userId = 1;
+            ReportType rept = ReportType.CreateNewReportType();
+            rept.reportTypeId = 1;
+            report.lastModifiedDate = DateTime.Now;
+            report.createdBy = user;
+            report.report_type = rept;
+            report.isCloudReport = true;
+            report.Patient = NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0];
+            NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(y => y.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].reports.Add(report);
+            //NewDataVariables.Active_Visit.reports.Add(report);
+            //NewIVLDataMethods.AddReport(report);
+            //NewIVLDataMethods.UpdateVisit();
+            NewDataVariables._Repo.Add<report>(report);
+
+            CloudAnalysisReport cloudAnalysisReport = CloudAnalysisReport.CreateCloudAnalysisReport();
+            cloudAnalysisReport.Report = report;
+            cloudAnalysisReport.cloudAnalysisReportStatus =(int) CloudReportStatus.Intialized;
+            NewDataVariables._Repo.Add<CloudAnalysisReport>(cloudAnalysisReport);
+
+            CloudModel cloudModel = new CloudModel();
+            cloudModel.reportID = report.reportId;
+            cloudModel.visitID = NewDataVariables.Active_Visit.visitId;
+            cloudModel.patientID = NewDataVariables.Active_Patient;
+            cloudModel.cloudID = cloudAnalysisReport.cloudAnalysisReportId;
+
+            cloudModel.LoginModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.LoginModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_LOGIN_URL.val;
+
+            cloudModel.LoginModel.username = NewDataVariables.Active_User.username;
+            cloudModel.LoginModel.password = NewDataVariables.Active_User.password;
+            cloudModel.LoginModel.device_id = IVLVariables.CurrentSettings.CameraSettings.DeviceID.val;
+
+            Dictionary<string, object> kvp = new Dictionary<string, object>();
+            cloudModel.LoginModel.Body = string.Empty;
+            LoginResponseModel reponse = new LoginResponseModel();
+            reponse.message = new message();
+
+
+            cloudModel.CreateAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val; ;
+            cloudModel.CreateAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val; ;
+
+            cloudModel.CreateAnalysisModel.sample_id = IVLVariables.MRN;
+            cloudModel.CreateAnalysisModel.age = IVLVariables.patAge.ToString();
+            cloudModel.CreateAnalysisModel.gender = IVLVariables.patGender[0].ToString();
+            cloudModel.CreateAnalysisModel.sample_desc = IVLVariables.patAge.ToString() + "yrs, " + IVLVariables.patGender[0].ToString();
+            cloudModel.CreateAnalysisModel.visitID = IVLVariables.ActiveVisitID;
+            cloudModel.CreateAnalysisModel.PatientID = IVLVariables.ActivePatID;
+
+
+            cloudModel.CreateAnalysisModel.Body = string.Empty;
+
+            //cloudModel.UploadModel.relative_path = cloudModel.CreateAnalysisModel.sample_id + Path.DirectorySeparatorChar + "LE" + Path.DirectorySeparatorChar + "UnsharpMask.jpg";
+            cloudModel.UploadModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.UploadModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+            cloudModel.UploadModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES_INPUT.val;
+            cloudModel.UploadModel.images = currentReportImageFiles;
+            cloudModel.UploadModel.checksums = new string[currentReportImageFiles.Length];
+            cloudModel.UploadModel.relative_path = new string[currentReportImageFiles.Length];
+            cloudModel.UploadModel.eyeSideArr = currentReportLabelNames;
+            for (int i = 0; i < currentReportImageFiles.Length; i++)
+            {
+                FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
+                cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash();
+                cloudModel.UploadModel.relative_path[i] = IVLVariables.MRN + "/" + (currentReportLabelNames[i].Contains("OD") ? "RE" : "LE") + "/" + ImgFinf.Name;
+            }
+
+            cloudModel.InitiateAnalysisModel.status = "initialised";
+
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_STATUS_URL.val;
+
+            cloudModel.InitiateAnalysisModel.Body = string.Empty;
+
+            cloudModel.GetAnalysisModel.analysis_id = cloudModel.UploadModel.analysis_id;
+            cloudModel.GetAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.GetAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+
+            cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+
+            return cloudModel;
+        }
         private void CreateReport()
         {
             try
@@ -3246,12 +3359,12 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         CustomMessageBoxPopUp(NoOfImagesToBeSelectedText1 + " " + NoOfImagesToBeSelected.ToString() + " " + NoOfImagesToBeSelectedText2, NoOfImagesToBeSelectedHeader, CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
-                Common.ExceptionLogWriter.WriteLog(ex,ExceptionLog);
-//                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+                Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
+                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
             //else
             //{
@@ -3291,22 +3404,22 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
             }
             else
                 if (!IVLVariables.ivl_Camera.CameraIsLive && e.KeyCode == Keys.U && Reports_dgv.RowCount > 0)
+            {
+                if (Reports_dgv.SelectedRows[0].Index < Reports_dgv.Rows.Count && Reports_dgv.SelectedRows[0].Index > 0)
                 {
-                    if (Reports_dgv.SelectedRows[0].Index < Reports_dgv.Rows.Count && Reports_dgv.SelectedRows[0].Index > 0)
-                    {
-                        int currentIndx = Reports_dgv.SelectedRows[0].Index;
-                        Reports_dgv.Rows[currentIndx - 1].Selected = true;
-                    }
+                    int currentIndx = Reports_dgv.SelectedRows[0].Index;
+                    Reports_dgv.Rows[currentIndx - 1].Selected = true;
                 }
-                //This below code has been added by Darshan to Resolve Defect no 0000473: The Reports grid and the thumbnails are simultaneously selected.
-                else if (e.KeyCode == Keys.Down)
-                {
-                    e.Handled = true;
-                }
-                else if (e.KeyCode == Keys.Up)
-                {
-                    e.Handled = true;
-                }
+            }
+            //This below code has been added by Darshan to Resolve Defect no 0000473: The Reports grid and the thumbnails are simultaneously selected.
+            else if (e.KeyCode == Keys.Down)
+            {
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                e.Handled = true;
+            }
         }
 
         /// <summary>
@@ -3457,8 +3570,8 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         }
                         int side = 0;
 
-                       // UITextValues["$visitImages"] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-                       // UITextValues["$visitImageIds"] = NewDataVariables.Active_EyeFundusImage.eyeFundusImageId.ToString();
+                        // UITextValues["$visitImages"] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                        // UITextValues["$visitImageIds"] = NewDataVariables.Active_EyeFundusImage.eyeFundusImageId.ToString();
                         if (UITextValues.ContainsKey("$NameOfTheReport"))//checks if key $NameOfTheReport is present .By Ashutosh 17-08-2017
                             UITextValues["$NameOfTheReport"] = IVLVariables.CurrentSettings.ReportSettings.NameOfCDRReport.val.ToString();// if present then it's value is replaced.By Ashutosh 17-08-2017
                         else
@@ -3477,11 +3590,11 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                             path = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy");
                         else
                             path = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString();
-                        UITextValues["$CurrentImageFiles"]= new string[] { path + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value };
-                        UITextValues["$ImageNames"]= new string[] { imageName.ToString() };
-                        UITextValues["$visitImageIds"] = new int[]{id};//.ToString();
+                        UITextValues["$CurrentImageFiles"] = new string[] { path + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value };
+                        UITextValues["$ImageNames"] = new string[] { imageName.ToString() };
+                        UITextValues["$visitImageIds"] = new int[] { id };//.ToString();
                         UITextValues["$visitImageSides"] = new string[] { side.ToString() };
-                        UITextValues["$currentTemplate"] = IVLVariables.appDirPathName +Path.Combine(new string[]{ "ReportTemplates","CDR","Normal","CDR_lsA4.xml"});
+                        UITextValues["$currentTemplate"] = IVLVariables.appDirPathName + Path.Combine(new string[] { "ReportTemplates", "CDR", "Normal", "CDR_lsA4.xml" });
                         UITextValues.Add("$xml", xml);
 
                         //UITextValues["Name"] = IVLVariables.patName;
@@ -3525,7 +3638,7 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                         else
                             return;
                     }
-                    
+
                 }
 
             }
@@ -3634,12 +3747,12 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
                 this.Cursor = Cursors.WaitCursor;
                 IVLReport.Report.isNew = false;
                 isView = true;
-                
+
                 INTUSOFT.Data.NewDbModel.report reportVal = NewDataVariables._Repo.GetById<report>(Convert.ToInt32(Reports_dgv.Rows[e.RowIndex].Cells["reportId"].Value));
                 ReportCreatedDateTime = reportVal.createdDate;
                 getReportDetails();
 
-                
+
                 string reportXml = reportVal.dataJson;
 
                 if (_report.readXML(reportXml))
@@ -3693,9 +3806,9 @@ Image redFilterSelected, greenFilterSelected, blueFilterSelected;
         private void formButtons1_Click(object sender, EventArgs e)
         {
             //SplitScreen ss = new SplitScreen();
-            
+
             //ss.ShowDialog();
         }
     }
 }
-        #endregion
+#endregion

@@ -110,6 +110,7 @@ namespace INTUSOFT.Desktop.Forms
         int PageCountDecrementNumber = 4;
         #endregion
         List<int> ReportNumbers = new List<int>();
+        List<int> AIReportNumbers = new List<int>();
         List<int> ImageNumbers = new List<int>();
         string patFirstNameSearchText = "";
         string patLastNameSearchText = "";
@@ -1998,6 +1999,9 @@ namespace INTUSOFT.Desktop.Forms
                     ImageNumbers.Add(Convert.ToInt32(NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(x => x.voided == false).OrderByDescending(XmlAnyAttributeAttribute => XmlAnyAttributeAttribute.createdDate).ToList()[i].observations.Where(x => x.voided == false).Count()));
                     //ReportNumbers.Add(Convert.ToInt32(NewDataVariables._Repo.GetByCategory<report>("visit", visit).Count));
                     ReportNumbers.Add(Convert.ToInt32(NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(x => x.voided == false).OrderByDescending(XmlAnyAttributeAttribute => XmlAnyAttributeAttribute.createdDate).ToList()[i].reports.Where(x=>x.voided == false).ToList().Count));
+
+                    AIReportNumbers.Add(Convert.ToInt32(NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(x => x.voided == false).OrderByDescending(XmlAnyAttributeAttribute => XmlAnyAttributeAttribute.createdDate).ToList()[i].reports.Where(x => x.voided == false && x.isCloudReport == true).ToList().Count));
+
                 }
                 //d.Columns.RemoveAt(d.Columns.IndexOf("NoOfReports"));
                 //d.Columns.RemoveAt(d.Columns.IndexOf("NoOfImages"));
@@ -2037,16 +2041,20 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     DataGridViewDisableButtonColumn col;
                     //The below code has been added to add link in place of text.
-                    if (!visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)) && !visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)))
+                    if (!visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)) && !visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)) && !visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)))
                     {
                         DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
                         //DataGridViewLinkColumn column = new DataGridViewLinkColumn();// visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString( "No_of_Reports_Text];
                         column.Name = IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo);
-                       visitsView_dgv.Columns.Add(column);
+                        visitsView_dgv.Columns.Add(column);
                         //column = new DataGridViewLinkColumn();// visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString( "No_of_Reports_Text];
                         column = new DataGridViewTextBoxColumn();
 
                         column.Name = IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo);
+                        visitsView_dgv.Columns.Add(column);
+
+                        column = new DataGridViewTextBoxColumn();
+                        column.Name = IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo);
                         visitsView_dgv.Columns.Add(column);
                     }
                     //if (!visitsView_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)))
@@ -2078,6 +2086,8 @@ namespace INTUSOFT.Desktop.Forms
                         visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 92;
                         visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 92;
                         visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 92;
+                        visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 92;
+
                         //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 90;
                         //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 55;
                     }
@@ -2085,13 +2095,14 @@ namespace INTUSOFT.Desktop.Forms
                         if (Screen.PrimaryScreen.Bounds.Width == 1366)
                         {
                             //Below value has been changed by Darshan on 28-10-2015 to solve Defect no 0000644: When no Consultations are present,the "Visit Date" label is coming up as "Visit".
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 152;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 105;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 105;
-                            //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 85;
-                            //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 120;
-                        }
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 130;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 130;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 80;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 80;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 80;
+                        //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 85;
+                        //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 120;
+                    }
                         else if (Screen.PrimaryScreen.Bounds.Width == 1920)
                         {
                             //Below value has been changed by Darshan on 28-10-2015 to solve Defect no 0000644: When no Consultations are present,the "Visit Date" label is coming up as "Visit".
@@ -2099,9 +2110,11 @@ namespace INTUSOFT.Desktop.Forms
                             visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 200;
                             visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
                             visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
-                            //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 125;
-                           // visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 140;
-                        }
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 70;
+
+                        //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 125;
+                        // visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 140;
+                    }
                     foreach (DataGridViewRow item in visitsView_dgv.Rows)
                     {
                         string dateVal = item.Cells[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Value.ToString();
@@ -2113,9 +2126,13 @@ namespace INTUSOFT.Desktop.Forms
                         item.Cells[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Value = imageNumbersStr;
                         //linCell = new DataGridViewLinkCell();
                         string reportNumbersStr = ReportNumbers[visitsView_dgv.Rows.IndexOf(item)].ToString();
+
+                        string AIReportNumbersStr = AIReportNumbers[visitsView_dgv.Rows.IndexOf(item)].ToString();
+
                         //linCell.Value = imageNumbersStr;
-                       // item.Cells[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)] = linCell;
+                        // item.Cells[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)] = linCell;
                         item.Cells[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Value = reportNumbersStr;
+                        item.Cells[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Value = AIReportNumbersStr;
                         //DataGridViewDisableButtonCell disableButtonCell = item.Cells[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)] as DataGridViewDisableButtonCell;
                         //if (DateTime.Now.Date == day.Date)
                         //{

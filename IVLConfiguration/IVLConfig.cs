@@ -111,6 +111,7 @@ namespace INTUSOFT.Configuration
        public AnnotationColorSelection AnnotationColorSelection;
        public ImageNameSettings ImageNameSettings;
        public EmailSettings EmailSettings;
+       public CloudSettings CloudSettings;
        public ReportSettings ReportSettings;
        public PrinterPPSettings PrinterPPSettings;
        public MotorOffSetSettings MotorOffSetSettings;
@@ -126,9 +127,11 @@ namespace INTUSOFT.Configuration
            UISettings = new UISettings();
            ImageNameSettings = new ImageNameSettings();
            EmailSettings = new EmailSettings();
+           CloudSettings = new CloudSettings();
            ReportSettings = new ReportSettings();
            PrinterPPSettings = new PrinterPPSettings();
            MotorOffSetSettings = new AdvanceSettings.MotorOffSetSettings();
+
        }
    }
    public class AnteriorSettings

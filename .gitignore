@@ -471,3 +471,7 @@ IVLConfiguration/bin/
 /AdobeCheckOSVersionInfo/bin/
 /AdobeCheckOSVersionInfo/obj/
 /.vs/
+/libusb/libusb_dll_2012.vcxproj.user
+/Clahe/Clahe.vcxproj.user
+/Camera/CameraModule.csproj.user
+/WindowsFormsApplication1/AssemblySoftware.csproj.user
