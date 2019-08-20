@@ -16,9 +16,10 @@ namespace INTUSOFT.Desktop
 {
         public enum GainLevels { Low, Medium, High };
     public enum PageDisplayed {Login, Emr, Image };
-    public enum CloudReportStatus {Intialized = 1,Uploading, Processing, Completed, Failed};
+    public enum CloudReportStatus {Intialized = 1,Uploading,Processing, View, Failed};
 
-    public enum DirectoryEnum { OutboxDir, ActiveDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
+    public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
+
 
     public static class IVLVariables
     {
@@ -160,7 +161,18 @@ namespace INTUSOFT.Desktop
                 case DirectoryEnum.ReadDir:
                     dirName = CurrentSettings.CloudSettings.ReadPath.val;
                     break;
-
+                case DirectoryEnum.LoginDir:
+                    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.LoginPath.val);
+                    break;
+                case DirectoryEnum.CreateAnalysis:
+                    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.CreateAnalysisPath.val);
+                    break;
+                case DirectoryEnum.UploadDir:
+                    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.UploadPath.val);
+                    break;
+                case DirectoryEnum.StartAnalysisDir:
+                    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.StartAnalysisPath.val);
+                    break;
             }
             return Path.Combine(CurrentSettings.CloudSettings.CloudPath.val, dirName);
 

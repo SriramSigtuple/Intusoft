@@ -446,6 +446,18 @@ namespace INTUSOFT.Desktop.Forms
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir));
 
+            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir)))
+            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir));
+
+            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.CreateAnalysis)))
+            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.CreateAnalysis));
+
+            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.UploadDir)))
+            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.UploadDir));
+
+            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir)))
+            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir));
+
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir));
 
@@ -491,39 +503,52 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     else
                     {
-                        fileInfos = new DirectoryInfo( IVLVariables.GetCloudDirPath( DirectoryEnum.InboxDir)).GetFiles();
-                        if (fileInfos.Any(x => x.Name == item.fileName))
-                        {
-                            item.cloudAnalysisReportStatus = 4;
-                            StreamReader st = new StreamReader(fileInfos[0].DirectoryName + Path.DirectorySeparatorChar + item.fileName);
-                            var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                            CreateCloudReport(responseValue);
-                            item.leftEyeImpression = responseValue.LeftAIImpressions;
-                            item.rightEyeImpression = responseValue.RightAIImpressions;
-                            st.Close();
-                            st.Dispose();
-                            var finf = fileInfos.Where(x => x.Name == item.fileName).ToList()[0];
-                            File.Move(finf.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), finf.Name));
-                            File.Move(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir), finf.Name), 
-                                Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir), finf.Name));
-                            NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
+                                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                                    if (fileInfos.Any(x => x.Name == item.fileName))
+                                    {
+                                        StreamReader st = new StreamReader(fileInfos[0].DirectoryName + Path.DirectorySeparatorChar + item.fileName);
+                                        var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+                                        if (responseValue.Status == "success")
+                                        {
+                                             item.cloudAnalysisReportStatus = 4;
+
+                                             CreateCloudReport(responseValue);
+                                            item.leftEyeImpression = responseValue.LeftAIImpressions;
+                                            item.rightEyeImpression = responseValue.RightAIImpressions;
+                                        }
+                                        else if(responseValue.Status == "failure")
+                                             item.cloudAnalysisReportStatus = 5;
+
+                                                    st.Close();
+                                                    st.Dispose();
+                                        var finf = fileInfos.Where(x => x.Name == item.fileName).ToList()[0];
+                                        File.Move(finf.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), finf.Name));
+                                        File.Move(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir), finf.Name),
+                                            Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir), finf.Name));
+                                        NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
 
 
+                                    }
+                                    else
+                                    {
+                                        fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
+                                        if (fileInfos.Any(x => x.Name == item.fileName))
+                                        {
+                                            item.cloudAnalysisReportStatus = 3;
+                                            NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
+                                        }
+                                    }
+
                         }
-                        else
-                        {
-                            fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
-                            if (fileInfos.Any(x => x.Name == item.fileName))
-                            {
-                                item.cloudAnalysisReportStatus = 3;
-                                NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
-                            }
-                        }
+
+
                     }
+
+                   
+                    }
+            _eventHandler.Notify(_eventHandler.RefreshExistingReport, new Args());
                 }
 
-            }
-        }
         private void ThumbnailUI1_showImgFromThumbnail(ThumbnailData s, EventArgs e)
         {
             //This method modified by Darshan on 16-09-2015 to stop courroupting of json file.
@@ -2020,6 +2045,8 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 PagePanel_p.Controls.Add(emr);
+                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(serverTimer.Interval / 2));
+
             }
             catch (Exception ex)
             {
@@ -2513,27 +2540,36 @@ namespace INTUSOFT.Desktop.Forms
             List<string> ImageNames = inboxAnalysisStatusModel.LeftEyeDetails.Select(x => x.ImageName).ToList();
             ImageNames.AddRange(inboxAnalysisStatusModel.RightEyeDetails.Select(x => x.ImageName).ToList());
 
-            for (int i = 0; i < currentReportImageFiles.Count; i++)
+            for (int i = 0; i < ImageNames.Count; i++)
             {
-                if (ImageNames[i].Contains(currentReportImageFiles[i].Split('.')[0])) 
+                foreach (var item in currentReportImageFiles)
                 {
+                    if (ImageNames[i].Contains(item.Split('.')[0]))
+                    {
 
-                 actualImageFiles.Add( currentReportImageFiles[i] = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, currentReportImageFiles[i]));
-                    actualMaskSettings.Add(maskSettings[i]);
-                    actualImageNames.Add(string.Empty);
+                        actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, currentReportImageFiles[i]));
+                        actualMaskSettings.Add(maskSettings[i]);
+                        actualImageNames.Add(string.Empty);
+                    }
                 }
+                
             }
 
             reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
+            reportDic.Add("$currentTemplate", @"ReportTemplates\Portrait\Normal\Portrait_A4.xml");
 
-            reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
+            //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
             reportDic["$visitImages"] = actualImageFiles.ToArray();
             reportDic.Add("$CurrentImageFiles", actualImageFiles.ToArray());
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
-            reportDic.Add("RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressions);
-            reportDic.Add("LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
-
+            reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressions);
+            reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
+            reportDic.Add("$LeftEyeObs", string.Empty);
+            reportDic.Add("$RightEyeObs", string.Empty);
+            reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri);
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
+            reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
+            reportObj.SetTheValuesFormReportData();
             Dictionary<string,object> keyValuePairs=  reportObj.createReport();
             report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
             r.dataJson = (string) keyValuePairs["xml"];

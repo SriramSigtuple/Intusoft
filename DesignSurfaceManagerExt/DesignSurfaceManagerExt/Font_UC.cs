@@ -413,10 +413,14 @@ namespace DesignSurfaceManagerExtension
         Californian_FB,
         Cambria,
         Georgia,
+        [Description("Lato")]
+        Lato,
         [Description("Segoe UI")]
         Segoe_UI,
         [Description("Times New Roman")]
-        Times_New_Roman, Verdana
+        Times_New_Roman, Verdana,
+        
+
 
     }
 }

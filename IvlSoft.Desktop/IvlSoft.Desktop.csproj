@@ -67,7 +67,7 @@
       <HintPath>..\library\BCrypt.Net.dll</HintPath>
     </Reference>
     <Reference Include="Cloud_Models">
-      <HintPath>..\..\Uploader\Cloud_Models\bin\$(Configuration)\Cloud_Models.dll</HintPath>
+      <HintPath>..\Cloud_Models\bin\$(Configuration)\Cloud_Models.dll</HintPath>
     </Reference>
     <Reference Include="CommandLine">
       <HintPath>..\library\CommandLine.dll</HintPath>
@@ -860,6 +860,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformTarget)\*.dll" "$(TargetDir)"
 copy "$(SolutionDir)ReportTemplateCreator\bin\$(PlatformTarget)\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
+copy "$(SolutionDir)IVLUploader\bin\$(Configuration)\IntuUploader.exe" "$(TargetDir)"
 xcopy /s/y "$(SolutionDir)library\$(PlatformTarget)\$(Configuration)\*.*" "$(TargetDir)" 
 xcopy /s/y "$(SolutionDir)AdobeCheckOSVersionInfo\bin\$(Configuration)\AdobeCheckOSVersionInfo.exe" "$(TargetDir)" 
 copy "$(SolutionDir)DbPortingProject\bin\$(PlatformTarget)\$(Configuration)\DBPorting.exe" "$(TargetDir)"

@@ -91,6 +91,7 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.RGBColorchange, new NotificationHandler(rgbcolorchange));
             eventHandler.Register(eventHandler.SaveImgChanges, new NotificationHandler(Saveimg_changes));
             eventHandler.Register(eventHandler.CreateReportEvent, new NotificationHandler(createReportEvent));
+            eventHandler.Register(eventHandler.RefreshExistingReport, new NotificationHandler(RefreshShowReports));
             thumbnailData = new ThumbnailData();
 
 
@@ -294,6 +295,8 @@ namespace INTUSOFT.Desktop.Forms
             {
                 showRedChannel_btn.Size = showGreenChannel_btn.Size = showBlueChannel_btn.Size = new Size(52, 47);
                 save_btn.Size = saveAs_btn.Size = exportImages_btn.Size = new Size(50, 60);
+                toolStrip2.ImageScalingSize = new Size(40, 40);
+
                 decreaseBrightnessToolStrip.ImageScalingSize = new Size(24, 24);
                 decreaseContrastToolStrip.ImageScalingSize = new Size(24, 24);
                 decreaseZoomToolStrip.ImageScalingSize = new Size(24, 24);
@@ -469,6 +472,11 @@ namespace INTUSOFT.Desktop.Forms
             }
         }
 
+        private void RefreshShowReports(string s , Args arg)
+        {
+            showExisitingReports();
+        }
+
         /// <summary>
         /// The below code has been added to show the exisiting reports.
         /// </summary>
@@ -492,6 +500,7 @@ namespace INTUSOFT.Desktop.Forms
                     var col2 = new DataGridViewTextBoxColumn();
                     var col3 = new DataGridViewTextBoxColumn();
                     var col4 = new DataGridViewTextBoxColumn();
+                    var col7 = new DataGridViewTextBoxColumn();
                     DataGridViewLinkColumn col5 = new DataGridViewLinkColumn();
                     DataGridViewImageColumn col6 = new DataGridViewImageColumn();
                     col2.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo); ;
@@ -500,10 +509,12 @@ namespace INTUSOFT.Desktop.Forms
                     col3.Name = IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo); ;
                     col4.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
                     col4.Name = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
+                    col7.HeaderText = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
+                    col7.Name = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
                     //col5.HeaderText = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
                     //col5.Name = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
                     {
-                        Reports_dgv.Columns.AddRange(new DataGridViewColumn[] { col2, col3, col4, col5, col6 });
+                        Reports_dgv.Columns.AddRange(new DataGridViewColumn[] { col2, col3, col4,col7 });
                     }
                     //DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
                     //foreach (DataGridViewRow item in Reports_dgv.Rows)
@@ -515,7 +526,10 @@ namespace INTUSOFT.Desktop.Forms
                     //}
                     for (int i = 0; i < Reports_dgv.Columns.Count; i++)
                     {
-                        if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
+                        if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) ||
+                            Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) ||
+                            Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo))||// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
+                            Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
                         {
                             Reports_dgv.Columns[i].Visible = true;
                         }
@@ -529,16 +543,12 @@ namespace INTUSOFT.Desktop.Forms
                     CloudAnalysisReport c = null;
                     if(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList().Any())
                      c = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList()[0];
-                    if(!NewDataVariables.Reports[i].isCloudReport)
                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
-                   else
-                    {
                         if (c != null)
                         {
                             CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
-                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g");
+                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g");
                         }
-                    }
                     //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
                     if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
                     {
@@ -557,9 +567,10 @@ namespace INTUSOFT.Desktop.Forms
                 if (Screen.PrimaryScreen.Bounds.Width == 1920)
                 {
                     //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
-                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
-                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 95;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
                     Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
                     foreach (DataGridViewColumn c in Reports_dgv.Columns)
                     {
                         c.DefaultCellStyle.Font = new Font("Tahoma", 10.5F, GraphicsUnit.Pixel);
@@ -570,9 +581,10 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
 
-                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
-                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
-                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 68;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 30;
 
                     foreach (DataGridViewColumn c in Reports_dgv.Columns)
                     {
@@ -585,6 +597,7 @@ namespace INTUSOFT.Desktop.Forms
                     //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
                     Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
                     Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
+                    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
                     Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
                     foreach (DataGridViewColumn c in Reports_dgv.Columns)
                     {
@@ -3757,7 +3770,7 @@ namespace INTUSOFT.Desktop.Forms
                   List<CloudAnalysisReport> cloudReports =  NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", reportVal).ToList();
                     if (cloudReports.Any())
                     {
-                        if (cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.Completed)
+                        if (cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.View)
                         {
                             getReportDetails();
                             string reportXml = reportVal.dataJson;
@@ -3775,14 +3788,20 @@ namespace INTUSOFT.Desktop.Forms
                             else
                                 this.Cursor = Cursors.Default;
                         }
-                        else if(cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.Failed)
+                        else if (cloudReports[0].cloudAnalysisReportStatus == (int)CloudReportStatus.Failed)
                         {
+                            this.Cursor = Cursors.Default;
+
                             CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("CloudAnalysisFailed_Text", IVLVariables.LangResourceCultureInfo)
                                 , IVLVariables.LangResourceManager.GetString("AnalysisHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
                         }
                         else
+                        {
+                            this.Cursor = Cursors.Default;
+
                             CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("CloudAnalsysisPendingStatus_Text", IVLVariables.LangResourceCultureInfo)
-                               , IVLVariables.LangResourceManager.GetString("AnalysisHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                                 , IVLVariables.LangResourceManager.GetString("AnalysisHeader_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                        }
                     }
                 }
                 else

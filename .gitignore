@@ -475,3 +475,9 @@ IVLConfiguration/bin/
 /Clahe/Clahe.vcxproj.user
 /Camera/CameraModule.csproj.user
 /WindowsFormsApplication1/AssemblySoftware.csproj.user
+/BaseViewModel/bin/
+/BaseViewModel/obj/
+/Cloud_Models/bin/
+/Cloud_Models/obj/
+/IVLUploader/bin/
+/IVLUploader/obj/

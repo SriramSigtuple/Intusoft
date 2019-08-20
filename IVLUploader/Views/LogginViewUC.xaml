@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="IntuUploader.Views.LogginViewUC"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                  xmlns:convertor="clr-namespace:IVLUploader.Convertors" mc:Ignorable="d"
+             xmlns:Logger="clr-namespace:NlogViewer;assembly=NlogViewer"
+                 d:DesignHeight="230" d:DesignWidth="457"
+                 DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <convertor:LogBgValueConverter x:Key="LogBgValueConverter" />
+        <convertor:LogFgValueConverter x:Key="LogFgValueConverter" />
+    </UserControl.Resources>
+    <Grid Margin="0,0,-299,0">
+        
+        <!--<Logger:NlogViewer x:Name="logCtrl" TimeWidth="AUTO" LoggerNameWidth="auto" ClassNameWidth ="auto"  LevelWidth="auto" ExceptionWidth="auto" MessageWidth="auto" />-->
+
+
+
+        <!--<TextBox IsReadOnly="True" AcceptsReturn="True"  Height="Auto" HorizontalAlignment="Stretch" Name="dgLog" VerticalAlignment="Stretch" Width="Auto"/>-->
+        <!--<ListView ItemsSource="{Binding LogCollection}" Name="logView">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ToolTip" Value="{Binding FormattedMessage}" />
+                    <Setter Property="Background" Value="{Binding Level, Converter={StaticResource LogBgValueConverter}}" />
+                    <Setter Property="Foreground" Value="{Binding Level, Converter={StaticResource LogFgValueConverter}}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="DarkOrange"/>
+                            <Setter Property="Foreground" Value="black"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=Background}"/>
+                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        --><!--<GridViewColumn DisplayMemberBinding="{Binding LoggerName}" Header="Logger"/>--><!--
+                        <GridViewColumn DisplayMemberBinding="{Binding Level}" Header="Level"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding FormattedMessage}" Width="500" Header="Message"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Exception}" Header="Exception"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        <!--<ListBox Height="Auto" HorizontalAlignment="Stretch" Name="dgLog" VerticalAlignment="Stretch" Width="Auto" />-->
+    </Grid>
+</UserControl>

@@ -1,4 +1,4 @@
-<ReportTemplate><Orientation>PORTRAIT_A4</Orientation><Layout>
+<ReportTemplate><Orientation>PORTRAIT_A4</Orientation><DPI>DPI_96</DPI><Layout>
 <ArrayOfReportControlsStructure  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportControlsStructure>
     <reportControlProperty>
@@ -9,13 +9,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>49</Width>
-        <Height>15</Height>
+        <Width>65</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>40</_X>
-        <_Y>136</_Y>
+        <_X>53</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -31,6 +31,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -42,13 +44,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>100</Width>
-        <Height>15</Height>
+        <Width>133</Width>
+        <Height>20</Height>
       </Size>
       <Binding>Name</Binding>
       <Location>
-        <_X>87</_X>
-        <_Y>136</_Y>
+        <_X>116</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -61,9 +63,11 @@
       </RowsColumns>
       <Text>$Name</Text>
       <Name>Label3</Name>
-      <MarginDecrementValue>-18</MarginDecrementValue>
+      <MarginDecrementValue>-17</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -75,17 +79,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>107</Width>
-        <Height>36</Height>
+        <Width>148</Width>
+        <Height>61</Height>
       </Size>
       <Binding>HospitalLogo</Binding>
       <Location>
-        <_X>3</_X>
-        <_Y>1</_Y>
+        <_X>22</_X>
+        <_Y>92</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>IconsReportTools\logo.jpg</ImageName>
+      <ImageName>C:\Program Files\Intuvision Labs Pvt Ltd\Intusoft 3.1.1\ImageResources\LogoImageResources\hospitalLogo.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -98,6 +102,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -109,13 +115,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>48</Width>
-        <Height>15</Height>
+        <Width>64</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>237</_X>
-        <_Y>136</_Y>
+        <_X>316</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -131,6 +137,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -142,13 +150,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>56</Width>
-        <Height>15</Height>
+        <Width>75</Width>
+        <Height>20</Height>
       </Size>
       <Binding>Gender</Binding>
       <Location>
-        <_X>291</_X>
-        <_Y>136</_Y>
+        <_X>388</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -164,6 +172,8 @@
       <MarginDecrementValue>-18</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -175,13 +185,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>37</Width>
-        <Height>15</Height>
+        <Width>49</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>394</_X>
-        <_Y>136</_Y>
+        <_X>525</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -197,6 +207,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -208,13 +220,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>100</Width>
-        <Height>15</Height>
+        <Width>133</Width>
+        <Height>20</Height>
       </Size>
       <Binding>Datetime</Binding>
       <Location>
-        <_X>435</_X>
-        <_Y>136</_Y>
+        <_X>583</_X>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -230,6 +242,8 @@
       <MarginDecrementValue>-20</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -237,20 +251,20 @@
       <Font>
         <FontColor>WindowText</FontColor>
         <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
+        <FontStyle>Bold</FontStyle>
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>134</Width>
-        <Height>21</Height>
+        <Width>179</Width>
+        <Height>14</Height>
       </Size>
       <Binding>Doctor</Binding>
       <Location>
-        <_X>434</_X>
-        <_Y>157</_Y>
+        <_X>581</_X>
+        <_Y>209</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
+      <Border>false</Border>
       <Type>TextBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -263,72 +277,8 @@
       <MarginDecrementValue>-20</MarginDecrementValue>
       <YMarginDecrementValue>6</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>Blue</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Bold</FontStyle>
-        <FontSize>18</FontSize>
-      </Font>
-      <Size>
-        <Width>343</Width>
-        <Height>25</Height>
-      </Size>
-      <Binding>HospitalName</Binding>
-      <Location>
-        <_X>132</_X>
-        <_Y>11</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>INTUVISION LABS PVT LTD</Text>
-      <Name>Label1</Name>
-      <MarginDecrementValue>30</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ff008040</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>12</FontSize>
-      </Font>
-      <Size>
-        <Width>235</Width>
-        <Height>18</Height>
-      </Size>
-      <Binding>Address1</Binding>
-      <Location>
-        <_X>163</_X>
-        <_Y>38</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>1370, K V S R Plaza, Nehru Road</Text>
-      <Name>Label15</Name>
-      <MarginDecrementValue>40</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -340,13 +290,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>47</Width>
-        <Height>15</Height>
+        <Width>63</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>40</_X>
-        <_Y>157</_Y>
+        <_X>53</_X>
+        <_Y>209</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -362,39 +312,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>Red</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Bold</FontStyle>
-        <FontSize>12</FontSize>
-      </Font>
-      <Size>
-        <Width>469</Width>
-        <Height>24</Height>
-      </Size>
-      <Binding>NameOfTheReport</Binding>
-      <Location>
-        <_X>84</_X>
-        <_Y>95</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>EYE SCREENING REPORT FOR DIABETIC RETINOPATHY</Text>
-      <Name>Label24</Name>
-      <MarginDecrementValue>50</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -406,13 +325,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>47</Width>
-        <Height>15</Height>
+        <Width>63</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>385</_X>
-        <_Y>157</_Y>
+        <_X>514</_X>
+        <_Y>209</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -428,6 +347,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -439,13 +360,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>36</Width>
-        <Height>15</Height>
+        <Width>48</Width>
+        <Height>20</Height>
       </Size>
       <Binding>Age</Binding>
       <Location>
-        <_X>290</_X>
-        <_Y>158</_Y>
+        <_X>387</_X>
+        <_Y>211</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -461,6 +382,8 @@
       <MarginDecrementValue>-17</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -472,13 +395,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>31</Width>
-        <Height>15</Height>
+        <Width>41</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>251</_X>
-        <_Y>157</_Y>
+        <_X>335</_X>
+        <_Y>209</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -494,6 +417,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -505,13 +430,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>65</Width>
-        <Height>15</Height>
+        <Width>87</Width>
+        <Height>20</Height>
       </Size>
       <Binding>MRN</Binding>
       <Location>
-        <_X>89</_X>
-        <_Y>157</_Y>
+        <_X>119</_X>
+        <_Y>209</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -527,6 +452,8 @@
       <MarginDecrementValue>-19</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -538,13 +465,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>372</Width>
-        <Height>248</Height>
+        <Width>368</Width>
+        <Height>345</Height>
       </Size>
-      <Binding>RightEyeImages</Binding>
+      <Binding>LeftEyeImages</Binding>
       <Location>
-        <_X>3</_X>
-        <_Y>185</_Y>
+        <_X>402</_X>
+        <_Y>232</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>true</Border>
@@ -555,44 +482,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$RightEyeImages</Text>
+      <Text>$LeftEyeImages</Text>
       <Name>IVL_ImagePanel2</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>false</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ff008040</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Italic</FontStyle>
-        <FontSize>12</FontSize>
-      </Font>
-      <Size>
-        <Width>297</Width>
-        <Height>18</Height>
-      </Size>
-      <Binding>Address2</Binding>
-      <Location>
-        <_X>139</_X>
-        <_Y>60</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>Giri Nagar Phase - 1, Bangalore - 560075</Text>
-      <Name>Label33</Name>
-      <MarginDecrementValue>40</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -604,17 +500,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>88</Width>
-        <Height>21</Height>
+        <Width>128</Width>
+        <Height>61</Height>
       </Size>
       <Binding>CompanyLogo</Binding>
       <Location>
-        <_X>493</_X>
-        <_Y>11</_Y>
+        <_X>632</_X>
+        <_Y>92</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>IconsReportTools\logo.jpg</ImageName>
+      <ImageName>C:\Program Files\Intuvision Labs Pvt Ltd\Intusoft 3.1.1\ImageResources\LogoImageResources\CompanyLogo.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -627,57 +523,26 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
     <reportControlProperty>
       <Font>
-        <FontColor>WindowText</FontColor>
+        <FontColor>Black</FontColor>
         <FontFamily>Times New Roman</FontFamily>
         <FontStyle>Regular</FontStyle>
-        <FontSize>9.5</FontSize>
-      </Font>
-      <Size>
-        <Width>153</Width>
-        <Height>63</Height>
-      </Size>
-      <Binding>comRight</Binding>
-      <Location>
-        <_X>412</_X>
-        <_Y>370</_Y>
-      </Location>
-      <MultiLine>true</MultiLine>
-      <Border>false</Border>
-      <Type>TextBox</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text />
-      <Name>TextBox4</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>100</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Bold</FontStyle>
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>136</Width>
-        <Height>15</Height>
+        <Width>505</Width>
+        <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>412</_X>
-        <_Y>215</_Y>
+        <_X>152</_X>
+        <_Y>1054</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -688,44 +553,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Clinical Findings</Text>
-      <Name>Label34</Name>
+      <Text> This Report is meant for review and subsequent approval from a certified ophthalmologist.</Text>
+      <Name>Label19</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>WindowText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9.5</FontSize>
-      </Font>
-      <Size>
-        <Width>153</Width>
-        <Height>63</Height>
-      </Size>
-      <Binding>comLeft</Binding>
-      <Location>
-        <_X>412</_X>
-        <_Y>598</_Y>
-      </Location>
-      <MultiLine>true</MultiLine>
-      <Border>false</Border>
-      <Type>TextBox</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text />
-      <Name>TextBox5</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -737,179 +571,13 @@
         <FontSize>10</FontSize>
       </Font>
       <Size>
-        <Width>174</Width>
-        <Height>15</Height>
-      </Size>
-      <Binding>None</Binding>
-      <Location>
-        <_X>412</_X>
-        <_Y>570</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text> Observation and Comments</Text>
-      <Name>Label21</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ff10069f</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>7</FontSize>
-      </Font>
-      <Size>
-        <Width>194</Width>
-        <Height>15</Height>
-      </Size>
-      <Binding>None</Binding>
-      <Location>
-        <_X>2</_X>
-        <_Y>822</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>Powered by INTUVISION LABS PVT LTD</Text>
-      <Name>Label19</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
-        <Width>100</Width>
-        <Height>63</Height>
-      </Size>
-      <Binding>Signature</Binding>
-      <Location>
-        <_X>342</_X>
-        <_Y>760</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <ImageName />
-      <Type>PictureBox</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>$Signature</Text>
-      <Name>PictureBox4</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
-        <Width>129</Width>
-        <Height>15</Height>
-      </Size>
-      <Binding>Specalist</Binding>
-      <Location>
-        <_X>447</_X>
-        <_Y>767</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>Doctor Name</Text>
-      <Name>Label36</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
-        <Width>120</Width>
-        <Height>16</Height>
-      </Size>
-      <Binding>SpecalistQualification</Binding>
-      <Location>
-        <_X>448</_X>
-        <_Y>784</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>Doctor Quallification</Text>
-      <Name>Label25</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
         <Width>145</Width>
-        <Height>15</Height>
+        <Height>21</Height>
       </Size>
-      <Binding>SpecalistHospital</Binding>
+      <Binding>None</Binding>
       <Location>
-        <_X>447</_X>
-        <_Y>800</_Y>
+        <_X>44</_X>
+        <_Y>728</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -920,11 +588,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Doctor Hospital</Text>
-      <Name>Label26</Name>
+      <Text>General Observation :</Text>
+      <Name>Label37</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -936,49 +606,16 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>280</Width>
-        <Height>57</Height>
+        <Width>537</Width>
+        <Height>42</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>Comments</Binding>
       <Location>
-        <_X>12</_X>
-        <_Y>758</_Y>
+        <_X>204</_X>
+        <_Y>713</_Y>
       </Location>
       <MultiLine>true</MultiLine>
-      <Border>false</Border>
-      <Type>TextBox</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>Disclaimer: This is an indicative protocol for Diabetic Retinopathy only. If patients develop  any vision related issues, they are advised  to have detailed examination by Ophthalmologists. </Text>
-      <Name>TextBox6</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>WindowText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
-        <Width>153</Width>
-        <Height>63</Height>
-      </Size>
-      <Binding>rightFindings</Binding>
-      <Location>
-        <_X>412</_X>
-        <_Y>245</_Y>
-      </Location>
-      <MultiLine>true</MultiLine>
-      <Border>false</Border>
+      <Border>true</Border>
       <Type>TextBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -988,9 +625,81 @@
       </RowsColumns>
       <Text />
       <Name>TextBox7</Name>
+      <MarginDecrementValue>-37</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>Navy</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>15</FontSize>
+      </Font>
+      <Size>
+        <Width>382</Width>
+        <Height>33</Height>
+      </Size>
+      <Binding>HospitalName</Binding>
+      <Location>
+        <_X>204</_X>
+        <_Y>103</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$HospitalName</Text>
+      <Name>Label1</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>368</Width>
+        <Height>345</Height>
+      </Size>
+      <Binding>RightEyeImages</Binding>
+      <Location>
+        <_X>22</_X>
+        <_Y>232</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>true</Border>
+      <Type>IVL_ImagePanel</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$RightEyeImages</Text>
+      <Name>IVL_ImagePanel1</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1002,13 +711,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>164</Width>
-        <Height>15</Height>
+        <Width>110</Width>
+        <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>412</_X>
-        <_Y>340</_Y>
+        <_X>35</_X>
+        <_Y>596</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1019,11 +728,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
-      <Name>Label37</Name>
+      <Text>AI Analysis Type :</Text>
+      <Name>Label41</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1035,13 +746,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>148</Width>
-        <Height>15</Height>
+        <Width>110</Width>
+        <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>412</_X>
-        <_Y>470</_Y>
+        <_X>414</_X>
+        <_Y>596</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1052,11 +763,223 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Clinical Findings</Text>
-      <Name>Label38</Name>
+      <Text>AI Analysis Type :</Text>
+      <Name>Label42</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>110</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>35</_X>
+        <_Y>626</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>AI Impression :</Text>
+      <Name>Label43</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>110</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>414</_X>
+        <_Y>626</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>AI Impression :</Text>
+      <Name>Label44</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>225</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding />
+      <Location>
+        <_X>138</_X>
+        <_Y>596</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text />
+      <Name>Label45</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>225</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>RightEyeImpression</Binding>
+      <Location>
+        <_X>138</_X>
+        <_Y>626</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text />
+      <Name>Label46</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>225</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>LeftEyeAnalysisType</Binding>
+      <Location>
+        <_X>530</_X>
+        <_Y>596</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text />
+      <Name>Label47</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>225</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>LeftEyeImpression</Binding>
+      <Location>
+        <_X>530</_X>
+        <_Y>626</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text />
+      <Name>Label48</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1068,16 +991,16 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>153</Width>
-        <Height>63</Height>
+        <Width>247</Width>
+        <Height>32</Height>
       </Size>
-      <Binding>leftFindings</Binding>
+      <Binding>RightEyeObservationComments</Binding>
       <Location>
-        <_X>412</_X>
-        <_Y>500</_Y>
+        <_X>53</_X>
+        <_Y>675</_Y>
       </Location>
       <MultiLine>true</MultiLine>
-      <Border>false</Border>
+      <Border>true</Border>
       <Type>TextBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1090,6 +1013,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1101,16 +1026,16 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>521</Width>
-        <Height>21</Height>
+        <Width>247</Width>
+        <Height>32</Height>
       </Size>
-      <Binding>Comments</Binding>
+      <Binding>LeftEyeObservationComments</Binding>
       <Location>
-        <_X>24</_X>
-        <_Y>706</_Y>
+        <_X>439</_X>
+        <_Y>675</_Y>
       </Location>
       <MultiLine>true</MultiLine>
-      <Border>false</Border>
+      <Border>true</Border>
       <Type>TextBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1123,6 +1048,8 @@
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1134,13 +1061,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>148</Width>
-        <Height>15</Height>
+        <Width>229</Width>
+        <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>24</_X>
-        <_Y>688</_Y>
+        <_X>53</_X>
+        <_Y>654</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1151,11 +1078,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Advice</Text>
-      <Name>Label39</Name>
+      <Text>Right Eye Observation and Comments</Text>
+      <Name>Label49</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1167,13 +1096,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>129</Width>
-        <Height>15</Height>
+        <Width>218</Width>
+        <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>447</_X>
-        <_Y>752</_Y>
+        <_X>439</_X>
+        <_Y>654</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1184,32 +1113,34 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Reported By</Text>
-      <Name>Label40</Name>
+      <Text>Left Eye Observation and Comments</Text>
+      <Name>Label50</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
     <reportControlProperty>
       <Font>
-        <FontColor>ControlText</FontColor>
+        <FontColor>ffc74621</FontColor>
         <FontFamily>Times New Roman</FontFamily>
         <FontStyle>Bold</FontStyle>
-        <FontSize>25</FontSize>
+        <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>593</Width>
-        <Height>1</Height>
+        <Width>157</Width>
+        <Height>14</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>1</_X>
-        <_Y>179</_Y>
+        <_X>37</_X>
+        <_Y>786</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
+      <Border>false</Border>
       <Type>Label</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1217,44 +1148,13 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text />
-      <Name>Label41</Name>
+      <Text>URL:</Text>
+      <Name>Label51</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
-        <FontStyle>Bold</FontStyle>
-        <FontSize>25</FontSize>
-      </Font>
-      <Size>
-        <Width>593</Width>
-        <Height>1</Height>
-      </Size>
-      <Binding>None</Binding>
-      <Location>
-        <_X>1</_X>
-        <_Y>750</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>true</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text />
-      <Name>Label42</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
   <ReportControlsStructure>
@@ -1266,28 +1166,313 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>372</Width>
-        <Height>248</Height>
+        <Width>657</Width>
+        <Height>18</Height>
       </Size>
-      <Binding>LeftEyeImages</Binding>
+      <Binding>ReportURL</Binding>
       <Location>
-        <_X>3</_X>
-        <_Y>452</_Y>
+        <_X>84</_X>
+        <_Y>786</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
-      <Type>IVL_ImagePanel</Type>
+      <Border>false</Border>
+      <Type>Label</Type>
       <RowsColumns>
         <Rows>1</Rows>
         <Columns>1</Columns>
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$LeftEyeImages</Text>
-      <Name>IVL_ImagePanel1</Name>
+      <Text />
+      <Name>Label52</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>false</ImageMedicalName>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ffc74621</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>89</Width>
+        <Height>16</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>37</_X>
+        <_Y>813</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>QR Code</Text>
+      <Name>Label53</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>81</Width>
+        <Height>78</Height>
+      </Size>
+      <Binding>QRCode</Binding>
+      <Location>
+        <_X>37</_X>
+        <_Y>832</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <ImageName />
+      <Type>PictureBox</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$QRCode</Text>
+      <Name>PictureBox5</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>207</Width>
+        <Height>63</Height>
+      </Size>
+      <Binding>SignaturePhysician</Binding>
+      <Location>
+        <_X>116</_X>
+        <_Y>916</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>true</Border>
+      <ImageName />
+      <Type>PictureBox</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$SignaturePhysician</Text>
+      <Name>PictureBox6</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>200</Width>
+        <Height>63</Height>
+      </Size>
+      <Binding>SignatureOpthalmologist</Binding>
+      <Location>
+        <_X>457</_X>
+        <_Y>916</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>true</Border>
+      <ImageName />
+      <Type>PictureBox</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$SignatureOpthalmologist</Text>
+      <Name>PictureBox7</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>216</Width>
+        <Height>24</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>116</_X>
+        <_Y>994</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>Signature of Physician/ Ophthalmologist</Text>
+      <Name>Label54</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>216</Width>
+        <Height>24</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>457</_X>
+        <_Y>994</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>Signature of Physician/ Ophthalmologist</Text>
+      <Name>Label55</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>Black</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>195</Width>
+        <Height>19</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>285</_X>
+        <_Y>1077</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>Powered By Sig Tuple Technologies</Text>
+      <Name>Label56</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ffc74621</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>74</Width>
+        <Height>17</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>84</_X>
+        <_Y>1054</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>Disclaimer :</Text>
+      <Name>Label57</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
 </ArrayOfReportControlsStructure></Layout></ReportTemplate>

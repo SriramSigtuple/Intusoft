@@ -16,6 +16,8 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using ZXing;
+
 namespace IVLReport
 {
     public partial class Report : BaseGradientForm
@@ -953,8 +955,21 @@ namespace IVLReport
             {
                 if (!repCtrlStr.reportControlProperty.Name.Contains("Picture") && !repCtrlStr.reportControlProperty.Binding.ToString().Contains("None"))
                     repCtrlStr.reportControlProperty.Text = value;
+
                 else
-                    repCtrlStr.reportControlProperty.ImageName = value;
+                {
+                    if(repCtrlStr.reportControlProperty.Binding.ToString().Contains("QRCode"))
+                    {
+                        var QCwriter = new BarcodeWriter();
+                        QCwriter.Format = BarcodeFormat.QR_CODE;
+                        var result = QCwriter.Write(value);
+                        var barcodeBitmap = new Bitmap(result);
+                        barcodeBitmap.Save(@"QRCode.png", System.Drawing.Imaging.ImageFormat.Png);
+                        value = @"QRCode.png";
+                    }
+
+                        repCtrlStr.reportControlProperty.ImageName = value;
+                }
             }
         }
 

@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="uu" xml:space="preserve">
+  <data name="ActivePat_Label_Text" xml:space="preserve">
     <value>Active Patient</value>
   </data>
   <data name="AddCupPointsWarning" xml:space="preserve">
@@ -1472,7 +1472,7 @@
     <value>FFA</value>
   </data>
   <data name="Report_Slno_Text" xml:space="preserve">
-    <value>Sl No</value>
+    <value>SL</value>
   </data>
   <data name="DefaultOtherOccupation_Text" xml:space="preserve">
     <value>Specify other occupation</value>
@@ -1965,5 +1965,8 @@
   </data>
   <data name="CloudAnalysisFailed_Text" xml:space="preserve">
     <value>Analysis Failed</value>
+  </data>
+  <data name="CloudReportStatus_Text" xml:space="preserve">
+    <value>Status</value>
   </data>
 </root>

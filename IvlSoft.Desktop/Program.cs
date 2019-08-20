@@ -18,6 +18,8 @@ using NLog.Config;
 using NLog.Targets;
 using CommandLine;
 using CommandLine.Text;
+using System.Diagnostics;
+
 namespace INTUSOFT.Desktop
 {
  static  partial class   Program
@@ -124,30 +126,35 @@ namespace INTUSOFT.Desktop
 
                             LogManager.Configuration.Variables["dir"] = IVLVariables.appDirPathName;
                             LogManager.Configuration.Variables["dir2"] = DateTime.Now.ToString("yyyy-MM-dd");
-                            #region Previous Log Codes Commented
-                            //string filePath = new FileInfo(Application.ExecutablePath).Directory.FullName + Path.DirectorySeparatorChar
-                            //                                 + "Logs" + Path.DirectorySeparatorChar + DateTime.Now.ToString("dd-MM-yyyy") + Path.DirectorySeparatorChar; //log file path
-                            //if (!Directory.Exists(filePath))
-                            //    Directory.CreateDirectory(filePath);
+                        #region Previous Log Codes Commented
+                        //string filePath = new FileInfo(Application.ExecutablePath).Directory.FullName + Path.DirectorySeparatorChar
+                        //                                 + "Logs" + Path.DirectorySeparatorChar + DateTime.Now.ToString("dd-MM-yyyy") + Path.DirectorySeparatorChar; //log file path
+                        //if (!Directory.Exists(filePath))
+                        //    Directory.CreateDirectory(filePath);
 
-                            //log4net.GlobalContext.Properties["LogFileName"] = filePath + "Camera";
-                            //log4net.Config.XmlConfigurator.Configure();
+                        //log4net.GlobalContext.Properties["LogFileName"] = filePath + "Camera";
+                        //log4net.Config.XmlConfigurator.Configure();
 
-                            //log4net.GlobalContext.Properties["UIFileName"] = filePath + "UI";
-                            //log4net.Config.XmlConfigurator.Configure();
+                        //log4net.GlobalContext.Properties["UIFileName"] = filePath + "UI";
+                        //log4net.Config.XmlConfigurator.Configure();
 
-                            //log4net.GlobalContext.Properties["FrameEventFileName"] = filePath + "Frames";
-                            //log4net.Config.XmlConfigurator.Configure();
-                            //// Configure log file for capture sequence//
-                            //log4net.GlobalContext.Properties["CaptureFileName"] = filePath + "CaptureLog";
-                            //log4net.Config.XmlConfigurator.Configure();
+                        //log4net.GlobalContext.Properties["FrameEventFileName"] = filePath + "Frames";
+                        //log4net.Config.XmlConfigurator.Configure();
+                        //// Configure log file for capture sequence//
+                        //log4net.GlobalContext.Properties["CaptureFileName"] = filePath + "CaptureLog";
+                        //log4net.Config.XmlConfigurator.Configure();
 
-                            //log4net.GlobalContext.Properties["CaptureSettingsFileName"] = filePath + "CaptureSettingsLog";
-                            //log4net.Config.XmlConfigurator.Configure();
-                            #endregion
-                            _currentInstance = new IvlMainWindow();
+                        //log4net.GlobalContext.Properties["CaptureSettingsFileName"] = filePath + "CaptureSettingsLog";
+                        //log4net.Config.XmlConfigurator.Configure();
+                        #endregion
+
+                        //Process process = new Process();
+                        //process.StartInfo = new ProcessStartInfo ("IntuUploader.exe");
+                        //process.Start();
+                        _currentInstance = new IvlMainWindow();
                             // code to create logs folder during start of the application
                             Application.Run(_currentInstance);
+                       
                         }
                         catch (Exception ex)
                         {

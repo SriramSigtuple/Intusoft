@@ -65,6 +65,37 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             set { processedPath = value; }
         }
 
+        private static IVLControlProperties loginPath = null;
+
+        public IVLControlProperties LoginPath
+        {
+            get { return loginPath; }
+            set { loginPath = value; }
+        }
+
+        private static IVLControlProperties createAnalysisPath = null;
+
+        public IVLControlProperties CreateAnalysisPath
+        {
+            get { return createAnalysisPath; }
+            set { createAnalysisPath = value; }
+        }
+
+        private static IVLControlProperties uploadPath = null;
+
+        public IVLControlProperties UploadPath
+        {
+            get { return uploadPath; }
+            set { uploadPath = value; }
+        }
+
+        private static IVLControlProperties startAnalysisPath = null;
+
+        public IVLControlProperties StartAnalysisPath
+        {
+            get { return startAnalysisPath; }
+            set { startAnalysisPath = value; }
+        }
         private static  IVLControlProperties api_url = null;
 
         public IVLControlProperties API_URL
@@ -212,6 +243,36 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             ActiveDirPath.val = "Active File Directory";
             ActiveDirPath.control = "System.Windows.Forms.TextBox";
             ActiveDirPath.text = "Active Dir Path";
+
+            LoginPath = new IVLControlProperties();
+            LoginPath.name = "LoginPath";
+            LoginPath.type = "string";
+            LoginPath.val = "Login";
+            LoginPath.control = "System.Windows.Forms.TextBox";
+            LoginPath.text = "Login Path";
+
+            CreateAnalysisPath = new IVLControlProperties();
+            CreateAnalysisPath.name = "CreateAnalysisPath";
+            CreateAnalysisPath.type = "string";
+            CreateAnalysisPath.val = "Create Analysis";
+            CreateAnalysisPath.control = "System.Windows.Forms.TextBox";
+            CreateAnalysisPath.text = "Create Analysis Path";
+
+            UploadPath = new IVLControlProperties();
+            UploadPath.name = "UploadPath";
+            UploadPath.type = "string";
+            UploadPath.val = "Upload";
+            UploadPath.control = "System.Windows.Forms.TextBox";
+            UploadPath.text = "Upload Path";
+
+           StartAnalysisPath = new IVLControlProperties();
+           StartAnalysisPath.name = "StartAnalysisPath";
+           StartAnalysisPath.type = "string";
+           StartAnalysisPath.val = "Start Analysis";
+           StartAnalysisPath.control = "System.Windows.Forms.TextBox";
+           StartAnalysisPath.text = "Start Analysis Path";
+
+
 
             Username = new IVLControlProperties();
             Username.name = "username";

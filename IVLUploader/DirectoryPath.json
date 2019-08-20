@@ -1,0 +1,9 @@
+{
+  "outboxStr": "Outbox",
+  "sentItemsStr": "Sent Items",
+  "activefileDirStr": "Active File Directory",
+  "inboxStr": "Inbox",
+  "ReadStr": "Read",
+  "ProcessedStr": "Processed",
+  "CloudPath": "C:\\IVLImageRepo\\Cloud"
+}

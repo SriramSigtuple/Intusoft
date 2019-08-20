@@ -101,7 +101,7 @@ namespace IVLReport
         public EmailWindow(Dictionary<string,object> emailDicParam)
         {
             InitializeComponent();
-
+            if(ConfigVariables.CurrentSettings != null)
           zipFileExportPath =  ConfigVariables.CurrentSettings.ReportSettings.ExportZipFilePath.val;
             if(!string.IsNullOrEmpty(zipFileExportPath))
           if (!Directory.Exists(zipFileExportPath))

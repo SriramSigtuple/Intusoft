@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewImageControls_UC));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -153,8 +153,8 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.80645F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.48387F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.41936F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.87097F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.483871F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.032258F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.06452F));
@@ -213,7 +213,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(281, 225);
+            this.panel2.Size = new System.Drawing.Size(281, 222);
             this.panel2.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -230,7 +230,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.20435F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.99713F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.79853F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(281, 225);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(281, 222);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // Reports_dgv
@@ -241,39 +241,39 @@
             this.Reports_dgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Reports_dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Reports_dgv.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.Reports_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Khaki;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Reports_dgv.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Khaki;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Reports_dgv.DefaultCellStyle = dataGridViewCellStyle2;
             this.Reports_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Reports_dgv.Location = new System.Drawing.Point(3, 30);
             this.Reports_dgv.MultiSelect = false;
             this.Reports_dgv.Name = "Reports_dgv";
             this.Reports_dgv.ReadOnly = true;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Reports_dgv.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.Reports_dgv.RowHeadersVisible = false;
             this.Reports_dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Reports_dgv.Size = new System.Drawing.Size(275, 131);
+            this.Reports_dgv.Size = new System.Drawing.Size(275, 122);
             this.Reports_dgv.TabIndex = 1;
             this.Reports_dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellClick);
             this.Reports_dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellDoubleClick);
@@ -309,10 +309,10 @@
             this.newReport_btn,
             this.newAnnotation_btn,
             this.glaucomaTool_btn});
-            this.toolStrip3.Location = new System.Drawing.Point(0, 164);
+            this.toolStrip3.Location = new System.Drawing.Point(0, 155);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip3.Size = new System.Drawing.Size(281, 61);
+            this.toolStrip3.Size = new System.Drawing.Size(281, 67);
             this.toolStrip3.TabIndex = 1001;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -381,8 +381,8 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.88065F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.88065F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.88065F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.139352F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.88007F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.005222F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.49347F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(281, 383);
             this.tableLayoutPanel8.TabIndex = 10;
             // 
@@ -390,9 +390,9 @@
             // 
             this.panel9.Controls.Add(this.contrast_lbl);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel9.Location = new System.Drawing.Point(3, 109);
+            this.panel9.Location = new System.Drawing.Point(3, 106);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(275, 25);
+            this.panel9.Size = new System.Drawing.Size(275, 24);
             this.panel9.TabIndex = 1005;
             // 
             // contrast_lbl
@@ -413,7 +413,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(3, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(275, 27);
+            this.panel7.Size = new System.Drawing.Size(275, 26);
             this.panel7.TabIndex = 0;
             // 
             // postProcessing_lbl
@@ -430,9 +430,9 @@
             // 
             this.panel8.Controls.Add(this.brightness_lbl);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(3, 36);
+            this.panel8.Location = new System.Drawing.Point(3, 35);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(275, 26);
+            this.panel8.Size = new System.Drawing.Size(275, 25);
             this.panel8.TabIndex = 1;
             // 
             // brightness_lbl
@@ -457,11 +457,11 @@
             this.tableLayoutPanel10.Controls.Add(this.decreaseBrightnessToolStrip, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.increaseBrightnessToolStrip, 2, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 68);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 66);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(275, 35);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel10.TabIndex = 10;
             // 
             // brightness_rb
@@ -473,7 +473,7 @@
             this.brightness_rb.Maximum = 100;
             this.brightness_rb.Minimum = -100;
             this.brightness_rb.Name = "brightness_rb";
-            this.brightness_rb.Size = new System.Drawing.Size(159, 20);
+            this.brightness_rb.Size = new System.Drawing.Size(159, 19);
             this.brightness_rb.TabIndex = 11;
             this.brightness_rb.ValueChanged += new System.EventHandler(this.brightness_rb_ValueChanged);
             this.brightness_rb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.brightness_rb_KeyDown);
@@ -488,7 +488,7 @@
             this.decreaseBrightness_btn});
             this.decreaseBrightnessToolStrip.Location = new System.Drawing.Point(0, 0);
             this.decreaseBrightnessToolStrip.Name = "decreaseBrightnessToolStrip";
-            this.decreaseBrightnessToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.decreaseBrightnessToolStrip.Size = new System.Drawing.Size(55, 34);
             this.decreaseBrightnessToolStrip.TabIndex = 12;
             this.decreaseBrightnessToolStrip.Text = "toolStrip3";
             // 
@@ -514,7 +514,7 @@
             this.increaseBrightness_btn});
             this.increaseBrightnessToolStrip.Location = new System.Drawing.Point(220, 0);
             this.increaseBrightnessToolStrip.Name = "increaseBrightnessToolStrip";
-            this.increaseBrightnessToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.increaseBrightnessToolStrip.Size = new System.Drawing.Size(55, 34);
             this.increaseBrightnessToolStrip.TabIndex = 19;
             this.increaseBrightnessToolStrip.Text = "toolStrip5";
             // 
@@ -540,11 +540,11 @@
             this.tableLayoutPanel11.Controls.Add(this.contrast_rb, 1, 0);
             this.tableLayoutPanel11.Controls.Add(this.increaseContrastToolStrip, 2, 0);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 140);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 136);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(275, 35);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel11.TabIndex = 13;
             this.tableLayoutPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel11_Paint);
             // 
@@ -559,7 +559,7 @@
             this.decreaseContrast_tbn});
             this.decreaseContrastToolStrip.Location = new System.Drawing.Point(0, 0);
             this.decreaseContrastToolStrip.Name = "decreaseContrastToolStrip";
-            this.decreaseContrastToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.decreaseContrastToolStrip.Size = new System.Drawing.Size(55, 34);
             this.decreaseContrastToolStrip.TabIndex = 15;
             this.decreaseContrastToolStrip.Text = "toolStrip4";
             // 
@@ -583,7 +583,7 @@
             this.contrast_rb.Maximum = 20;
             this.contrast_rb.Minimum = -20;
             this.contrast_rb.Name = "contrast_rb";
-            this.contrast_rb.Size = new System.Drawing.Size(159, 20);
+            this.contrast_rb.Size = new System.Drawing.Size(159, 19);
             this.contrast_rb.TabIndex = 14;
             this.contrast_rb.Value = 1;
             this.contrast_rb.ValueChanged += new System.EventHandler(this.contrast_rb_ValueChanged);
@@ -600,7 +600,7 @@
             this.increaseContrast_btn});
             this.increaseContrastToolStrip.Location = new System.Drawing.Point(220, 0);
             this.increaseContrastToolStrip.Name = "increaseContrastToolStrip";
-            this.increaseContrastToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.increaseContrastToolStrip.Size = new System.Drawing.Size(55, 34);
             this.increaseContrastToolStrip.TabIndex = 19;
             this.increaseContrastToolStrip.Text = "toolStrip5";
             // 
@@ -626,11 +626,11 @@
             this.tableLayoutPanel12.Controls.Add(this.increaseZoomToolStrip, 2, 0);
             this.tableLayoutPanel12.Controls.Add(this.zoomMag_rb, 1, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 222);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 216);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(275, 35);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel12.TabIndex = 17;
             // 
             // decreaseZoomToolStrip
@@ -644,7 +644,7 @@
             this.decreseZoom_btn});
             this.decreaseZoomToolStrip.Location = new System.Drawing.Point(0, 0);
             this.decreaseZoomToolStrip.Name = "decreaseZoomToolStrip";
-            this.decreaseZoomToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.decreaseZoomToolStrip.Size = new System.Drawing.Size(55, 34);
             this.decreaseZoomToolStrip.TabIndex = 19;
             this.decreaseZoomToolStrip.Text = "toolStrip5";
             this.decreaseZoomToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip5_ItemClicked);
@@ -672,7 +672,7 @@
             this.increaseZoom_btn});
             this.increaseZoomToolStrip.Location = new System.Drawing.Point(220, 0);
             this.increaseZoomToolStrip.Name = "increaseZoomToolStrip";
-            this.increaseZoomToolStrip.Size = new System.Drawing.Size(55, 35);
+            this.increaseZoomToolStrip.Size = new System.Drawing.Size(55, 34);
             this.increaseZoomToolStrip.TabIndex = 19;
             this.increaseZoomToolStrip.Text = "toolStrip5";
             // 
@@ -696,7 +696,7 @@
             this.zoomMag_rb.Maximum = 300;
             this.zoomMag_rb.Minimum = 100;
             this.zoomMag_rb.Name = "zoomMag_rb";
-            this.zoomMag_rb.Size = new System.Drawing.Size(159, 20);
+            this.zoomMag_rb.Size = new System.Drawing.Size(159, 19);
             this.zoomMag_rb.TabIndex = 18;
             this.zoomMag_rb.Value = 100;
             this.zoomMag_rb.ValueChanged += new System.EventHandler(this.zoomMag_rb_ValueChanged);
@@ -712,12 +712,12 @@
             this.tableLayoutPanel2.Controls.Add(this.ZoomOut_pbx, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.enableZoom_btn, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 181);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 176);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(275, 35);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel2.TabIndex = 16;
             // 
             // Zoomin_pbx
@@ -725,7 +725,7 @@
             this.Zoomin_pbx.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Zoomin_pbx.Location = new System.Drawing.Point(223, 3);
             this.Zoomin_pbx.Name = "Zoomin_pbx";
-            this.Zoomin_pbx.Size = new System.Drawing.Size(49, 29);
+            this.Zoomin_pbx.Size = new System.Drawing.Size(49, 28);
             this.Zoomin_pbx.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Zoomin_pbx.TabIndex = 0;
             this.Zoomin_pbx.TabStop = false;
@@ -735,7 +735,7 @@
             this.ZoomOut_pbx.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ZoomOut_pbx.Location = new System.Drawing.Point(3, 3);
             this.ZoomOut_pbx.Name = "ZoomOut_pbx";
-            this.ZoomOut_pbx.Size = new System.Drawing.Size(49, 29);
+            this.ZoomOut_pbx.Size = new System.Drawing.Size(49, 28);
             this.ZoomOut_pbx.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ZoomOut_pbx.TabIndex = 1;
             this.ZoomOut_pbx.TabStop = false;
@@ -748,7 +748,7 @@
             this.enableZoom_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.enableZoom_btn.Location = new System.Drawing.Point(58, 3);
             this.enableZoom_btn.Name = "enableZoom_btn";
-            this.enableZoom_btn.Size = new System.Drawing.Size(159, 29);
+            this.enableZoom_btn.Size = new System.Drawing.Size(159, 28);
             this.enableZoom_btn.TabIndex = 16;
             this.enableZoom_btn.Text = "button1";
             this.enableZoom_btn.UseVisualStyleBackColor = false;
@@ -759,7 +759,7 @@
             this.toolStrip2.BackColor = System.Drawing.Color.Transparent;
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(70, 70);
+            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(64, 64);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSeparator6,
             this.save_btn,
@@ -768,16 +768,16 @@
             this.toolStripSeparator8,
             this.exportImages_btn,
             this.toolStripSeparator9});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 332);
+            this.toolStrip2.Location = new System.Drawing.Point(0, 315);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(281, 51);
+            this.toolStrip2.Size = new System.Drawing.Size(281, 68);
             this.toolStrip2.TabIndex = 1006;
             this.toolStrip2.Text = "toolStrip2";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 48);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 68);
             // 
             // save_btn
             // 
@@ -795,7 +795,7 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 48);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 68);
             // 
             // saveAs_btn
             // 
@@ -813,7 +813,7 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 48);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 68);
             // 
             // exportImages_btn
             // 
@@ -831,15 +831,15 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 48);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 68);
             // 
             // file_lbl
             // 
             this.file_lbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.file_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.file_lbl.Location = new System.Drawing.Point(3, 301);
+            this.file_lbl.Location = new System.Drawing.Point(3, 293);
             this.file_lbl.Name = "file_lbl";
-            this.file_lbl.Size = new System.Drawing.Size(275, 31);
+            this.file_lbl.Size = new System.Drawing.Size(275, 22);
             this.file_lbl.TabIndex = 1007;
             this.file_lbl.Text = "Label";
             // 
@@ -849,11 +849,11 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.Controls.Add(this.removePostProcessing_btn, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 263);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 256);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(275, 35);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel5.TabIndex = 1008;
             // 
             // removePostProcessing_btn
@@ -864,7 +864,7 @@
             this.removePostProcessing_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.removePostProcessing_btn.Location = new System.Drawing.Point(3, 3);
             this.removePostProcessing_btn.Name = "removePostProcessing_btn";
-            this.removePostProcessing_btn.Size = new System.Drawing.Size(269, 29);
+            this.removePostProcessing_btn.Size = new System.Drawing.Size(269, 28);
             this.removePostProcessing_btn.TabIndex = 20;
             this.removePostProcessing_btn.Text = "Remove Post Processing";
             this.removePostProcessing_btn.UseVisualStyleBackColor = false;
@@ -894,9 +894,9 @@
             // 
             this.panel6.Controls.Add(this.tableLayoutPanel4);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 234);
+            this.panel6.Location = new System.Drawing.Point(3, 231);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(281, 83);
+            this.panel6.Size = new System.Drawing.Size(281, 86);
             this.panel6.TabIndex = 4;
             // 
             // tableLayoutPanel4
@@ -911,7 +911,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.53012F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 67.46988F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(281, 83);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(281, 86);
             this.tableLayoutPanel4.TabIndex = 9;
             // 
             // panel4
@@ -948,7 +948,7 @@
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(281, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(281, 59);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 

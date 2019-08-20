@@ -111,6 +111,7 @@ namespace INTUSOFT.EventHandler
         public string UpdateCaptureRLiveUI = "UpdateCaptureRLiveUI";
         public string GoToViewScreen = "GoToViewScreen";
         public string ShowSplashScreen = "ShowSplashScreen";
+        public string RefreshExistingReport = "RefreshExistingReport";
         // Alignment 
         public IVLEventHandler()
         {

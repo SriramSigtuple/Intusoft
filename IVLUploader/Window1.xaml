@@ -1,0 +1,27 @@
+﻿<Window x:Class="IVLUploader.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ivlControls ="clr-namespace:IntuUploader.Controls"
+        Title="Window1" Height="300" Width="300" Background="Black">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger  Property="IsPressed" Value="true">
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="200"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="0,212,0,1">
+        <!--<Ellipse Height="200" Width="200" RenderTransformOrigin="0.489,0.218" Margin="30,38,62,32">
+            <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.5,0.1 ">
+                    <GradientStop Color="White" Offset="0.1"/>
+                    <GradientStop Color="Green" Offset="0.8"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>-->
+        <ivlControls:IVLButton ButtonText="Test Image" ButtonImage="C:\Users\Sriram\Desktop\usb3.0.png" Margin="0,-23,0,0"/>
+    </Grid>
+</Window>
