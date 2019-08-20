@@ -39,6 +39,9 @@
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>IVLUploader.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="BaseViewModel">
@@ -72,6 +75,9 @@
     <Reference Include="SimpleLogging.NLog, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleLogging.NLog.0.5.0\lib\net40\SimpleLogging.NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SingleInstanceApp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SingleInstanceApp.0.1.0\lib\net45\SingleInstanceApp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -83,6 +89,7 @@
       <HintPath>..\library\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -103,10 +110,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Controls\IVLButton.xaml.cs">
       <DependentUpon>IVLButton.xaml</DependentUpon>
     </Compile>

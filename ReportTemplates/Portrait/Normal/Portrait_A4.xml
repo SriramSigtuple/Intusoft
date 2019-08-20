@@ -84,12 +84,12 @@
       </Size>
       <Binding>HospitalLogo</Binding>
       <Location>
-        <_X>22</_X>
+        <_X>14</_X>
         <_Y>47</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Projects\fundus_ipp\IvlSoft.Desktop\ImageResources\LogoImageResources\hospitalLogo.png</ImageName>
+      <ImageName>ImageResources\LogoImageResources\hospitalLogo.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -475,7 +475,7 @@
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Projects\fundus_ipp\IvlSoft.Desktop\ImageResources\LogoImageResources\CompanyLogo.png</ImageName>
+      <ImageName>ImageResources\LogoImageResources\CompanyLogo.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1459,7 +1459,7 @@
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Documents\200redlogo.png</ImageName>
+      <ImageName>ImageResources\LogoImageResources\SigtupleLogo.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1495,7 +1495,7 @@
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Documents\drishti.jpg</ImageName>
+      <ImageName>ImageResources\LogoImageResources\drishti.jpg</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>

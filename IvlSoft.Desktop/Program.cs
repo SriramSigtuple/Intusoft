@@ -148,9 +148,12 @@ namespace INTUSOFT.Desktop
                         //log4net.Config.XmlConfigurator.Configure();
                         #endregion
 
-                        //Process process = new Process();
-                        //process.StartInfo = new ProcessStartInfo ("IntuUploader.exe");
-                        //process.Start();
+                        Process process = new Process();
+                        if(File.Exists(@"Uploader\IntuUploader.exe"))
+                        { 
+                        process.StartInfo = new ProcessStartInfo(@"Uploader\IntuUploader.exe");
+                        process.Start();
+                        }
                         _currentInstance = new IvlMainWindow();
                             // code to create logs folder during start of the application
                             Application.Run(_currentInstance);

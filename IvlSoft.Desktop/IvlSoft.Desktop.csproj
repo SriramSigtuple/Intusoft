@@ -751,6 +751,9 @@
     <Content Include="ImageResources\LogoImageResources\CompanyLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ImageResources\LogoImageResources\drishti.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ImageResources\LogoImageResources\hospitalLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -783,6 +786,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ImageResources\LogoImageResources\signature.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ImageResources\LogoImageResources\SigtupleLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ImageResources\PatientDetailsImageResources\AA.png">
@@ -860,7 +866,8 @@
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformTarget)\*.dll" "$(TargetDir)"
 copy "$(SolutionDir)ReportTemplateCreator\bin\$(PlatformTarget)\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
-copy "$(SolutionDir)IVLUploader\bin\$(Configuration)\IntuUploader.exe" "$(TargetDir)"
+if not exist "$(TargetDir)Uploader" mkdir  "$(TargetDir)Uploader" 
+xcopy /s/y "$(SolutionDir)IVLUploader\bin\$(Configuration)\*.*" "$(TargetDir)Uploader " 
 xcopy /s/y "$(SolutionDir)library\$(PlatformTarget)\$(Configuration)\*.*" "$(TargetDir)" 
 xcopy /s/y "$(SolutionDir)AdobeCheckOSVersionInfo\bin\$(Configuration)\AdobeCheckOSVersionInfo.exe" "$(TargetDir)" 
 copy "$(SolutionDir)DbPortingProject\bin\$(PlatformTarget)\$(Configuration)\DBPorting.exe" "$(TargetDir)"

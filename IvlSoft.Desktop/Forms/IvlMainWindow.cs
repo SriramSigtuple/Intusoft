@@ -2385,7 +2385,7 @@ namespace INTUSOFT.Desktop.Forms
                     this.thumbnailUI1.ResetThumbnailUI();
                  
                     //this.thumbnailUI1.thumbnail_FLP.Controls.Clear();
-                    logOut_lbl.Visible = true; //commented by sriram to remove logout button when login screen is not present
+                    //logOut_lbl.Visible = true; //commented by sriram to remove logout button when login screen is not present
                     Image_btn.Visible = true;
                     Image_btn.Enabled = false;
                     Image_btn.ToolTipText = "";

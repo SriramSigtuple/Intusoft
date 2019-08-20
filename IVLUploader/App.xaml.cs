@@ -9,41 +9,56 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-
+using SingleInstanceApp;
 namespace IVLUploader
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application,ISingleInstance
     {
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        //[STAThread]
-        //public static void Main(string[] args)
-        //{
-        //    if (!IsFirstInstance()) return;
+        private const string Unique = "IVLUploader";
 
-        //    var app = new App();
-        //    app.InitializeComponent();
-        //    app.Run();
-        //}
+    [STAThread]
+        public static void Main()
+        {
+            if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
+            {
+                var application = new App();
 
-        //public static bool IsFirstInstance()
-        //{
-        //    //give the mutex a name => it will be systemwide.
-        //    var mutex = new Mutex(true, "somethingunique");
-        //    return mutex.WaitOne(TimeSpan.Zero, false);
-        //}
+                application.InitializeComponent();
+                application.Run();
+
+                // Allow single instance code to perform cleanup operations
+                SingleInstance<App>.Cleanup();
+            }
+        }
+
+        #region ISingleInstanceApp Members
+
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            // handle command line arguments of second instance
+            // …
+
+            return true;
+        }
+
+        #endregion
+
 
         protected override void OnStartup(StartupEventArgs e)
         {
           
 
             base.OnStartup(e);
-            LogManager.Configuration.Variables["dir"] = Directory.GetCurrentDirectory();
+            LogManager.Configuration.Variables["dir1"] = Directory.GetCurrentDirectory();
             LogManager.Configuration.Variables["dir2"] = DateTime.Now.ToString("dd-MM-yyyy");
+            LogManager.Configuration.Variables["dir3"] = DateTime.Now.ToString("HH:mm:ss");
+
             LogManager.Configuration.AddRuleForAllLevels("ctrl");
             LogManager.Configuration.AddRuleForAllLevels("Logger");
             LogManager.Configuration.AddRuleForAllLevels("Console");
@@ -80,8 +95,6 @@ namespace IVLUploader
                 _logger.Error(exception, message);
             }
         }
-
-
 
     }
    
