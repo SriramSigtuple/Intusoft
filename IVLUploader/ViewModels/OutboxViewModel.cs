@@ -38,7 +38,7 @@ namespace IVLUploader.ViewModels
             //OutboxFileChecker.Start();// = true;
             //OutBoxTimerCallback(new object());
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, timerTick);
+            OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
             logger.Info("");
 
 

@@ -150,6 +150,13 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             set { password = value; }
         }
 
+        private static IVLControlProperties inboxTimerInterval = null;
+
+        public IVLControlProperties InboxTimerInterval
+        {
+            get { return inboxTimerInterval; }
+            set { inboxTimerInterval = value; }
+        }
         public CloudSettings()
         {
             API_URL = new IVLControlProperties();
@@ -287,6 +294,16 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             Password.val = "";
             Password.control = "System.Windows.Forms.TextBox";
             Password.text = "Password";
+
+            InboxTimerInterval = new IVLControlProperties();
+            InboxTimerInterval.name = "InboxTimerInterval";
+            InboxTimerInterval.type = "double";
+            InboxTimerInterval.val = "10";
+            InboxTimerInterval.min = 0;
+            InboxTimerInterval.max = 10000;
+            InboxTimerInterval.control = "System.Windows.Forms.NumericUpdown";
+            InboxTimerInterval.text = "Inbox Timer Interval";
+
 
         }
     }

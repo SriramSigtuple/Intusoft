@@ -523,8 +523,6 @@ namespace INTUSOFT.Desktop.Forms
                                                     st.Dispose();
                                         var finf = fileInfos.Where(x => x.Name == item.fileName).ToList()[0];
                                         File.Move(finf.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), finf.Name));
-                                        File.Move(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir), finf.Name),
-                                            Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir), finf.Name));
                                         NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
 
 
@@ -2045,7 +2043,7 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 PagePanel_p.Controls.Add(emr);
-                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(serverTimer.Interval / 2));
+                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0,(int) (Convert.ToDouble( IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
             }
             catch (Exception ex)
@@ -2539,15 +2537,21 @@ namespace INTUSOFT.Desktop.Forms
             List<string>actualImageNames = new List<string>();
             List<string> ImageNames = inboxAnalysisStatusModel.LeftEyeDetails.Select(x => x.ImageName).ToList();
             ImageNames.AddRange(inboxAnalysisStatusModel.RightEyeDetails.Select(x => x.ImageName).ToList());
-
+            List<string> leftEyeImages =  new List<string>();
+            List<string> rightEyeImages = new List<string>();
             for (int i = 0; i < ImageNames.Count; i++)
             {
                 foreach (var item in currentReportImageFiles)
                 {
+
                     if (ImageNames[i].Contains(item.Split('.')[0]))
                     {
-
-                        actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, currentReportImageFiles[i]));
+                        var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+                        if (ImageNames[i].Contains("-LE-"))
+                            leftEyeImages.Add(imageFilePath);
+                        else
+                            rightEyeImages.Add(imageFilePath);
+                        actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
                         actualMaskSettings.Add(maskSettings[i]);
                         actualImageNames.Add(string.Empty);
                     }
@@ -2564,9 +2568,10 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
             reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressions);
             reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
-            reportDic.Add("$LeftEyeObs", string.Empty);
-            reportDic.Add("$RightEyeObs", string.Empty);
+            reportDic.Add("$LeftEyeImages",leftEyeImages);
+            reportDic.Add("$RightEyeImages",rightEyeImages);
             reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri);
+            reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri);
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
             reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
             reportObj.SetTheValuesFormReportData();

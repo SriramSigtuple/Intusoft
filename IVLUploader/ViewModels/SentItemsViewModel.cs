@@ -34,7 +34,7 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, timerTick);
+            SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
             logger.Info("");
 
         }

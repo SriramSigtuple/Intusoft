@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("INTUSOFT.Desktop")]
+[assembly: AssemblyTitle("Intusoft")]
 [assembly: AssemblyDescription("Software for operation of IntuCam-45 Fundus Camera")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Intuvision Labs Pvt. Ltd.")]
-[assembly: AssemblyProduct("INTUSOFT.Desktop")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Sigtuple Technologies Pvt. Ltd.")]
+[assembly: AssemblyProduct("4.0.0.alpha3")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.1.3.0")]
-[assembly: AssemblyFileVersion("3.1.3.0")]
+[assembly: AssemblyVersion("4.0.0")]
+[assembly: AssemblyFileVersion("4.0.0")]

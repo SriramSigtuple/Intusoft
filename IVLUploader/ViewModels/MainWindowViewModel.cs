@@ -38,21 +38,57 @@ namespace IVLUploader.ViewModels
             //logger.
             LogginVM = LogginVM.GetLogginVM();
             GlobalVariables.RESTClientHelper = RESTClientHelper.GetInstance();
+            if(File.Exists("UploaderSettings.json"))
+            {
 
+                try
+                {
+                    StreamReader st = new StreamReader("UploaderSettings.json");
+                    var reader = st.ReadToEnd();
+                    st.Close();
+
+                    GlobalVariables.UploaderSettings = JsonConvert.DeserializeObject<UploaderSettings>(reader);
+
+                }
+                catch (Exception)
+                {
+
+                    GlobalVariables.UploaderSettings = new UploaderSettings();
+                    
+                }
+
+            }
+            else
+            {
+                GlobalVariables.UploaderSettings = new UploaderSettings();
+                StreamWriter st = new StreamWriter("UploaderSettings.json");
+                st.Write(JsonConvert.SerializeObject(GlobalVariables.UploaderSettings, Formatting.Indented));
+                st.Flush();
+                st.Close();
+            }
 
             if (File.Exists("DirectoryPath.json"))
             {
                 StreamReader st = new StreamReader("DirectoryPath.json");
-
-                if ((GlobalVariables.CloudPaths = JsonConvert.DeserializeObject<DirectoryPathModel>(st.ReadToEnd())) == null)
-                    GlobalVariables.CloudPaths = new DirectoryPathModel();
-
+                var reader = st.ReadToEnd();
                 st.Close();
+                try
+                {
+                    GlobalVariables.CloudPaths = JsonConvert.DeserializeObject<DirectoryPathModel>(reader);
+                }
+                catch (Exception)
+                {
+                      GlobalVariables.CloudPaths = new DirectoryPathModel();
+                }
+
             }
             else
+            {
                 GlobalVariables.CloudPaths = new DirectoryPathModel();
 
-           
+            }
+
+
             InternetCheckViewModel = InternetCheckViewModel.GetInstance();
 
             OutboxViewModel = OutboxViewModel.GetInstance();

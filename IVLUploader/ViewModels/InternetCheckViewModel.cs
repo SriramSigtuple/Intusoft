@@ -4,7 +4,7 @@ using System;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Input;
-
+using IntuUploader;
 namespace IVLUploader.ViewModels
 {
     /// <summary>
@@ -36,7 +36,7 @@ namespace IVLUploader.ViewModels
 
             myPing = new Ping();
             pingOptions = new PingOptions();
-            PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0, timerTick);
+            PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0,(int) (GlobalVariables.UploaderSettings.InternetCheckTimerInterval *1000));
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
 
