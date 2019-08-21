@@ -962,7 +962,8 @@ namespace IVLReport
                     {
                         var QCwriter = new BarcodeWriter();
                         QCwriter.Format = BarcodeFormat.QR_CODE;
-                        var result = QCwriter.Write(value);
+                        var uriValue =  (System.Uri) (_dataModel.ReportData["$QRCode"]);
+                        var result = QCwriter.Write(uriValue.ToString());
                         var barcodeBitmap = new Bitmap(result);
                         barcodeBitmap.Save(@"QRCode.png", System.Drawing.Imaging.ImageFormat.Png);
                         value = @"QRCode.png";

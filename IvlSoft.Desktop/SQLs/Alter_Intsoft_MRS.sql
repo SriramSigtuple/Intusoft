@@ -163,7 +163,7 @@ BEGIN
 DECLARE colName TEXT;
 SELECT column_name INTO colName
 FROM information_schema.columns 
-WHERE table_schema = 'intunewmodel'
+WHERE table_schema = 'dbName'
     AND table_name = 'report'
 AND column_name = 'is_cloud_report';
 IF colName is null THEN 

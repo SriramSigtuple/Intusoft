@@ -98,6 +98,8 @@ namespace IVLUploader.ViewModels
             ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
             ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateAnalysis(ActiveCloudModel.LoginCookie).Result;
             ActiveCloudModel.InitiateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
+            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse, Formatting.Indented));
+
             File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
             File.Delete(ActiveFnf.FullName);
             this.Dispose();
@@ -134,11 +136,18 @@ namespace IVLUploader.ViewModels
                 {
                     ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
                     ActiveCloudModel.GetAnalysisResultModel.CompletedStatus = true;
+
+
                     InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel { Status = (string)analysisStatus_JObject["status"] };
                     StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
                     st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                     st.Flush();
                     st.Close();
+
+                    File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    File.Delete(ActiveFnf.FullName);
+                    this.Dispose();
+                    this.ActiveFnf = null;
                 }
                 else
                     StartAnalsysisFlow();
@@ -258,7 +267,7 @@ namespace IVLUploader.ViewModels
                     }
                 }
                 inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
-                    ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.UploadModel.analysis_id + "/");
+                  "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.UploadModel.analysis_id );
                     
 
                 JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
@@ -331,6 +340,10 @@ namespace IVLUploader.ViewModels
                 st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                 st.Flush();
                 st.Close();
+                st.Dispose();
+                File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                File.Delete(ActiveFnf.FullName);
+                this.ActiveFnf = null;
                 this.Dispose();
             }
             else

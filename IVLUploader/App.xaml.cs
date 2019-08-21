@@ -55,7 +55,7 @@ namespace IVLUploader
           
 
             base.OnStartup(e);
-            LogManager.Configuration.Variables["dir1"] = Directory.GetCurrentDirectory();
+            LogManager.Configuration.Variables["dir1"] = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).Directory.FullName;
             LogManager.Configuration.Variables["dir2"] = DateTime.Now.ToString("dd-MM-yyyy");
             LogManager.Configuration.Variables["dir3"] = DateTime.Now.ToString("HH:mm:ss");
 

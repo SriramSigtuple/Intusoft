@@ -867,7 +867,7 @@
     <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformTarget)\*.dll" "$(TargetDir)"
 copy "$(SolutionDir)ReportTemplateCreator\bin\$(PlatformTarget)\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
 if not exist "$(TargetDir)Uploader" mkdir  "$(TargetDir)Uploader" 
-xcopy /s/y "$(SolutionDir)IVLUploader\bin\$(Configuration)\*.*" "$(TargetDir)Uploader " 
+xcopy /S/Y/E/R "$(SolutionDir)IVLUploader\bin\$(Configuration)\*.*" "$(TargetDir)Uploader " 
 xcopy /s/y "$(SolutionDir)library\$(PlatformTarget)\$(Configuration)\*.*" "$(TargetDir)" 
 xcopy /s/y "$(SolutionDir)AdobeCheckOSVersionInfo\bin\$(Configuration)\AdobeCheckOSVersionInfo.exe" "$(TargetDir)" 
 copy "$(SolutionDir)DbPortingProject\bin\$(PlatformTarget)\$(Configuration)\DBPorting.exe" "$(TargetDir)"

@@ -9,12 +9,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>40</Width>
+        <Width>84</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>68</_X>
+        <_X>34</_X>
         <_Y>141</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -26,7 +26,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Name:</Text>
+      <Text>Name               :</Text>
       <Name>Label2</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -44,12 +44,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>218</Width>
+        <Width>283</Width>
         <Height>20</Height>
       </Size>
       <Binding>Name</Binding>
       <Location>
-        <_X>107</_X>
+        <_X>121</_X>
         <_Y>141</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -84,7 +84,7 @@
       </Size>
       <Binding>HospitalLogo</Binding>
       <Location>
-        <_X>14</_X>
+        <_X>34</_X>
         <_Y>47</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -120,7 +120,7 @@
       </Size>
       <Binding>Gender</Binding>
       <Location>
-        <_X>147</_X>
+        <_X>159</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -150,13 +150,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>35</Width>
+        <Width>96</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>522</_X>
-        <_Y>141</_Y>
+        <_X>414</_X>
+        <_Y>161</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -167,7 +167,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Date:</Text>
+      <Text>Date                    :</Text>
       <Name>Label11</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -190,8 +190,8 @@
       </Size>
       <Binding>Datetime</Binding>
       <Location>
-        <_X>557</_X>
-        <_Y>141</_Y>
+        <_X>514</_X>
+        <_Y>161</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -202,7 +202,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$Date</Text>
+      <Text>Date</Text>
       <Name>Label12</Name>
       <MarginDecrementValue>-20</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -216,7 +216,7 @@
       <Font>
         <FontColor>WindowText</FontColor>
         <FontFamily>Lato</FontFamily>
-        <FontStyle>Bold</FontStyle>
+        <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
       <Size>
@@ -225,7 +225,7 @@
       </Size>
       <Binding>Doctor</Binding>
       <Location>
-        <_X>557</_X>
+        <_X>514</_X>
         <_Y>187</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -255,12 +255,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>37</Width>
-        <Height>20</Height>
+        <Width>84</Width>
+        <Height>22</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>71</_X>
+        <_X>34</_X>
         <_Y>161</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -272,7 +272,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>MRN:</Text>
+      <Text>MRN                :</Text>
       <Name>Label22</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -290,12 +290,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>47</Width>
+        <Width>96</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>508</_X>
+        <_X>414</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -307,7 +307,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Doctor:</Text>
+      <Text>Doctor                :</Text>
       <Name>Label31</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -330,7 +330,7 @@
       </Size>
       <Binding>Age</Binding>
       <Location>
-        <_X>107</_X>
+        <_X>120</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -360,12 +360,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>84</Width>
-        <Height>20</Height>
+        <Width>94</Width>
+        <Height>22</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>27</_X>
+        <_X>34</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -377,7 +377,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Age / Gender:</Text>
+      <Text>Age / Gender :</Text>
       <Name>Label27</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -400,7 +400,7 @@
       </Size>
       <Binding>MRN</Binding>
       <Location>
-        <_X>107</_X>
+        <_X>120</_X>
         <_Y>161</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -439,7 +439,7 @@
         <_Y>204</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
+      <Border>false</Border>
       <Type>IVL_ImagePanel</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -470,7 +470,7 @@
       </Size>
       <Binding>CompanyLogo</Binding>
       <Location>
-        <_X>622</_X>
+        <_X>620</_X>
         <_Y>47</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -506,8 +506,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>122</_X>
-        <_Y>995</_Y>
+        <_X>161</_X>
+        <_Y>1011</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -541,8 +541,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>27</_X>
-        <_Y>721</_Y>
+        <_X>34</_X>
+        <_Y>706</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -571,13 +571,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>609</Width>
-        <Height>57</Height>
+        <Width>748</Width>
+        <Height>63</Height>
       </Size>
       <Binding>Comments</Binding>
       <Location>
-        <_X>161</_X>
-        <_Y>718</_Y>
+        <_X>34</_X>
+        <_Y>740</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>true</Border>
@@ -681,7 +681,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>27</_X>
+        <_X>34</_X>
         <_Y>565</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -716,7 +716,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>413</_X>
+        <_X>414</_X>
         <_Y>565</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -746,12 +746,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>86</Width>
+        <Width>104</Width>
         <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>42</_X>
+        <_X>34</_X>
         <_Y>595</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -763,7 +763,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>AI Impression :</Text>
+      <Text>AI Impression     :</Text>
       <Name>Label43</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -781,13 +781,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>87</Width>
+        <Width>103</Width>
         <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>428</_X>
-        <_Y>595</_Y>
+        <_X>414</_X>
+        <_Y>596</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -798,7 +798,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>AI Impression :</Text>
+      <Text>AI Impression     :</Text>
       <Name>Label44</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -821,7 +821,7 @@
       </Size>
       <Binding>RightEyeAnalysisType</Binding>
       <Location>
-        <_X>126</_X>
+        <_X>134</_X>
         <_Y>565</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -856,7 +856,7 @@
       </Size>
       <Binding>RightEyeImpression</Binding>
       <Location>
-        <_X>126</_X>
+        <_X>137</_X>
         <_Y>596</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -891,7 +891,7 @@
       </Size>
       <Binding>LeftEyeAnalysisType</Binding>
       <Location>
-        <_X>513</_X>
+        <_X>515</_X>
         <_Y>565</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -926,7 +926,7 @@
       </Size>
       <Binding>LeftEyeImpression</Binding>
       <Location>
-        <_X>513</_X>
+        <_X>515</_X>
         <_Y>595</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -956,13 +956,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>356</Width>
-        <Height>59</Height>
+        <Width>365</Width>
+        <Height>64</Height>
       </Size>
       <Binding>RightEyeObservationComments</Binding>
       <Location>
-        <_X>27</_X>
-        <_Y>645</_Y>
+        <_X>34</_X>
+        <_Y>644</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>true</Border>
@@ -991,12 +991,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>355</Width>
-        <Height>59</Height>
+        <Width>365</Width>
+        <Height>64</Height>
       </Size>
       <Binding>LeftEyeObservationComments</Binding>
       <Location>
-        <_X>413</_X>
+        <_X>414</_X>
         <_Y>644</_Y>
       </Location>
       <MultiLine>true</MultiLine>
@@ -1031,7 +1031,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>83</_X>
+        <_X>34</_X>
         <_Y>619</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1043,7 +1043,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Right Eye Observation and Comments</Text>
+      <Text>Observation and Comments</Text>
       <Name>Label49</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1066,7 +1066,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>457</_X>
+        <_X>414</_X>
         <_Y>619</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1078,7 +1078,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Left Eye Observation and Comments</Text>
+      <Text>Observation and Comments</Text>
       <Name>Label50</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1096,13 +1096,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>41</Width>
+        <Width>31</Width>
         <Height>14</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>29</_X>
-        <_Y>761</_Y>
+        <_X>34</_X>
+        <_Y>804</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1131,13 +1131,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>688</Width>
+        <Width>708</Width>
         <Height>18</Height>
       </Size>
       <Binding>ReportURL</Binding>
       <Location>
-        <_X>31</_X>
-        <_Y>778</_Y>
+        <_X>68</_X>
+        <_Y>799</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1171,8 +1171,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>29</_X>
-        <_Y>799</_Y>
+        <_X>34</_X>
+        <_Y>823</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1201,13 +1201,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>62</Width>
-        <Height>63</Height>
+        <Width>79</Width>
+        <Height>96</Height>
       </Size>
       <Binding>QRCode</Binding>
       <Location>
-        <_X>29</_X>
-        <_Y>818</_Y>
+        <_X>22</_X>
+        <_Y>834</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1237,17 +1237,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>207</Width>
+        <Width>253</Width>
         <Height>63</Height>
       </Size>
       <Binding>SignaturePhysician</Binding>
       <Location>
-        <_X>105</_X>
-        <_Y>879</_Y>
+        <_X>107</_X>
+        <_Y>903</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
-      <ImageName />
+      <Border>false</Border>
+      <ImageName>D:\Documents\signature(1).jpg</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1273,17 +1273,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>200</Width>
+        <Width>203</Width>
         <Height>63</Height>
       </Size>
       <Binding>SignatureOpthalmologist</Binding>
       <Location>
         <_X>457</_X>
-        <_Y>879</_Y>
+        <_Y>903</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
-      <ImageName />
+      <Border>false</Border>
+      <ImageName>D:\Documents\signature(1).jpg</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1315,7 +1315,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>105</_X>
-        <_Y>955</_Y>
+        <_Y>969</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1326,7 +1326,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Signature of Physician/ Ophthalmologist</Text>
+      <Text>Signature of Physician/ Diabotologist</Text>
       <Name>Label54</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1344,13 +1344,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>223</Width>
+        <Width>203</Width>
         <Height>24</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
         <_X>457</_X>
-        <_Y>955</_Y>
+        <_Y>969</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1361,7 +1361,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Signature of Physician/ Ophthalmologist</Text>
+      <Text>Signature of Ophthalmologist</Text>
       <Name>Label55</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1385,7 +1385,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>271</_X>
-        <_Y>1026</_Y>
+        <_Y>1048</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1419,8 +1419,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>60</_X>
-        <_Y>995</_Y>
+        <_X>99</_X>
+        <_Y>1011</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1454,8 +1454,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>316</_X>
-        <_Y>1012</_Y>
+        <_X>310</_X>
+        <_Y>1034</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1490,8 +1490,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>439</_X>
-        <_Y>1024</_Y>
+        <_X>433</_X>
+        <_Y>1046</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1526,8 +1526,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>472</_X>
-        <_Y>1032</_Y>
+        <_X>466</_X>
+        <_Y>1054</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1561,7 +1561,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>138</_X>
+        <_X>150</_X>
         <_Y>188</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1591,13 +1591,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>93</Width>
+        <Width>96</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>463</_X>
-        <_Y>161</_Y>
+        <_X>414</_X>
+        <_Y>141</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1608,7 +1608,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Report Number:</Text>
+      <Text>Report Number :</Text>
       <Name>Label60</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1621,7 +1621,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1631,8 +1631,8 @@
       </Size>
       <Binding>ReportNumber</Binding>
       <Location>
-        <_X>557</_X>
-        <_Y>161</_Y>
+        <_X>514</_X>
+        <_Y>141</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1643,7 +1643,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$ReportNumber</Text>
+      <Text>ReportNumber</Text>
       <Name>Label61</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>

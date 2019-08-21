@@ -27,6 +27,8 @@ namespace Cloud_Models.Models
         {
             RightEyeDetails = new List<ImageAnalysisResultModel>();
             LeftEyeDetails = new List<ImageAnalysisResultModel>();
+            RightAIImpressions = string.Empty;
+            LeftAIImpressions = string.Empty;
         }
 
 
