@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sigtuple Technologies Pvt Ltd.")]
-[assembly: AssemblyProduct("1.0.0.alpha3")]
+[assembly: AssemblyProduct("1.0.0.alpha4")]
 [assembly: AssemblyCopyright("Copyright © 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
