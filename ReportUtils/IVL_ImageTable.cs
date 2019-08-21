@@ -154,7 +154,7 @@ namespace ReportUtils
                        
                         lbl.BackColor = Color.Transparent;
                         lbl.Text = "Image " + (1 + imgCnt).ToString();
-                        lbl.Margin = new System.Windows.Forms.Padding(0);
+                        lbl.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
                         lbl.Dock = DockStyle.Top;
                         lbl.TextAlign = ContentAlignment.MiddleCenter;
                     }
@@ -224,7 +224,7 @@ namespace ReportUtils
                     PictureBox pb = new PictureBox();
                     pb.SizeMode = PictureBoxSizeMode.Zoom;
                     pb.Dock = DockStyle.Fill;
-                    pb.Margin = new System.Windows.Forms.Padding(0);
+                    pb.Margin = new System.Windows.Forms.Padding(0,5,0,0);
                     try
                     {
                         pb.Image = new Bitmap("Test1.jpg");

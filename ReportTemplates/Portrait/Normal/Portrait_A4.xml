@@ -9,7 +9,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>84</Width>
+        <Width>85</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
@@ -49,8 +49,8 @@
       </Size>
       <Binding>Name</Binding>
       <Location>
-        <_X>121</_X>
-        <_Y>141</_Y>
+        <_X>122</_X>
+        <_Y>143</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -61,9 +61,9 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$Name</Text>
+      <Text />
       <Name>Label3</Name>
-      <MarginDecrementValue>-17</MarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -121,7 +121,7 @@
       <Binding>Gender</Binding>
       <Location>
         <_X>159</_X>
-        <_Y>181</_Y>
+        <_Y>183</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -132,9 +132,9 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$Gender</Text>
+      <Text />
       <Name>Label8</Name>
-      <MarginDecrementValue>-18</MarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -155,7 +155,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>414</_X>
+        <_X>416</_X>
         <_Y>161</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -202,9 +202,9 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Date</Text>
+      <Text />
       <Name>Label12</Name>
-      <MarginDecrementValue>-20</MarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -226,7 +226,7 @@
       <Binding>Doctor</Binding>
       <Location>
         <_X>514</_X>
-        <_Y>187</_Y>
+        <_Y>182</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -237,10 +237,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Dr.Anil</Text>
+      <Text />
       <Name>TextBox1</Name>
-      <MarginDecrementValue>-20</MarginDecrementValue>
-      <YMarginDecrementValue>6</YMarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>-4</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -255,7 +255,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>84</Width>
+        <Width>85</Width>
         <Height>22</Height>
       </Size>
       <Binding>None</Binding>
@@ -295,7 +295,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>414</_X>
+        <_X>415</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -325,13 +325,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>30</Width>
+        <Width>33</Width>
         <Height>20</Height>
       </Size>
       <Binding>Age</Binding>
       <Location>
-        <_X>120</_X>
-        <_Y>181</_Y>
+        <_X>121</_X>
+        <_Y>183</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -342,9 +342,9 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$Age</Text>
+      <Text />
       <Name>Label28</Name>
-      <MarginDecrementValue>-17</MarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -360,12 +360,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>94</Width>
+        <Width>84</Width>
         <Height>22</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>34</_X>
+        <_X>35</_X>
         <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -400,8 +400,8 @@
       </Size>
       <Binding>MRN</Binding>
       <Location>
-        <_X>120</_X>
-        <_Y>161</_Y>
+        <_X>121</_X>
+        <_Y>164</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -412,9 +412,9 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$MRN</Text>
+      <Text />
       <Name>Label23</Name>
-      <MarginDecrementValue>-19</MarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -439,7 +439,7 @@
         <_Y>204</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>false</Border>
+      <Border>true</Border>
       <Type>IVL_ImagePanel</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -542,7 +542,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>34</_X>
-        <_Y>706</_Y>
+        <_Y>713</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -556,7 +556,7 @@
       <Text>General Observation :</Text>
       <Name>Label37</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>30</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -588,10 +588,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text> The user should be able to see the AI report generated (from View Reports screen where the table will show the AI reports generated - attached screenshot) on IntuSoft showing the most severe abnormality image and the corresponding</Text>
+      <Text />
       <Name>TextBox7</Name>
-      <MarginDecrementValue>-37</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>30</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -696,7 +696,7 @@
       <Text>AI Analysis Type :</Text>
       <Name>Label41</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>35</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -731,7 +731,7 @@
       <Text>AI Analysis Type :</Text>
       <Name>Label42</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>35</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -763,10 +763,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>AI Impression     :</Text>
+      <Text>AI Impression      :</Text>
       <Name>Label43</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>50</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -798,10 +798,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>AI Impression     :</Text>
+      <Text>AI Impression      :</Text>
       <Name>Label44</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>50</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -833,10 +833,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$RightEyeAnalysisType</Text>
+      <Text>Diabetic Retinopathy</Text>
       <Name>Label45</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>35</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -868,10 +868,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Normal</Text>
+      <Text />
       <Name>Label46</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>50</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -906,7 +906,7 @@
       <Text>Diabetic Retinopathy</Text>
       <Name>Label47</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>35</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -938,10 +938,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>NPDR</Text>
+      <Text />
       <Name>Label48</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>50</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -976,7 +976,7 @@
       <Text />
       <Name>TextBox8</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>40</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1011,7 +1011,7 @@
       <Text />
       <Name>TextBox9</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>40</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1046,7 +1046,7 @@
       <Text>Observation and Comments</Text>
       <Name>Label49</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>40</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1081,7 +1081,7 @@
       <Text>Observation and Comments</Text>
       <Name>Label50</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>40</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1102,7 +1102,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>34</_X>
-        <_Y>804</_Y>
+        <_Y>808</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1116,7 +1116,7 @@
       <Text>URL:</Text>
       <Name>Label51</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>20</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1132,12 +1132,12 @@
       </Font>
       <Size>
         <Width>708</Width>
-        <Height>18</Height>
+        <Height>16</Height>
       </Size>
       <Binding>ReportURL</Binding>
       <Location>
         <_X>68</_X>
-        <_Y>799</_Y>
+        <_Y>807</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1148,10 +1148,10 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>https://docs.google.com/document/d/1E_hF6SV0nIv1trylPSenwUdN_-qmRSuJkiWSwWGI69M/edit</Text>
+      <Text />
       <Name>Label52</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>21</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1172,7 +1172,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>34</_X>
-        <_Y>823</_Y>
+        <_Y>824</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1186,7 +1186,7 @@
       <Text>QR Code</Text>
       <Name>Label53</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>20</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1207,7 +1207,7 @@
       <Binding>QRCode</Binding>
       <Location>
         <_X>22</_X>
-        <_Y>834</_Y>
+        <_Y>841</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1222,7 +1222,7 @@
       <Text>$QRCode</Text>
       <Name>PictureBox5</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>40</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1380,12 +1380,12 @@
       </Font>
       <Size>
         <Width>53</Width>
-        <Height>19</Height>
+        <Height>12</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>271</_X>
-        <_Y>1048</_Y>
+        <_X>266</_X>
+        <_Y>1056</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1399,7 +1399,7 @@
       <Text>Powered by</Text>
       <Name>Label56</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>-8</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1454,7 +1454,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>310</_X>
+        <_X>325</_X>
         <_Y>1034</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1469,7 +1469,7 @@
       </RowsColumns>
       <Text />
       <Name>PictureBox8</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
+      <MarginDecrementValue>-20</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
@@ -1490,8 +1490,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>433</_X>
-        <_Y>1046</_Y>
+        <_X>467</_X>
+        <_Y>1048</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1506,7 +1506,7 @@
       <Text />
       <Name>PictureBox9</Name>
       <MarginDecrementValue>-50</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>2</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1526,7 +1526,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>466</_X>
+        <_X>523</_X>
         <_Y>1054</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1540,8 +1540,8 @@
       </RowsColumns>
       <Text>Drishti</Text>
       <Name>Label58</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>-75</MarginDecrementValue>
+      <YMarginDecrementValue>-10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1553,7 +1553,7 @@
         <FontColor>ControlText</FontColor>
         <FontFamily>Times New Roman</FontFamily>
         <FontStyle>Regular</FontStyle>
-        <FontSize>9</FontSize>
+        <FontSize>10</FontSize>
       </Font>
       <Size>
         <Width>8</Width>
@@ -1562,7 +1562,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>150</_X>
-        <_Y>188</_Y>
+        <_Y>184</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1576,7 +1576,7 @@
       <Text>/</Text>
       <Name>Label59</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <YMarginDecrementValue>-5</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1643,7 +1643,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>ReportNumber</Text>
+      <Text />
       <Name>Label61</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>

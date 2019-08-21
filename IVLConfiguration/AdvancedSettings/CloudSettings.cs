@@ -301,7 +301,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             InboxTimerInterval.val = "10";
             InboxTimerInterval.min = 0;
             InboxTimerInterval.max = 10000;
-            InboxTimerInterval.control = "System.Windows.Forms.NumericUpdown";
+            InboxTimerInterval.control = "System.Windows.Forms.NumericUpDown";
             InboxTimerInterval.text = "Inbox Timer Interval";
 
 

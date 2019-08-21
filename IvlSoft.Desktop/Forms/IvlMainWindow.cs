@@ -2548,12 +2548,18 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
                         if (ImageNames[i].Contains("-LE-"))
+                        {
                             leftEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OS 1");
+                        }
                         else
+                        {
                             rightEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OD 1");
+
+                        }
                         actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
                         actualMaskSettings.Add(maskSettings[i]);
-                        actualImageNames.Add(string.Empty);
                     }
                 }
                 
@@ -2570,8 +2576,8 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
             reportDic.Add("$LeftEyeImages",leftEyeImages);
             reportDic.Add("$RightEyeImages",rightEyeImages);
-            reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri);
-            reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri);
+            reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
+            reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri.ToString());
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
             reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
             reportObj.SetTheValuesFormReportData();

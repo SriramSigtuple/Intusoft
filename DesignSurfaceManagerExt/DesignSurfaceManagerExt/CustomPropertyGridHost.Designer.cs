@@ -361,7 +361,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.83562F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.16438F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
             this.tableLayoutPanel4.Controls.Add(this.Text_lbl, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.textAlign_Cmbx, 2, 0);
@@ -380,7 +380,7 @@
             this.Text_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Text_lbl.Location = new System.Drawing.Point(3, 0);
             this.Text_lbl.Name = "Text_lbl";
-            this.Text_lbl.Size = new System.Drawing.Size(33, 24);
+            this.Text_lbl.Size = new System.Drawing.Size(32, 24);
             this.Text_lbl.TabIndex = 0;
             this.Text_lbl.Text = "Text";
             // 
@@ -389,7 +389,7 @@
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(42, 0);
+            this.label2.Location = new System.Drawing.Point(41, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 24);
             this.label2.TabIndex = 0;
@@ -409,7 +409,7 @@
             "BottomLeft ",
             "BottomCenter",
             "BottomRight "});
-            this.textAlign_Cmbx.Location = new System.Drawing.Point(91, 3);
+            this.textAlign_Cmbx.Location = new System.Drawing.Point(90, 3);
             this.textAlign_Cmbx.Name = "textAlign_Cmbx";
             this.textAlign_Cmbx.Size = new System.Drawing.Size(116, 21);
             this.textAlign_Cmbx.TabIndex = 1;
@@ -625,7 +625,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 44F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this.tableLayoutPanel1.Controls.Add(this.Height_lbl, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.Height_nud, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.Width_lbl, 0, 0);
@@ -643,7 +643,7 @@
             this.Height_lbl.AutoSize = true;
             this.Height_lbl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Height_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Height_lbl.Location = new System.Drawing.Point(107, 0);
+            this.Height_lbl.Location = new System.Drawing.Point(106, 0);
             this.Height_lbl.Name = "Height_lbl";
             this.Height_lbl.Size = new System.Drawing.Size(38, 19);
             this.Height_lbl.TabIndex = 10;
@@ -652,14 +652,14 @@
             // Height_nud
             // 
             this.Height_nud.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Height_nud.Location = new System.Drawing.Point(151, 3);
+            this.Height_nud.Location = new System.Drawing.Point(150, 3);
             this.Height_nud.Maximum = new decimal(new int[] {
             3000,
             0,
             0,
             0});
             this.Height_nud.Name = "Height_nud";
-            this.Height_nud.Size = new System.Drawing.Size(62, 20);
+            this.Height_nud.Size = new System.Drawing.Size(63, 20);
             this.Height_nud.TabIndex = 12;
             this.Height_nud.TabStop = false;
             this.Height_nud.ValueChanged += new System.EventHandler(this.OnValueChanged);
@@ -686,7 +686,7 @@
             0,
             0});
             this.Width_nud.Name = "Width_nud";
-            this.Width_nud.Size = new System.Drawing.Size(54, 21);
+            this.Width_nud.Size = new System.Drawing.Size(53, 21);
             this.Width_nud.TabIndex = 11;
             this.Width_nud.TabStop = false;
             this.Width_nud.ValueChanged += new System.EventHandler(this.OnValueChanged);

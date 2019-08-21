@@ -206,14 +206,15 @@ namespace IVLReport
 
                 }
 
-                widthVal = Contents.DrawText(originX - 0.12, ref originY, 0, 0, box);
+                //widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue/dpi, ref originY, 0, 0, box);
+                widthVal = Contents.DrawText(pdf, props.Font.FontSize, originX - 0.12 + (double)props.MarginDecrementValue/dpi, originY + (double)props.YMarginDecrementValue / dpi,TextJustify.Left,0,color,color,props.Text);
 
             }
             if (props.Border)
             {
                 //if(originY == -1)
                 originY = (MappingValue - (double)(props.Location._Y + props.Size.Height )) / dpi;
-                Contents.DrawRectangle(originX -0.12, originY - 0.11 , originWidth, originHeight, p);
+                Contents.DrawRectangle(originX -0.12, originY - 0.11 + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
                 //Contents.DrawRectangle(originX - 0.12, originY + 0.12, originWidth - 0.13, originHeight - 0.13, p);
             }
             Contents.SaveGraphicsState();
@@ -294,7 +295,6 @@ namespace IVLReport
             PdfImageControl ImageControl = new PdfImageControl();
             ImageControl.Resolution = 300;
             ImageControl.ImageQuality = 80;
-
             double x = IVLProps.Location._X;
             double y = IVLProps.Location._Y;
             int imgCount = 0;
@@ -339,12 +339,12 @@ namespace IVLReport
                 {
                     PdfImage Image1 = new PdfImage(Document, IVLProps.ImageName, ImageControl);
 
-                    Contents.DrawImage(Image1, originX, originY, originWidth, originHeight);
+                    Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue/dpi, originY + (double)IVLProps.YMarginDecrementValue/dpi, originWidth, originHeight);
                 }
                  if (IVLProps.Border)
                 {
                     PaintOp paintOp = PaintOp.Stroke;
-                    Contents.DrawRectangle(originX, originY, originWidth, originHeight, paintOp);
+                    Contents.DrawRectangle(originX + (double)IVLProps.MarginDecrementValue/dpi, originY + (double)IVLProps.YMarginDecrementValue/dpi, originWidth, originHeight, paintOp);
                 }
             }
         }
