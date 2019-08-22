@@ -84,7 +84,7 @@ namespace IVLUploader.ViewModels
         {
             logger.Info("");
 
-            if (activeFileCloudVM == null)
+            if (activeFileCloudVM == null || activeFileCloudVM.ActiveFnf == null)
             {
                 StreamReader st = new StreamReader(activeDirFileInfos.FullName);
                 var json = st.ReadToEnd();

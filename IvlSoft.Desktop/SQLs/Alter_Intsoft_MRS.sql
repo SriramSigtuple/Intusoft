@@ -174,4 +174,29 @@ DELIMITER ;
 CALL add_isCloudReportCol();
 COMMIT;
 
+START TRANSACTION;
+USE `dbName` ;
+ALTER TABLE `report` MODIFY COLUMN data_json LONGTEXT;
+COMMIT;
+
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
+drop procedure if exists add_failureMsg_cloud_report_Col;
+CREATE PROCEDURE add_failureMsg_cloud_report_Col() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'cloud_analysis_report'
+AND column_name = 'analysis_failure_Msg';
+IF colName is null THEN 
+    ALTER TABLE  cloud_analysis_report ADD analysis_failure_Msg LONGTEXT  NULL;
+END IF; 
+END$$
+DELIMITER ;
+CALL add_failureMsg_cloud_report_Col();
+COMMIT;
+
 

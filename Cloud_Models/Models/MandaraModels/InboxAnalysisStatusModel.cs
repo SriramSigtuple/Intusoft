@@ -14,7 +14,7 @@ namespace Cloud_Models.Models
         public List<ImageAnalysisResultModel> LeftEyeDetails;
 
         public string Status;
-
+        public string FailureMessage;
         public string RightAIImpressions;
         public string LeftAIImpressions;
 

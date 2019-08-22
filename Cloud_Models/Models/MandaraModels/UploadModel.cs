@@ -47,6 +47,9 @@ namespace Cloud_Models.Models
         /// </summary>
         public string analysis_id = string.Empty;
 
+
+        public int RetryCount = 0;
+
         public UploadModel()
         {
             URL_Model.API_URL_Start_Point = "analyses";

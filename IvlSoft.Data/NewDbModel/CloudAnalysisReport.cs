@@ -26,7 +26,7 @@ namespace INTUSOFT.Data.NewDbModel
             this.lastModifiedDate = DateTime.Now;
         }
 
-        public static CloudAnalysisReport CreateCloudAnalysisReport(int cloudId, report Report, bool voided, int cloudAnalysisReportStatusStr, string leftEyeImp, string rightEyeImp, DateTime createdDateTime, DateTime lastModifiedDateTime,string fileName)
+        public static CloudAnalysisReport CreateCloudAnalysisReport(int cloudId, report Report, bool voided, int cloudAnalysisReportStatusStr, string leftEyeImp, string rightEyeImp, DateTime createdDateTime, DateTime lastModifiedDateTime,string fileName,string failureMsg)
         {
             return new CloudAnalysisReport
             {
@@ -36,7 +36,8 @@ namespace INTUSOFT.Data.NewDbModel
                 fileName = fileName,
                 leftEyeImpression = leftEyeImp,
                 rightEyeImpression = rightEyeImp,
-                cloudAnalysisReportStatus = cloudAnalysisReportStatusStr
+                cloudAnalysisReportStatus = cloudAnalysisReportStatusStr,
+                failureMessage = failureMsg
             };
         }
         public static CloudAnalysisReport CreateNewCloudAnlysisReport(CloudAnalysisReport proxyCloudAnalysisReport)
@@ -51,7 +52,8 @@ namespace INTUSOFT.Data.NewDbModel
                 voided = proxyCloudAnalysisReport.voided,
                 cloudAnalysisReportStatus = proxyCloudAnalysisReport.cloudAnalysisReportStatus,
                 lastModifiedDate = proxyCloudAnalysisReport.lastModifiedDate,
-                createdDate = proxyCloudAnalysisReport.createdDate
+                createdDate = proxyCloudAnalysisReport.createdDate,
+                failureMessage = proxyCloudAnalysisReport.failureMessage
             };
         }
         public void Dispose()
@@ -71,6 +73,7 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual string rightEyeImpression { get; set; }
 
         public virtual string fileName { get; set; }
+        public virtual string failureMessage { get; set; }
         public virtual DateTime createdDate { get; set; }
 
         public virtual bool voided { get; set; }

@@ -29,6 +29,12 @@ namespace IVLUploader
         public MainWindow()
         {
             InitializeComponent();
+            this.Loaded += MainWindow_Loaded;
+          
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
             _currentVm = new MainWindowViewModel();
             this.DataContext = _currentVm;
         }

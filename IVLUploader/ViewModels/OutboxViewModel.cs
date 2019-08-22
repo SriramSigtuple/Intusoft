@@ -100,7 +100,7 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
              FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles();
-            if (activeDirFileInfos.Any() && activeFileCloudVM == null)
+            if (activeDirFileInfos.Any() && (activeFileCloudVM == null ||activeFileCloudVM.ActiveFnf == null))
             {
                 logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
 

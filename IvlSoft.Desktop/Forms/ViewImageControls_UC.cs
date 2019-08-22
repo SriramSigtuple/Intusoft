@@ -477,6 +477,10 @@ namespace INTUSOFT.Desktop.Forms
             showExisitingReports();
         }
 
+        private void CreateReportsDataGridView()
+        {
+
+        }
         /// <summary>
         /// The below code has been added to show the exisiting reports.
         /// </summary>
@@ -486,7 +490,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 Reports_dgv.ForeColor = Color.Black;
                 //if (NewDataVariables.Reports == null)
-                    NewDataVariables.Reports = NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit).Where(x => x.voided == false).ToList();
+                NewDataVariables.Reports = NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit).Where(x => x.voided == false).ToList();
                 NewDataVariables.Reports = NewDataVariables.Reports.OrderBy(x => x.createdDate).ToList();
                 NewDataVariables.Reports.Reverse();
                 Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
@@ -541,23 +545,24 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
                     CloudAnalysisReport c = null;
-                    if(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList().Any())
-                     c = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList()[0];
+                    List<CloudAnalysisReport> cloudReports = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList();
+                    if (cloudReports.Any())
+                     c = cloudReports[0];
                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
                         if (c != null)
                         {
                             CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
-                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g");
+                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g") +" " + c.failureMessage;
                         }
-                    //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
-                    if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
-                    {
-                        Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
-                    }
-                    else
-                    {
-                        Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
-                    }
+                        //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
+                        if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
+                        {
+                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
+                        }
+                        else
+                        {
+                            Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
+                        }
                 }
                 //Reports_dgv.Sort(Reports_dgv.Columns[1], ListSortDirection.Ascending);
                 //for (int i = 0; i < Reports_dgv.Columns.Count; i++)
@@ -3277,6 +3282,7 @@ namespace INTUSOFT.Desktop.Forms
             cloudModel.UploadModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
             cloudModel.UploadModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
             cloudModel.UploadModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES_INPUT.val;
+            cloudModel.UploadModel.RetryCount = 3;
             cloudModel.UploadModel.images = currentReportImageFiles;
             cloudModel.UploadModel.checksums = new string[currentReportImageFiles.Length];
             cloudModel.UploadModel.relative_path = new string[currentReportImageFiles.Length];

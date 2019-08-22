@@ -19,7 +19,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using IntuUploader;
 using NLog;
-
+using IVLUploader.Commands;
 namespace IVLUploader.ViewModels
 {
     public class MainWindowViewModel:ViewBaseModel
@@ -28,10 +28,13 @@ namespace IVLUploader.ViewModels
 
         private InternetCheckViewModel internetCheckViewModel;
         private const string serverNotRunning = "Cloud Server is not running";
-       private const string serverRunning = "Cloud Server is running";
+        private const string serverRunning = "Cloud Server is running";
         OutboxViewModel OutboxViewModel;
         SentItemsViewModel SentItemsViewModel;
         private LogginVM logginVM;
+
+        private ShowSampleWindowCommand showSampleWindowCommand;
+        private HideSampleWindowCommand hideSampleWindowCommand;
         public  MainWindowViewModel()
        {
             logger.Info("");
@@ -94,6 +97,9 @@ namespace IVLUploader.ViewModels
             OutboxViewModel = OutboxViewModel.GetInstance();
 
             SentItemsViewModel = SentItemsViewModel.GetInstance();
+
+            //ShowSampleWindowCommand = new ShowSampleWindowCommand();
+            //HideSampleWindowCommand = new HideSampleWindowCommand();
 
             logger.Info("");
 
@@ -333,6 +339,9 @@ namespace IVLUploader.ViewModels
                 OnPropertyChanged("LogginVM");
             }
         }
+
+        public ShowSampleWindowCommand ShowSampleWindowCommand { get => showSampleWindowCommand; set => showSampleWindowCommand = value; }
+        public HideSampleWindowCommand HideSampleWindowCommand { get => hideSampleWindowCommand; set => hideSampleWindowCommand = value; }
 
         //public BindingList<FileInfo> OutboxFiles { get => outboxFiles;
         //    set

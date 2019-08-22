@@ -47,27 +47,19 @@ namespace IVLUploader.ViewModels
             set { loginURlModel = value; }
         }       
 
-        public async Task<List<Response_CookieModel>> StartUpload(Cookie cookie)
+        public async Task<Response_CookieModel> StartUpload(Cookie cookie, Dictionary<string,object> keyValuePairs)
 
         {
             logger.Info("");
 
-            List<Response_CookieModel> responseList = new List<Response_CookieModel>();
             UploadModel.URL = UploadModel.URL_Model.GetUrl();
 
-            for (int i = 0; i < UploadModel.images.Length; i++)
-            {
-                Dictionary<string, object> kvp = new Dictionary<string, object>();
-                kvp.Add("relative_path", UploadModel.relative_path[i]);
-                kvp.Add("image", new FileInfo(UploadModel.images[i]));
-                kvp.Add("checksum", UploadModel.checksums[i]);
-                kvp.Add("slide_id", UploadModel.slide_id);
-                kvp.Add("upload_type", UploadModel.upload_type);
-                responseList.Add( await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, kvp));
-            }
+            Response_CookieModel response =  await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
+
+           
             logger.Info("");
 
-            return responseList;
+            return response;
         }
 
 

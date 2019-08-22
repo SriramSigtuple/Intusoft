@@ -13,6 +13,7 @@
   <property name="rightEyeImpression" type="String" column="right_eye_impression" />
   <property name="leftEyeImpression" type="String" column="left_eye_impression" />
   <property name="fileName" type="String" column="analysis_filename" />
+  <property name="failureMessage" type="String" column="analysis_failure_Msg" />
   <property name="cloudAnalysisReportStatus" type="int" column="cloud_analysis_report_status" />
   <many-to-one name="Report" class="report" column="report_id" />
 	<property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />

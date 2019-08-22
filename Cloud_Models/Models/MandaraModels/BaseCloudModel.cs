@@ -34,7 +34,6 @@ namespace Cloud_Models.Models
 
         public string BodyMessageType = "raw";
 
-
         public Boolean CompletedStatus = false;
 
     }
