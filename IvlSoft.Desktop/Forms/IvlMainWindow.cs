@@ -476,101 +476,75 @@ namespace INTUSOFT.Desktop.Forms
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
         }
 
-        private void ThumbnailUI1__ThumbnailCountChangedDelegate(int count)
-        {
-            noOfImagesSelected_lbl.Text = count.ToString() + " Image/s Selected";
-
-        }
+        private void ThumbnailUI1__ThumbnailCountChangedDelegate(int count) => noOfImagesSelected_lbl.Text = count.ToString() + IVLVariables.LangResourceManager.GetString("ImagesSelected_Text", IVLVariables.LangResourceCultureInfo);
         private void InboxCheck(object state)
         {
-            List<CloudAnalysisReport> cloudAnalysisReports =   NewDataVariables._Repo.GetAll<CloudAnalysisReport>().ToList();
-            foreach (var item in cloudAnalysisReports)
-            {
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
-                if (fileInfos.Any(x => x.Name == item.fileName))
-                {
-                    if (item.cloudAnalysisReportStatus != 1)
-                    {
-                        item.cloudAnalysisReportStatus = 1;
-                        NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
-                    }
-                      
-                }
-                else
-                {
 
-                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
-                    if (fileInfos.Any(x => x.Name == item.fileName))
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                foreach (var fileInfo in fileInfos)
+                {
+                    CloudAnalysisReport cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0];
+                    StreamReader st = new StreamReader(fileInfo.FullName);
+                    var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+                    st.Close();
+                    st.Dispose();
+                    if (responseValue.Status == "success")
                     {
-                        if (item.cloudAnalysisReportStatus != 2)
+                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 4)
                         {
-                            item.cloudAnalysisReportStatus = 2;
-                            NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
+                            cloudAnalysisReport.cloudAnalysisReportStatus = 4;
+
+                            CreateCloudReport(responseValue);
+                            cloudAnalysisReport.leftEyeImpression = responseValue.LeftAIImpressions;
+                            cloudAnalysisReport.rightEyeImpression = responseValue.RightAIImpressions;
+                            NewDataVariables._Repo.Update(cloudAnalysisReport);
+
                         }
-                           
+
                     }
-                    else
+                    else if (responseValue.Status == "failure")
                     {
-                                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
-                                    if (fileInfos.Any(x => x.Name == item.fileName))
-                                    {
-                                        StreamReader st = new StreamReader(fileInfos[0].DirectoryName + Path.DirectorySeparatorChar + item.fileName);
-                                        var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                            if (responseValue.Status == "success")
-                            {
-                                //if (item.cloudAnalysisReportStatus != 4)
-                                {
-                                    item.cloudAnalysisReportStatus = 4;
-
-                                    CreateCloudReport(responseValue);
-                                    item.leftEyeImpression = responseValue.LeftAIImpressions;
-                                    item.rightEyeImpression = responseValue.RightAIImpressions;
-                                    NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
-
-                                }
-
-                            }
-                            else if (responseValue.Status == "failure")
-                            {
-                                if (item.cloudAnalysisReportStatus != 5)
-                                {
-                                    item.cloudAnalysisReportStatus = 5;
-                                    item.failureMessage = responseValue.FailureMessage;
-                                    NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
-
-                                }
-
-                            }
-                                            st.Close();
-                                            st.Dispose();
-                                        var finf = fileInfos.Where(x => x.Name == item.fileName).ToList()[0];
-                                        File.Move(finf.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), finf.Name));
-
-                                    }
-                                    else
-                                    {
-                                        fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
-                                        if (fileInfos.Any(x => x.Name == item.fileName))
-                                        {
-                                           if(item.cloudAnalysisReportStatus != 3)
-                                            {
-                                                item.cloudAnalysisReportStatus = 3;
-                                                NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
-                                            }
-                                          
-                                        }
-                                    }
-
+                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 5)
+                        {
+                            cloudAnalysisReport.cloudAnalysisReportStatus = 5;
+                            cloudAnalysisReport.failureMessage = responseValue.FailureMessage;
+                            NewDataVariables._Repo.Update(cloudAnalysisReport);
                         }
 
-
                     }
+                    File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
 
-                   
-                    }
-            _eventHandler.Notify(_eventHandler.RefreshExistingReport, new Args());
+                }
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
+                foreach (var fileInfo in fileInfos)
+                {
+                  UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0],1);
                 }
 
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
+                foreach (var fileInfo in fileInfos)
+                {
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 2);
+                }
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
+                foreach (var fileInfo in fileInfos)
+                {
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 3);
+                }
+
+               _eventHandler.Notify(_eventHandler.RefreshExistingReport, new Args());
+        }
+
+        private void UpdateCloudReportStatus(CloudAnalysisReport cloudAnalysisReport, int status)
+        {
+            if(cloudAnalysisReport.cloudAnalysisReportStatus != status)
+            {
+                cloudAnalysisReport.cloudAnalysisReportStatus = status;
+                NewDataVariables._Repo.Update(cloudAnalysisReport);
+            }
+           
+
+        }
         private void ThumbnailUI1_showImgFromThumbnail(ThumbnailData s, EventArgs e)
         {
             //This method modified by Darshan on 16-09-2015 to stop courroupting of json file.

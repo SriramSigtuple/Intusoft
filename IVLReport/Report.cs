@@ -1127,6 +1127,8 @@ namespace IVLReport
                 case "Label":
                     {
                         Label l = new Label();
+                        if (IVLProps.Binding.Contains("ReportURL"))
+                            l = new LinkLabel();
                         IVLFont i = IVLProps.Font;
                         l.Text = IVLProps.Text;
                         if (IVLProps.Binding != BindingType.None.ToString() && IVLProps.Binding == BindingType.Name.ToString()) 
@@ -1143,7 +1145,9 @@ namespace IVLReport
                         if (IVLProps.Border)
                             l.BorderStyle = BorderStyle.FixedSingle;
                         if(IVLProps.Binding != BindingType.None.ToString())
+
                             l.Tag = "$"+IVLProps.Binding;
+                        
                         l.Location = new Point( IVLProps.Location._X, IVLProps.Location._Y);
                         l.Size = IVLProps.Size;
                         this.p.Controls.Add(l);

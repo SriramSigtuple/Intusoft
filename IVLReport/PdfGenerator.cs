@@ -298,9 +298,9 @@ namespace IVLReport
             double x = IVLProps.Location._X;
             double y = IVLProps.Location._Y;
             int imgCount = 0;
-            double width = IVLProps.Size.Width ;
-            double height = IVLProps.Size.Height ;
-            double originX = 0 ; double originY = 0;
+            double width = IVLProps.Size.Width;
+            double height = IVLProps.Size.Height;
+            double originX = 0; double originY = 0;
             double originHeight = 0; double originWidth = 0;
             PictureBox pb = new PictureBox();
             pb.SizeMode = PictureBoxSizeMode.Zoom;
@@ -311,7 +311,7 @@ namespace IVLReport
                 //pb.Index = ++imgCount;
                 pb.Image = new Bitmap(IVLProps.ImageName);
             }
-            else if(IVLProps.Binding.Contains("QRCode"))
+            else if (IVLProps.Binding.Contains("QRCode"))
             {
                 pb.Image = _dataModel.qrBitmap;
 
@@ -334,16 +334,16 @@ namespace IVLReport
 
                 Rectangle rectangle = (Rectangle)pInfo.GetValue(pb, null);//rectangle will get the inner location of the 
 
-                 originX = (double)(pb.Location.X);
+                originX = (double)(pb.Location.X);
                 originX = originX / dpi;
                 //double originY = MappingValue - (double)(pb.Location.Y + rectangle.Y);
-                 originY = (double)(pb.Location.Y + rectangle.Y);
+                originY = (double)(pb.Location.Y + rectangle.Y);
                 originY = originY / dpi;
                 if (originY < 0)
                     originY *= -1;
-                 originWidth = ((double)pb.Image.Width / resizeFactor);
+                originWidth = ((double)pb.Image.Width / resizeFactor);
                 originWidth = originWidth / dpi;
-                 originHeight = (double)pb.Image.Height / resizeFactor;
+                originHeight = (double)pb.Image.Height / resizeFactor;
                 originHeight = originHeight / dpi;
             }
 
@@ -355,16 +355,20 @@ namespace IVLReport
             }
             else if (IVLProps.Binding.Contains("QRCode"))
             {
-                PdfImage Image1 = new PdfImage(Document, _dataModel.qrBitmap, ImageControl);
-
-                Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue / dpi, originY + (double)IVLProps.YMarginDecrementValue / dpi, originWidth, originHeight);
-            }
-                    if (IVLProps.Border)
+                if (_dataModel.qrBitmap != null)
                 {
-                    PaintOp paintOp = PaintOp.Stroke;
-                    Contents.DrawRectangle(originX + (double)IVLProps.MarginDecrementValue/dpi, originY + (double)IVLProps.YMarginDecrementValue/dpi, originWidth, originHeight, paintOp);
+                    PdfImage Image1 = new PdfImage(Document, _dataModel.qrBitmap, ImageControl);
+
+                    Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue / dpi, originY + (double)IVLProps.YMarginDecrementValue / dpi, originWidth, originHeight);
                 }
-       }
+
+            }
+            if (IVLProps.Border)
+            {
+                PaintOp paintOp = PaintOp.Stroke;
+                Contents.DrawRectangle(originX + (double)IVLProps.MarginDecrementValue / dpi, originY + (double)IVLProps.YMarginDecrementValue / dpi, originWidth, originHeight, paintOp);
+            }
+        }
 
         public void AddPDFRectangle(ReportControlProperties IVLProps)
         {

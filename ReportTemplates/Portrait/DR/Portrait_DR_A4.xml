@@ -9,7 +9,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>85</Width>
+        <Width>86</Width>
         <Height>20</Height>
       </Size>
       <Binding>None</Binding>
@@ -255,7 +255,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>85</Width>
+        <Width>86</Width>
         <Height>22</Height>
       </Size>
       <Binding>None</Binding>
@@ -360,7 +360,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>84</Width>
+        <Width>86</Width>
         <Height>22</Height>
       </Size>
       <Binding>None</Binding>
@@ -1242,7 +1242,7 @@
       </Size>
       <Binding>SignaturePhysician</Binding>
       <Location>
-        <_X>124</_X>
+        <_X>133</_X>
         <_Y>903</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1273,13 +1273,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>203</Width>
+        <Width>253</Width>
         <Height>63</Height>
       </Size>
       <Binding>SignatureOpthalmologist</Binding>
       <Location>
-        <_X>433</_X>
-        <_Y>904</_Y>
+        <_X>431</_X>
+        <_Y>903</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1309,12 +1309,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>243</Width>
+        <Width>206</Width>
         <Height>24</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>126</_X>
+        <_X>156</_X>
         <_Y>969</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1344,12 +1344,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>203</Width>
+        <Width>167</Width>
         <Height>24</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>457</_X>
+        <_X>480</_X>
         <_Y>969</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1384,7 +1384,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>266</_X>
+        <_X>264</_X>
         <_Y>1056</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1399,7 +1399,7 @@
       <Text>Powered by</Text>
       <Name>Label56</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>-8</YMarginDecrementValue>
+      <YMarginDecrementValue>-10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1526,7 +1526,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>523</_X>
+        <_X>529</_X>
         <_Y>1054</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1662,7 +1662,7 @@
       </Font>
       <Size>
         <Width>227</Width>
-        <Height>20</Height>
+        <Height>24</Height>
       </Size>
       <Binding>NameOfTheReport</Binding>
       <Location>

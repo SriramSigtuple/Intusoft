@@ -1969,4 +1969,7 @@
   <data name="CloudReportStatus_Text" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="ImagesSelected_Text" xml:space="preserve">
+    <value> Image/s Selected</value>
+  </data>
 </root>
