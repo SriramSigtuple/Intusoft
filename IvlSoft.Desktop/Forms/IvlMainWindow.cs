@@ -510,16 +510,18 @@ namespace INTUSOFT.Desktop.Forms
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir,AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    CloudAnalysisReport cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0];
-                    StreamReader st = new StreamReader(fileInfo.FullName);
-                    var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                    st.Close();
-                    st.Dispose();
+                StreamReader st = new StreamReader(fileInfo.FullName);
+                var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+                st.Close();
+                st.Dispose();
+                CloudAnalysisReport cloudAnalysisReport = NewDataVariables._Repo.GetById<CloudAnalysisReport>(responseValue.cloudID);
+                    
+                   
                     if (responseValue.Status == "success")
                     {
-                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 4)
+                        if (cloudAnalysisReport.cloudAnalysisReportStatus != (int)CloudReportStatus.View)
                         {
-                            cloudAnalysisReport.cloudAnalysisReportStatus = 4;
+                            cloudAnalysisReport.cloudAnalysisReportStatus = (int)CloudReportStatus.View;
 
                             CreateCloudReport(responseValue);
                             cloudAnalysisReport.leftEyeImpression = responseValue.LeftAIImpressions;
@@ -531,9 +533,9 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     else if (responseValue.Status == "failure")
                     {
-                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 5)
+                        if (cloudAnalysisReport.cloudAnalysisReportStatus != (int)CloudReportStatus.Failed)
                         {
-                            cloudAnalysisReport.cloudAnalysisReportStatus = 5;
+                            cloudAnalysisReport.cloudAnalysisReportStatus = (int)CloudReportStatus.Failed;
                             cloudAnalysisReport.failureMessage = responseValue.FailureMessage;
                             NewDataVariables._Repo.Update(cloudAnalysisReport);
                         }
@@ -545,18 +547,18 @@ namespace INTUSOFT.Desktop.Forms
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                  UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0],1);
+                  UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0],(int)CloudReportStatus.Initialized);
                 }
 
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 2);
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], (int)CloudReportStatus.Uploading);
                 }
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 3);
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], (int)CloudReportStatus.Processing);
                 }
 
                _eventHandler.Notify(_eventHandler.RefreshExistingReport, new Args());

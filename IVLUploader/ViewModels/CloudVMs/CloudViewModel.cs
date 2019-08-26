@@ -136,7 +136,10 @@ namespace IVLUploader.ViewModels
                 {
                     InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                     inboxAnalysisStatusModel.Status = "failure";
-
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
                     if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
 
@@ -193,6 +196,10 @@ namespace IVLUploader.ViewModels
 
 
                     InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel { Status = (string)analysisStatus_JObject["status"] };
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
                     StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
                     st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                     st.Flush();
@@ -235,7 +242,10 @@ namespace IVLUploader.ViewModels
                     ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                     inboxAnalysisStatusModel.Status = "failure";
-
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
                     if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
                         inboxAnalysisStatusModel.FailureMessage = "Wrong Device ID";
@@ -272,8 +282,11 @@ namespace IVLUploader.ViewModels
                 { 
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                 inboxAnalysisStatusModel.Status = "failure";
-
-                if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
+                    if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     inboxAnalysisStatusModel.FailureMessage = "Wrong Device ID";
 
@@ -307,9 +320,16 @@ namespace IVLUploader.ViewModels
             List<JToken> products = Login_JObject["message"]["products"].ToList();
             foreach (var item in products)
             {
-               if( item.ToString().Contains("Fundus"))
-                    ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
-
+                if(ActiveCloudModel.CreateAnalysisModel.AnalysisType == 1)
+                {
+                    if (item.ToString().Contains("Fundus"))
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                }
+                else if (ActiveCloudModel.CreateAnalysisModel.AnalysisType == 1)
+                {
+                    if (item.ToString().Contains("QI"))
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                }
             }
             ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
             ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.StartCreateAnalysis(ActiveCloudModel.LoginCookie).Result;
@@ -331,8 +351,11 @@ namespace IVLUploader.ViewModels
                 { 
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                 inboxAnalysisStatusModel.Status = "failure";
-
-                if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
+                    if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
 
                     inboxAnalysisStatusModel.FailureMessage = "Wrong Product ID or Installation ID";
@@ -400,7 +423,10 @@ namespace IVLUploader.ViewModels
                     {
                         InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                         inboxAnalysisStatusModel.Status = "failure";
-
+                        inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                        inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                        inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                        inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
                         if (ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList[i].StatusCode == System.Net.HttpStatusCode.BadRequest)
                         {
                             inboxAnalysisStatusModel.FailureMessage = "Wrong Details";
