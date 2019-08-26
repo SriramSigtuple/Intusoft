@@ -866,7 +866,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformTarget)\*.dll" "$(TargetDir)"
-copy "$(SolutionDir)ReportTemplateCreator\bin\$(PlatformTarget)\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
+copy "$(SolutionDir)ReportTemplateCreator\bin\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"
 if not exist "$(TargetDir)Uploader" mkdir  "$(TargetDir)Uploader" 
 xcopy /S/Y/E/R "$(SolutionDir)IVLUploader\bin\$(Configuration)\*.*" "$(TargetDir)Uploader " 
 xcopy /s/y "$(SolutionDir)library\$(PlatformTarget)\$(Configuration)\*.*" "$(TargetDir)" 

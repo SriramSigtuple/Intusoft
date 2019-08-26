@@ -76,7 +76,7 @@
     </Reference>
     <Reference Include="INTUSOFT.Imaging">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Camera\bin\$(PlatformTarget)\$(Configuration)\INTUSOFT.Imaging.dll</HintPath>
+      <HintPath>..\Camera\bin\$(Configuration)\INTUSOFT.Imaging.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\library\NLog.dll</HintPath>

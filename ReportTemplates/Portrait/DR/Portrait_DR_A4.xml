@@ -1201,17 +1201,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>79</Width>
+        <Width>98</Width>
         <Height>96</Height>
       </Size>
       <Binding>QRCode</Binding>
       <Location>
-        <_X>22</_X>
-        <_Y>841</_Y>
+        <_X>24</_X>
+        <_Y>844</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Documents\qr.png</ImageName>
+      <ImageName>QRCode.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1242,12 +1242,12 @@
       </Size>
       <Binding>SignaturePhysician</Binding>
       <Location>
-        <_X>107</_X>
+        <_X>124</_X>
         <_Y>903</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Documents\signature(1).jpg</ImageName>
+      <ImageName>ImageResources\LogoImageResources\signature.jpg</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1278,12 +1278,12 @@
       </Size>
       <Binding>SignatureOpthalmologist</Binding>
       <Location>
-        <_X>457</_X>
-        <_Y>903</_Y>
+        <_X>433</_X>
+        <_Y>904</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
-      <ImageName>D:\Documents\signature(1).jpg</ImageName>
+      <ImageName>ImageResources\LogoImageResources\signature.jpg</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1314,7 +1314,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>105</_X>
+        <_X>126</_X>
         <_Y>969</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1490,7 +1490,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>467</_X>
+        <_X>473</_X>
         <_Y>1048</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1702,7 +1702,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>30</_X>
-        <_Y>195</_Y>
+        <_Y>198</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1716,7 +1716,7 @@
       <Text>Right Eye</Text>
       <Name>Label63</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>-25</YMarginDecrementValue>
+      <YMarginDecrementValue>-27</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1737,7 +1737,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>414</_X>
-        <_Y>195</_Y>
+        <_Y>197</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1751,7 +1751,7 @@
       <Text>Left Eye</Text>
       <Name>Label64</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>-25</YMarginDecrementValue>
+      <YMarginDecrementValue>-27</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>

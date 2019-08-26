@@ -84,6 +84,7 @@ namespace IVLReport
         private string userName = string.Empty;
         private string password = string.Empty;
         private string apiRequestType = String.Empty;
+        Bitmap barcodeBitmap;
         public Report(Dictionary<string, object> reportData)
         {
             InitializeComponent();
@@ -833,7 +834,7 @@ namespace IVLReport
                     _dataModel.CurrentImgFiles[i] = existingJsonReportModel.reportDetails[i].imageFile;
                     _dataModel.CurrentImageNames[i] = existingJsonReportModel.reportDetails[i].imageName;
                 }
-                isNew = isNewReport;
+                isNew = false;
                 reportSize_cbx.DataSource = pageSize;
                 LayoutDetails.Current.Orientation = existingJsonReportModel.currentOrientation;
                 SetCurrentOrientationAndSize();
@@ -867,7 +868,7 @@ namespace IVLReport
                     //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
                 }
                 
-                //isChangeTemplate = ChangeTemplate();
+                isChangeTemplate = ChangeTemplate();
                 if (autoAnalysis_btn.Enabled)
                     autoAnalysis_btn.Enabled = false;
                 //doctor_tbx.Text = existingJsonReportModel.doctor;
@@ -904,6 +905,20 @@ namespace IVLReport
             return isNewReport;
         }
 
+        private Bitmap CreateQRCodeBM()
+        {
+            List<ReportControlsStructure> tempList = reportControlStructureList.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
+            if (tempList.Any())
+            {
+                var QCwriter = new BarcodeWriter();
+                QCwriter.Format = BarcodeFormat.QR_CODE;
+                var uriValue = (_dataModel.ReportData["$QRCode"].ToString());
+                var result = QCwriter.Write(uriValue);
+                return result;
+
+            }
+            return new Bitmap(10, 10);
+        }
         /// <summary>
         /// Will set the orientation radio button and report size for existing report.
         /// </summary>
@@ -959,18 +974,8 @@ namespace IVLReport
 
                 else
                 {
-                    if(repCtrlStr.reportControlProperty.Binding.ToString().Contains("QRCode"))
-                    {
-                        var QCwriter = new BarcodeWriter();
-                        QCwriter.Format = BarcodeFormat.QR_CODE;
-                        var uriValue =   (_dataModel.ReportData["$QRCode"].ToString());
-                        var result = QCwriter.Write(uriValue);
-                        var barcodeBitmap = new Bitmap(result);
-                        barcodeBitmap.Save(@"QRCode.png", System.Drawing.Imaging.ImageFormat.Png);
-                        value = @"QRCode.png";
-                    }
-
-                        repCtrlStr.reportControlProperty.ImageName = value;
+                    
+                    repCtrlStr.reportControlProperty.ImageName = value;
                 }
             }
         }
@@ -1127,6 +1132,12 @@ namespace IVLReport
                             l.AutoEllipsis = true;
                         l.Name = IVLProps.Name;
                         l.Font = new Font(i.FontFamily,fontSize , i.FontStyle);
+
+                        if (!Color.FromName(i.FontColor).IsKnownColor)
+                        {
+                            l.ForeColor = ColorTranslator.FromHtml("#" + i.FontColor);
+                        }
+                        else
                         l.ForeColor = Color.FromName( i.FontColor);//this.FontColor;//
                         if (IVLProps.Border)
                             l.BorderStyle = BorderStyle.FixedSingle;
@@ -1144,7 +1155,14 @@ namespace IVLReport
                         t.Text = IVLProps.Text;
                         t.Name = IVLProps.Name;
                         t.Font = new Font(i.FontFamily, fontSize, i.FontStyle);
-                        t.ForeColor = Color.FromName(i.FontColor);
+
+                        if (!Color.FromName(i.FontColor).IsKnownColor)
+                        {
+                            t.ForeColor = ColorTranslator.FromHtml("#" + i.FontColor);
+                        }
+                        else
+                            t.ForeColor = Color.FromName(i.FontColor);//this.FontColor;//
+
                         t.Multiline = IVLProps.MultiLine;
                         //if (IVLProps.Border)
                         t.BorderStyle = BorderStyle.FixedSingle;
@@ -1176,7 +1194,12 @@ namespace IVLReport
                         {
                             pbx.Tag = "$" + IVLProps.Binding;
                         }
-                            if(File.Exists(IVLProps.ImageName))
+
+                        if(IVLProps.Binding.Contains("QRCode"))
+                            pbx.Image = CreateQRCodeBM();
+
+                        else
+                            if (File.Exists(IVLProps.ImageName))
                                 pbx.Image = Image.FromFile(IVLProps.ImageName);
                         pbx.Location = new Point(IVLProps.Location._X, IVLProps.Location._Y);
                         pbx.Size = IVLProps.Size;

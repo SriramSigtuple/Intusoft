@@ -298,7 +298,7 @@ namespace ReportUtils
                     else
                         name = pb.Tag.ToString();
 
-                    g.DrawString(name, new System.Drawing.Font(new System.Drawing.FontFamily("Times New Roman"), 10), solidBrush, new PointF((float)((pb.Location.X + pb.Width / 2) - stringWidth / 2), (float)(pb.Location.Y + pb.Height)));
+                    //g.DrawString(name, new System.Drawing.Font(new System.Drawing.FontFamily("Times New Roman"), 10), solidBrush, new PointF((float)((pb.Location.X + pb.Width / 2) - stringWidth / 2), (float)(pb.Location.Y + pb.Height)));
                 }
             }
             //Console.WriteLine(pb.Location.X.ToString()+"__"+ pb.Location.Y.ToString());

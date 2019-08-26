@@ -1405,6 +1405,8 @@ namespace INTUSOFT.Desktop.Forms
                         reportDic.Add("$isCDR", isCDR);
                         reportDic.Add("$DeviceID", IVLVariables.CurrentSettings.CameraSettings.DeviceID.val);
                         reportDic.Add("$hospitalName", IVLVariables.CurrentSettings.UserSettings._HeaderText.val);
+                        reportDic.Add("$QRCode", string.Empty);
+                        reportDic.Add("$ReportURL", string.Empty);
 
                         reportDic.Add("$userName", IVLVariables.CurrentSettings.ReportSettings.UserName.val);
                         reportDic.Add("$password", IVLVariables.CurrentSettings.ReportSettings.Password.val);
@@ -2025,8 +2027,11 @@ namespace INTUSOFT.Desktop.Forms
         void
             _report_reportSavedEvent(Dictionary<string, object> reportVal, EventArgs e)
         {
+            if(reportVal.Any())
+            { 
             if (Convert.ToBoolean(IVLVariables.CurrentSettings.UISettings.ViewImaging._ReportWindowClose.val))
             {
+
                 if (Convert.ToBoolean(reportVal["IsModifed"]) && (Convert.ToBoolean(reportVal["IsJsonFormat"])))
                     _report.Close();//This is commented to prevent report form from getting closed.
                 IVLVariables.isReportWindowOpen = false;
@@ -2066,6 +2071,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             //PatientDetais_update();
             NewIVLDataMethods.UpdatePatient();
+            }
+            else
+            {
+                _report.Close();//This is commented to prevent report form from getting closed.
+                IVLVariables.isReportWindowOpen = false;
+
+            }
+
             //showExisitingReports();
             IVLVariables.IsAnotherWindowOpen = false;
 

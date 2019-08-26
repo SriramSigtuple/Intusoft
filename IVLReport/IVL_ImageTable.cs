@@ -244,7 +244,7 @@ namespace IVLReport
                     Panel pnl = new Panel();
                     pnl.Dock = DockStyle.Fill;
                     pnl.Controls.Add(pb);
-                    pnl.Controls.Add(lbl);
+                    //pnl.Controls.Add(lbl);
                     this.Controls.Add(pnl, j, i);
                     imgCnt++;
                     }

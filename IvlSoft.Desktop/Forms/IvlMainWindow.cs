@@ -518,7 +518,7 @@ namespace INTUSOFT.Desktop.Forms
                                         var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
                             if (responseValue.Status == "success")
                             {
-                                if (item.cloudAnalysisReportStatus != 4)
+                                //if (item.cloudAnalysisReportStatus != 4)
                                 {
                                     item.cloudAnalysisReportStatus = 4;
 

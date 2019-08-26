@@ -643,7 +643,7 @@ namespace IVLReport
                 #endregion
                 else
                     name = ImageDetails[1];
-                Contents.DrawText(ArialNormal, fontSize, xloc_for_imglabel, yloc_for_imglabel, TextJustify.Left, 0.00, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0), name);
+                //Contents.DrawText(ArialNormal, fontSize, xloc_for_imglabel, yloc_for_imglabel, TextJustify.Left, 0.00, Color.FromArgb(0, 0, 0), Color.FromArgb(0, 0, 0), name);
                 // restore graphics state
                 Contents.RestoreGraphicsState();
                 Image1.Dispose();
