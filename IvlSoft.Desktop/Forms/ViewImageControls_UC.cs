@@ -3780,7 +3780,7 @@ namespace INTUSOFT.Desktop.Forms
                         {
                             getReportDetails();
                             string reportXml = reportVal.dataJson;
-                            if (_report.readXML(reportXml))
+                            if (_report.readXML(reportXml,true))
                             {
                                 try
                                 {

@@ -306,6 +306,7 @@
     <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="InternetChecker.cs" />
     <Compile Include="Themes.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -92,7 +92,9 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> GetAll<T>() where T : class,IBaseModel
         {
-            var _genericObject = NHibernateHelper_MySQL.hibernateSession.Query<T>().Where(GetPredicate<T>(TypeOfPredicate.Voided)).ToList();
+            NHibernateHelper_MySQL.OpenSession();
+
+            var _genericObject = new List<T>( NHibernateHelper_MySQL.hibernateSession.Query<T>().Where(GetPredicate<T>(TypeOfPredicate.Voided)));
 
             for (int i = 0; i < _genericObject.Count; i++)
             {

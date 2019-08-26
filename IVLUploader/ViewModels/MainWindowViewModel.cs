@@ -29,17 +29,14 @@ namespace IVLUploader.ViewModels
         private InternetCheckViewModel internetCheckViewModel;
         private const string serverNotRunning = "Cloud Server is not running";
         private const string serverRunning = "Cloud Server is running";
-        OutboxViewModel OutboxViewModel;
-        SentItemsViewModel SentItemsViewModel;
-        private LogginVM logginVM;
+       
 
         private ShowSampleWindowCommand showSampleWindowCommand;
         private HideSampleWindowCommand hideSampleWindowCommand;
         public  MainWindowViewModel()
        {
-            logger.Info("");
+            logger.Info("Constructor Start");
             //logger.
-            LogginVM = LogginVM.GetLogginVM();
             GlobalVariables.RESTClientHelper = RESTClientHelper.GetInstance();
             if(File.Exists("UploaderSettings.json"))
             {
@@ -91,17 +88,15 @@ namespace IVLUploader.ViewModels
 
             }
 
-            OutboxViewModel = OutboxViewModel.GetInstance();
-
-            SentItemsViewModel = SentItemsViewModel.GetInstance();
+         
             InternetCheckViewModel = InternetCheckViewModel.GetInstance();
+            logger.Info("Constructor End");
 
-          
+
 
             //ShowSampleWindowCommand = new ShowSampleWindowCommand();
             //HideSampleWindowCommand = new HideSampleWindowCommand();
 
-            logger.Info("");
 
 
         }
@@ -327,23 +322,22 @@ namespace IVLUploader.ViewModels
         public InternetCheckViewModel InternetCheckViewModel { get => internetCheckViewModel;
             set
             {
-                if(internetCheckViewModel != value)
+                //if(internetCheckViewModel == value)
                 { 
                     internetCheckViewModel = value;
                     OnPropertyChanged("InternetCheckViewModel");
-                    SentItemsViewModel.StartStopSentItemsTimer(value.InternetPresent);
-                    OutboxViewModel.StartStopSentItemsTimer(value.InternetPresent);
+                    
                 }
             }
            
         }
 
-        public LogginVM LogginVM { get => logginVM;
-            set {
-                logginVM = value;
-                OnPropertyChanged("LogginVM");
-            }
-        }
+        //public LogginVM LogginVM { get => logginVM;
+        //    set {
+        //        logginVM = value;
+        //        OnPropertyChanged("LogginVM");
+        //    }
+        //}
 
         public ShowSampleWindowCommand ShowSampleWindowCommand { get => showSampleWindowCommand; set => showSampleWindowCommand = value; }
         public HideSampleWindowCommand HideSampleWindowCommand { get => hideSampleWindowCommand; set => hideSampleWindowCommand = value; }

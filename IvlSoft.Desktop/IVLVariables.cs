@@ -44,6 +44,7 @@ namespace INTUSOFT.Desktop
         public static CultureInfo LangResourceCultureInfo;            //declare culture info
         public static Exception2StringConverter ExceptionLog;
         public static string appDirPathName = string.Empty;
+        public static bool isInternetConnected = false;
         public static PageDisplayed pageDisplayed = PageDisplayed.Login;
 
         public static Settings CurrentSettings

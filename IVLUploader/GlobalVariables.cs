@@ -21,7 +21,8 @@ namespace IntuUploader
         public static Logger eventLog = LogManager.GetLogger("EventLog");
 
         public static UploaderSettings UploaderSettings = null;
-       
+
+        public static bool isInternetPresent = false;
 
     }
 }

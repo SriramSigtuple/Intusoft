@@ -2068,6 +2068,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 PagePanel_p.Controls.Add(emr);
                 inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0,(int) (Convert.ToDouble( IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
 
             }
             catch (Exception ex)
@@ -2594,7 +2595,7 @@ namespace INTUSOFT.Desktop.Forms
             }
 
             reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
-            reportDic.Add("$currentTemplate", @"ReportTemplates\Portrait\Normal\Portrait_A4.xml");
+            reportDic.Add("$currentTemplate", @"ReportTemplates\Portrait\DR\Portrait_DR_A4.xml");
 
             //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
             reportDic["$visitImages"] = actualImageFiles.ToArray();

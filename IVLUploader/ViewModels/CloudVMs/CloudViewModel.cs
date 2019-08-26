@@ -74,7 +74,8 @@ namespace IVLUploader.ViewModels
         }
         public void StartAnalsysisFlow()
         {
-            logger.Info("");
+            if(GlobalVariables.isInternetPresent)
+            { 
 
             if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expired || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
                 Login();
@@ -88,13 +89,29 @@ namespace IVLUploader.ViewModels
                 GetAnalysisStatus();
             else if (!ActiveCloudModel.GetAnalysisResultModel.CompletedStatus)
                 GetAnalysisResult();
-            logger.Info("");
+            else
+                {
+
+                }
+            }
+            else
+            {
+                logger.Info("Internet connection{GlobalVariables.isInternetPresent}");
+                StreamWriter st = new StreamWriter(ActiveFnf.FullName);
+                st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                st.Flush();
+                st.Close();
+                st.Dispose();
+                this.ActiveFnf = null;
+                this.Dispose();
+            }
+               
+
 
         }
         private void StartAnalysis()
         {
-            logger.Info("");
-            LogginVM.GetLogginVM().Logs.Add("Start Analysis");
+            logger.Info("Start Analysis");
             ActiveCloudModel.InitiateAnalysisModel.status = "initialised";
             ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
             ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateAnalysis(ActiveCloudModel.LoginCookie).Result;
@@ -107,7 +124,6 @@ namespace IVLUploader.ViewModels
                 File.Delete(ActiveFnf.FullName);
                 this.Dispose();
                 this.ActiveFnf = null;
-                logger.Info("");
 
             }
             else
@@ -148,7 +164,7 @@ namespace IVLUploader.ViewModels
         private void GetAnalysisStatus()
         {
 
-            LogginVM.GetLogginVM().Logs.Add("Get Analysis Status");
+            logger.Info("Get Analysis Status");
 
             ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
             ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
@@ -157,6 +173,7 @@ namespace IVLUploader.ViewModels
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
                 if ((string)analysisStatus_JObject["status"] == "success")
                 {
                     ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
@@ -169,7 +186,7 @@ namespace IVLUploader.ViewModels
 
                     StartAnalsysisFlow();
                 }
-                else if((string)analysisStatus_JObject["status"] == "failure")
+                else if ((string)analysisStatus_JObject["status"] == "failure")
                 {
                     ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
                     ActiveCloudModel.GetAnalysisResultModel.CompletedStatus = true;
@@ -186,28 +203,69 @@ namespace IVLUploader.ViewModels
                     this.Dispose();
                     this.ActiveFnf = null;
                 }
+            }
+               
                 else
-                    StartAnalsysisFlow();
+                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
+            {
+                logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
+
+
+            }
+            StartAnalsysisFlow();
          
 
         }
         private void Login()
         {
-            logger.Info("");
-            LogginVM.GetLogginVM().Logs.Add("Login");
+            logger.Info("Login");
+
             ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.StartLogin().Result;
+            
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, Formatting.Indented));
             if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                ActiveCloudModel.LoginCookie = ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.Cookie;
-                StartAnalsysisFlow();
+                if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody.Contains("installation_id"))
+                {
+                    ActiveCloudModel.LoginCookie = ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.Cookie;
+                    StartAnalsysisFlow();
+                }
+                else
+                {
+                    ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
+                    inboxAnalysisStatusModel.Status = "failure";
+
+                    if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        inboxAnalysisStatusModel.FailureMessage = "Wrong Device ID";
+
+
+                    }
+                    else if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        inboxAnalysisStatusModel.FailureMessage = "Wrong Credentials";
+
+                    }
+                    StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
+                    st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
+                    st.Flush();
+                    st.Close();
+                    st.Dispose();
+                    File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    File.Delete(ActiveFnf.FullName);
+                    this.ActiveFnf = null;
+                    this.Dispose();
+                }
+                    
 
             }
             else 
             {
                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
                 {
-                    StartAnalsysisFlow();
+                    logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
+
 
                 }
                 else
@@ -237,12 +295,11 @@ namespace IVLUploader.ViewModels
                 this.Dispose();
                 }
             }
-            logger.Info("");
 
         }
         private void CreateAnalysis()
         {
-            logger.Info("");
+            logger.Info("Create Analysis");
 
             JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
 
@@ -267,6 +324,8 @@ namespace IVLUploader.ViewModels
             {
                 if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == 0)
                 {
+                    logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
+
                 }
                 else
                 { 
@@ -296,7 +355,6 @@ namespace IVLUploader.ViewModels
                 this.Dispose();
                 }
             }
-            logger.Info("");
 
         }
         private void UploadFiles2Analysis()
@@ -322,9 +380,7 @@ namespace IVLUploader.ViewModels
 
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
-
                             response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
-
                         }
                         else
                         {
@@ -337,7 +393,8 @@ namespace IVLUploader.ViewModels
                 {
                     if (response.StatusCode == 0)
                     {
-
+                        logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
+                        break;
                     }
                     else
                     {
@@ -346,9 +403,7 @@ namespace IVLUploader.ViewModels
 
                         if (ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList[i].StatusCode == System.Net.HttpStatusCode.BadRequest)
                         {
-
                             inboxAnalysisStatusModel.FailureMessage = "Wrong Details";
-
 
                         }
                         else if (ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList[i].StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -371,7 +426,7 @@ namespace IVLUploader.ViewModels
 
             }
 
-            if(this.ActiveFnf != null)
+            if(this.ActiveFnf != null && GlobalVariables.isInternetPresent)
             { 
                 ActiveCloudModel.UploadModel.CompletedStatus = true;
 
@@ -434,19 +489,19 @@ namespace IVLUploader.ViewModels
                     });
                     if (inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.RightAIImpressions = inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
 
                     }
                     else if (inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result.Contains("NPDR") && !inboxAnalysisStatusModel.RightAIImpressions.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.RightAIImpressions = inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
 
                     }
                     else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("NPDR"))
                     {
-                        inboxAnalysisStatusModel.RightAIImpressions = inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
 
                     }
@@ -463,18 +518,18 @@ namespace IVLUploader.ViewModels
                     });
                     if (inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.LeftAIImpressions = inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
                     }
                     else if (inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result.Contains("NPDR") && !inboxAnalysisStatusModel.LeftAIImpressions.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.LeftAIImpressions = inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
 
                     }
                     else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("NPDR"))
                     {
-                        inboxAnalysisStatusModel.LeftAIImpressions = inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
 
                     }
@@ -496,13 +551,11 @@ namespace IVLUploader.ViewModels
             {
                 if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode == 0)
                 {
-                    StartAnalsysisFlow();
-
+                    logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
                 }
                 else
                     StartAnalsysisFlow();
             }
-            logger.Info("");
 
         }
         public CreateAnalysisViewModel ActiveCreateAnalysisViewModel { get => activeCreateAnalysisViewModel;

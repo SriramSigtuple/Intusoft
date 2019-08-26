@@ -1,16 +1,15 @@
-﻿using BaseViewModel;
-using NLog;
+﻿using NLog;
 using System;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Input;
-using IntuUploader;
-namespace IVLUploader.ViewModels
+using Common;
+namespace INTUSOFT.Desktop
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google
     /// </summary>
-    public class InternetCheckViewModel : ViewBaseModel
+    public class InternetCheckViewModel 
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -26,8 +25,6 @@ namespace IVLUploader.ViewModels
         const int MaxRetryCount = 60;// TODO : to be configured
 
         int retryCount = 0;
-        OutboxViewModel OutboxViewModel;
-        SentItemsViewModel SentItemsViewModel;
         private static InternetCheckViewModel _internetCheckViewModel;
         /// <summary>
         /// Constructor
@@ -36,14 +33,12 @@ namespace IVLUploader.ViewModels
         {
             logger.Info("");
 
-            OutboxViewModel = OutboxViewModel.GetInstance();
 
-            SentItemsViewModel = SentItemsViewModel.GetInstance();
             myPing = new Ping();
             pingOptions = new PingOptions();
-            PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0,(int) (GlobalVariables.UploaderSettings.InternetCheckTimerInterval *1000));
+            PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0, (int)((Convert.ToDouble( IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000)));
 
-           
+
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
 
@@ -95,7 +90,7 @@ namespace IVLUploader.ViewModels
                     InternetPresent = false;
                     if (RetryCount == MaxRetryCount)
                     {
-                        //showMessageBox();
+                        CustomMessageBox.Show("'No Internet connection. Please connect and retry","Internet Connection Status",CustomMessageBoxButtons.OK,CustomMessageBoxIcon.Warning);
                         RetryCount = 0;
                     }
                     else
@@ -123,10 +118,7 @@ namespace IVLUploader.ViewModels
             set
             {
                 internetPresent = value;
-                GlobalVariables.isInternetPresent = value;
-                SentItemsViewModel.StartStopSentItemsTimer(value);
-                OutboxViewModel.StartStopSentItemsTimer(value);
-                OnPropertyChanged("InternetPresent");
+                IVLVariables.isInternetConnected = value;
             }
         }
         /// <summary>
@@ -138,7 +130,6 @@ namespace IVLUploader.ViewModels
             set
             {
                 retryCount = value;
-                OnPropertyChanged("RetryCount");
             }
         }
 

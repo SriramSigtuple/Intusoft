@@ -820,7 +820,7 @@ namespace IVLReport
         /// Read an saved report.
         /// </summary>
         /// <param name="xmlFile">report string</param>
-        public bool readXML(string xmlData)
+        public bool readXML(string xmlData, bool isNewReport = false)
         {
             bool isChangeTemplate = false;//ool created to handle return value of changetemplate.By Ashutosh 05-09-2018.
             try
@@ -833,7 +833,7 @@ namespace IVLReport
                     _dataModel.CurrentImgFiles[i] = existingJsonReportModel.reportDetails[i].imageFile;
                     _dataModel.CurrentImageNames[i] = existingJsonReportModel.reportDetails[i].imageName;
                 }
-                isNew = false;
+                isNew = isNewReport;
                 reportSize_cbx.DataSource = pageSize;
                 LayoutDetails.Current.Orientation = existingJsonReportModel.currentOrientation;
                 SetCurrentOrientationAndSize();
@@ -866,7 +866,8 @@ namespace IVLReport
                     }
                     //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
                 }
-                isChangeTemplate = ChangeTemplate();
+                
+                //isChangeTemplate = ChangeTemplate();
                 if (autoAnalysis_btn.Enabled)
                     autoAnalysis_btn.Enabled = false;
                 //doctor_tbx.Text = existingJsonReportModel.doctor;
@@ -878,7 +879,7 @@ namespace IVLReport
                 landscape_rb.Enabled = false;
                 foreach (Control item in this.reportCanvas_pnl.Controls)
                 {
-                    item.Enabled = false;
+                    item.Enabled = isNewReport;
                 }
                 reportSize_cbx.Enabled = false;
                 this.Cursor = Cursors.Default;
@@ -895,12 +896,12 @@ namespace IVLReport
                         {
                             XmlSerializer xmlSer = new XmlSerializer(typeof(ReportXmlProperties));
                             ReportXmlProperties reportXml = xmlSer.Deserialize(xmlReader) as ReportXmlProperties;
-                            readExistingTemplate(reportXml);
+                            readExistingTemplate(reportXml,isNewReport);
                         }
                     }
                 }
             }
-            return isChangeTemplate;
+            return isNewReport;
         }
 
         /// <summary>
@@ -1389,9 +1390,9 @@ namespace IVLReport
         /// Reads an object of type ReportXmlProperties. Old xml report data
         /// </summary>
         /// <param name="reportxml">parameter of type ReportXmlProperties with list of control properties</param>
-        private void readExistingTemplate(ReportXmlProperties reportxml)
+        private void readExistingTemplate(ReportXmlProperties reportxml,bool isNewReport = false)
         {
-            isNew = false;
+            isNew = isNewReport;
             ReportXmlProperties newreportxml = reportxml;
             XmlSerializer xmlSer = new XmlSerializer(typeof(ReportXmlProperties));
             string reportOrientation = string.Empty;
