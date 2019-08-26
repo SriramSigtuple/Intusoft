@@ -3218,7 +3218,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 CloudModel cloudModel = PopulateModelsForMandaraUpload();
                 var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
-                var outboxFilePath = Path.Combine( IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir) , DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
+                var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus) , DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
                 File.WriteAllText(outboxFilePath, cloudModelJson);
                 CloudAnalysisReport car = NewDataVariables._Repo.GetById<CloudAnalysisReport>(cloudModel.cloudID);
                 car.fileName = new FileInfo(outboxFilePath).Name;

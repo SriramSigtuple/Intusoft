@@ -440,11 +440,17 @@ namespace INTUSOFT.Desktop.Forms
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
                 Directory.CreateDirectory(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val);
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir));
+            if (!Directory.Exists(Path.Combine( IVLVariables.CurrentSettings.CloudSettings.CloudPath.val,AnalysisType.Fundus.ToString("g"))))
+                Directory.CreateDirectory(Path.Combine(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val, AnalysisType.Fundus.ToString("g")));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir));
+            if (!Directory.Exists(Path.Combine(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val, AnalysisType.QI.ToString("g"))))
+                Directory.CreateDirectory(Path.Combine(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val, AnalysisType.QI.ToString("g")));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus));
 
             //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir)))
             //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir));
@@ -458,17 +464,38 @@ namespace INTUSOFT.Desktop.Forms
             //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir)))
             //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir,AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus));
+
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.QI));
+
+
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI));
 
 
             #endregion 
@@ -480,7 +507,7 @@ namespace INTUSOFT.Desktop.Forms
         private void InboxCheck(object state)
         {
 
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir,AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
                     CloudAnalysisReport cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0];
@@ -512,21 +539,21 @@ namespace INTUSOFT.Desktop.Forms
                         }
 
                     }
-                    File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
+                    File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), fileInfo.Name));
 
                 }
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
                   UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0],1);
                 }
 
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
                     UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 2);
                 }
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
                     UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 3);
