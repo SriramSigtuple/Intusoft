@@ -2066,7 +2066,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             //PatientDetais_update();
             NewIVLDataMethods.UpdatePatient();
-            showExisitingReports();
+            //showExisitingReports();
             IVLVariables.IsAnotherWindowOpen = false;
 
         }
@@ -3211,7 +3211,7 @@ namespace INTUSOFT.Desktop.Forms
                 car.fileName = new FileInfo(outboxFilePath).Name;
                 NewDataVariables._Repo.Update<CloudAnalysisReport>(car);
                 CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString()+" " +IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
-                showExisitingReports();
+                //showExisitingReports();
             }
             else
             {
@@ -3242,7 +3242,7 @@ namespace INTUSOFT.Desktop.Forms
 
             CloudAnalysisReport cloudAnalysisReport = CloudAnalysisReport.CreateCloudAnalysisReport();
             cloudAnalysisReport.Report = report;
-            cloudAnalysisReport.cloudAnalysisReportStatus =(int) CloudReportStatus.Intialized;
+            cloudAnalysisReport.cloudAnalysisReportStatus =(int) CloudReportStatus.Initialized;
             NewDataVariables._Repo.Add<CloudAnalysisReport>(cloudAnalysisReport);
 
             CloudModel cloudModel = new CloudModel();

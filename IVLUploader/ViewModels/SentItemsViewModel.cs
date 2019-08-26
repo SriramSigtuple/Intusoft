@@ -34,7 +34,6 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
             logger.Info("");
 
         }
@@ -99,6 +98,16 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
         }
+
+        public void StartStopSentItemsTimer(bool isStart)
+        {
+            if(isStart)
+            SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
+            else
+             SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0,Timeout.Infinite);
+
+        }
+
         public ICommand SetValue
         {
             get;

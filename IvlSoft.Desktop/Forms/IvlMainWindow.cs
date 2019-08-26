@@ -2547,10 +2547,11 @@ namespace INTUSOFT.Desktop.Forms
                 reportDic.Add("$NameOfTheReport", IVLVariables.CurrentSettings.ReportSettings.FundusReportText.val.ToString());// if not present then key and value are added.By Ashutosh 17-08-2017
 
             Patient p = NewDataVariables._Repo.GetById<Patient>(inboxAnalysisStatusModel.patientID);
-            patient_identifier patIdentifier = NewDataVariables.Identifier.Find(x => x.patient.personId == p.personId);
+            patient_identifier patIdentifier = NewDataVariables._Repo.GetByCategory<patient_identifier>("patient", p).ToList()[0];
+                //NewDataVariables.Identifier.Find(x => x.patient.personId == p.personId);
 
             reportDic.Add("$Name", p.firstName + " " + p.lastName);
-            reportDic.Add("$Age",DateTime.Now.Year -  p.birthdate.Year);
+            reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
             reportDic.Add("$MRN", patIdentifier.value);
             reportDic.Add("$Gender", p.gender);
             visit visit = NewDataVariables._Repo.GetById<visit>(inboxAnalysisStatusModel.visitID);
@@ -2571,19 +2572,22 @@ namespace INTUSOFT.Desktop.Forms
                     if (ImageNames[i].Contains(item.Split('.')[0]))
                     {
                         var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
-                        if (ImageNames[i].Contains("-LE-"))
+                        if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
                         {
                             leftEyeImages.Add(imageFilePath);
                             actualImageNames.Add("OS 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[i]);
                         }
-                        else
+                        else if(!rightEyeImages.Any())
                         {
                             rightEyeImages.Add(imageFilePath);
                             actualImageNames.Add("OD 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[i]);
 
                         }
-                        actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
-                        actualMaskSettings.Add(maskSettings[i]);
+                      
                     }
                 }
                 

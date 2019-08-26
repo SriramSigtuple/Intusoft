@@ -91,12 +91,12 @@ namespace IVLUploader.ViewModels
 
             }
 
-
-            InternetCheckViewModel = InternetCheckViewModel.GetInstance();
-
             OutboxViewModel = OutboxViewModel.GetInstance();
 
             SentItemsViewModel = SentItemsViewModel.GetInstance();
+            InternetCheckViewModel = InternetCheckViewModel.GetInstance();
+
+          
 
             //ShowSampleWindowCommand = new ShowSampleWindowCommand();
             //HideSampleWindowCommand = new HideSampleWindowCommand();
@@ -327,8 +327,13 @@ namespace IVLUploader.ViewModels
         public InternetCheckViewModel InternetCheckViewModel { get => internetCheckViewModel;
             set
             {
-                internetCheckViewModel = value;
-                OnPropertyChanged("InternetCheckViewModel");
+                if(internetCheckViewModel != value)
+                { 
+                    internetCheckViewModel = value;
+                    OnPropertyChanged("InternetCheckViewModel");
+                    SentItemsViewModel.StartStopSentItemsTimer(value.InternetPresent);
+                    OutboxViewModel.StartStopSentItemsTimer(value.InternetPresent);
+                }
             }
            
         }

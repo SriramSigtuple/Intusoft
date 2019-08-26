@@ -16,7 +16,7 @@ namespace INTUSOFT.Desktop
 {
         public enum GainLevels { Low, Medium, High };
     public enum PageDisplayed {Login, Emr, Image };
-    public enum CloudReportStatus {Intialized = 1,Uploading,Processing, View, Failed};
+    public enum CloudReportStatus {Initialized = 1,Uploading,Processing, View, Failed};
 
     public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
 

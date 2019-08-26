@@ -160,6 +160,7 @@ namespace IntuUploader.Utilities
                 {
                     response_cookie.Cookie = null; 
                 }
+                
             }
             catch (Exception ex)
             {

@@ -38,7 +38,6 @@ namespace IVLUploader.ViewModels
             //OutboxFileChecker.Start();// = true;
             //OutBoxTimerCallback(new object());
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
             logger.Info("");
 
 
@@ -126,6 +125,15 @@ namespace IVLUploader.ViewModels
             //}
 
             logger.Info("");
+
+        }
+
+        public void StartStopSentItemsTimer(bool isStart)
+        {
+            if (isStart)
+                OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
+            else
+                OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, Timeout.Infinite);
 
         }
         public ICommand SetValue
