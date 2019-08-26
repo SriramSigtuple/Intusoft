@@ -68,7 +68,7 @@ packages/NLog.Schema.4.3.8/NLog.Schema.4.3.8.nupkg
 packages/NLog.Schema.4.3.8/content/NLog.xsd
 packages/repositories.config
 IvlSoft.Desktop/ClassDiagram1.cd
-ImageListView/
+
 libs/x86/Clahe.lib
 EEPROM/bin/
 EEPROM/obj/
@@ -481,3 +481,6 @@ IVLConfiguration/bin/
 /Cloud_Models/obj/
 /IVLUploader/bin/
 /IVLUploader/obj/
+/ImageListView/bin/
+/ImageListView/obj/
+/ImageListView/ImageListView.cs.bak
