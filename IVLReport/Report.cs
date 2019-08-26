@@ -905,7 +905,7 @@ namespace IVLReport
             return isNewReport;
         }
 
-        private Bitmap CreateQRCodeBM()
+        private  Bitmap CreateQRCodeBM()
         {
             List<ReportControlsStructure> tempList = reportControlStructureList.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
             if (tempList.Any())
@@ -914,6 +914,7 @@ namespace IVLReport
                 QCwriter.Format = BarcodeFormat.QR_CODE;
                 var uriValue = (_dataModel.ReportData["$QRCode"].ToString());
                 var result = QCwriter.Write(uriValue);
+                _dataModel.qrBitmap = result.Clone() as Bitmap;
                 return result;
 
             }

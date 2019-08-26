@@ -5,6 +5,7 @@ using System.Text;
 using Common;
 using Common.ValidatorDatas;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace ReportUtils
 {
@@ -43,6 +44,7 @@ namespace ReportUtils
         public bool Is2ImagesLS4ImagesPOR = false;
         public string appDir = string.Empty;
         public string DeviceID = string.Empty;
+        public Bitmap qrBitmap;
         private DataModel()
         {
             patientDetails = new PatientDetailsForCommandLineArgs();

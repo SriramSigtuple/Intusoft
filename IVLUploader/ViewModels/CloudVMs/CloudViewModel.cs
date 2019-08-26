@@ -489,19 +489,13 @@ namespace IVLUploader.ViewModels
                     });
                     if (inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
 
                     }
-                    else if (inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result.Contains("NPDR") && !inboxAnalysisStatusModel.RightAIImpressions.Contains("PDR"))
+                    else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
                     {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
-
-                    }
-                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("NPDR"))
-                    {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
 
                     }
@@ -518,18 +512,12 @@ namespace IVLUploader.ViewModels
                     });
                     if (inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result.Contains("PDR"))
                     {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
                     }
-                    else if (inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result.Contains("NPDR") && !inboxAnalysisStatusModel.LeftAIImpressions.Contains("PDR"))
+                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
                     {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
-
-                    }
-                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("NPDR"))
-                    {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
 
                     }

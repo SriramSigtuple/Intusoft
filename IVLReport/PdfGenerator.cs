@@ -214,7 +214,7 @@ namespace IVLReport
             {
                 //if(originY == -1)
                 originY = (MappingValue - (double)(props.Location._Y + props.Size.Height )) / dpi;
-                Contents.DrawRectangle(originX -0.12, originY - 0.11 + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
+                Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, originY  + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
                 //Contents.DrawRectangle(originX - 0.12, originY + 0.12, originWidth - 0.13, originHeight - 0.13, p);
             }
             Contents.SaveGraphicsState();
@@ -300,14 +300,24 @@ namespace IVLReport
             int imgCount = 0;
             double width = IVLProps.Size.Width ;
             double height = IVLProps.Size.Height ;
+            double originX = 0 ; double originY = 0;
+            double originHeight = 0; double originWidth = 0;
+            PictureBox pb = new PictureBox();
+            pb.SizeMode = PictureBoxSizeMode.Zoom;
+            pb.Margin = new System.Windows.Forms.Padding(0);
             if (File.Exists(IVLProps.ImageName))
             {
-                PictureBox pb = new PictureBox();
-                pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Margin = new System.Windows.Forms.Padding(0);
+
                 //pb.Index = ++imgCount;
                 pb.Image = new Bitmap(IVLProps.ImageName);
-                //pb.Image.
+            }
+            else if(IVLProps.Binding.Contains("QRCode"))
+            {
+                pb.Image = _dataModel.qrBitmap;
+
+            }
+            if (pb.Image != null)
+            {//pb.Image.
                 pb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
                 //pb.Location = new Point((int)x, (int)y);
                 {
@@ -324,30 +334,37 @@ namespace IVLReport
 
                 Rectangle rectangle = (Rectangle)pInfo.GetValue(pb, null);//rectangle will get the inner location of the 
 
-                double originX = (double)(pb.Location.X);
+                 originX = (double)(pb.Location.X);
                 originX = originX / dpi;
                 //double originY = MappingValue - (double)(pb.Location.Y + rectangle.Y);
-                double originY = (double)(pb.Location.Y + rectangle.Y);
+                 originY = (double)(pb.Location.Y + rectangle.Y);
                 originY = originY / dpi;
                 if (originY < 0)
                     originY *= -1;
-                double originWidth = ((double)pb.Image.Width / resizeFactor);
+                 originWidth = ((double)pb.Image.Width / resizeFactor);
                 originWidth = originWidth / dpi;
-                double originHeight = (double)pb.Image.Height / resizeFactor;
+                 originHeight = (double)pb.Image.Height / resizeFactor;
                 originHeight = originHeight / dpi;
-                if (!string.IsNullOrEmpty(IVLProps.ImageName) && File.Exists(IVLProps.ImageName))
-                {
-                    PdfImage Image1 = new PdfImage(Document, IVLProps.ImageName, ImageControl);
+            }
 
-                    Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue/dpi, originY + (double)IVLProps.YMarginDecrementValue/dpi, originWidth, originHeight);
-                }
-                 if (IVLProps.Border)
+            if (!string.IsNullOrEmpty(IVLProps.ImageName) && File.Exists(IVLProps.ImageName))
+            {
+                PdfImage Image1 = new PdfImage(Document, IVLProps.ImageName, ImageControl);
+
+                Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue / dpi, originY + (double)IVLProps.YMarginDecrementValue / dpi, originWidth, originHeight);
+            }
+            else if (IVLProps.Binding.Contains("QRCode"))
+            {
+                PdfImage Image1 = new PdfImage(Document, _dataModel.qrBitmap, ImageControl);
+
+                Contents.DrawImage(Image1, originX + (double)IVLProps.MarginDecrementValue / dpi, originY + (double)IVLProps.YMarginDecrementValue / dpi, originWidth, originHeight);
+            }
+                    if (IVLProps.Border)
                 {
                     PaintOp paintOp = PaintOp.Stroke;
                     Contents.DrawRectangle(originX + (double)IVLProps.MarginDecrementValue/dpi, originY + (double)IVLProps.YMarginDecrementValue/dpi, originWidth, originHeight, paintOp);
                 }
-            }
-        }
+       }
 
         public void AddPDFRectangle(ReportControlProperties IVLProps)
         {
