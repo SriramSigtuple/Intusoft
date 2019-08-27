@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewImageControls_UC));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -103,6 +103,11 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.Report_Slno_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Report_Date_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Report_Time_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CloudReportStatus_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reportId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -241,36 +246,42 @@
             this.Reports_dgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.Reports_dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Reports_dgv.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.Reports_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Khaki;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Reports_dgv.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Reports_dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Report_Slno_Text,
+            this.Report_Date_Text,
+            this.Report_Time_Text,
+            this.CloudReportStatus_Text,
+            this.reportId});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Khaki;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Reports_dgv.DefaultCellStyle = dataGridViewCellStyle2;
             this.Reports_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Reports_dgv.Location = new System.Drawing.Point(3, 30);
             this.Reports_dgv.MultiSelect = false;
             this.Reports_dgv.Name = "Reports_dgv";
             this.Reports_dgv.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Reports_dgv.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.Reports_dgv.RowHeadersVisible = false;
             this.Reports_dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Reports_dgv.Size = new System.Drawing.Size(275, 98);
@@ -1041,6 +1052,37 @@
             this.toolStripContainer1.TabIndex = 1001;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
+            // Report_Slno_Text
+            // 
+            this.Report_Slno_Text.HeaderText = "Column1";
+            this.Report_Slno_Text.Name = "Report_Slno_Text";
+            this.Report_Slno_Text.ReadOnly = true;
+            // 
+            // Report_Date_Text
+            // 
+            this.Report_Date_Text.HeaderText = "Column1";
+            this.Report_Date_Text.Name = "Report_Date_Text";
+            this.Report_Date_Text.ReadOnly = true;
+            // 
+            // Report_Time_Text
+            // 
+            this.Report_Time_Text.HeaderText = "Column1";
+            this.Report_Time_Text.Name = "Report_Time_Text";
+            this.Report_Time_Text.ReadOnly = true;
+            // 
+            // CloudReportStatus_Text
+            // 
+            this.CloudReportStatus_Text.HeaderText = "Column1";
+            this.CloudReportStatus_Text.Name = "CloudReportStatus_Text";
+            this.CloudReportStatus_Text.ReadOnly = true;
+            // 
+            // reportId
+            // 
+            this.reportId.HeaderText = "reportId";
+            this.reportId.Name = "reportId";
+            this.reportId.ReadOnly = true;
+            this.reportId.Visible = false;
+            // 
             // ViewImageControls_UC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1185,5 +1227,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label postProcessing_lbl;
         private System.Windows.Forms.Label file_lbl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Slno_Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Date_Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Time_Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CloudReportStatus_Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn reportId;
     }
 }

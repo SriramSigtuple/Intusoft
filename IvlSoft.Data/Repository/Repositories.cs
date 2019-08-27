@@ -44,7 +44,7 @@ namespace INTUSOFT.Data.Repository
 
         public bool Add<T>(T modelVal)
         {
-            lock (this)
+           // lock (this)
             {
                 ITransaction transaction;
                 try
@@ -69,7 +69,7 @@ namespace INTUSOFT.Data.Repository
 
         public bool Update<T>(T _genericObject)
         {
-            lock (this)
+           // lock (this)
             {
                 try
                 {
@@ -100,7 +100,7 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> GetAll<T>() where T : class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 NHibernateHelper_MySQL.OpenSession();
 
@@ -116,7 +116,7 @@ namespace INTUSOFT.Data.Repository
         }
         private T GetRealEntity<T>(T proxyValue)where T:class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 NHibernateHelper_MySQL.OpenSession();
                 T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
@@ -127,7 +127,7 @@ namespace INTUSOFT.Data.Repository
         }
         public ICollection<T> GetPageData<T>(int pageSize, int page) where T : class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 NHibernateHelper_MySQL.OpenSession();
                 Expression<Func<T, bool>> propertyExpression = null;
@@ -145,7 +145,7 @@ namespace INTUSOFT.Data.Repository
 
         public void Remove<T>(T _genericObject)
         {
-            lock (this)
+           // lock (this)
             {
                 NHibernateHelper_MySQL.OpenSession();
                 using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
@@ -159,7 +159,7 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> GetByCategory<T>(string _Category, object val) where T : class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 NHibernateHelper_MySQL.OpenSession();
                 {
@@ -176,7 +176,7 @@ namespace INTUSOFT.Data.Repository
         }
         public int GetPatientCount() //to get the patient count through sql querying instead of getting patients from the database everytime, this has been added to solve the defect no 0001780 by Kishore on Jan 18 2018.
         {
-                lock (this)
+               // lock (this)
                 {
                 int returnVal = 0;
 
@@ -248,7 +248,7 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> Search<T>(Dictionary<string, object> searchDic,int pageSize,int page) where T : class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 Type searchType = typeof(T);
                 Expression<Func<T, bool>> propertyExpression = null;
@@ -303,7 +303,7 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> AdvanceSearch<T>(Dictionary<string, object> searchDic, int pageSize, int page,DateTime fromDate,DateTime toDate) where T : class,IBaseModel
         {
-            lock (this)
+           // lock (this)
             {
                 Type searchType = typeof(T);
                 Expression<Func<T, bool>> propertyExpression = null;

@@ -62,6 +62,7 @@ namespace INTUSOFT.Desktop.Forms
         int prevSensorPos = 0;
         static Imaging_UC _imaging_UC;
         public bool isImaging = false;
+        public bool isLiveScreen = true;
         //INTUSOFT.Custom.Controls.PictureBoxExtended maskOverlay_pbx;
         string FrameRateLabelText;
         string CameraConnectionLabelText;
@@ -563,7 +564,7 @@ namespace INTUSOFT.Desktop.Forms
            toolStrip1.Visible = true;
            liveImagingControl.SetCurrentMode((ImagingMode)IVLVariables._ivlConfig.Mode);
            isImaging = true;
-
+            isLiveScreen = true;
        }
 
        public void setViewScreen()
@@ -604,9 +605,9 @@ namespace INTUSOFT.Desktop.Forms
                    ImagingViewControls_p.Controls.Add(viewImagingControl);
 
                }
-               if (!IVLVariables.isCommandLineAppLaunch)
-                   viewImagingControl.showExisitingReports();
-               maskOverlay_Pbx.Visible = false;
+                if (!IVLVariables.isCommandLineAppLaunch)
+                    viewImagingControl.showExisitingReports(new List<Data.NewDbModel.CloudAnalysisReport>());
+                maskOverlay_Pbx.Visible = false;
                //if (this.Controls.Contains(maskOverlay_pbx))
                //    this.Controls.Remove(maskOverlay_pbx);
                //maskOverlay_pbx.Visible = false;// overlay if present//issue no 0001644: Some unwanted black patch appearing on image in View image screen has been fixed by kishore on August 11 2017 at 4:50 pm.
@@ -622,6 +623,7 @@ namespace INTUSOFT.Desktop.Forms
                    else if (INTUSOFT.Data.Repository.NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)
                        IVLVariables.ivl_Camera.TriggerOn();
                }
+                isLiveScreen = false;
            }
        }
 

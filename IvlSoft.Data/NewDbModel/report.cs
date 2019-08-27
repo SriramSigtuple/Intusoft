@@ -43,7 +43,8 @@ namespace INTUSOFT.Data.NewDbModel
             users VoidedBy,
             DateTime dateVoided,
             string voidedReason,
-            string UUID
+            string UUID,
+            ISet<CloudAnalysisReport> CloudReports
                  )
         {
             return new report
@@ -62,7 +63,8 @@ namespace INTUSOFT.Data.NewDbModel
              voidedBy = VoidedBy,
              voidedReason = voidedReason,
              isCloudReport = IsCloudReport,
-             uuid=UUID
+             uuid=UUID,
+             cloudReports = CloudReports
             };
         }
         #region State Properties
@@ -95,7 +97,8 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual string dataJson { get; set; }
 
         public virtual string uuid { get; set; }
-        
+        public virtual ISet<CloudAnalysisReport> cloudReports { get; set; }
+
         #endregion
 
         bool disposed = false;
