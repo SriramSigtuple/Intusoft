@@ -40,11 +40,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.Reports_dgv = new System.Windows.Forms.DataGridView();
-            this.Report_Slno_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Report_Date_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Report_Time_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CloudReportStatus_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reportId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.reportsCreated_lbl = new System.Windows.Forms.Label();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
@@ -255,12 +250,6 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.Reports_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Reports_dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Report_Slno_Text,
-            this.Report_Date_Text,
-            this.Report_Time_Text,
-            this.CloudReportStatus_Text,
-            this.reportId});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -289,37 +278,6 @@
             this.Reports_dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellClick);
             this.Reports_dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellDoubleClick);
             this.Reports_dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Reports_dgv_KeyDown);
-            // 
-            // Report_Slno_Text
-            // 
-            this.Report_Slno_Text.HeaderText = "Column1";
-            this.Report_Slno_Text.Name = "Report_Slno_Text";
-            this.Report_Slno_Text.ReadOnly = true;
-            // 
-            // Report_Date_Text
-            // 
-            this.Report_Date_Text.HeaderText = "Column1";
-            this.Report_Date_Text.Name = "Report_Date_Text";
-            this.Report_Date_Text.ReadOnly = true;
-            // 
-            // Report_Time_Text
-            // 
-            this.Report_Time_Text.HeaderText = "Column1";
-            this.Report_Time_Text.Name = "Report_Time_Text";
-            this.Report_Time_Text.ReadOnly = true;
-            // 
-            // CloudReportStatus_Text
-            // 
-            this.CloudReportStatus_Text.HeaderText = "Column1";
-            this.CloudReportStatus_Text.Name = "CloudReportStatus_Text";
-            this.CloudReportStatus_Text.ReadOnly = true;
-            // 
-            // reportId
-            // 
-            this.reportId.HeaderText = "reportId";
-            this.reportId.Name = "reportId";
-            this.reportId.ReadOnly = true;
-            this.reportId.Visible = false;
             // 
             // panel3
             // 
@@ -1227,10 +1185,5 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label postProcessing_lbl;
         private System.Windows.Forms.Label file_lbl;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Slno_Text;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Date_Text;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Report_Time_Text;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CloudReportStatus_Text;
-        private System.Windows.Forms.DataGridViewTextBoxColumn reportId;
     }
 }

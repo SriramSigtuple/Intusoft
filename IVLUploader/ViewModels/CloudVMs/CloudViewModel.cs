@@ -173,11 +173,12 @@ namespace IVLUploader.ViewModels
             ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
             ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
             ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie).Result;
-            JObject analysisStatus_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
-            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
+            
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                JObject analysisStatus_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
+                logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                 if ((string)analysisStatus_JObject["status"] == "success")
                 {
                     ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
@@ -202,8 +203,18 @@ namespace IVLUploader.ViewModels
                     st.Flush();
                     st.Close();
 
-                    File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name));
+                    st.WriteAsync(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    st.Flush();
+                    st.Close();
+
                     File.Delete(ActiveFnf.FullName);
+                    this.Dispose();
+                    this.ActiveFnf = null;
+                }
+                else
+                {
+                    logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                     this.Dispose();
                     this.ActiveFnf = null;
                 }
@@ -211,10 +222,16 @@ namespace IVLUploader.ViewModels
                
                 else
                  if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
+                    {
+                        logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
+
+
+                    }
+            else
             {
-                logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
-
-
+                logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
+                this.Dispose();
+                this.ActiveFnf = null;
             }
          
 
@@ -269,8 +286,6 @@ namespace IVLUploader.ViewModels
                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
                 {
                     logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
-
-
                 }
                 else
                 { 
@@ -450,10 +465,6 @@ namespace IVLUploader.ViewModels
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode == System.Net.HttpStatusCode.OK)
 
             {
-                StreamWriter st = new StreamWriter(ActiveFnf.FullName);
-                st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
                 ActiveGetAnalysisResultViewModel.GetAnalysisResultModel.CompletedStatus = true;
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
 
@@ -532,7 +543,7 @@ namespace IVLUploader.ViewModels
 
                 }
 
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
+                StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
                 st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                 st.Flush();
                 st.Close();
@@ -549,8 +560,6 @@ namespace IVLUploader.ViewModels
                 {
                     logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
                 }
-                else
-                    StartAnalsysisFlow();
             }
 
         }

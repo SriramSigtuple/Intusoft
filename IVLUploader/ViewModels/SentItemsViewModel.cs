@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 
 namespace IVLUploader.ViewModels
@@ -63,12 +64,6 @@ namespace IVLUploader.ViewModels
 
             foreach (var item in sentItemsDirFileInfoArr)
             {
-                if (readDirFileInfoArr.Any(x => x.Name == item.Name))
-                {
-                    logger.Info(JsonConvert.SerializeObject(item, Formatting.Indented));
-
-                }
-                else
                 {
 
                     GetFileFromActiveDir(item);
@@ -100,15 +95,16 @@ namespace IVLUploader.ViewModels
                     }
                    
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    logger.Error(ex);
                 }
                 finally
                 {
-                   
+                   activeFileCloudVM.StartAnalsysisFlow();
+
                 }
-              
+
             }
             logger.Info("");
 

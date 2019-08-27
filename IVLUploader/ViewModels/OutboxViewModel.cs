@@ -9,6 +9,8 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Windows.Input;
 using System.Threading;
+using System.Windows;
+
 namespace IVLUploader.ViewModels
 {
     /// <summary>
@@ -89,9 +91,9 @@ namespace IVLUploader.ViewModels
                    
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    MessageBox.Show(ex.Message);
                     throw;
                 }
               
@@ -112,7 +114,9 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
              FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles();
-            if (activeDirFileInfos.Any() && (activeFileCloudVM == null ||activeFileCloudVM.ActiveFnf == null))
+            bool filesPresent = activeDirFileInfos.Any();
+            bool activeFile = activeFileCloudVM == null || activeFileCloudVM.ActiveFnf == null;
+            if (filesPresent && activeFile)
             {
                 try
                 {
@@ -125,16 +129,21 @@ namespace IVLUploader.ViewModels
                         CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
                         activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
                         activeFileCloudVM.ActiveFnf = activeDirFileInfos[0];
-
                         activeFileCloudVM.StartAnalsysisFlow();
                     }
                     
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    logger.Error(ex);
+
                 }
-               
+                finally
+                {
+                    activeFileCloudVM.StartAnalsysisFlow();
+
+                }
+
             }
 
             logger.Info("");
