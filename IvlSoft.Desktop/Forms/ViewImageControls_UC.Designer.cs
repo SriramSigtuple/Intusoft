@@ -40,6 +40,11 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.Reports_dgv = new System.Windows.Forms.DataGridView();
+            this.Report_Slno_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Report_Date_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Report_Time_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CloudReportStatus_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reportId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.reportsCreated_lbl = new System.Windows.Forms.Label();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
@@ -103,11 +108,6 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.Report_Slno_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Report_Date_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Report_Time_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CloudReportStatus_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reportId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -289,6 +289,37 @@
             this.Reports_dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellClick);
             this.Reports_dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellDoubleClick);
             this.Reports_dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Reports_dgv_KeyDown);
+            // 
+            // Report_Slno_Text
+            // 
+            this.Report_Slno_Text.HeaderText = "Column1";
+            this.Report_Slno_Text.Name = "Report_Slno_Text";
+            this.Report_Slno_Text.ReadOnly = true;
+            // 
+            // Report_Date_Text
+            // 
+            this.Report_Date_Text.HeaderText = "Column1";
+            this.Report_Date_Text.Name = "Report_Date_Text";
+            this.Report_Date_Text.ReadOnly = true;
+            // 
+            // Report_Time_Text
+            // 
+            this.Report_Time_Text.HeaderText = "Column1";
+            this.Report_Time_Text.Name = "Report_Time_Text";
+            this.Report_Time_Text.ReadOnly = true;
+            // 
+            // CloudReportStatus_Text
+            // 
+            this.CloudReportStatus_Text.HeaderText = "Column1";
+            this.CloudReportStatus_Text.Name = "CloudReportStatus_Text";
+            this.CloudReportStatus_Text.ReadOnly = true;
+            // 
+            // reportId
+            // 
+            this.reportId.HeaderText = "reportId";
+            this.reportId.Name = "reportId";
+            this.reportId.ReadOnly = true;
+            this.reportId.Visible = false;
             // 
             // panel3
             // 
@@ -1051,37 +1082,6 @@
             this.toolStripContainer1.Size = new System.Drawing.Size(287, 775);
             this.toolStripContainer1.TabIndex = 1001;
             this.toolStripContainer1.Text = "toolStripContainer1";
-            // 
-            // Report_Slno_Text
-            // 
-            this.Report_Slno_Text.HeaderText = "Column1";
-            this.Report_Slno_Text.Name = "Report_Slno_Text";
-            this.Report_Slno_Text.ReadOnly = true;
-            // 
-            // Report_Date_Text
-            // 
-            this.Report_Date_Text.HeaderText = "Column1";
-            this.Report_Date_Text.Name = "Report_Date_Text";
-            this.Report_Date_Text.ReadOnly = true;
-            // 
-            // Report_Time_Text
-            // 
-            this.Report_Time_Text.HeaderText = "Column1";
-            this.Report_Time_Text.Name = "Report_Time_Text";
-            this.Report_Time_Text.ReadOnly = true;
-            // 
-            // CloudReportStatus_Text
-            // 
-            this.CloudReportStatus_Text.HeaderText = "Column1";
-            this.CloudReportStatus_Text.Name = "CloudReportStatus_Text";
-            this.CloudReportStatus_Text.ReadOnly = true;
-            // 
-            // reportId
-            // 
-            this.reportId.HeaderText = "reportId";
-            this.reportId.Name = "reportId";
-            this.reportId.ReadOnly = true;
-            this.reportId.Visible = false;
             // 
             // ViewImageControls_UC
             // 

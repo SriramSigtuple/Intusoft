@@ -79,9 +79,22 @@ namespace IVLUploader.ViewModels
             {
                 logger.Info(JsonConvert.SerializeObject(activeDirFileInfoArr, Formatting.Indented));
 
-                outboxDirFileInfoArr[0].MoveTo(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), outboxDirFileInfoArr[0].Name));
-                GetFileFromActiveDir(DirectoryEnum.ActiveDir);
+                try
+                {
+                    if(File.Exists(outboxDirFileInfoArr[0].FullName))
+                    {
+                        outboxDirFileInfoArr[0].MoveTo(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), outboxDirFileInfoArr[0].Name));
+                        GetFileFromActiveDir(DirectoryEnum.ActiveDir);
+                    }
+                   
 
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+              
             }
             else if (activeFileCloudVM == null)
             {
@@ -104,19 +117,22 @@ namespace IVLUploader.ViewModels
                 try
                 {
                     logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
+                    if(File.Exists(activeDirFileInfos[0].FullName))
+                    {
+                        StreamReader st = new StreamReader(activeDirFileInfos[0].FullName);
+                        var json = st.ReadToEnd();
+                        st.Close();
+                        CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+                        activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+                        activeFileCloudVM.ActiveFnf = activeDirFileInfos[0];
 
-                    StreamReader st = new StreamReader(activeDirFileInfos[0].FullName);
-                    var json = st.ReadToEnd();
-                    st.Close();
-                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-                    activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                    activeFileCloudVM.ActiveFnf = activeDirFileInfos[0];
-
-                    activeFileCloudVM.StartAnalsysisFlow();
+                        activeFileCloudVM.StartAnalsysisFlow();
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
-
+                    throw;
                 }
                
             }

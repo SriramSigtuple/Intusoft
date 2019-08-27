@@ -65,7 +65,6 @@ namespace IVLUploader.ViewModels
             {
                 if (readDirFileInfoArr.Any(x => x.Name == item.Name))
                 {
-                    item.MoveTo(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), item.Name));
                     logger.Info(JsonConvert.SerializeObject(item, Formatting.Indented));
 
                 }
@@ -87,19 +86,27 @@ namespace IVLUploader.ViewModels
             {
                 try
                 {
-                    StreamReader st = new StreamReader(activeDirFileInfos.FullName);
-                    var json = st.ReadToEnd();
-                    st.Close();
-                    st.Dispose();
-                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-                    activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                    activeFileCloudVM.ActiveFnf = activeDirFileInfos;
+                   if( File.Exists(activeDirFileInfos.FullName))
+                    {
+                        StreamReader st = new StreamReader(activeDirFileInfos.FullName);
+                        var json = st.ReadToEnd();
+                        st.Close();
+                        st.Dispose();
+                        CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+                        activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+                        activeFileCloudVM.ActiveFnf = activeDirFileInfos;
 
-                    activeFileCloudVM.StartAnalsysisFlow();
+                        activeFileCloudVM.StartAnalsysisFlow();
+                    }
+                   
                 }
                 catch (Exception)
                 {
-
+                    throw;
+                }
+                finally
+                {
+                   
                 }
               
             }

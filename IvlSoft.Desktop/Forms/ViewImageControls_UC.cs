@@ -521,6 +521,7 @@ namespace INTUSOFT.Desktop.Forms
                     //    else
                     //        Reports_dgv.Columns[i].Visible = false;
                     //}
+                    List<ReportGridViewClass> ReportGridViewClass = new List<ReportGridViewClass>();
                     if (!Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Delete_Text", IVLVariables.LangResourceCultureInfo)))
                     {
                         //Reports_dgv.ClearSelection();
@@ -555,12 +556,13 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     for (int i = 0; i < NewDataVariables.Reports.Count; i++)
                     {
+
                         DataGridViewRow dgvRow = new DataGridViewRow();
                         dgvRow.CreateCells(Reports_dgv);
                         dgvRow.Cells[0].Value = i+1;
-                       
+                        ReportGridViewClass reportGridView = new ReportGridViewClass();
 
-
+                        reportGridView.slNo = i + 1;
                         //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
                         CloudAnalysisReport c = null;
                         //List<CloudAnalysisReport> cloudReports = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("Report", NewDataVariables.Reports[i]).ToList();
@@ -568,6 +570,7 @@ namespace INTUSOFT.Desktop.Forms
                         if (cloudReports.Any())
                             c = cloudReports[0];
                         dgvRow.Cells[1].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
+
                         if (c != null)
                         {
                             if (cloudAnalysisReports.Any())
@@ -577,17 +580,24 @@ namespace INTUSOFT.Desktop.Forms
                             }
                             CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
                             dgvRow.Cells[3].Value = (cloudReportStatus).ToString("g") + " " + c.failureMessage;
+                            reportGridView.analysisStatus = (cloudReportStatus).ToString("g") + " " + c.failureMessage;
+
                         }
                         //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
                         if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
                         {
                             dgvRow.Cells[2].Value = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
+                            reportGridView.time = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
+
                         }
                         else
                         {
                             dgvRow.Cells[2].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
+                            reportGridView.time = NewDataVariables.Reports[i].createdDate.ToString(" hh:mm tt ");
+
                         }
                         dgvRow.Cells[4].Value = NewDataVariables.Reports[i].reportId;
+                        reportGridView.id = NewDataVariables.Reports[i].reportId;
                         int val = Reports_dgv.RowCount+1;
                         Reports_dgv.Rows.Add(dgvRow);
                     }
@@ -596,6 +606,9 @@ namespace INTUSOFT.Desktop.Forms
                     //{
                     //    Reports_dgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
                     //}
+
+
+
                     if (Screen.PrimaryScreen.Bounds.Width == 1920)
                     {
                         //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
@@ -636,12 +649,12 @@ namespace INTUSOFT.Desktop.Forms
                             c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
                         }
                     }
-                    Reports_dgv.Refresh();
+                    //Reports_dgv.Refresh();
                     reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
                 }
                 catch (Exception ex)
                 {
-                    Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
+                   // Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
                     //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
                 }
             }
@@ -3931,5 +3944,15 @@ namespace INTUSOFT.Desktop.Forms
             //ss.ShowDialog();
         }
     }
+    public class ReportGridViewClass
+    {
+        public int slNo;
+        public string date;
+        public string time;
+        public string analysisStatus;
+        public int id;
+
+    }
 }
+
 #endregion

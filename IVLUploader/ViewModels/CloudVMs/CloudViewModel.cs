@@ -216,7 +216,6 @@ namespace IVLUploader.ViewModels
 
 
             }
-            StartAnalsysisFlow();
          
 
         }
