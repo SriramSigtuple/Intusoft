@@ -78,7 +78,7 @@ namespace IVLUploader.ViewModels
             if(GlobalVariables.isInternetPresent)
             { 
 
-            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires > DateTime.Now || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
+            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
                 Login();
             else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
                 CreateAnalysis();
