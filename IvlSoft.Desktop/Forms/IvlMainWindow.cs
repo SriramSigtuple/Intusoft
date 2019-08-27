@@ -483,65 +483,84 @@ namespace INTUSOFT.Desktop.Forms
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    CloudAnalysisReport cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0];
-                    StreamReader st = new StreamReader(fileInfo.FullName);
-                    var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                    st.Close();
-                    st.Dispose();
-                    if (responseValue.Status == "success")
-                    {
-                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 4)
-                        {
-                            cloudAnalysisReport.cloudAnalysisReportStatus = 4;
 
-                            CreateCloudReport(responseValue);
-                            cloudAnalysisReport.leftEyeImpression = responseValue.LeftAIImpressions;
-                            cloudAnalysisReport.rightEyeImpression = responseValue.RightAIImpressions;
-                            NewDataVariables._Repo.Update(cloudAnalysisReport);
+                   List< CloudAnalysisReport> cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList();
+                if(cloudAnalysisReport.Any())
+                {
+                    try
+                    {
+                        StreamReader st = new StreamReader(fileInfo.FullName);
+                        var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+                        st.Close();
+                        st.Dispose();
+
+                        if (responseValue.Status == "success")
+                        {
+                            if (cloudAnalysisReport[0].cloudAnalysisReportStatus != 4)
+                            {
+                                cloudAnalysisReport[0].cloudAnalysisReportStatus = 4;
+
+                                CreateCloudReport(responseValue);
+                                cloudAnalysisReport[0].leftEyeImpression = responseValue.LeftAIImpressions;
+                                cloudAnalysisReport[0].rightEyeImpression = responseValue.RightAIImpressions;
+                                NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+
+                            }
 
                         }
-
-                    }
-                    else if (responseValue.Status == "failure")
-                    {
-                        if (cloudAnalysisReport.cloudAnalysisReportStatus != 5)
+                        else if (responseValue.Status == "failure")
                         {
-                            cloudAnalysisReport.cloudAnalysisReportStatus = 5;
-                            cloudAnalysisReport.failureMessage = responseValue.FailureMessage;
-                            NewDataVariables._Repo.Update(cloudAnalysisReport);
+                            if (cloudAnalysisReport[0].cloudAnalysisReportStatus != 5)
+                            {
+                                cloudAnalysisReport[0].cloudAnalysisReportStatus = 5;
+                                cloudAnalysisReport[0].failureMessage = responseValue.FailureMessage;
+                                NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                            }
+
                         }
+                        File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
+                    }
+                    catch (Exception)
+                    {
 
                     }
-                    File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
+                   
+                   
+                }
+                
 
                 }
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                  UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0],1);
+                  UpdateCloudReportStatus( NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(),1);
                 }
 
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 2);
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(), 2);
                 }
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList()[0], 3);
+                    UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(), 3);
                 }
-
+                if(Image_btn.Visible && Image_btn.Enabled)
                _eventHandler.Notify(_eventHandler.RefreshExistingReport, new Args());
         }
 
-        private void UpdateCloudReportStatus(CloudAnalysisReport cloudAnalysisReport, int status)
+        private void UpdateCloudReportStatus(List<CloudAnalysisReport> cloudAnalysisReport, int status)
         {
-            if(cloudAnalysisReport.cloudAnalysisReportStatus != status)
+            if(cloudAnalysisReport.Any())
             {
-                cloudAnalysisReport.cloudAnalysisReportStatus = status;
-                NewDataVariables._Repo.Update(cloudAnalysisReport);
+                if (cloudAnalysisReport[0].cloudAnalysisReportStatus != status)
+                {
+                    cloudAnalysisReport[0].cloudAnalysisReportStatus = status;
+                    NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                }
             }
+           
            
 
         }

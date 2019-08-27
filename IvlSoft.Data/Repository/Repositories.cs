@@ -44,42 +44,50 @@ namespace INTUSOFT.Data.Repository
 
         public bool Add<T>(T modelVal)
         {
-            ITransaction transaction;
-            try
+            lock (this)
             {
-                NHibernateHelper_MySQL.OpenSession();
-                using (transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                ITransaction transaction;
+                try
                 {
-                    NHibernateHelper_MySQL.hibernateSession.Save(modelVal);
-                    NHibernateHelper_MySQL.hibernateSession.Flush();
-                    transaction.Commit();
+                    NHibernateHelper_MySQL.OpenSession();
+                    using (transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                    {
+                        NHibernateHelper_MySQL.hibernateSession.Save(modelVal);
+                        NHibernateHelper_MySQL.hibernateSession.Flush();
+                        transaction.Commit();
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    ExceptionLogWriter.WriteLog(ex, Exception_Log);
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                ExceptionLogWriter.WriteLog(ex, Exception_Log);
-                return false;
-            }
+           
         }
 
         public bool Update<T>(T _genericObject)
         {
-            try
+            lock (this)
             {
-                NHibernateHelper_MySQL.OpenSession();
-                using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                try
                 {
-                    NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
-                    transaction.Commit();
+                    NHibernateHelper_MySQL.OpenSession();
+                    using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                    {
+                        NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
+                        transaction.Commit();
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    ExceptionLogWriter.WriteLog(ex, Exception_Log);
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                ExceptionLogWriter.WriteLog(ex, Exception_Log);
-                return false;
-            }
+           
         }
 
         public T GetById<T>(int id)
@@ -92,74 +100,100 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> GetAll<T>() where T : class,IBaseModel
         {
-            NHibernateHelper_MySQL.OpenSession();
-
-            var _genericObject = new List<T>( NHibernateHelper_MySQL.hibernateSession.Query<T>().Where(GetPredicate<T>(TypeOfPredicate.Voided)));
-
-            for (int i = 0; i < _genericObject.Count; i++)
+            lock (this)
             {
-                _genericObject[i] = GetRealEntity<T>(_genericObject[i]);
+                NHibernateHelper_MySQL.OpenSession();
+
+                var _genericObject = new List<T>(NHibernateHelper_MySQL.hibernateSession.Query<T>().Where(GetPredicate<T>(TypeOfPredicate.Voided)));
+
+                for (int i = 0; i < _genericObject.Count; i++)
+                {
+                    _genericObject[i] = GetRealEntity<T>(_genericObject[i]);
+                }
+                return _genericObject;
             }
-            return _genericObject;
+           
         }
         private T GetRealEntity<T>(T proxyValue)where T:class,IBaseModel
         {
-            NHibernateHelper_MySQL.OpenSession();
-         T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
-         return value;
+            lock (this)
+            {
+                NHibernateHelper_MySQL.OpenSession();
+                T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
+                return value;
+            }
+          
 
         }
         public ICollection<T> GetPageData<T>(int pageSize, int page) where T : class,IBaseModel
         {
-            NHibernateHelper_MySQL.OpenSession();
-            Expression<Func<T, bool>> propertyExpression = null;
-            propertyExpression = pr => pr.voided == false;
-            var _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
-            //for (int i = 0; i < _genericObject.Count; i++)
-            //{
-            //    T obj = _genericObject[i];
-            //    _genericObject[i] = _genericObject[i];
-            //}
-            return _genericObject;
+            lock (this)
+            {
+                NHibernateHelper_MySQL.OpenSession();
+                Expression<Func<T, bool>> propertyExpression = null;
+                propertyExpression = pr => pr.voided == false;
+                var _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
+                //for (int i = 0; i < _genericObject.Count; i++)
+                //{
+                //    T obj = _genericObject[i];
+                //    _genericObject[i] = _genericObject[i];
+                //}
+                return _genericObject;
+            }
+           
         }
 
         public void Remove<T>(T _genericObject)
         {
-            NHibernateHelper_MySQL.OpenSession();
-            using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+            lock (this)
             {
-                NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
-                transaction.Commit();
+                NHibernateHelper_MySQL.OpenSession();
+                using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                {
+                    NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
+                    transaction.Commit();
+                }
             }
+            
         }
 
         public ICollection<T> GetByCategory<T>(string _Category, object val) where T : class,IBaseModel
         {
-            NHibernateHelper_MySQL.OpenSession();
+            lock (this)
             {
-                using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                NHibernateHelper_MySQL.OpenSession();
                 {
-                    //ICriteria criteriacrit = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Eq(_Category, val));
-                    var _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(typeof(T)).Add(Restrictions.Eq(_Category, val)).List<T>();
-                    _genericObject = _genericObject.Where(GetPredicate<T>(TypeOfPredicate.Voided)).ToList<T>();
-                    return _genericObject;
+                    using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                    {
+                        //ICriteria criteriacrit = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Eq(_Category, val));
+                        var _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(typeof(T)).Add(Restrictions.Eq(_Category, val)).List<T>();
+                        _genericObject = _genericObject.Where(GetPredicate<T>(TypeOfPredicate.Voided)).ToList<T>();
+                        return _genericObject;
+                    }
                 }
             }
+           
         }
         public int GetPatientCount() //to get the patient count through sql querying instead of getting patients from the database everytime, this has been added to solve the defect no 0001780 by Kishore on Jan 18 2018.
         {
-            int returnVal = 0;
-            NHibernateHelper_MySQL.OpenSession();
-            {
-                using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                lock (this)
                 {
-                    //ICriteria criteriacrit = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Eq(_Category, val));
-                  returnVal =  Convert.ToInt32(NHibernateHelper_MySQL.hibernateSession.CreateQuery("SELECT count(*)FROM Patient where voided = 0").UniqueResult());
+                int returnVal = 0;
 
-                 //returnVal = Convert.ToInt32( queryVal.ToString());
-                }
+                NHibernateHelper_MySQL.OpenSession();
+                    {
+                        using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
+                        {
+                            //ICriteria criteriacrit = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Eq(_Category, val));
+                            returnVal = Convert.ToInt32(NHibernateHelper_MySQL.hibernateSession.CreateQuery("SELECT count(*)FROM Patient where voided = 0").UniqueResult());
+
+                            //returnVal = Convert.ToInt32( queryVal.ToString());
+                        }
+                    }
+                return returnVal;
             }
-            return returnVal;
+          
+           
         }
         public Func<T, bool> GetPredicate<T>(TypeOfPredicate typePredicate) where T : class,IBaseModel
         {
@@ -214,78 +248,86 @@ namespace INTUSOFT.Data.Repository
 
         public ICollection<T> Search<T>(Dictionary<string, object> searchDic,int pageSize,int page) where T : class,IBaseModel
         {
-            Type searchType = typeof(T);
-            Expression<Func<T, bool>> propertyExpression = null;
-            propertyExpression = pr => pr.voided == false;
-            var criteria = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(searchType, searchType.Name.ToLower());//.Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
-            if (searchType == typeof(Patient))
+            lock (this)
             {
-              criteria =  criteria.CreateAlias(IdentifierAlias.patient_identifiers.ToString().Replace('_', '.'), IdentifierAlias.identifiers.ToString());
-            
-            }
-            
-            var disjunction = Restrictions.Conjunction();
-            foreach (KeyValuePair<string, object> item in searchDic)
-            {
-                if(item.Key.Contains("criteria"))
+                Type searchType = typeof(T);
+                Expression<Func<T, bool>> propertyExpression = null;
+                propertyExpression = pr => pr.voided == false;
+                var criteria = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(searchType, searchType.Name.ToLower());//.Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
+                if (searchType == typeof(Patient))
                 {
-                    string[] keys = item.Key.Split('_');
-                    //criteria.CreateCriteria(keys[1]);
-                    string[] splitAssociationPath = keys[1].Split('.');
-                    criteria.CreateAlias(keys[1], splitAssociationPath[1]);
-                    SimpleExpression[] srValues = item.Value as SimpleExpression[];
-                    var tempDisjunction =  Restrictions.Disjunction();
-                    for (int i = 0; i < srValues.Length; i++)
+                    criteria = criteria.CreateAlias(IdentifierAlias.patient_identifiers.ToString().Replace('_', '.'), IdentifierAlias.identifiers.ToString());
+
+                }
+
+                var disjunction = Restrictions.Conjunction();
+                foreach (KeyValuePair<string, object> item in searchDic)
+                {
+                    if (item.Key.Contains("criteria"))
                     {
-
-                        if (srValues[i].PropertyName.Contains("voided"))
+                        string[] keys = item.Key.Split('_');
+                        //criteria.CreateCriteria(keys[1]);
+                        string[] splitAssociationPath = keys[1].Split('.');
+                        criteria.CreateAlias(keys[1], splitAssociationPath[1]);
+                        SimpleExpression[] srValues = item.Value as SimpleExpression[];
+                        var tempDisjunction = Restrictions.Disjunction();
+                        for (int i = 0; i < srValues.Length; i++)
                         {
-                            var tempConjuction = Restrictions.Conjunction();
-                            tempConjuction.Add(srValues[i]);
-                            disjunction.Add(tempConjuction); 
-                        }
-                        else
-                        {
-                            tempDisjunction.Add(srValues[i]);
-                            disjunction.Add(tempDisjunction);
 
+                            if (srValues[i].PropertyName.Contains("voided"))
+                            {
+                                var tempConjuction = Restrictions.Conjunction();
+                                tempConjuction.Add(srValues[i]);
+                                disjunction.Add(tempConjuction);
+                            }
+                            else
+                            {
+                                tempDisjunction.Add(srValues[i]);
+                                disjunction.Add(tempDisjunction);
+
+                            }
                         }
                     }
-                }
-                else if (item.Value is SimpleExpression)
-                {
-                    disjunction.Add(item.Value as SimpleExpression);
+                    else if (item.Value is SimpleExpression)
+                    {
+                        disjunction.Add(item.Value as SimpleExpression);
 
+                    }
                 }
+                //IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>().Where(x => x.voided == false).ToList();
+                IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).List<T>().Where(x => x.voided == false).ToList().Distinct().ToList();
+                return pats;
             }
-            //IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>().Where(x => x.voided == false).ToList();
-            IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).List<T>().Where(x => x.voided == false).ToList().Distinct().ToList();
-            return pats;
+          
         }
 
         public ICollection<T> AdvanceSearch<T>(Dictionary<string, object> searchDic, int pageSize, int page,DateTime fromDate,DateTime toDate) where T : class,IBaseModel
         {
-            Type searchType = typeof(T);
-            Expression<Func<T, bool>> propertyExpression = null;
-            propertyExpression = pr => pr.voided == false;
-            var criteria = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(searchType, searchType.Name.ToLower());//.Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
-
-            if (searchType == typeof(Patient))
-                criteria.CreateAlias(IdentifierAlias.patient_identifiers.ToString().Replace('_', '.'), IdentifierAlias.identifiers.ToString());
-            var disjunction = Restrictions.Disjunction();
-            foreach (KeyValuePair<string, object> item in searchDic)
+            lock (this)
             {
-                if (item.Value is string)
+                Type searchType = typeof(T);
+                Expression<Func<T, bool>> propertyExpression = null;
+                propertyExpression = pr => pr.voided == false;
+                var criteria = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(searchType, searchType.Name.ToLower());//.Add(Restrictions.Where<T>(propertyExpression)).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>();
+
+                if (searchType == typeof(Patient))
+                    criteria.CreateAlias(IdentifierAlias.patient_identifiers.ToString().Replace('_', '.'), IdentifierAlias.identifiers.ToString());
+                var disjunction = Restrictions.Disjunction();
+                foreach (KeyValuePair<string, object> item in searchDic)
                 {
-                    disjunction.Add(Restrictions.Like(item.Key, item.Value.ToString(), MatchMode.Anywhere));
+                    if (item.Value is string)
+                    {
+                        disjunction.Add(Restrictions.Like(item.Key, item.Value.ToString(), MatchMode.Anywhere));
+                    }
+                    else
+                    {
+                        disjunction.Add(Restrictions.Eq(item.Key, item.Value));
+                    }
                 }
-                else
-                {
-                    disjunction.Add(Restrictions.Eq(item.Key, item.Value));
-                }
+                IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>().Where(x => x.voided == false).ToList();
+                return pats;
             }
-            IList<T> pats = criteria.Add(disjunction).AddOrder(Order.Desc("patientCreatedDate")).SetFirstResult(((page - 1) * pageSize)).SetMaxResults(pageSize).List<T>().Where(x => x.voided == false).ToList();
-            return pats;
+           
         }
     }
 

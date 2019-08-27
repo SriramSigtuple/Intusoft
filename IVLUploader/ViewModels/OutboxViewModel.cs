@@ -101,28 +101,25 @@ namespace IVLUploader.ViewModels
              FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles();
             if (activeDirFileInfos.Any() && (activeFileCloudVM == null ||activeFileCloudVM.ActiveFnf == null))
             {
-                logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
+                try
+                {
+                    logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
 
-                StreamReader st = new StreamReader(activeDirFileInfos[0].FullName);
-                var json = st.ReadToEnd();
-                st.Close();
-                CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-                activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                activeFileCloudVM.ActiveFnf = activeDirFileInfos[0];
+                    StreamReader st = new StreamReader(activeDirFileInfos[0].FullName);
+                    var json = st.ReadToEnd();
+                    st.Close();
+                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+                    activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+                    activeFileCloudVM.ActiveFnf = activeDirFileInfos[0];
 
-                activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalsysisFlow();
+                }
+                catch (Exception ex)
+                {
+
+                }
+               
             }
-            //else
-            //{
-            //    if (directoryEnum == DirectoryEnum.LoginDir)
-            //        GetFileFromActiveDir(DirectoryEnum.CreateAnalysis);
-            //    else if (directoryEnum == DirectoryEnum.CreateAnalysis)
-            //        GetFileFromActiveDir(DirectoryEnum.UploadDir);
-            //    else if (directoryEnum == DirectoryEnum.UploadDir)
-            //        GetFileFromActiveDir(DirectoryEnum.StartAnalysisDir);
-            //    else if (directoryEnum == DirectoryEnum.StartAnalysisDir)
-            //        GetFileFromActiveDir(DirectoryEnum.LoginDir);
-            //}
 
             logger.Info("");
 

@@ -10,6 +10,7 @@ using Cloud_Models.Enums;
 using BaseViewModel;
 using NLog;
 using System.Windows;
+using System;
 
 namespace IVLUploader.ViewModels
 {
@@ -77,7 +78,7 @@ namespace IVLUploader.ViewModels
             if(GlobalVariables.isInternetPresent)
             { 
 
-            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expired || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
+            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires > DateTime.Now || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
                 Login();
             else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
                 CreateAnalysis();
@@ -112,6 +113,8 @@ namespace IVLUploader.ViewModels
         private void StartAnalysis()
         {
             logger.Info("Start Analysis");
+            isValidLoginCookie();
+
             ActiveCloudModel.InitiateAnalysisModel.status = "initialised";
             ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
             ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateAnalysis(ActiveCloudModel.LoginCookie).Result;
@@ -165,6 +168,7 @@ namespace IVLUploader.ViewModels
         {
 
             logger.Info("Get Analysis Status");
+            isValidLoginCookie();
 
             ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
             ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
@@ -218,6 +222,7 @@ namespace IVLUploader.ViewModels
         }
         private void Login()
         {
+
             logger.Info("Login");
 
             ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.StartLogin().Result;
@@ -301,6 +306,7 @@ namespace IVLUploader.ViewModels
         {
             logger.Info("Create Analysis");
 
+            isValidLoginCookie();
             JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
 
             ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
@@ -359,6 +365,8 @@ namespace IVLUploader.ViewModels
         }
         private void UploadFiles2Analysis()
         {
+            isValidLoginCookie();
+
             Response_CookieModel response = null;
             ActiveCloudModel.UploadModel.analysis_id =
             ActiveCloudModel.UploadModel.URL_Model.API_URL_Mid_Point =
@@ -435,6 +443,7 @@ namespace IVLUploader.ViewModels
         }
         private void GetAnalysisResult()
         {
+            isValidLoginCookie();
 
             ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
@@ -544,6 +553,17 @@ namespace IVLUploader.ViewModels
                 else
                     StartAnalsysisFlow();
             }
+
+        }
+
+
+        private void isValidLoginCookie()
+        {
+           if( ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
+            {
+                Login();
+            }
+
 
         }
         public CreateAnalysisViewModel ActiveCreateAnalysisViewModel { get => activeCreateAnalysisViewModel;
