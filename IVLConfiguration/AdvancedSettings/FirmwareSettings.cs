@@ -236,9 +236,17 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             set { powerCameraRemovalCheck = value; }
         }
 
+        private IVLControlProperties negativeDiaptorMaxValue = null;
+
+        public IVLControlProperties NegativeDiaptorMaxValue { get => negativeDiaptorMaxValue; set => negativeDiaptorMaxValue = value; }
 
 
-       public FirmwareSettings()
+        private IVLControlProperties positiveDiaptorMaxValue = null;
+
+        public IVLControlProperties PositiveDiaptorMaxValue { get => positiveDiaptorMaxValue; set => positiveDiaptorMaxValue = value; }
+
+
+        public FirmwareSettings()
         {
             _IsApplyPly = new IVLControlProperties();
             _IsApplyPly.name = "isApplyPly";
@@ -472,6 +480,25 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             FlashOffDoneStrobeCycleValue.text = "Flash Off Done Strobe Cycle Value";
             FlashOffDoneStrobeCycleValue.min = 1;
             FlashOffDoneStrobeCycleValue.max = 10;
+
+            NegativeDiaptorMaxValue = new IVLControlProperties();
+            NegativeDiaptorMaxValue.name = "NegativeDiaptorMaxValue";
+            NegativeDiaptorMaxValue.val = "200";
+            NegativeDiaptorMaxValue.type = "int";
+            NegativeDiaptorMaxValue.control = "System.Windows.Forms.NumericUpDown";
+            NegativeDiaptorMaxValue.text = "Negative Diaptor Max Value";
+            NegativeDiaptorMaxValue.min = 1;
+            NegativeDiaptorMaxValue.max = 1000;
+
+           PositiveDiaptorMaxValue = new IVLControlProperties();
+           PositiveDiaptorMaxValue.name = "PositiveDiaptorMaxValue";
+           PositiveDiaptorMaxValue.val = "200";
+           PositiveDiaptorMaxValue.type = "int";
+           PositiveDiaptorMaxValue.control = "System.Windows.Forms.NumericUpDown";
+           PositiveDiaptorMaxValue.text = "Positive Diaptor Max Value";
+           PositiveDiaptorMaxValue.min = 1;
+           PositiveDiaptorMaxValue.max = 1000;
+
         }
     }
 
