@@ -18,6 +18,7 @@ namespace INTUSOFT.Desktop
     public enum PageDisplayed {Login, Emr, Image };
     public enum CloudReportStatus {Initialized = 1,Uploading,Processing, View, Failed};
 
+    public enum ImagingPages { Live,View,Report,Annotation,CDR};
     public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
 
 
@@ -109,6 +110,7 @@ namespace INTUSOFT.Desktop
         public static Common.ValidatorDatas.EmailsData mailData;
         public static Dictionary<string, string> observationDic;
         public static Common.Validators.FileNameFolderPathValidator FileFolderValidator;
+        public static ImagingPages CurrentImagingPage = ImagingPages.View;
         public static DateTime currentVisitDateTime;
 
         /// <summary>

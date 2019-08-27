@@ -1209,7 +1209,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <summary>
         /// Sends the details to the report module that has to be displayed on the report.
         /// </summary>
-        private bool getReportDetails()
+        private bool getReportDetails(bool showExistingDRTemplate = false)
         {
             bool retVal = false;
             try
@@ -1478,18 +1478,30 @@ namespace INTUSOFT.Desktop.Forms
                         if (!reportDic.ContainsKey("$currentTemplate"))
                         {
                             #region Gets the default template from the report settings and set it to the current template
-                            string defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
-                            //reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
-                            int index = reportTemplates.FindIndex(x => x.Name == defaultTemplateFileName);//Gives the index of the changedTemplateFileName from reportTemplates
-                            if (index >= 0)
-                            {
-                                reportDic.Add("$currentTemplate", reportTemplates[index].FullName);
-                            }
+
+                            if (showExistingDRTemplate)
+                                reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml");
                             else
                             {
-                                reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
+                                string defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
+                                //reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
+                                int index = reportTemplates.FindIndex(x => x.Name == defaultTemplateFileName);//Gives the index of the changedTemplateFileName from reportTemplates
+                                if (index >= 0)
+                                {
+                                    reportDic.Add("$currentTemplate", reportTemplates[index].FullName);
+                                }
+                                else
+                                {
+                                    reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
+                                }
                             }
+                            
                             #endregion
+                        }
+                        else
+                        {
+                            if (showExistingDRTemplate)
+                                reportDic["$currentTemplate"]= @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml";
                         }
                         if (reportDic.ContainsKey("$ChangeMaskColour"))//checks if key $ChangeMaskColour is present .By Ashutosh 22-08-2017
                             reportDic["$ChangeMaskColour"] = IVLVariables.CurrentSettings.ReportSettings.ChangeMaskColour.val;// if present then it's value is replaced.By Ashutosh 22-08-2017
@@ -3825,7 +3837,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 else
                 {
-                    getReportDetails();
+                    getReportDetails(true);
 
                     string reportXml = reportVal.dataJson;
 
