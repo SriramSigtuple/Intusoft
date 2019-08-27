@@ -1244,6 +1244,7 @@ namespace INTUSOFT.Desktop.Forms
                             tData.side = 0;
                         tData.isAnnotated = _eyeFundusImage.annotationsAvailable;
                         tData.isCDR = _eyeFundusImage.cdrAnnotationAvailable;
+                        tData.QIStatus = _eyeFundusImage.qiStatus;
                         thumbnailList.Add(tData);
                         //id.Add(item.observationId);
                     }

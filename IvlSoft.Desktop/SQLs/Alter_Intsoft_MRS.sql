@@ -182,6 +182,26 @@ COMMIT;
 START TRANSACTION;
 USE `dbName`;
 DELIMITER $$
+drop procedure if exists add_qi_status_Obs;
+CREATE PROCEDURE add_qi_status_Obs() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'qi_status';
+IF colName is null THEN 
+    ALTER TABLE  observation ADD qi_status INT(1) NOT NULL  DEFAULT 0;
+END IF; 
+END$$
+DELIMITER ;
+CALL add_qi_status_Obs();
+COMMIT;
+
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
 drop procedure if exists add_failureMsg_cloud_report_Col;
 CREATE PROCEDURE add_failureMsg_cloud_report_Col() 
 BEGIN

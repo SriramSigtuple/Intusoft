@@ -29,11 +29,19 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.LiveStatus_ts = new System.Windows.Forms.ToolStrip();
             this.FrameRate_lbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.ExposureStatus_lbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.gainStatus_lbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.totalFrameCount_Lbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.gradableImg_lbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.gradableText_lbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.nonGradableImg_lbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.nonGradableText_lbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.qiProgressImg_lbl = new System.Windows.Forms.ToolStripLabel();
+            this.qiProgressText_lbl = new System.Windows.Forms.ToolStripLabel();
+            this.qiFailedImg_lbl = new System.Windows.Forms.ToolStripLabel();
+            this.qiFailedText_lbl = new System.Windows.Forms.ToolStripLabel();
             this.ImagingViewControls_p = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.maskOverlay_Pbx = new INTUSOFT.Custom.Controls.PictureBoxExtended();
@@ -55,7 +63,7 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.tableLayoutPanel1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.LiveStatus_ts.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maskOverlay_Pbx)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.overlay_pbx)).BeginInit();
@@ -74,68 +82,132 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.29185F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.70815F));
-            this.tableLayoutPanel1.Controls.Add(this.toolStrip1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.LiveStatus_ts, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.ImagingViewControls_p, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1117, 750);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // toolStrip1
+            // LiveStatus_ts
             // 
-            this.toolStrip1.BackColor = System.Drawing.Color.Transparent;
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LiveStatus_ts.BackColor = System.Drawing.Color.Transparent;
+            this.LiveStatus_ts.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.LiveStatus_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.LiveStatus_ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FrameRate_lbl,
             this.ExposureStatus_lbl,
             this.gainStatus_lbl,
-            this.totalFrameCount_Lbl});
-            this.toolStrip1.Location = new System.Drawing.Point(248, 730);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(869, 20);
-            this.toolStrip1.TabIndex = 15;
-            this.toolStrip1.Text = "toolStrip1";
+            this.totalFrameCount_Lbl,
+            this.gradableImg_lbl,
+            this.gradableText_lbl,
+            this.nonGradableImg_lbl,
+            this.nonGradableText_lbl,
+            this.qiProgressImg_lbl,
+            this.qiProgressText_lbl,
+            this.qiFailedImg_lbl,
+            this.qiFailedText_lbl});
+            this.LiveStatus_ts.Location = new System.Drawing.Point(248, 725);
+            this.LiveStatus_ts.Name = "LiveStatus_ts";
+            this.LiveStatus_ts.Size = new System.Drawing.Size(869, 25);
+            this.LiveStatus_ts.TabIndex = 15;
+            this.LiveStatus_ts.Text = "toolStrip1";
             // 
             // FrameRate_lbl
             // 
             this.FrameRate_lbl.ForeColor = System.Drawing.Color.White;
             this.FrameRate_lbl.Name = "FrameRate_lbl";
-            this.FrameRate_lbl.Size = new System.Drawing.Size(40, 15);
+            this.FrameRate_lbl.Size = new System.Drawing.Size(40, 20);
             this.FrameRate_lbl.Text = "Frame";
             // 
             // ExposureStatus_lbl
             // 
             this.ExposureStatus_lbl.ForeColor = System.Drawing.Color.White;
             this.ExposureStatus_lbl.Name = "ExposureStatus_lbl";
-            this.ExposureStatus_lbl.Size = new System.Drawing.Size(54, 15);
+            this.ExposureStatus_lbl.Size = new System.Drawing.Size(54, 20);
             this.ExposureStatus_lbl.Text = "Exposure";
             // 
             // gainStatus_lbl
             // 
             this.gainStatus_lbl.ForeColor = System.Drawing.Color.White;
             this.gainStatus_lbl.Name = "gainStatus_lbl";
-            this.gainStatus_lbl.Size = new System.Drawing.Size(31, 15);
+            this.gainStatus_lbl.Size = new System.Drawing.Size(31, 20);
             this.gainStatus_lbl.Text = "Gain";
             // 
             // totalFrameCount_Lbl
             // 
             this.totalFrameCount_Lbl.ForeColor = System.Drawing.Color.White;
             this.totalFrameCount_Lbl.Name = "totalFrameCount_Lbl";
-            this.totalFrameCount_Lbl.Size = new System.Drawing.Size(13, 15);
+            this.totalFrameCount_Lbl.Size = new System.Drawing.Size(13, 20);
             this.totalFrameCount_Lbl.Text = "0";
+            // 
+            // gradableImg_lbl
+            // 
+            this.gradableImg_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gradableImg_lbl.ForeColor = System.Drawing.Color.White;
+            this.gradableImg_lbl.Name = "gradableImg_lbl";
+            this.gradableImg_lbl.Size = new System.Drawing.Size(0, 20);
+            // 
+            // gradableText_lbl
+            // 
+            this.gradableText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.gradableText_lbl.ForeColor = System.Drawing.Color.White;
+            this.gradableText_lbl.Name = "gradableText_lbl";
+            this.gradableText_lbl.Size = new System.Drawing.Size(54, 20);
+            this.gradableText_lbl.Text = "Gradable";
+            // 
+            // nonGradableImg_lbl
+            // 
+            this.nonGradableImg_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.nonGradableImg_lbl.ForeColor = System.Drawing.Color.White;
+            this.nonGradableImg_lbl.Name = "nonGradableImg_lbl";
+            this.nonGradableImg_lbl.Size = new System.Drawing.Size(0, 20);
+            // 
+            // nonGradableText_lbl
+            // 
+            this.nonGradableText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.nonGradableText_lbl.ForeColor = System.Drawing.Color.White;
+            this.nonGradableText_lbl.Name = "nonGradableText_lbl";
+            this.nonGradableText_lbl.Size = new System.Drawing.Size(13, 20);
+            this.nonGradableText_lbl.Text = "0";
+            // 
+            // qiProgressImg_lbl
+            // 
+            this.qiProgressImg_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.qiProgressImg_lbl.Name = "qiProgressImg_lbl";
+            this.qiProgressImg_lbl.Size = new System.Drawing.Size(0, 22);
+            this.qiProgressImg_lbl.Text = "toolStripLabel1";
+            // 
+            // qiProgressText_lbl
+            // 
+            this.qiProgressText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.qiProgressText_lbl.Name = "qiProgressText_lbl";
+            this.qiProgressText_lbl.Size = new System.Drawing.Size(0, 22);
+            // 
+            // qiFailedImg_lbl
+            // 
+            this.qiFailedImg_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.qiFailedImg_lbl.Name = "qiFailedImg_lbl";
+            this.qiFailedImg_lbl.Size = new System.Drawing.Size(0, 22);
+            this.qiFailedImg_lbl.Text = "toolStripLabel1";
+            // 
+            // qiFailedText_lbl
+            // 
+            this.qiFailedText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.qiFailedText_lbl.Name = "qiFailedText_lbl";
+            this.qiFailedText_lbl.Size = new System.Drawing.Size(0, 22);
             // 
             // ImagingViewControls_p
             // 
             this.ImagingViewControls_p.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImagingViewControls_p.Location = new System.Drawing.Point(3, 3);
             this.ImagingViewControls_p.Name = "ImagingViewControls_p";
-            this.ImagingViewControls_p.Size = new System.Drawing.Size(242, 724);
+            this.ImagingViewControls_p.Size = new System.Drawing.Size(242, 706);
             this.ImagingViewControls_p.TabIndex = 2;
             // 
             // panel1
@@ -149,7 +221,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(251, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(863, 724);
+            this.panel1.Size = new System.Drawing.Size(863, 706);
             this.panel1.TabIndex = 3;
             // 
             // maskOverlay_Pbx
@@ -191,7 +263,7 @@
             this.motorSensor_tbpnl.Controls.Add(this.negativeArrow_pbx, 1, 0);
             this.motorSensor_tbpnl.Controls.Add(this.positiveArrow_pbx, 5, 0);
             this.motorSensor_tbpnl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.motorSensor_tbpnl.Location = new System.Drawing.Point(0, 693);
+            this.motorSensor_tbpnl.Location = new System.Drawing.Point(0, 675);
             this.motorSensor_tbpnl.Name = "motorSensor_tbpnl";
             this.motorSensor_tbpnl.RowCount = 1;
             this.motorSensor_tbpnl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -299,7 +371,7 @@
             this.display_pbx.Index = 0;
             this.display_pbx.Location = new System.Drawing.Point(0, 0);
             this.display_pbx.Name = "display_pbx";
-            this.display_pbx.Size = new System.Drawing.Size(863, 724);
+            this.display_pbx.Size = new System.Drawing.Size(863, 706);
             this.display_pbx.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.display_pbx.TabIndex = 2;
             this.display_pbx.TabStop = false;
@@ -356,8 +428,8 @@
             this.Resize += new System.EventHandler(this.Imaging_UC_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.LiveStatus_ts.ResumeLayout(false);
+            this.LiveStatus_ts.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maskOverlay_Pbx)).EndInit();
@@ -398,11 +470,18 @@
         private System.Windows.Forms.PictureBox positiveArrow_pbx;
         private Custom.Controls.PictureBoxExtended overlay_pbx;
         private Custom.Controls.PictureBoxExtended maskOverlay_Pbx;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip LiveStatus_ts;
         private System.Windows.Forms.ToolStripStatusLabel FrameRate_lbl;
         private System.Windows.Forms.ToolStripStatusLabel ExposureStatus_lbl;
         private System.Windows.Forms.ToolStripStatusLabel gainStatus_lbl;
         private System.Windows.Forms.ToolStripStatusLabel totalFrameCount_Lbl;
-
+        private System.Windows.Forms.ToolStripStatusLabel gradableImg_lbl;
+        private System.Windows.Forms.ToolStripStatusLabel gradableText_lbl;
+        private System.Windows.Forms.ToolStripStatusLabel nonGradableImg_lbl;
+        private System.Windows.Forms.ToolStripStatusLabel nonGradableText_lbl;
+        private System.Windows.Forms.ToolStripLabel qiProgressImg_lbl;
+        private System.Windows.Forms.ToolStripLabel qiProgressText_lbl;
+        private System.Windows.Forms.ToolStripLabel qiFailedImg_lbl;
+        private System.Windows.Forms.ToolStripLabel qiFailedText_lbl;
     }
 }

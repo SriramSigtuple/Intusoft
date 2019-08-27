@@ -1972,4 +1972,16 @@
   <data name="ImagesSelected_Text" xml:space="preserve">
     <value> Image/s Selected</value>
   </data>
+  <data name="Gradable_Text" xml:space="preserve">
+    <value>Gradable</value>
+  </data>
+  <data name="NonGradable_Text" xml:space="preserve">
+    <value>Non Gradable</value>
+  </data>
+  <data name="QIFailed_Text" xml:space="preserve">
+    <value>QI Failed</value>
+  </data>
+  <data name="QIInProgress_Text" xml:space="preserve">
+    <value>QI in Progress</value>
+  </data>
 </root>

@@ -3039,10 +3039,13 @@ namespace INTUSOFT.Desktop.Forms
         private void changeThumbnailSide(string s, Args arg)
         {
             string fileName = string.Empty;
+            var qiStatus = 0;
             if (arg.ContainsKey("ImgLoc"))
                 fileName = (String)arg["ImgLoc"];
+            if (arg.ContainsKey("QIStatus"))
+                qiStatus = (int)arg["QIStatus"];
             //the below code has been added by Darshan to solve defect no 0000510: Duplicate numbering in comments if pressed on control key.
-            this.thumbnailUI1.ChangeThumbnailSide((int)arg["id"], (int)arg["side"], (bool)arg["isannotated"], (bool)arg["isCDR"],fileName);
+            this.thumbnailUI1.ChangeThumbnailSide((int)arg["id"], (int)arg["side"], (bool)arg["isannotated"], (bool)arg["isCDR"],fileName, qiStatus);
         }
 
         /// <summary>

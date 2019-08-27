@@ -39,6 +39,10 @@ namespace INTUSOFT.Desktop.Forms
         object lockObj = new object();
         Bitmap bm1;
         Bitmap bm;
+        Bitmap gradeableBM;
+        Bitmap nonGradeableBM;
+        Bitmap qiProgressBM;
+        Bitmap qiFailedBM;
         //ImageCaptureSplashScreen imag;
         Point p;
         public bool isImagingDisabled = true;
@@ -97,7 +101,7 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.DisplayCapturedImage, new NotificationHandler(DisplayCapturedImage));
             eventHandler.Register(eventHandler.UpdateOverlay, new NotificationHandler(updateOverlay));
 
-            toolStrip1.Visible = false;
+            LiveStatus_ts.Visible = false;
             liveImagingControl = new LiveImageControls_UC();
             viewImagingControl = new ViewImageControls_UC();
             liveImagingControl.Dock = DockStyle.Fill;
@@ -176,7 +180,7 @@ namespace INTUSOFT.Desktop.Forms
             negativeDiaptor_pbx.Image = negativeSymbol;
             positiveDiaptor_pbx.Image = positiveSymbol;
             IVLVariables.ivl_Camera.camPropsHelper.CreatePositiveNegativeDiaptorSymbols();
-            toolStrip1.Renderer = new INTUSOFT.Custom.Controls.FormToolStripRenderer();
+            LiveStatus_ts.Renderer = new INTUSOFT.Custom.Controls.FormToolStripRenderer();
 
             IVLVariables.ivl_Camera.Pbx = (PictureBox)display_pbx;
             IVLVariables.ivl_Camera.MaskOverlayPbx = (PictureBox)maskOverlay_Pbx;
@@ -184,6 +188,37 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ivl_Camera.RightDiaptorPbx = pos_pbx;
             IVLVariables.ivl_Camera.LeftArrowPbx = negativeArrow_pbx ;
             IVLVariables.ivl_Camera.RightArrowPbx = positiveArrow_pbx;
+
+            gradeableBM = new Bitmap(100, 200);
+            nonGradeableBM = new Bitmap(100, 200);
+            qiFailedBM = new Bitmap(100, 200);
+            qiProgressBM = new Bitmap(100, 200);
+
+            Graphics graphics = Graphics.FromImage(gradeableBM);
+            graphics.FillRectangle(Brushes.LimeGreen, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+            gradableImg_lbl.Image = gradeableBM;
+            gradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("Gradable_Text", IVLVariables.LangResourceCultureInfo);
+
+            graphics = Graphics.FromImage(nonGradeableBM);
+            graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+            nonGradableImg_lbl.Image = nonGradeableBM;
+            nonGradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("NonGradable_Text", IVLVariables.LangResourceCultureInfo);
+
+            graphics = Graphics.FromImage(qiFailedBM);
+            graphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+            qiFailedImg_lbl.Image = qiFailedBM;
+            qiFailedText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIFailed_Text", IVLVariables.LangResourceCultureInfo);
+
+            graphics = Graphics.FromImage(qiProgressBM);
+            graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+            qiProgressImg_lbl.Image = qiProgressBM;
+            qiProgressText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIInProgress_Text", IVLVariables.LangResourceCultureInfo);
+
+
             #region Label Texts for Camera status bar
             IVLVariables.ivl_Camera.FrameRateLabelText = IVLVariables.LangResourceManager.GetString("FrameRate_Text", IVLVariables.LangResourceCultureInfo) ;
             IVLVariables.ivl_Camera.CameraConnectionLabelText =  IVLVariables.LangResourceManager.GetString("Camera_Text", IVLVariables.LangResourceCultureInfo) + IVLVariables.LangResourceManager.GetString("Connected_Text", IVLVariables.LangResourceCultureInfo);
@@ -202,7 +237,10 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ivl_Camera.ExposureStatus_lbl = this.ExposureStatus_lbl;
             IVLVariables.ivl_Camera.gainStatus_lbl = this.gainStatus_lbl ;
 
-           #endregion
+            LiveStatus_ts.Visible = true;
+
+
+            #endregion
         }
         bool isFFAImage = false;
         private void DisplayImageFromCamera(string s, Args arg)
@@ -558,9 +596,9 @@ namespace INTUSOFT.Desktop.Forms
                 ImagingViewControls_p.Controls.Add(liveImagingControl);
                 liveImagingControl.Refresh();
             }
-       
+            this.Controls.Add(this.LiveStatus_ts);
 
-           toolStrip1.Visible = true;
+           LiveStatus_ts.Visible = true;
            liveImagingControl.SetCurrentMode((ImagingMode)IVLVariables._ivlConfig.Mode);
            isImaging = true;
 

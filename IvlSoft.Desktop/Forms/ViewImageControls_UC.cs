@@ -982,6 +982,7 @@ namespace INTUSOFT.Desktop.Forms
                     arg["side"] = 1;
                 else
                     arg["side"] = 0;
+                arg["QIStatus"] = NewDataVariables.Active_Obs.qiStatus;
                 //the below code has been added by Darshan to solve defect no 0000510: Duplicate numbering in comments if pressed on control key.
                 eventHandler.Notify(eventHandler.ChangeThumbnailSide, arg);
             }

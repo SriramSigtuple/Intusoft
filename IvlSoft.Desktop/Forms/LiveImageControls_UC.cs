@@ -23,6 +23,10 @@ using INTUSOFT.Data.NewDbModel;
 using NLog.Config;
 using NLog.Targets;
 using NLog;
+using Cloud_Models.Models;
+using Common;
+using Newtonsoft.Json;
+
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class LiveImageControls_UC : UserControl
@@ -588,6 +592,7 @@ namespace INTUSOFT.Desktop.Forms
                            NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
                            NewDataVariables.Obs.Add(eyeFundusImage);
                            tdata.id = eyeFundusImage.observationId;
+                            Push2QI(eyeFundusImage);
                            // arg["id"] = newObs.observationId;
                            //foreach (var item in NewDataVariables.Visits)
                            //{
@@ -635,7 +640,87 @@ namespace INTUSOFT.Desktop.Forms
                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
            }
        }
-        
+        private CloudModel GetQIModel(eye_fundus_image eye_Fundus_Image)
+        {
+            //NewDataVariables.Active_Visit.reports.Add(report);
+            //NewIVLDataMethods.AddReport(report);
+            //NewIVLDataMethods.UpdateVisit();
+
+            CloudModel cloudModel = new CloudModel();
+            cloudModel.visitID = NewDataVariables.Active_Visit.visitId;
+            cloudModel.patientID = NewDataVariables.Active_Patient;
+            cloudModel.ImageID = eye_Fundus_Image.eye_fundus_image_id;
+            cloudModel.LoginModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.LoginModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_LOGIN_URL.val;
+
+            cloudModel.LoginModel.username = IVLVariables.CurrentSettings.CloudSettings.Username.val;
+            cloudModel.LoginModel.password = IVLVariables.CurrentSettings.CloudSettings.Password.val;
+
+            cloudModel.LoginModel.device_id = IVLVariables.CurrentSettings.CameraSettings.DeviceID.val;
+
+            Dictionary<string, object> kvp = new Dictionary<string, object>();
+            cloudModel.LoginModel.Body = string.Empty;
+            LoginResponseModel reponse = new LoginResponseModel();
+            reponse.message = new message();
+
+
+            cloudModel.CreateAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val; ;
+            cloudModel.CreateAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val; ;
+
+            cloudModel.CreateAnalysisModel.sample_id = IVLVariables.MRN;
+            cloudModel.CreateAnalysisModel.age = IVLVariables.patAge.ToString();
+            cloudModel.CreateAnalysisModel.gender = IVLVariables.patGender[0].ToString();
+            cloudModel.CreateAnalysisModel.sample_desc = IVLVariables.patAge.ToString() + "yrs, " + IVLVariables.patGender[0].ToString();
+            cloudModel.CreateAnalysisModel.visitID = IVLVariables.ActiveVisitID;
+            cloudModel.CreateAnalysisModel.PatientID = IVLVariables.ActivePatID;
+            cloudModel.CreateAnalysisModel.AnalysisType = 1;
+
+            cloudModel.CreateAnalysisModel.Body = string.Empty;
+
+            //cloudModel.UploadModel.relative_path = cloudModel.CreateAnalysisModel.sample_id + Path.DirectorySeparatorChar + "LE" + Path.DirectorySeparatorChar + "UnsharpMask.jpg";
+            cloudModel.UploadModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.UploadModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+            cloudModel.UploadModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES_INPUT.val;
+            cloudModel.UploadModel.RetryCount = 3;
+            cloudModel.UploadModel.images = new string[] { NewDataVariables.Active_Obs.value};
+            cloudModel.UploadModel.checksums = new string[1];
+            cloudModel.UploadModel.relative_path = new string[1];
+            cloudModel.UploadModel.eyeSideArr = new string[] { eye_Fundus_Image.eyeSide.ToString() };
+            for (int i = 0; i < cloudModel.UploadModel.images.Length; i++)
+            {
+                FileInfo ImgFinf = new FileInfo(cloudModel.UploadModel.images[i]);
+                cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash();
+                cloudModel.UploadModel.relative_path[i] = IVLVariables.MRN + "/" + (cloudModel.UploadModel.eyeSideArr[i].Contains("R") ? "RE" : "LE") + "/" + ImgFinf.Name;
+            }
+
+            cloudModel.InitiateAnalysisModel.status = "initialised";
+
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+            cloudModel.InitiateAnalysisModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_STATUS_URL.val;
+
+            cloudModel.InitiateAnalysisModel.Body = string.Empty;
+
+            cloudModel.GetAnalysisModel.analysis_id = cloudModel.UploadModel.analysis_id;
+            cloudModel.GetAnalysisModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+            cloudModel.GetAnalysisModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+
+            cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+
+            return cloudModel;
+        }
+
+        private void Push2QI(eye_fundus_image eye_Fundus)
+        {
+            CloudModel cloudModel =  GetQIModel(eye_Fundus);
+            var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
+            var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI), DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
+            File.WriteAllText(outboxFilePath, cloudModelJson);
+            // car = NewDataVariables._Repo.GetById<obs>(cloudModel.ImageID);
+            //car.fileName = new FileInfo(outboxFilePath).Name;
+            //NewDataVariables._Repo.Update<CloudAnalysisReport>(car);
+
+        }
         //private void saveImageURlDb(string s, Args arg)
         //{
         //    try

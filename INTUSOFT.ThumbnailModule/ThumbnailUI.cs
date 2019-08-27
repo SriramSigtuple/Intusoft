@@ -60,7 +60,10 @@ namespace INTUSOFT.ThumbnailModule
         public static bool isValueChanged = false;
         public event ThumbnailImageEventHandler OnImageSizeChanged;
         List<string> image_names;
-
+        Bitmap gradeableBM;
+        Bitmap nonGradeableBM;
+        Bitmap qiProgressBM;
+        Bitmap qiFailedBM;
         public void SizeChanged()
         {
             if (this.OnImageSizeChanged != null)//This condition check has been added to see that OnImageSizeChanged is initialized or not.
@@ -88,6 +91,28 @@ namespace INTUSOFT.ThumbnailModule
             m_Controller.OnAdd += new ThumbnailControllerEventHandler(m_Controller_OnAdd);
             m_Controller.corruptedImages += m_Controller_corruptedImages;
             image_names = new List<string>();
+
+            gradeableBM = new Bitmap(100, 200);
+            nonGradeableBM = new Bitmap(100, 200);
+            qiFailedBM = new Bitmap(100, 200);
+            qiProgressBM = new Bitmap(100, 200);
+
+            Graphics graphics = Graphics.FromImage(gradeableBM);
+            graphics.FillRectangle(Brushes.LimeGreen, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(nonGradeableBM);
+            graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(qiFailedBM);
+            graphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(qiProgressBM);
+            graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
         }
 
         private void Thumbnail_FLP__CountChangedEvent()
@@ -121,7 +146,7 @@ namespace INTUSOFT.ThumbnailModule
             this.thumbnail_FLP.SelectedThumbnailFileNames.Clear();
             this.thumbnail_FLP.TotalThumbnails = 0;
         }
-        public void ChangeThumbnailSide(int id, int side, bool isannotated, bool isCDR,string fileName)
+        public void ChangeThumbnailSide(int id, int side, bool isannotated, bool isCDR,string fileName,int qiStatus = 0)
         {
             //isannotated has been added by Darshan to solve defect no 0000527: Annotated images displaying wrong names.
             foreach (Control item in thumbnail_FLP.Controls)
@@ -137,6 +162,7 @@ namespace INTUSOFT.ThumbnailModule
                         this.isCDR = isCDR;
                         imgView.IsAnnotated = isannotated;
                         imgView.IsCDR = isCDR;
+                        imgView.QIStatus_P.BackColor = GetQIStatusColor(qiStatus);
                         imgView.label1.Text = GetImage_Name(imgView.ImageSide, imgView.Index);
                         imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                         if (!string.IsNullOrEmpty(fileName))
@@ -147,10 +173,23 @@ namespace INTUSOFT.ThumbnailModule
                 }
             }
         }
-        public void AddThumbnails(List<string> FileNames, List<int> ids, List<int> sides, List<bool> isannotated, List<bool> isCDR)
+        private Color GetQIStatusColor(int status)
+        {
+            switch(status)
+            {
+                case 1: return Color.Yellow;
+                case 2: return Color.Green;
+                case 3: return Color.Gray;
+                case 4: return Color.Red;
+                default: return Color.Transparent;
+
+
+            }
+        }
+        public void AddThumbnails(List<string> FileNames, List<int> ids, List<int> sides, List<bool> isannotated, List<bool> isCDR,List<int>qiStatuses)
         {
             this.thumbnail_FLP.Controls.Clear();
-            m_Controller.CreateThumbnails(FileNames, ids, sides, isannotated, isCDR);
+            m_Controller.CreateThumbnails(FileNames, ids, sides, isannotated, isCDR,qiStatuses);
         }
         public void AddThumbnails(List <ThumbnailData> ThumbnailList)
         {
@@ -971,5 +1010,6 @@ namespace INTUSOFT.ThumbnailModule
         public string fileName;
         public string Name;
         public bool isModified;
+        public int QIStatus;
     }
 }
