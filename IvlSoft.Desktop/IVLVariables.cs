@@ -111,6 +111,7 @@ namespace INTUSOFT.Desktop
         public static Common.ValidatorDatas.EmailsData mailData;
         public static Dictionary<string, string> observationDic;
         public static Common.Validators.FileNameFolderPathValidator FileFolderValidator;
+        public static ImagingPages CurrentImagingPage = ImagingPages.View;
         public static DateTime currentVisitDateTime;
 
         /// <summary>

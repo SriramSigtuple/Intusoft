@@ -905,20 +905,23 @@ namespace IVLReport
             return isNewReport;
         }
 
-        private  Bitmap CreateQRCodeBM()
+        private  void CreateQRCodeBM()
         {
+            _dataModel.qrBitmap = new Bitmap(10, 10);
             List<ReportControlsStructure> tempList = reportControlStructureList.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
             if (tempList.Any())
             {
                 var QCwriter = new BarcodeWriter();
                 QCwriter.Format = BarcodeFormat.QR_CODE;
                 var uriValue = (_dataModel.ReportData["$QRCode"].ToString());
-                var result = QCwriter.Write(uriValue);
-                _dataModel.qrBitmap = result.Clone() as Bitmap;
-                return result;
+                if(!string.IsNullOrEmpty(uriValue))
+                {
+                    var result = QCwriter.Write(uriValue);
+                    _dataModel.qrBitmap = result.Clone() as Bitmap;
+                }
+
 
             }
-            return new Bitmap(10, 10);
         }
         /// <summary>
         /// Will set the orientation radio button and report size for existing report.
@@ -1201,7 +1204,10 @@ namespace IVLReport
                         }
 
                         if(IVLProps.Binding.Contains("QRCode"))
-                            pbx.Image = CreateQRCodeBM();
+                        {
+                            CreateQRCodeBM();
+                            pbx.Image = _dataModel.qrBitmap;
+                        }
 
                         else
                             if (File.Exists(IVLProps.ImageName))

@@ -85,15 +85,23 @@ namespace IVLUploader.ViewModels
 
             if (activeFileCloudVM == null || activeFileCloudVM.ActiveFnf == null)
             {
-                StreamReader st = new StreamReader(activeDirFileInfos.FullName);
-                var json = st.ReadToEnd();
-                st.Close();
-                st.Dispose();
-                CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-                activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                activeFileCloudVM.ActiveFnf = activeDirFileInfos;
+                try
+                {
+                    StreamReader st = new StreamReader(activeDirFileInfos.FullName);
+                    var json = st.ReadToEnd();
+                    st.Close();
+                    st.Dispose();
+                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+                    activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+                    activeFileCloudVM.ActiveFnf = activeDirFileInfos;
 
-                activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalsysisFlow();
+                }
+                catch (Exception)
+                {
+
+                }
+              
             }
             logger.Info("");
 
