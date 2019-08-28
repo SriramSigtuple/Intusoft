@@ -13,7 +13,7 @@ namespace Common
         /// </summary>
         /// <param name="input">String input to be converted to MD5 hash</param>
         /// <returns>MD5 hash value of the input string</returns>
-        public static string GetMd5Hash(this string input)
+        public  static string GetMd5Hash(this string input)
         {
             MD5 md5Hash = MD5.Create();
             // Convert the input string to a byte array and compute the hash.
@@ -36,14 +36,13 @@ namespace Common
         /// </summary>
         /// <param name="input">FileInfo input to be converted to MD5 hash</param>
         /// <returns>MD5 hash value of the input FileInfo</returns>
-        public static string GetMd5Hash(this FileInfo input)
+        public  static string GetMd5Hash(this FileInfo input)
         {
             MD5 md5Hash = MD5.Create();
-
             var fileStream = input.Open(FileMode.Open);
-
             // Convert the input string to a byte array and compute the hash.
             byte[] data = md5Hash.ComputeHash(fileStream);
+            fileStream.Close();
 
             // Create a new Stringbuilder to collect the bytes
             // and create a string.
@@ -55,9 +54,8 @@ namespace Common
             {
                 sBuilder.Append(data[i].ToString("x2"));
             }
-            fileStream.Close();
             // Return the hexadecimal string.
-            return sBuilder.ToString();
+            return  sBuilder.ToString();
         }
 
 

@@ -73,7 +73,7 @@ namespace IVLUploader.ViewModels
 
         }
 
-        private void GetFileFromActiveDir(FileInfo activeDirFileInfos)
+        private async void GetFileFromActiveDir(FileInfo activeDirFileInfo)
         {
             logger.Info("");
 
@@ -81,15 +81,15 @@ namespace IVLUploader.ViewModels
             {
                 try
                 {
-                   if( File.Exists(activeDirFileInfos.FullName))
+                   if( File.Exists(activeDirFileInfo.FullName))
                     {
-                        StreamReader st = new StreamReader(activeDirFileInfos.FullName);
-                        var json = st.ReadToEnd();
+                        StreamReader st = new StreamReader(activeDirFileInfo.FullName);
+                        var json = await st.ReadToEndAsync();
                         st.Close();
                         st.Dispose();
                         CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
                         activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                        activeFileCloudVM.ActiveFnf = activeDirFileInfos;
+                        activeFileCloudVM.ActiveFnf = activeDirFileInfo;
 
                         activeFileCloudVM.StartAnalsysisFlow();
                     }
@@ -97,11 +97,12 @@ namespace IVLUploader.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex);
+                    logger.Info(ex);
+
                 }
                 finally
                 {
-                   activeFileCloudVM.StartAnalsysisFlow();
+                    GetFileFromActiveDir(activeDirFileInfo);
 
                 }
 
