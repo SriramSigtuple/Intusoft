@@ -41,6 +41,10 @@ namespace INTUSOFT.Desktop.Forms
         IVLEventHandler _eventHandler;
         PatDetails_UC ActivePatUI;
         DataBaseServiceAndConnection dataBaseServerConnection;
+
+        delegate void DelegateUpdateCloudValues(List<CloudAnalysisReport> models);
+        private DelegateUpdateCloudValues m_DelegateUpdateCloudValues;
+
         System.Diagnostics.Stopwatch stW;
         Process p;
         SplashScreen splashScreen;
@@ -436,6 +440,8 @@ namespace INTUSOFT.Desktop.Forms
                 imaging_UC = Imaging_UC.GetInstance();
 
             UpdateFontForeColor();
+            m_DelegateUpdateCloudValues = new DelegateUpdateCloudValues(this.UpdateCloudFiles);
+
             #region Create Cloud Directories
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
                 Directory.CreateDirectory(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val);
@@ -483,10 +489,11 @@ namespace INTUSOFT.Desktop.Forms
             {
                 List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                #region Inbox Response
                 foreach (var fileInfo in fileInfos)
                 {
-                    List<CloudAnalysisReport> cloudAnalysisReport = NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList();
-                    if (cloudAnalysisReport.Any())
+                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                    if (indx >= 0)
                     {
                         try
                         {
@@ -497,35 +504,41 @@ namespace INTUSOFT.Desktop.Forms
 
                             if (responseValue.Status == "success")
                             {
-                                if (cloudAnalysisReport[0].cloudAnalysisReportStatus != 4)
+                                if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
                                 {
-                                    cloudAnalysisReport[0].cloudAnalysisReportStatus = 4;
+                                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
 
                                     CreateCloudReport(responseValue);
-                                    cloudAnalysisReport[0].leftEyeImpression = responseValue.LeftAIImpressions;
-                                    cloudAnalysisReport[0].rightEyeImpression = responseValue.RightAIImpressions;
-                                    NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                    changedCloudAnalysisReports.Add(cloudAnalysisReport[0]);
+                                    NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = responseValue.LeftAIImpressions;
+                                    NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = responseValue.RightAIImpressions;
+                                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                                 }
 
                             }
                             else if (responseValue.Status == "failure")
                             {
-                                if (cloudAnalysisReport[0].cloudAnalysisReportStatus != 5)
+                                if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
                                 {
-                                    cloudAnalysisReport[0].cloudAnalysisReportStatus = 5;
-                                    cloudAnalysisReport[0].failureMessage = responseValue.FailureMessage;
-                                    NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                    changedCloudAnalysisReports.Add(cloudAnalysisReport[0]);
+                                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
+                                    NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
+                                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
 
                                 }
 
                             }
-                            File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
-                        }
-                        catch (Exception)
-                        {
+                            if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name)))
+                            {
+                                File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
 
+                            }
+                            File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
                         }
 
 
@@ -533,66 +546,72 @@ namespace INTUSOFT.Desktop.Forms
 
 
                 }
+                #endregion
+
+                #region Outbox Response
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
+
                 foreach (var fileInfo in fileInfos)
                 {
-                    CloudAnalysisReport c = UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(), 1);
-                    if (c != null)
-                        changedCloudAnalysisReports.Add(c);
+                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                 }
 
+                #endregion
+
+                #region Active Directory Response
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    CloudAnalysisReport c = UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(), 2);
-                    if (c != null)
-                        changedCloudAnalysisReports.Add(c);
+                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Uploading;
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                 }
+                #endregion
+
+                #region Sent items Response
                 fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
                 foreach (var fileInfo in fileInfos)
                 {
-                    CloudAnalysisReport c = UpdateCloudReportStatus(NewDataVariables._Repo.GetByCategory<CloudAnalysisReport>("fileName", fileInfo.Name).ToList(), 3);
-
-
-                    if (c != null)
-                        changedCloudAnalysisReports.Add(c);
+                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
 
                 }
+                #endregion
+
                 if (!imaging_UC.isLiveScreen  && this.TopMost)
                 {
-                    Thread.Sleep(3000);
                     Args arg = new Args();
-                    arg["CloudReports"] = changedCloudAnalysisReports;
                     _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
                 }
+                UpdateCloudFiles(changedCloudAnalysisReports);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine("");
             }
 
            
 
         }
 
-        private CloudAnalysisReport UpdateCloudReportStatus(List<CloudAnalysisReport> cloudAnalysisReport, int status)
+        private void UpdateCloudFiles(List<CloudAnalysisReport> cloudAnalysisReports)
         {
-            if(cloudAnalysisReport.Any())
+            if (this.InvokeRequired)
             {
-                if (cloudAnalysisReport[0].cloudAnalysisReportStatus != status)
-                {
-                    cloudAnalysisReport[0].cloudAnalysisReportStatus = status;
-                    NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                    return cloudAnalysisReport[0];
-                }
-                else
-                    return null;
-                
+                this.Invoke(m_DelegateUpdateCloudValues,cloudAnalysisReports);
             }
-            return null;
-           
-           
-
+            else
+            {
+                foreach (var item in cloudAnalysisReports)
+                {
+                    NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
+                }
+            }
         }
         private void ThumbnailUI1_showImgFromThumbnail(ThumbnailData s, EventArgs e)
         {

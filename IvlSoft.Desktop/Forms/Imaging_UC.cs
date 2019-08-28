@@ -606,7 +606,7 @@ namespace INTUSOFT.Desktop.Forms
 
                }
                 if (!IVLVariables.isCommandLineAppLaunch)
-                    viewImagingControl.showExisitingReports(new List<Data.NewDbModel.CloudAnalysisReport>());
+                    viewImagingControl.showExisitingReports();
                 maskOverlay_Pbx.Visible = false;
                //if (this.Controls.Contains(maskOverlay_pbx))
                //    this.Controls.Remove(maskOverlay_pbx);

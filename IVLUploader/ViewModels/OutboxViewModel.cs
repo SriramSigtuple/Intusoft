@@ -170,6 +170,8 @@ namespace IVLUploader.ViewModels
             var json = await st.ReadToEndAsync();
             st.Close();
             st.Dispose();
+            Console.WriteLine("active Dir filename {0}", fileInfo.Name);
+
             CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
             activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
             activeFileCloudVM.ActiveFnf = fileInfo;

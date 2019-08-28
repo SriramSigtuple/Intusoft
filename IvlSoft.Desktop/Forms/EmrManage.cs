@@ -1977,6 +1977,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 ReportNumbers = new List<int>();
                 ImageNumbers = new List<int>();
+                AIReportNumbers = new List<int>();
                 int visitDateTimeIndx = d.Columns.IndexOf("createdDate");
                 DataColumn time = new DataColumn("Time");
                 d.Columns.Add(time);
@@ -2482,6 +2483,7 @@ namespace INTUSOFT.Desktop.Forms
         private void EmrManage_Load(object sender, EventArgs e)
         {
             {
+                NewDataVariables.CloudAnalysisReports = NewDataVariables._Repo.GetAll<CloudAnalysisReport>().ToList();
                 pageRows = Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._NoOfPatientsToBeSelected.val);//Assigns no of patients to be displayed
                 //PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));
                 PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables._Repo.GetPatientCount() * 1.0 / pageRows));//Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));

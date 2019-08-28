@@ -4705,6 +4705,7 @@ namespace INTUSOFT.Data.Repository
             }
         }
 
+
         private static report _report;
 
         public static report Active_Report
@@ -4758,6 +4759,10 @@ namespace INTUSOFT.Data.Repository
                 _annotation = value;
             }
         }
+
+        public static List<CloudAnalysisReport> CloudAnalysisReports { get => cloudAnalysisReports; set => cloudAnalysisReports = value; }
+
+        private static List<CloudAnalysisReport> cloudAnalysisReports;
     }
 
     public static class NewIVLDataMethods
