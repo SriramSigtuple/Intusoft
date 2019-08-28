@@ -213,7 +213,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="UploaderSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

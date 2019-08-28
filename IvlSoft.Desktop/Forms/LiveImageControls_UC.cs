@@ -573,6 +573,10 @@ namespace INTUSOFT.Desktop.Forms
                            eyeFundusImage.lastModifiedDate = DateTime.Now;
                            eyeFundusImage.patient = pat;
                            eyeFundusImage.visit = NewDataVariables.Active_Visit;
+                          if( string.IsNullOrEmpty (eyeFundusImage.checkSum))
+                            {
+                             eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName)));
+                            }
                            //newObs.eye_fundus_image = eyeFundusImage;
                            //eyeFundusImage.obs_id = newObs;
 

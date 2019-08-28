@@ -3341,7 +3341,13 @@ namespace INTUSOFT.Desktop.Forms
                 for (int i = 0; i < currentReportImageFiles.Length; i++)
                 {
                     FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
-                    cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash();
+                   eye_fundus_image eye =  NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
+                    if (string.IsNullOrEmpty(eye.checkSum))
+                    {
+                        eye.checkSum = (ImgFinf).GetMd5Hash();
+                        NewDataVariables._Repo.Update<eye_fundus_image>(eye);
+                    }
+                    cloudModel.UploadModel.checksums[i] = eye.checkSum;
                     cloudModel.UploadModel.relative_path[i] = IVLVariables.MRN + "/" + (currentReportLabelNames[i].Contains("OD") ? "RE" : "LE") + "/" + ImgFinf.Name;
                 }
 

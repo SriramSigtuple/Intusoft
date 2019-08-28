@@ -77,21 +77,34 @@ namespace IVLUploader.ViewModels
         {
             logger.Info("");
 
-            if (activeFileCloudVM == null || activeFileCloudVM.ActiveFnf == null)
             {
                 try
                 {
                    if( File.Exists(activeDirFileInfo.FullName))
                     {
-                        StreamReader st = new StreamReader(activeDirFileInfo.FullName);
-                        var json = await st.ReadToEndAsync();
-                        st.Close();
-                        st.Dispose();
-                        CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-                        activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
-                        activeFileCloudVM.ActiveFnf = activeDirFileInfo;
+                        if (File.Exists(activeDirFileInfo.FullName))
+                        {
+                            if (activeFileCloudVM == null)
+                            {
+                                Console.WriteLine("Get sent items file in active vm is null");
 
-                        activeFileCloudVM.StartAnalsysisFlow();
+                                UpdateActiveCloudVM(activeDirFileInfo);
+
+                            }
+                            else if (activeFileCloudVM.ActiveFnf == null)
+                            {
+                                Console.WriteLine("Get sent items file in active vm finf is null");
+
+                                UpdateActiveCloudVM(activeDirFileInfo);
+
+                            }
+                            else if ((activeFileCloudVM.ActiveFnf.FullName != activeDirFileInfo.FullName))
+                            {
+                                Console.WriteLine("Get sent items file in active vm finf is not equal");
+
+                                UpdateActiveCloudVM(activeDirFileInfo);
+                            }
+                        }
                     }
                    
                 }
@@ -102,7 +115,7 @@ namespace IVLUploader.ViewModels
                 }
                 finally
                 {
-                    GetFileFromActiveDir(activeDirFileInfo);
+                    //GetFileFromActiveDir(activeDirFileInfo);
 
                 }
 
@@ -111,6 +124,17 @@ namespace IVLUploader.ViewModels
 
         }
 
+        private async void UpdateActiveCloudVM(FileInfo fileInfo)
+        {
+            StreamReader st = new StreamReader(fileInfo.FullName);
+            var json = await st.ReadToEndAsync();
+            st.Close();
+            st.Dispose();
+            CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+            activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+            activeFileCloudVM.ActiveFnf = fileInfo;
+            activeFileCloudVM.StartAnalsysisFlow();
+        }
         public void StartStopSentItemsTimer(bool isStart)
         {
             if(isStart)

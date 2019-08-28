@@ -49,7 +49,8 @@ namespace INTUSOFT.Data.NewDbModel
             users VoidedBy,
             DateTime dateVoided,
             string voidedReason,
-            string UUID
+            string UUID,
+            string checkSum
                  )
         {
             return new obs
@@ -74,6 +75,7 @@ namespace INTUSOFT.Data.NewDbModel
                 groupMembers=groupMembers,
                 voidedBy = VoidedBy,
                 voidedReason = voidedReason,
+                checkSum = checkSum
                 //uuid=UUID
             };
         }
@@ -119,7 +121,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual string comments { get; set; }
         
-
+        public virtual string checkSum { get; set; }
         //public virtual string uuid { get; set; }
 
         #endregion

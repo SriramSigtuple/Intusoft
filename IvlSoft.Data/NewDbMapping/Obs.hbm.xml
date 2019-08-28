@@ -12,6 +12,7 @@
 	<!--<property name="person_id" type="int" length="11" column="person_id" not-null="true" insert="false" update="false" />-->
 	<property name="takenDateTime" type="datetime" column="taken_datetime" not-null="true" length="19" />
 	<property name="value" type="String" column="value" length="65535" />
+	<property name="checkSum" type="String" column="check_sum" length="65535" />
 	<property name="comments" type="String" column="comment" length="255" />
 	
 	<many-to-one name="createdBy" class="users" column="created_by" not-null="true" />

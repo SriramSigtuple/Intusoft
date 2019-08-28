@@ -61,7 +61,7 @@ namespace IVLUploader
 
             LogManager.Configuration.AddRuleForAllLevels("ctrl");
             LogManager.Configuration.AddRuleForAllLevels("Logger");
-            LogManager.Configuration.AddRuleForAllLevels("Console");
+            //LogManager.Configuration.AddRuleForAllLevels("Console");
             //LogginVM.GetLogginVM();
             SetupExceptionHandling();
         }
