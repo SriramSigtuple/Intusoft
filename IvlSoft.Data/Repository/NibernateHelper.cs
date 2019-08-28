@@ -45,7 +45,7 @@ namespace INTUSOFT.Data.Repository
         public static string maskSettingsColumnName = "mask_settings";
         public static string reportTypeColumnName = "report_type";
 
-
+        public static bool isDatabaseCreating = false;
 
         public static ISessionFactory _sessionFactory;
 
@@ -227,33 +227,37 @@ namespace INTUSOFT.Data.Repository
 
         private static void BuildSchema(NHibernate.Cfg.Configuration config)
         {
-            //old implmentation with severpath hard coded to localhost
-           // connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-            var data = new Dictionary<string, string>();
-            if (File.Exists("Intusoft-runtime.properties"))
+            if (!isDatabaseCreating)
             {
-                foreach (var row in File.ReadAllLines("Intusoft-runtime.properties"))
-                    data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
-                dbName = data["connection.DBname"];
-                userName = data["connection.username"];
-                password = data["connection.password"];
-                serverPath = data["serverPath"];
-            }
-            connectionString = "Server="+serverPath+";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-            //if (DbExists(oldDbName) && !DbExists(dbName))
-            //    ExecuteCommand("gyk");
-            if (!DbExists(dbName))// to check whether the db exists if not create a db using sql from the file
-                ExecuteSqlScriptFromFile(createDB);
-            else
-            {
-               // if (!ColumnExists(eyeFundusImageTableName, maskSettingsColumnName))// if the db exists and the table of observation attribute doen't exists alter db to table observation attribute table.
-                    ExecuteSqlScriptFromFile(alterDB);
-                if (NoOfRowsOfaTable(reportTypeColumnName) < 3)
+                //old implmentation with severpath hard coded to localhost
+                // connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                var data = new Dictionary<string, string>();
+                if (File.Exists("Intusoft-runtime.properties"))
                 {
-                    ExecuteBatchFile(batchFileName);
+                    foreach (var row in File.ReadAllLines("Intusoft-runtime.properties"))
+                        data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+                    dbName = data["connection.DBname"];
+                    userName = data["connection.username"];
+                    password = data["connection.password"];
+                    serverPath = data["serverPath"];
                 }
+                connectionString = "Server=" + serverPath + ";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                //if (DbExists(oldDbName) && !DbExists(dbName))
+                //    ExecuteCommand("gyk");
+                if (!DbExists(dbName))// to check whether the db exists if not create a db using sql from the file
+                    ExecuteSqlScriptFromFile(createDB);
+                else
+                {
+                    // if (!ColumnExists(eyeFundusImageTableName, maskSettingsColumnName))// if the db exists and the table of observation attribute doen't exists alter db to table observation attribute table.
+                    ExecuteSqlScriptFromFile(alterDB);
+                    //if (NoOfRowsOfaTable(reportTypeColumnName) < 3)
+                    //{
+                    //    ExecuteBatchFile(batchFileName);
+                    //}
+                }
+                isDatabaseCreating = true;
+                ExecuteSqlScriptFromFile(grantPrivileges);
             }
-            ExecuteSqlScriptFromFile(grantPrivileges);
         }
 
         public static void ExecuteSqlScriptFromFile(string fileName)

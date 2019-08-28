@@ -448,9 +448,6 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="BatchScripts\InsertReportTypes.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Intusoft-runtime.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

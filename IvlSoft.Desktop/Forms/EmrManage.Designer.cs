@@ -221,7 +221,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 97.0297F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 2.970297F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 181F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 182F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel4.Controls.Add(this.ResetSearch_linklbl, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -240,7 +240,7 @@
             this.ResetSearch_linklbl.LinkColor = System.Drawing.Color.Aqua;
             this.ResetSearch_linklbl.Location = new System.Drawing.Point(3, 0);
             this.ResetSearch_linklbl.Name = "ResetSearch_linklbl";
-            this.ResetSearch_linklbl.Size = new System.Drawing.Size(166, 28);
+            this.ResetSearch_linklbl.Size = new System.Drawing.Size(165, 28);
             this.ResetSearch_linklbl.TabIndex = 1;
             this.ResetSearch_linklbl.TabStop = true;
             this.ResetSearch_linklbl.Text = "linkLabel1";
@@ -669,8 +669,8 @@
             this.Consultation_ts.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.Consultation_ts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewVisit_Btn,
-            this.DeleteConsultation_btn,
             this.LiveImaging_btn,
+            this.DeleteConsultation_btn,
             this.ViewImages_btn});
             this.Consultation_ts.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.Consultation_ts.Location = new System.Drawing.Point(272, 0);
@@ -707,6 +707,7 @@
             // LiveImaging_btn
             // 
             this.LiveImaging_btn.AutoSize = false;
+            this.LiveImaging_btn.Enabled = false;
             this.LiveImaging_btn.ForeColor = System.Drawing.Color.Black;
             this.LiveImaging_btn.Image = ((System.Drawing.Image)(resources.GetObject("LiveImaging_btn.Image")));
             this.LiveImaging_btn.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -719,6 +720,7 @@
             // ViewImages_btn
             // 
             this.ViewImages_btn.AutoSize = false;
+            this.ViewImages_btn.Enabled = false;
             this.ViewImages_btn.ForeColor = System.Drawing.Color.Black;
             this.ViewImages_btn.Image = ((System.Drawing.Image)(resources.GetObject("ViewImages_btn.Image")));
             this.ViewImages_btn.ImageTransparentColor = System.Drawing.Color.Magenta;

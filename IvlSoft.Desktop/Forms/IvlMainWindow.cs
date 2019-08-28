@@ -2085,12 +2085,18 @@ namespace INTUSOFT.Desktop.Forms
         /// </summary>
         private void SetPanels()
         {
+            this.Cursor = Cursors.WaitCursor;
+            while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
+            {
+                
+            }
+            this.Cursor = Cursors.Default;
             PagePanel_p.Controls.Clear();
             emr.Dock = DockStyle.Fill;
             try
             {
                 PagePanel_p.Controls.Add(emr);
-                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0,(int) (Convert.ToDouble( IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
                 InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
 
             }
@@ -2101,6 +2107,7 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
             emr.Show();
+
 
             #region this has to be implemented later when login screen has been added
             //loginScreen.Dock = DockStyle.Fill;

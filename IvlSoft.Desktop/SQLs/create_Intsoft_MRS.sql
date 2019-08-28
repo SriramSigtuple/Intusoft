@@ -326,6 +326,7 @@ CREATE TABLE `observation` (
   `uuid` char(38) DEFAULT NULL,
   `last_sent_by` bigint(20) DEFAULT NULL,
   `last_sent_date` datetime DEFAULT NULL,
+  check_sum LONGTEXT  NULL,
   PRIMARY KEY (`observation_id`),
   UNIQUE KEY `observation_uuid_unique_index` (`uuid`),
   KEY `observation_belongs_to_concept_index` (`concept_id`),
@@ -856,7 +857,7 @@ CREATE TABLE IF NOT EXISTS `report` (
   `patient_id` BIGINT NOT NULL,
   `visit_id` BIGINT NOT NULL,
   `report_type_id` SMALLINT NOT NULL,
-  `data_json` TEXT NULL,
+  `data_json` LONGTEXT NULL,
   `created_by` BIGINT NOT NULL,
   `created_date` DATETIME NULL,
   `last_modified_by` BIGINT NULL,
@@ -866,6 +867,7 @@ CREATE TABLE IF NOT EXISTS `report` (
   `voided_date` DATETIME NULL,
   `voided_reason` VARCHAR(300) NULL,
   `uuid` CHAR(38) NULL,
+  is_cloud_report INT(1) NOT NULL  DEFAULT 0,
   PRIMARY KEY (`report_id`),
   UNIQUE INDEX `report_uuid_unique_index` (`uuid` ASC),
   INDEX `report_belongs_to_visit_index` (`visit_id` ASC),
@@ -936,6 +938,8 @@ CREATE TABLE IF NOT EXISTS `sync_outbox` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
 DROP TABLE IF EXISTS `patient_diagnosis`;
 CREATE TABLE `patient_diagnosis` (
   `patient_diagnosis_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -956,6 +960,25 @@ CREATE TABLE `patient_diagnosis` (
   CONSTRAINT `patient_diagnosis_pat_id` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`),
     CONSTRAINT `visit_id_fk` FOREIGN KEY (`visit_id`) REFERENCES `visit` (`visit_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `cloud_analysis_report` (
+  `cloud_analysis_report_id` SMALLINT NOT NULL AUTO_INCREMENT,
+ `left_eye_impression` VARCHAR(300) NULL,
+ `right_eye_impression` VARCHAR(300) NULL,
+ `report_id` BIGINT(20) NOT NULL,
+ `cloud_analysis_report_status` INT(1) NOT NULL DEFAULT 1,
+ `last_modified_date` datetime DEFAULT NULL,
+  `voided` tinyint(1) NOT NULL DEFAULT '0',
+  `created_date` datetime DEFAULT NULL,
+  `analysis_filename` VARCHAR(300) NULL,
+  analysis_failure_Msg LONGTEXT  NULL,
+ PRIMARY KEY (`cloud_analysis_report_id`),
+ constraint `report_table_Report_id`
+ foreign key (`report_id`)
+ references `report` (`report_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- -----------------------------------------------------
 -- Data for table `concept_class`

@@ -7,7 +7,7 @@ BEGIN
 DECLARE colName TEXT;
 SELECT column_name INTO colName
 FROM information_schema.columns 
-WHERE table_schema = 'intunewmodel'
+WHERE table_schema = 'dbName'
     AND table_name = 'eye_fundus_image'
 AND column_name = 'mask_settings';
 IF colName is null THEN 
@@ -28,7 +28,7 @@ BEGIN
 DECLARE colName TEXT;
 SELECT column_name INTO colName
 FROM information_schema.columns 
-WHERE table_schema = 'intunewmodel'
+WHERE table_schema = 'dbName'
     AND table_name = 'observation'
 AND column_name = 'person_id';
 
@@ -50,7 +50,7 @@ BEGIN
 DECLARE colName Text;
 SELECT information_schema.TABLE_CONSTRAINTS.CONSTRAINT_NAME into colName FROM information_schema.TABLE_CONSTRAINTS 
 WHERE information_schema.TABLE_CONSTRAINTS.CONSTRAINT_TYPE = 'FOREIGN KEY' 
-AND information_schema.TABLE_CONSTRAINTS.TABLE_SCHEMA = 'intunewmodel'
+AND information_schema.TABLE_CONSTRAINTS.TABLE_SCHEMA = 'dbName'
 And information_schema.TABLE_CONSTRAINTS.CONSTRAINT_NAME = 'observation_belongs_to_person_fk'
 AND information_schema.TABLE_CONSTRAINTS.TABLE_NAME = 'observation';
 if colName is not Null then
@@ -78,7 +78,7 @@ BEGIN
 DECLARE colName INT;
 SELECT count(table_name) INTO colName
 FROM information_schema.columns 
-WHERE table_schema = 'intunewmodel'
+WHERE table_schema = 'dbName'
     AND table_name = 'patient_diagnosis';
 
 IF colName = 0 THEN 
@@ -116,7 +116,7 @@ BEGIN
 DECLARE colName INT;
 SELECT count(table_name) INTO colName
 FROM information_schema.columns 
-WHERE table_schema = 'intunewmodel'
+WHERE table_schema = 'dbName'
     AND table_name = 'cloud_analysis_report';
 
 IF colName = 0 THEN 
