@@ -589,8 +589,16 @@ namespace IVLUploader.ViewModels
             else
             {
 
+
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
-                inboxAnalysisStatusModel.Status = "failure" + response.StatusCode.ToString("g");
+                inboxAnalysisStatusModel.Status = "failure" ;
+                inboxAnalysisStatusModel.StatusCode = response.StatusCode;
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    inboxAnalysisStatusModel.FailureMessage = "Wrong Credentials";
+
+                else
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    inboxAnalysisStatusModel.FailureMessage = "Wrong Data";
 
                 StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name),false);
                 await st.WriteAsync(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Cloud_Models.Models
         public string FailureMessage;
         public string RightAIImpressions;
         public string LeftAIImpressions;
-
+        public HttpStatusCode StatusCode;
         public Uri ReportUri;
         public int visitID;
         public int patientID;
