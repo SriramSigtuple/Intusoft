@@ -520,9 +520,17 @@ namespace INTUSOFT.Imaging
                    IVLCamVariables._Settings.CameraSettings.LiveGainHigh = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainHigh.val);
                    IVLCamVariables._Settings.CameraSettings.LiveGainMed = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainMedium.val);
                    IVLCamVariables._Settings.CameraSettings.LiveGainLow = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainLow.val);
-                   #endregion
+                    #endregion
 
-                   byte strobeValue = 156;
+
+                    #region Diaptor Max Values
+
+                    IVLCamVariables.MaxNegativeDiaptor = Convert.ToInt32(ConfigVariables.CurrentSettings.FirmwareSettings.NegativeDiaptorMaxValue.val);
+                    IVLCamVariables.MaxPositiveDiaptor = Convert.ToInt32(ConfigVariables.CurrentSettings.FirmwareSettings.PositiveDiaptorMaxValue.val);
+                    #endregion
+
+
+                    byte strobeValue = 156;
                    if (IVLCamVariables.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLCamVariables.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
                        strobeValue = 100;
                    IVLCamVariables.BoardHelper.SetStrobeWidth(strobeValue);
