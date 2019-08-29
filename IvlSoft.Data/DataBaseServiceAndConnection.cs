@@ -20,10 +20,10 @@ namespace INTUSOFT.Data
       int retryCount = 0;
       const int retryMaxCount = 3;
       string MySqlDumpExePath = "mysqldump.exe";
-      string serviceName = "MySQL57";
-        public DataBaseServiceAndConnection()
+        string serviceName = string.Empty;
+        public DataBaseServiceAndConnection(string ServiceName)
         {
-
+            serviceName = ServiceName;
         }
 
         public bool GetMysqlServiceStatus()

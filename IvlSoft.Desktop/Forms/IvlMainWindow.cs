@@ -72,7 +72,7 @@ namespace INTUSOFT.Desktop.Forms
         bool isPowerConnected = false;
         ImageList imgList;
         string thumbnailFileName = "";
-        string mysqlServiceName = "MySQL57";
+        string mysqlServiceName = "MySQL";
         long timeElapsed;
         public static string LogFilePath = "";
         delegate void ShowCameraDelegate(String s,Args arg);
@@ -88,6 +88,8 @@ namespace INTUSOFT.Desktop.Forms
         bool vc2013Count = false;
         bool vc2015Count = false;
         bool frameworkVersionCount = false;
+
+        const string preRequisitesFileName = @"Prerequisites.json";
 
         string displayNameText = "DisplayName";
         const string displayVersionText = "DisplayVersion";
@@ -106,23 +108,34 @@ namespace INTUSOFT.Desktop.Forms
         string registry_key = string.Empty;
         List<string> prerequisiteList;
         string uninstalledPrerquisite = string.Empty;
-
+        Constants con;
         #endregion
         public IvlMainWindow()
         {
             IVLVariables.GradientColorValues = new Desktop.GradientColor();
-            
+            if (File.Exists(preRequisitesFileName))
+            {
+                string str = File.ReadAllText(preRequisitesFileName);
+                con = (Constants)JsonConvert.DeserializeObject(str, typeof(Constants));
+
+            }
+            else
+            {
+                con = new Constants();
+                string str = JsonConvert.SerializeObject(con);
+                File.WriteAllText(preRequisitesFileName, str);
+            }
             _eventHandler = IVLEventHandler.getInstance();
             prerequisiteList = new List<string>();
-            prerequisiteList.Add(Constants.adobeReaderVersion);
-            prerequisiteList.Add(Constants.boardDriver);
-            prerequisiteList.Add(Constants.cameraDriverVersion);
+            prerequisiteList.Add(con.adobeReaderVersion);
+            prerequisiteList.Add(con.boardDriver);
+            prerequisiteList.Add(con.cameraDriverVersion);
             //prerequisiteList.Add(Constants.flashProgrammerVersion); removed flash programmer check in the intusoft application to avoid not launching of the application
-            prerequisiteList.Add(Constants.frameworkVersion);
-            prerequisiteList.Add(Constants.mysqlVersion);
-            prerequisiteList.Add(Constants.servicePackVersion);
-            prerequisiteList.Add(Constants.vcredistributable2013);
-            prerequisiteList.Add(Constants.vcredistributable2015);
+            prerequisiteList.Add(con.frameworkVersion);
+            prerequisiteList.Add(con.mysqlVersion);
+            prerequisiteList.Add(con.servicePackVersion);
+            prerequisiteList.Add(con.vcredistributable2013);
+            prerequisiteList.Add(con.vcredistributable2015);
 
             #region event registration for IVL event handlers
 
@@ -188,7 +201,7 @@ namespace INTUSOFT.Desktop.Forms
             ConfigVariables.GetCurrentSettings();
             IVLVariables.FileFolderValidator = Common.Validators.FileNameFolderPathValidator.GetInstance();
             m_DelegateLive2ViewViaTrigger = new DelegateLive2ViewViaTrigger(NavigateFromViewToLive);
-            dataBaseServerConnection = new DataBaseServiceAndConnection();
+            dataBaseServerConnection = new DataBaseServiceAndConnection(mysqlServiceName + con.sqlServiceText);
             IVLVariables.CurrentSettings.CameraSettings._LiveDigitalGain.min = 0;
             IVLVariables.CurrentSettings.CameraSettings._DigitalGain.min = 0;
 
@@ -1249,7 +1262,7 @@ namespace INTUSOFT.Desktop.Forms
                     string version = fvi.FileVersion;
                     string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
                     //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
-                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + Constants.SoftwareReleaseDate;
+                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + con.SoftwareReleaseDate;
                     Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Information_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
                 }
             }
@@ -1938,15 +1951,15 @@ namespace INTUSOFT.Desktop.Forms
             if (IVLVariables.isCommandLineAppLaunch)
             {
                 prerequisitesCount = 1;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.mysqlVersion));
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));
             }
             if (adobeOsInfo.OSInfo.Contains("10"))
             {
 
                 prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
                 prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.vcredistributable2015));
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.servicePackVersion));
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));
             }
             else
             {
@@ -1959,7 +1972,7 @@ namespace INTUSOFT.Desktop.Forms
             if ( IVLVariables.isCommandLineAppLaunch)
             {
                 prerequisitesCount++;//if it is command line app launcah adobe will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.adobeReaderVersion));
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));
             }
             else
             CheckAdobeReaderInstalled();
@@ -1977,18 +1990,18 @@ namespace INTUSOFT.Desktop.Forms
             key = key.OpenSubKey(registry_key);
             {
                 windowsVersion = (key.GetValue(productNameText)).ToString();
-                if (!windowsVersion.Contains(Constants.windowsVersion10) && !windowsVersion.Contains(Constants.windowsVersion8))//checking whether the windows version is not 10, if it is 10 no need to check for service pack.
+                if (!windowsVersion.Contains(con.windowsVersion10) && !windowsVersion.Contains(con.windowsVersion8))//checking whether the windows version is not 10, if it is 10 no need to check for service pack.
                 {
-                    if (Environment.OSVersion.ServicePack.Contains(Constants.servicePackVersion))//if the string contains the service pack string it will go inside and increase the prerequisite count.
+                    if (Environment.OSVersion.ServicePack.Contains(con.servicePackVersion))//if the string contains the service pack string it will go inside and increase the prerequisite count.
                     {
                         prerequisitesCount++;
-                        prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.servicePackVersion));//this is to indicate that service pack is installed.
+                        prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
                     }
                 }
                 else
                 {
                     prerequisitesCount++;
-                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.servicePackVersion));//this is to indicate that service pack is installed.
+                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
                 }
             }
             #endregion
@@ -2011,23 +2024,23 @@ namespace INTUSOFT.Desktop.Forms
                         if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
                         {
                             string version = (string)subkey.GetValue(displayNameText);
-                            if (version.Contains(Constants.vcredistributable2013))//if the string contains the 2013 redistributable file
+                            if (version.Contains(con.vcredistributable2013))//if the string contains the 2013 redistributable file
                             {
                                 if (!vc2013Count)//if the bool is false
                                 {
                                     vc2013Count = true;
                                     prerequisitesCount++;//increasing the prerequisite count.
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.vcredistributable2013));//this is to indicate that vcredistributable2013 is installed.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2013));//this is to indicate that vcredistributable2013 is installed.
                                 }
                             }
-                            else if (prerequisiteList.Contains(Constants.vcredistributable2015)&& version.Contains(Constants.vcredistributable2015))//if the string contains the 2015 redistributable file
+                            else if (prerequisiteList.Contains(con.vcredistributable2015)&& version.Contains(con.vcredistributable2015))//if the string contains the 2015 redistributable file
                             {
                                
                                 if (!vc2015Count)//if the bool is false
                                 {
                                     vc2015Count = true;
                                     prerequisitesCount++;//increasing the prerequisite count.
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.vcredistributable2015));//this is to indicate that vcredistributable2015 is installed.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));//this is to indicate that vcredistributable2015 is installed.
                                 }
                              }
                         }
@@ -2055,20 +2068,20 @@ namespace INTUSOFT.Desktop.Forms
                             if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
                             {
                                 string version = (string)subkey.GetValue(displayNameText);
-                                if (version.Contains(Constants.mysqlVersion) && !IVLVariables.isCommandLineAppLaunch)//if the string contains the mysql in the registry key
+                                if (version.Contains(con.mysqlVersion) && !IVLVariables.isCommandLineAppLaunch)//if the string contains the mysql in the registry key
                                 {
                                     prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.mysqlVersion));//this is to indicate that mysqlVersion is installed.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));//this is to indicate that mysqlVersion is installed.
                                 }
-                                if (version.Contains(Constants.cameraDriverVersion) && version.Contains(Constants.cameraVersionText))//if the string contains the camera driver in the registry key
+                                if (version.Contains(con.cameraDriverVersion) && version.Contains(con.cameraVersionText))//if the string contains the camera driver in the registry key
                                 {
                                     prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.cameraDriverVersion));//this is to indicate that cameraDriverVersion is installed.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.cameraDriverVersion));//this is to indicate that cameraDriverVersion is installed.
                                 }
-                                if (version.Contains(Constants.boardDriver))//if the string contains the board driver in the registry key
+                                if (version.Contains(con.boardDriver))//if the string contains the board driver in the registry key
                                 {
                                     prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.boardDriver));//this is to indicate that boardDriver is installed.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.boardDriver));//this is to indicate that boardDriver is installed.
                                 }
                             }
                         }
@@ -2086,7 +2099,7 @@ namespace INTUSOFT.Desktop.Forms
                 if (frameworkVersionCount)
                 {
                     prerequisitesCount++;//increasing the prerequisites count
-                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.frameworkVersion));//this is to indicate that frameworkVersion is installed.
+                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.frameworkVersion));//this is to indicate that frameworkVersion is installed.
                 }
             }
         }
@@ -2096,7 +2109,7 @@ namespace INTUSOFT.Desktop.Forms
             if (adobeOsInfo.IsAdobeInstalled)
             {
                 prerequisitesCount++;
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(Constants.adobeReaderVersion));//this is to indicate that adobeReaderVersion is installed.
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));//this is to indicate that adobeReaderVersion is installed.
             }
             #endregion
         }
