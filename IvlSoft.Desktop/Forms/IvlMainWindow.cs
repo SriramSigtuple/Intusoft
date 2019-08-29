@@ -538,7 +538,8 @@ namespace INTUSOFT.Desktop.Forms
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex);
+                            Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
                         }
 
 
@@ -592,10 +593,11 @@ namespace INTUSOFT.Desktop.Forms
             }
             catch (Exception ex)
             {
-                Console.WriteLine("");
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
             }
 
-           
+
 
         }
 
