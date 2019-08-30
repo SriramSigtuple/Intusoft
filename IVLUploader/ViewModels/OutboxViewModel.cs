@@ -102,7 +102,7 @@ namespace IVLUploader.ViewModels
             {
                 GetFileFromActiveDir(DirectoryEnum.ActiveDir);
             }
-            else if (activeFileCloudVM.ActiveFnf == null)
+            else if (!activeFileCloudVM.isBusy)// == null)
                 GetFileFromActiveDir(DirectoryEnum.ActiveDir);
 
             logger.Info("");
@@ -130,26 +130,26 @@ namespace IVLUploader.ViewModels
                             UpdateActiveCloudVM(activeDirFileInfos[0]);
 
                         }
-                        else if (activeFileCloudVM.ActiveFnf == null)
+                        else if (!activeFileCloudVM.isBusy)
                         {
                             Console.WriteLine("Get file in active vm finf is null");
 
                             UpdateActiveCloudVM(activeDirFileInfos[0]);
 
                         }
-                        else if ((activeFileCloudVM.ActiveFnf.FullName != activeDirFileInfos[0].FullName))
-                        {
-                            Console.WriteLine("Get file in active vm finf is not equal");
+                        //else if ((activeFileCloudVM.ActiveFnf.FullName != activeDirFileInfos[0].FullName))
+                        //{
+                        //    Console.WriteLine("Get file in active vm finf is not equal");
 
-                            UpdateActiveCloudVM(activeDirFileInfos[0]);
-                        }
+                        //    UpdateActiveCloudVM(activeDirFileInfos[0]);
+                        //}
                     }
                 }
                 }
                 catch (Exception ex)
                 {
                     logger.Info(ex);
-                    
+                    activeFileCloudVM.isBusy = false;
 
                 }
                 finally
@@ -164,19 +164,34 @@ namespace IVLUploader.ViewModels
 
         }
 
-        private async void UpdateActiveCloudVM(FileInfo fileInfo)
+        private  void UpdateActiveCloudVM(FileInfo fileInfo)
         {
             StreamReader st = new StreamReader(fileInfo.FullName);
-            var json = await st.ReadToEndAsync();
+            var json =  st.ReadToEnd();
             st.Close();
             st.Dispose();
             Console.WriteLine("active Dir filename {0}", fileInfo.Name);
 
             CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-            activeFileCloudVM = new CloudViewModel(activeFileCloudModel);
+            if (activeFileCloudVM == null)
+            {
+                activeFileCloudVM = new CloudViewModel();
+                activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
+
+            }
+            activeFileCloudVM.SetCloudModel(activeFileCloudModel);
             activeFileCloudVM.ActiveFnf = fileInfo;
+            activeFileCloudVM.isBusy = true;
+
+            StartStopSentItemsTimer(false);
             activeFileCloudVM.StartAnalsysisFlow();
         }
+
+        private void ActiveFileCloudVM_startStopEvent(bool isStart)
+        {
+            StartStopSentItemsTimer(isStart);
+        }
+
         public void StartStopSentItemsTimer(bool isStart)
         {
             if (isStart)

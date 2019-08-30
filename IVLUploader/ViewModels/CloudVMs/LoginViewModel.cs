@@ -24,6 +24,7 @@ namespace IVLUploader.ViewModels
         public LoginViewModel(LoginModel loginModel)
         {
             LoginModel = loginModel;
+            RESTClientHelper = new RESTClientHelper();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
         }
 
@@ -39,7 +40,7 @@ namespace IVLUploader.ViewModels
             LoginModel.Body = JsonConvert.SerializeObject(LoginModel);
             LoginModel.URL = LoginModel.URL_Model.GetUrl();
 
-            Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(LoginModel,new System.Net.Cookie(),new System.Collections.Generic.Dictionary<string, object>());
+            Response_CookieModel jsonToken = await RESTClientHelper.RestCall(LoginModel,new System.Net.Cookie(),new System.Collections.Generic.Dictionary<string, object>());
             logger.Info("");
             return jsonToken;
         }

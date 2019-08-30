@@ -43,7 +43,7 @@ namespace IntuUploader.Utilities
         /// <summary>
         /// Constructor
         /// </summary>
-        private RESTClientHelper()
+        public RESTClientHelper()
         {
 
         }   
@@ -167,6 +167,7 @@ namespace IntuUploader.Utilities
                 Response_CookieModel r = new Response_CookieModel();
                 r.responseBody = "Check internet Connection";
                 responseMsg = JsonConvert.SerializeObject(r);
+                
             }
 
             //JToken token = (JToken)JsonConvert.DeserializeObject(responseMsg);

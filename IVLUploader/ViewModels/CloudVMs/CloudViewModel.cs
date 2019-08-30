@@ -31,11 +31,20 @@ namespace IVLUploader.ViewModels
         GetStatusAnalysisViewModel activeGetStatusAnalysisViewModel;
         GetAnalysisResultViewModel activeGetAnalysisResultViewModel;
         
+        public delegate void  StartStopTimer(bool isStart);
+        public event StartStopTimer startStopEvent;
 
+        public bool isBusy = false;
         /// <summary>
         /// Constructor
         /// </summary>
-        public CloudViewModel(CloudModel cloudModel)
+        public CloudViewModel()
+        {
+            
+
+        }
+
+        public void SetCloudModel(CloudModel cloudModel)
         {
             logger.Info("");
 
@@ -50,9 +59,7 @@ namespace IVLUploader.ViewModels
             //ActiveCloudModel.AnalysisFlowResponseModel = new AnalysisFlowResponseModel();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
-
         }
-
         public ICommand SetValue
         {
             get;
@@ -78,7 +85,7 @@ namespace IVLUploader.ViewModels
             if(GlobalVariables.isInternetPresent)
             { 
 
-            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now || ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
+            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now )
                 Login();
             else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
                 CreateAnalysis();
@@ -103,7 +110,7 @@ namespace IVLUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                this.ActiveFnf = null;
+                this.isBusy = false; 
                 //this.Dispose();
             }
                
@@ -113,7 +120,7 @@ namespace IVLUploader.ViewModels
         private void StartAnalysis()
         {
             logger.Info("Start Analysis");
-            Console.WriteLine("Start Analysis Result");
+            //Console.WriteLine("Start Analysis Result");
 
             isValidLoginCookie();
 
@@ -121,7 +128,7 @@ namespace IVLUploader.ViewModels
             ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
             ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateAnalysis(ActiveCloudModel.LoginCookie).Result;
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse, Formatting.Indented));
-            Console.WriteLine("Start Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode);
+            //Console.WriteLine("Start Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode);
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -131,8 +138,9 @@ namespace IVLUploader.ViewModels
                 File.Delete(ActiveFnf.FullName);
 
                 //this.Dispose();
-                this.ActiveFnf = null;
-
+                
+                startStopEvent(true);
+                this.isBusy = false;;
 
             }
             else
@@ -165,29 +173,29 @@ namespace IVLUploader.ViewModels
                     //st.Dispose();
                     //File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
                     //File.Delete(ActiveFnf.FullName);
-                    //this.ActiveFnf = null;
+                    //this.isBusy = false;;
                     ////this.Dispose();
                 }
             }
         }
-        private void GetAnalysisStatus()
+        private  void GetAnalysisStatus()
         {
 
             logger.Info("Get Analysis Status");
             isValidLoginCookie();
-            Console.WriteLine("Get Analysis status ");//,ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
+            //Console.WriteLine("Get Analysis status ");//,ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
             ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
             ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
-            ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie).Result;
+            ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse =  ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie).Result;
 
-            Console.WriteLine("Get Analysis status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode);
+            //Console.WriteLine("Get Analysis status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode);
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 JObject analysisStatus_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
-                Console.WriteLine("Get Analysis response status {0}", (string)analysisStatus_JObject["status"]);
+                //Console.WriteLine("Get Analysis response status {0}", (string)analysisStatus_JObject["status"]);
 
                 if ((string)analysisStatus_JObject["status"] == "success")
                 {
@@ -203,23 +211,11 @@ namespace IVLUploader.ViewModels
                 }
                 else if ((string)analysisStatus_JObject["status"] == "failure")
                 {
-                   
 
 
-                    InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel { Status = (string)analysisStatus_JObject["status"] };
-                    StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
-                    st.WriteAsync(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                    st.Flush();
-                    st.Close();
 
-                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name));
-                    st.WriteAsync(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                    st.Flush();
-                    st.Close();
-
-                    File.Delete(ActiveFnf.FullName);
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, "Get Analysis Result");
                     //this.Dispose();
-                    this.ActiveFnf = null;
                     ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
                     ActiveCloudModel.GetAnalysisResultModel.CompletedStatus = true;
                 }
@@ -227,7 +223,8 @@ namespace IVLUploader.ViewModels
                 {
                     logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                     //this.Dispose();
-                    this.ActiveFnf = null;
+                    startStopEvent(true);
+                    this.isBusy = false;;
                 }
             }
             else
@@ -235,7 +232,7 @@ namespace IVLUploader.ViewModels
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Status");
                 //logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                 ////this.Dispose();
-                //this.ActiveFnf = null;
+                //this.isBusy = false;;
             }
          
 
@@ -247,40 +244,19 @@ namespace IVLUploader.ViewModels
                 logger.Info("Login");
                 Console.WriteLine("Iam Login");
                 ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.StartLogin().Result;
-                Console.WriteLine(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode);
+                Console.WriteLine(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode.ToString() + " "+ ActiveFnf.Name);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, Formatting.Indented));
                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody.Contains("installation_id"))
                     {
                         ActiveCloudModel.LoginCookie = ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.Cookie;
+                        ActiveCloudModel.LoginModel.CompletedStatus = true;
                         StartAnalsysisFlow();
                     }
                     else
                     {
-                        ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
-                        InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
-                        inboxAnalysisStatusModel.Status = "failure";
-
-                        if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-                        {
-                            inboxAnalysisStatusModel.FailureMessage = "Wrong Device ID";
-
-
-                        }
-                        else if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                        {
-                            inboxAnalysisStatusModel.FailureMessage = "Wrong Credentials";
-
-                        }
-                        StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
-                        st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                        st.Flush();
-                        st.Close();
-                        st.Dispose();
-                        File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                        File.Delete(ActiveFnf.FullName);
-                        this.ActiveFnf = null;
+                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login","Wrong Data");
                         //this.Dispose();
                     }
 
@@ -288,38 +264,8 @@ namespace IVLUploader.ViewModels
                 }
                 else
                 {
-                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login");
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Data");
 
-                    //if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == 0)
-                    //{
-                    //    logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
-                    //}
-                    //else
-                    //{ 
-                    //InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
-                    //inboxAnalysisStatusModel.Status = "failure";
-
-                    //if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    //{
-                    //    inboxAnalysisStatusModel.FailureMessage = "Wrong Device ID";
-
-
-                    //}
-                    //else if(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    //{
-                    //    inboxAnalysisStatusModel.FailureMessage = "Wrong Credentials";
-
-                    //}
-                    //StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
-                    //st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                    //st.Flush();
-                    //st.Close();
-                    //st.Dispose();
-                    //File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                    //File.Delete(ActiveFnf.FullName);
-                    //this.ActiveFnf = null;
-                    ////this.Dispose();
-                    //}
                 }
             }
             catch (Exception ex)
@@ -335,7 +281,7 @@ namespace IVLUploader.ViewModels
         {
             logger.Info("Create Analysis");
 
-            Console.WriteLine("Create Analysis");
+            Console.WriteLine("Create Analysis  {0}", ActiveFnf.Name);
             isValidLoginCookie();
             JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
 
@@ -349,7 +295,7 @@ namespace IVLUploader.ViewModels
             }
             ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
             ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.StartCreateAnalysis(ActiveCloudModel.LoginCookie).Result;
-            Console.WriteLine("Create Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode);
+            Console.WriteLine("Create Analysis Result status {0}  {1}",ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode,ActiveFnf.Name);
 
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, Formatting.Indented));
             if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK)
@@ -366,45 +312,13 @@ namespace IVLUploader.ViewModels
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, "Create");
 
 
-                //if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == 0)
-                //{
-                //    logger.Info("Internet Connection Present = {GlobalVariables.isInternetPresent}");
-
-                //}
-                //else
-                //{ 
-                //InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
-                //inboxAnalysisStatusModel.Status = "failure";
-
-                //if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                //{
-
-                //    inboxAnalysisStatusModel.FailureMessage = "Wrong Product ID or Installation ID";
-
-
-                //}
-                //else if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                //{
-                //    inboxAnalysisStatusModel.FailureMessage = "Fields Missing";
-
-                //}
-                //StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name));
-                //st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                //st.Flush();
-                //st.Close();
-                //st.Dispose();
-                //File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                //File.Delete(ActiveFnf.FullName);
-                //this.ActiveFnf = null;
-                ////this.Dispose();
-                //}
             }
 
         }
         private void UploadFiles2Analysis()
         {
             isValidLoginCookie();
-            Console.WriteLine("Upload Analysis");
+            //Console.WriteLine("Upload Analysis");
 
             Response_CookieModel response = null;
             ActiveCloudModel.UploadModel.analysis_id =
@@ -439,14 +353,14 @@ namespace IVLUploader.ViewModels
             
 
             }
-            Console.WriteLine("Upload Analysis {0}",response.StatusCode);
+            //Console.WriteLine("Upload Analysis {0}",response.StatusCode);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 ManageFailureResponse(response, "Upload");
 
             }
-            else if (this.ActiveFnf != null && GlobalVariables.isInternetPresent)
+            else if (GlobalVariables.isInternetPresent)
             { 
                 ActiveCloudModel.UploadModel.CompletedStatus = true;
                 StartAnalsysisFlow();
@@ -455,16 +369,17 @@ namespace IVLUploader.ViewModels
         private  void GetAnalysisResult()
         {
             isValidLoginCookie();
-            Console.WriteLine("Get Analysis Result");
+            ////Console.WriteLine("Get Analysis Result");
 
             ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
-            Console.WriteLine("Get Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
+            ////Console.WriteLine("Get Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode == System.Net.HttpStatusCode.OK)
 
             {
+
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
 
                 inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
@@ -541,21 +456,54 @@ namespace IVLUploader.ViewModels
                     }
 
                 }
-                StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name), false);
-                 st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
 
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), false);
-                 st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
-                File.Delete(ActiveFnf.FullName);
+                if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name.Split('.')[0] + "_done")))
+                {
+                    StreamWriter st = null;
+                    try
+                    {
+                       st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name), false);
+                        st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
+                        st.Flush();
+                        st.Close();
+                        st.Dispose();
+
+
+                        if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name)))
+                        {
+
+                            st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), false);
+                            st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                            st.Flush();
+                            st.Close();
+                            st.Dispose();
+                        }
+
+                        st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name.Split('.')[0] + "_done"), false);
+                        st.Flush();
+                        st.Close();
+                        st.Dispose();
+                    }
+                    catch (Exception)
+                    {
+
+                        st.Flush();
+                        st.Close();
+                        st.Dispose();
+                    }
+
+                    
+
+
+                    
+                }
+                
                 ActiveGetAnalysisResultViewModel.GetAnalysisResultModel.CompletedStatus = true;
 
-                this.ActiveFnf = null;
+                
+                startStopEvent(true);
+                this.isBusy = false;;
+
 
                 //this.Dispose();
             }
@@ -568,55 +516,121 @@ namespace IVLUploader.ViewModels
 
         }
 
-        private async void ManageFailureResponse(Response_CookieModel response, string stage)
+        private void ManageFailureResponse(Response_CookieModel response, string stage,string failureMessage = null)
         {
-            Console.WriteLine("Iam Stage {0} Status Code {1}",stage, response.StatusCode);
+            //Console.WriteLine("Iam Stage {0} Status Code {1}",stage, response.StatusCode);
 
             if (response.StatusCode == 0)
             {
                 logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
-                this.ActiveFnf = null;
+                StreamWriter st1 = null;
+                try
+                {
+                    st1 =   new StreamWriter(ActiveFnf.FullName, false);
+                    st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+
+                    st1.Flush();
+                    st1.Close();
+                    st1.Dispose();
+                    st1.Dispose();
+                }
+                catch (Exception)
+                {
+                    {
+                        st1.Flush();
+                        st1.Close();
+                        st1.Dispose();
+                        st1.Dispose();
+                    }
+                }
+
+                
+                startStopEvent(true);
+                this.isBusy = false;;
 
 
             }
 
             else if (response.StatusCode == System.Net.HttpStatusCode.BadGateway)
             {
-                Console.WriteLine("Retry");
-                this.ActiveFnf = null;
+
+                //Console.WriteLine("Retry");
+                StreamWriter st1 = null;
+                try
+                {
+                    st1 = new StreamWriter(ActiveFnf.FullName, false);
+                    st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+
+                    st1.Flush();
+                    st1.Close();
+                    st1.Dispose();
+                    st1.Dispose();
+                }
+                catch (Exception)
+                {
+                    {
+                        st1.Flush();
+                        st1.Close();
+                        st1.Dispose();
+                        st1.Dispose();
+                    }
+                }
+
+                startStopEvent(true);this.isBusy = false;;
 
             }
             else
             {
 
-
+                //Console.WriteLine("Move file to Read");
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                 inboxAnalysisStatusModel.Status = "failure" ;
                 inboxAnalysisStatusModel.StatusCode = response.StatusCode;
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    inboxAnalysisStatusModel.FailureMessage = "Wrong Credentials";
+                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
 
                 else
                     if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    inboxAnalysisStatusModel.FailureMessage = "Wrong Data";
+                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
+                StreamWriter st = null;
+                try
+                {
+                     st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name), false);
+                    st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
+                    st.Flush();
+                    st.Close();
+                    st.Dispose();
 
-                StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name),false);
-                await st.WriteAsync(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
+                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name.Split('.')[0] + "_done"), false);
+                    st.Flush();
+                    st.Close();
+                    st.Dispose();
 
-                if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name)))
-                    File.Delete(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name));
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name) , false);
-                await st.WriteAsync(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
+                    if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name)))
+                        File.Delete(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name));
+                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), false);
+                    st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    st.Flush();
+                    st.Close();
+                    st.Dispose();
+                }
+                catch (Exception)
+                {
+                    {
+                        st.Flush();
+                        st.Close();
+                        st.Dispose();
+                        st.Dispose();
+                    }
+
+                }
+                
 
                 File.Delete(ActiveFnf.FullName);
 
-                this.ActiveFnf = null;
+                
+                startStopEvent(true);this.isBusy = false;;
+
                 //this.Dispose();
             }
         }
@@ -624,7 +638,7 @@ namespace IVLUploader.ViewModels
         {
            if( ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
             {
-                Console.WriteLine("In cookie validation");
+                //Console.WriteLine("In cookie validation");
                 Login();
             }
 

@@ -18,13 +18,14 @@ namespace IVLUploader.ViewModels
     {
         UploadModel UploadModel;
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
+        RESTClientHelper RESTClientHelper;
         /// <summary>
         /// Constructor
         /// </summary>
         public UploadImagesViewModel(UploadModel uploadModel)
         {
             logger.Info("");
+             RESTClientHelper = new RESTClientHelper();
 
             UploadModel = uploadModel;
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
@@ -54,7 +55,7 @@ namespace IVLUploader.ViewModels
 
             UploadModel.URL = UploadModel.URL_Model.GetUrl();
 
-            Response_CookieModel response =  await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
+            Response_CookieModel response =  await RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
 
            
             logger.Info("");

@@ -17,7 +17,7 @@ namespace IVLUploader.ViewModels
     {
         CreateAnalysisModel CreateAnalysisModel;
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
+        RESTClientHelper rESTClient;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -26,6 +26,7 @@ namespace IVLUploader.ViewModels
             logger.Info("");
 
             CreateAnalysisModel = createAnalysisModel;
+            rESTClient = new RESTClientHelper();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
 
@@ -52,7 +53,7 @@ namespace IVLUploader.ViewModels
 
             CreateAnalysisModel.Body = JsonConvert.SerializeObject(CreateAnalysisModel);
             CreateAnalysisModel.URL = CreateAnalysisModel.URL_Model.GetUrl();
-            Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(CreateAnalysisModel,cookie, new System.Collections.Generic.Dictionary<string, object>());
+            Response_CookieModel jsonToken = await rESTClient.RestCall(CreateAnalysisModel,cookie, new System.Collections.Generic.Dictionary<string, object>());
             logger.Info("");
 
             return jsonToken;
