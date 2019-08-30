@@ -48,6 +48,7 @@ namespace IntuUploader.Utilities
 
         }   
         public async Task<Response_CookieModel> RestCall( BaseCloudModel model, Cookie cookie, Dictionary<string,object> keyValuePairs)
+
         {
             logger.Info("");
 

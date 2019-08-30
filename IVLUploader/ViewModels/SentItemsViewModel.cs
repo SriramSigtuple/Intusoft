@@ -7,9 +7,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Threading;
+//using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Timers;
 
 namespace IVLUploader.ViewModels
 {
@@ -34,11 +35,24 @@ namespace IVLUploader.ViewModels
         private SentItemsViewModel()
         {
             logger.Info("");
+            if (activeFileCloudVM == null)
+            {
+                activeFileCloudVM = new CloudViewModel();
+                activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
 
+            }
+            SentItemsStatusCheckTimer = new Timer((int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
+            SentItemsStatusCheckTimer.Elapsed += SentItemsStatusCheckTimer_Elapsed;
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
 
         }
+
+        private void SentItemsStatusCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            SentItemsStatusCheckTimerCallback(new object());
+        }
+
         /// <summary>
         /// Implementing singleton pattern in order to handle to values across the module
         /// </summary>
@@ -65,10 +79,14 @@ namespace IVLUploader.ViewModels
                 sentItemsDirFileInfoArr = new DirectoryInfo(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
 
             }
-            else
-                if (fileIndx == sentItemsDirFileInfoArr.Length - 1)
+            for (fileIndx = 0; fileIndx < sentItemsDirFileInfoArr.Length; fileIndx++)
+            {
+                GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
+
+            }
+            if (fileIndx == sentItemsDirFileInfoArr.Length)
                 fileIndx = 0;
-            RecursiveMethod();
+            //RecursiveMethod();
             logger.Info("");
 
         }
@@ -78,13 +96,13 @@ namespace IVLUploader.ViewModels
             if (fileIndx < sentItemsDirFileInfoArr.Length)
             {
                 
+                if(!activeFileCloudVM.isBusy)
+                {
+                    GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
-                GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
-                if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), activeFileCloudVM.ActiveFnf.Name)) &&
-                    File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), activeFileCloudVM.ActiveFnf.Name.Split('.')[0] + "_done")))
-                    File.Delete(activeFileCloudVM.ActiveFnf.FullName);
-
+                }
                 fileIndx++;
+
                 RecursiveMethod();
 
             }
@@ -154,12 +172,7 @@ namespace IVLUploader.ViewModels
             //Console.WriteLine("sent items {0}", fileInfo.Name);
 
             CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-            if(activeFileCloudVM == null)
-            {
-                activeFileCloudVM = new CloudViewModel();
-                activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
-
-            }
+            
 
             activeFileCloudVM.SetCloudModel(activeFileCloudModel);
 
@@ -174,10 +187,12 @@ namespace IVLUploader.ViewModels
         public void StartStopSentItemsTimer(bool isStart)
         {
             if (isStart)
-                SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
+                SentItemsStatusCheckTimer.Start();
+            //SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
             else
             {
-                SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, Timeout.Infinite);
+                SentItemsStatusCheckTimer.Stop();
+                //SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, Timeout.Infinite);
             }
 
         }

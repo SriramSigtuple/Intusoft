@@ -38,7 +38,7 @@ namespace IVLUploader.ViewModels
 
             GetAnalysisModel.URL = GetAnalysisModel.URL_Model.GetUrl();
 
-            Response_CookieModel jsonToken = await rESTClient.RestCall(GetAnalysisModel, cookie, new Dictionary<string, object>());
+            Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(GetAnalysisModel, cookie, new Dictionary<string, object>());
             logger.Info("");
 
             return jsonToken;

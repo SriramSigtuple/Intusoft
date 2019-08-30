@@ -3836,7 +3836,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="e"></param>
         private void Reports_dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 )
+            if (e.RowIndex >= 0 && !isGridPopulating )
             {
                 IVLVariables.ivl_Camera.TriggerOff();//trigger is made  off so as to prevent it from receiving trigger notification when the report is loading.
                 if (IVLVariables.isValueChanged)

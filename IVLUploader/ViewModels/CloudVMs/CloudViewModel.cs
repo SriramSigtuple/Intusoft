@@ -86,7 +86,7 @@ namespace IVLUploader.ViewModels
             { 
 
             if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now )
-                Login();
+                 Login();
             else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
                 CreateAnalysis();
             else if (!ActiveCloudModel.UploadModel.CompletedStatus)
@@ -134,8 +134,15 @@ namespace IVLUploader.ViewModels
             {
                 ActiveCloudModel.InitiateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
 
-                File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
                 File.Delete(ActiveFnf.FullName);
+
+                StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name));
+                st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                st.Flush();
+                st.Close();
+                st.Dispose();
+
+                //File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                 //this.Dispose();
                 
@@ -178,24 +185,24 @@ namespace IVLUploader.ViewModels
                 }
             }
         }
-        private  void GetAnalysisStatus()
+        private async void GetAnalysisStatus()
         {
 
             logger.Info("Get Analysis Status");
             isValidLoginCookie();
-            //Console.WriteLine("Get Analysis status ");//,ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
+            Console.WriteLine("Get Analysis status ");//,ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
             ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
             ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
-            ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse =  ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie).Result;
+            ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = await ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie);
 
-            //Console.WriteLine("Get Analysis status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode);
+            Console.WriteLine("Get Analysis status {0} {1}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode,ActiveFnf.Name);
 
             if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 JObject analysisStatus_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
-                //Console.WriteLine("Get Analysis response status {0}", (string)analysisStatus_JObject["status"]);
+                Console.WriteLine("Get Analysis response status {0}", (string)analysisStatus_JObject["status"]);
 
                 if ((string)analysisStatus_JObject["status"] == "success")
                 {
@@ -483,13 +490,11 @@ namespace IVLUploader.ViewModels
                         st.Flush();
                         st.Close();
                         st.Dispose();
+                        File.Delete(ActiveFnf.FullName);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
-                        st.Flush();
-                        st.Close();
-                        st.Dispose();
+                        Console.Write("");
                     }
 
                     
@@ -526,6 +531,8 @@ namespace IVLUploader.ViewModels
                 StreamWriter st1 = null;
                 try
                 {
+                    if (File.Exists(ActiveFnf.FullName))
+                        File.Delete(ActiveFnf.FullName);
                     st1 =   new StreamWriter(ActiveFnf.FullName, false);
                     st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
@@ -534,14 +541,9 @@ namespace IVLUploader.ViewModels
                     st1.Dispose();
                     st1.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    {
-                        st1.Flush();
-                        st1.Close();
-                        st1.Dispose();
-                        st1.Dispose();
-                    }
+                    Console.Write("");
                 }
 
                 
@@ -558,6 +560,8 @@ namespace IVLUploader.ViewModels
                 StreamWriter st1 = null;
                 try
                 {
+                    if (File.Exists(ActiveFnf.FullName))
+                        File.Delete(ActiveFnf.FullName);
                     st1 = new StreamWriter(ActiveFnf.FullName, false);
                     st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
@@ -566,13 +570,10 @@ namespace IVLUploader.ViewModels
                     st1.Dispose();
                     st1.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     {
-                        st1.Flush();
-                        st1.Close();
-                        st1.Dispose();
-                        st1.Dispose();
+                        Console.Write("");
                     }
                 }
 
@@ -614,13 +615,10 @@ namespace IVLUploader.ViewModels
                     st.Close();
                     st.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     {
-                        st.Flush();
-                        st.Close();
-                        st.Dispose();
-                        st.Dispose();
+                        Console.Write("");
                     }
 
                 }

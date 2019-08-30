@@ -55,7 +55,7 @@ namespace IVLUploader.ViewModels
 
             UploadModel.URL = UploadModel.URL_Model.GetUrl();
 
-            Response_CookieModel response =  await RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
+            Response_CookieModel response =  await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
 
            
             logger.Info("");
