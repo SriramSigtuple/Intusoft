@@ -26,6 +26,11 @@ namespace INTUSOFT.Data
             serviceName = ServiceName; //to get the service name from the json file which is read in ivl main window class
         }
 
+
+        /// <summary>
+        /// To get the status of the mysql server. 
+        /// </summary>
+        /// <returns></returns>
         public bool GetMysqlServiceStatus()
         {
             bool isSeviceAvaiable;
@@ -61,6 +66,10 @@ namespace INTUSOFT.Data
             return isSeviceAvaiable;
         }
 
+        /// <summary>
+        /// Get the connection status of the database, it returns bool
+        /// </summary>
+        /// <returns></returns>
         public bool GetDataBaseConnectionStatus() 
         {
             bool isDatabaseConnected;
@@ -78,6 +87,11 @@ namespace INTUSOFT.Data
             return isDatabaseConnected;
         }
 
+
+        /// <summary>
+        /// To write the backup file for the database
+        /// </summary>
+        /// <param name="directoryName"></param>
         public void DatabaseBackup(string directoryName)
         {
             string tmestr = "";
@@ -106,6 +120,11 @@ namespace INTUSOFT.Data
             file.Close();
         }
 
+
+        /// <summary>
+        /// To get the mysql path from registry key
+        /// </summary>
+        /// <returns></returns>
         string GetMysqlPath()
         {
             string registryPath = @"SYSTEM\CurrentControlSet\Services\" + serviceName;
