@@ -20,7 +20,7 @@ namespace INTUSOFT.Desktop
         public string windowsVersion10 = "Windows 10";
         public string windowsVersion8 = "Windows 8";
         public string sqlServiceText = "57";
-        public static int prerquisitesCount = 9;
+        public int prerquisitesCount = 9;
 
         public string SoftwareReleaseDate = "";
 

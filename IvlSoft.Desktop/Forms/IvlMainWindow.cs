@@ -102,7 +102,12 @@ namespace INTUSOFT.Desktop.Forms
         const string servicePackPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion";
         string adobeReaderPath = @"SOFTWARE\Adobe\Adobe Reader";
         const string osBitVersionPath = @"SYSTEM\CurrentControlSet\Control\Session Manager";
-
+        int Thumbnail_id = 0, side = 0;
+        bool isImaging = false;
+        bool isModifiedimage = false;
+        delegate void DelegateLive2ViewViaTrigger(string s, Args arg);
+        private DelegateLive2ViewViaTrigger m_DelegateLive2ViewViaTrigger;
+        AdobeAndOSInfo adobeOsInfo;
         int prerequisitesCount = 0;
         Microsoft.Win32.RegistryKey key = Registry.LocalMachine;
         string registry_key = string.Empty;
@@ -110,23 +115,33 @@ namespace INTUSOFT.Desktop.Forms
         string uninstalledPrerquisite = string.Empty;
         Constants con;
         #endregion
+
+
         public IvlMainWindow()
         {
             IVLVariables.GradientColorValues = new Desktop.GradientColor();
 
             #region Read or write the prerequisite json file
-            if (File.Exists(preRequisitesFileName))
+            try
             {
-                string str = File.ReadAllText(preRequisitesFileName);
-                con = (Constants)JsonConvert.DeserializeObject(str, typeof(Constants));
-
+                if (File.Exists(preRequisitesFileName))
+                {
+                    string str = File.ReadAllText(preRequisitesFileName);
+                    con = (Constants)JsonConvert.DeserializeObject(str, typeof(Constants));
+                }
+                if (con == null)
+                {
+                    con = new Constants();
+                    string str = JsonConvert.SerializeObject(con);
+                    File.WriteAllText(preRequisitesFileName, str);
+                }
             }
-            else
+            catch (Exception)
             {
                 con = new Constants();
-                string str = JsonConvert.SerializeObject(con);
-                File.WriteAllText(preRequisitesFileName, str);
+                
             }
+            
             #endregion
 
             _eventHandler = IVLEventHandler.getInstance();
@@ -499,7 +514,274 @@ namespace INTUSOFT.Desktop.Forms
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
         }
 
+
+        #region Public Methods
+
+        /// <summary>
+        /// To make given rectangle into rounded rectangle
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
+        public GraphicsPath RoundedRect(Rectangle bounds, int radius)
+        {
+            int diameter = radius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+            GraphicsPath path = new GraphicsPath();
+
+            if (radius == 0)
+            {
+                path.AddRectangle(bounds);
+                return path;
+            }
+
+            // top left arc  
+            path.AddArc(arc, 180, 90);
+
+            // top right arc  
+            arc.X = bounds.Right - diameter;
+            path.AddArc(arc, 270, 90);
+
+            // bottom right arc  
+            arc.Y = bounds.Bottom - diameter;
+            path.AddArc(arc, 0, 90);
+
+            // bottom left arc 
+            arc.X = bounds.Left;
+            path.AddArc(arc, 90, 90);
+
+            path.CloseFigure();
+            return path;
+        }
+
+
+
+        /// <summary>
+        /// This will unselect the image when control key is pressed.And selects the the multiple images on shift or control selection.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        public void isshiftandcontrol(string s, Args arg)
+        {
+            KeyEventArgs e = arg["keyArg"] as KeyEventArgs;
+            if (!IVLVariables.isReportWindowOpen)
+            {
+                if ((bool)arg["isKeyUp"])
+                    IvlMainWindow_KeyUp(null, e);
+                else
+                    IvlMainWindow_KeyDown(null, e);
+            }
+            else
+            {
+                _eventHandler.Notify(_eventHandler.ReportImagesIsShiftControl, arg);
+            }
+        }
+
+        
+
+        //This below function has been added by Darshan BS,this function will create backup files for all json files.
+        public static IEnumerable<Control> GetControls(Control form)
+        {
+            foreach (Control childControl in form.Controls)
+            {   // Recurse child controls.
+                foreach (Control grandChild in GetControls(childControl))
+                {
+                    yield return grandChild;
+                }
+                yield return childControl;
+            }
+        }
+
+        //This below method has been added by Darshan to solve defect no 0000319
+        /// <summary>
+        /// This method will display a pop up when brightness or contrast is changed in view image screen.
+        /// </summary>
+        public void brightnesspopup()
+        {
+            if (IVLVariables.isValueChanged)
+            {
+                _eventHandler.Notify(_eventHandler.SaveImgChanges, new Args());
+            }
+        }
+
+        /// <summary>
+        /// This function which will update the patient details when any detail related to a patient is changed.
+        /// </summary>
+        public void updatePatient()
+        {
+            //Patient p =DataVariables._patientRepo.GetById(IVLVariables.ActivePatID);
+            //This below code has been Added by Darshan on 31-07-2015 to support advance searching.
+            NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].patientLastModifiedDate = DateTime.Now;
+            NewIVLDataMethods.UpdatePatient();
+            NewDataVariables.Active_PatientIdentifier.lastModifiedDate = DateTime.Now;
+            NewIVLDataMethods.UpdatePatientIdentifier();
+        }
+
+        
+
+        /// <summary>
+        /// Loads the setting window when alt+s is pressed.
+        /// </summary>
+        public void settings_window()
+        {
+            string appLogoFilePath = @"ImageResources\LogoImageResources\IntuSoft.ico";
+
+            SettingsWindow settings = new SettingsWindow();
+            if (File.Exists(appLogoFilePath))
+                settings.Icon = new System.Drawing.Icon(appLogoFilePath, 256, 256);
+            settings.FormBorderStyle = FormBorderStyle.FixedSingle;
+            //This below bool variable is added by Darshan on 21-08-2015 to solve Defect no:0000585: annotation window,report window,view full info,user settings window, when trigger press capture is happening.
+            IVLVariables.IsAnotherWindowOpen = true;
+            settings.ShowDialog();
+            //This below bool variable is added by Darshan on 21-08-2015 to solve Defect no:0000585: annotation window,report window,view full info,user settings window, when trigger press capture is happening.
+            IVLVariables.IsAnotherWindowOpen = false;
+        }
+
+        #region Commented Region by Kishore on 30 Aug 2019, since these codes are not used.
+
+        //This below method has been added by Darshan on 18-09-2015 to delete the corrupted images.
+        /// <summary>
+        /// This function will remove the corrupted images.
+        /// </summary>
+        /// <param name="id">id of the image</param>
+        /// <param name="index">index in the list of images</param>
+        //public void remove_corruptedImages(int id, int index)
+        //{
+        //    //foreach (int item in this.thumbnailUI1.corrupted_images)
+        //    {
+        //        //    if (item == id)
+        //        {
+        //            imgList.ids.RemoveAt(index);
+        //            //VisitModel vs = DataVariables._visitViewRepo.GetById(IVLVariables.ActiveVisitID);
+        //            //vs.NoOfImages--;
+        //            //DataVariables._visitViewRepo.Update(vs);
+        //            obs ob = NewDataVariables._Repo.GetById<obs>(id);
+        //            ob.voided = true;
+        //            NewDataVariables._Repo.Update<obs>(ob);
+        //            //ImageModel im = DataVariables._imageRepo.GetById(id);
+        //            //im.HideShowRow = true;
+        //            //DataVariables._imageRepo.Update(im);
+        //            //imgList.sides.RemoveAt(index);
+        //            //imgList.fileNames.RemoveAt(index);
+        //            emr.corrupted_count++;
+        //        }
+        //    }
+        //}
+
+        //public bool CheckIfServiceIsRunning(string serviceName)
+        //{
+        //    ServiceController mysqlSe = new ServiceController();
+        //    mysqlSe.ServiceName = serviceName;
+        //    if (mysqlSe.Status == ServiceControllerStatus.Running)
+        //    {
+        //        // Service already running
+        //        //mysqlSe.Dispose();
+        //        return true;
+        //    }
+        //    else
+        //    {
+
+        //        return false;
+        //    }
+        //}
+        //public void ScrollControl()
+        //{
+        //    this.thumbnailUI1.ScrollControlIntoView(this.thumbnailUI1);
+        //}
+        //public void DrawRoundedRectangle(Graphics graphics, Pen pen, Rectangle bounds, int cornerRadius)
+        //{
+        //    if (graphics == null)
+        //        throw new ArgumentNullException("graphics");
+        //    if (pen == null)
+        //        throw new ArgumentNullException("pen");
+
+        //    using (GraphicsPath path = RoundedRect(bounds, cornerRadius))
+        //    {
+        //        graphics.DrawPath(pen, path);
+        //    }
+        //}
+
+        ////This below function is added by darshan to update the global property.
+        //public static void globalProperty()
+        //{
+        //    List<global_property> globalPropertyList = new List<global_property>();
+        //    globalPropertyList = NewDataVariables._Repo.GetAll<global_property>().ToList<global_property>();
+        //    foreach (global_property item in globalPropertyList)
+        //    {
+        //        if (item.key.Equals(IVLVariables.CurrentSettings.UserSettings._HeaderText.text))
+        //        {
+        //            if (!item.value.Equals(IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
+        //            {
+        //                if (!string.IsNullOrEmpty(IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
+        //                {
+        //                    item.value = IVLVariables.CurrentSettings.UserSettings._HeaderText.val;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //                else
+        //                {
+        //                    item.value = string.Empty;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //            }
+        //        }
+        //        else
+        //            if (item.key.Equals(IVLVariables.CurrentSettings.UserSettings._DoctorName.text))
+        //        {
+        //            if (!item.value.Equals(IVLVariables.CurrentSettings.UserSettings._DoctorName.val))
+        //            {
+        //                if (!string.IsNullOrEmpty(IVLVariables.CurrentSettings.UserSettings._DoctorName.val))
+        //                {
+        //                    item.value = IVLVariables.CurrentSettings.UserSettings._DoctorName.val;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //                else
+        //                {
+        //                    item.value = string.Empty;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //            }
+        //        }
+        //        else if (item.key.Equals(IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Key", IVLVariables.LangResourceCultureInfo)))
+        //        {
+        //            item.value = IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Value", IVLVariables.LangResourceCultureInfo);
+        //            if (!item.value.Equals(IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Value", IVLVariables.LangResourceCultureInfo)))
+        //            {
+        //                NewDataVariables._Repo.Update<global_property>(item);
+        //            }
+        //        }
+        //        else if (item.key.Equals(IVLVariables.LangResourceManager.GetString("ReportMainHeading_Text", IVLVariables.LangResourceCultureInfo)))
+        //        {
+        //            if (!item.value.Equals(IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
+        //            {
+        //                if (!string.IsNullOrEmpty(IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
+        //                {
+        //                    item.value = IVLVariables.CurrentSettings.UserSettings._HeaderText.val;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //                else
+        //                {
+        //                    item.value = string.Empty;
+        //                    NewDataVariables._Repo.Update<global_property>(item);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        #endregion
+
+        #endregion
+
+        #region private methods
+
+
+        
         private void ThumbnailUI1__ThumbnailCountChangedDelegate(int count) => noOfImagesSelected_lbl.Text = count.ToString() + IVLVariables.LangResourceManager.GetString("ImagesSelected_Text", IVLVariables.LangResourceCultureInfo);
+
+        /// <summary>
+        /// To check the files in inbox directory and move it to read directory
+        /// </summary>
+        /// <param name="state"></param>
         private void InboxCheck(object state)
         {
             try
@@ -601,7 +883,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 #endregion
 
-                if (!imaging_UC.isLiveScreen  && this.TopMost)
+                if (!imaging_UC.isLiveScreen && this.TopMost)
                 {
                     Args arg = new Args();
                     _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
@@ -618,11 +900,15 @@ namespace INTUSOFT.Desktop.Forms
 
         }
 
+        /// <summary>
+        /// To update the ai reports in the database
+        /// </summary>
+        /// <param name="cloudAnalysisReports"></param>
         private void UpdateCloudFiles(List<CloudAnalysisReport> cloudAnalysisReports)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(m_DelegateUpdateCloudValues,cloudAnalysisReports);
+                this.Invoke(m_DelegateUpdateCloudValues, cloudAnalysisReports);
             }
             else
             {
@@ -632,6 +918,13 @@ namespace INTUSOFT.Desktop.Forms
                 }
             }
         }
+
+
+        /// <summary>
+        /// To show the selected thumbnail image
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="e"></param>
         private void ThumbnailUI1_showImgFromThumbnail(ThumbnailData s, EventArgs e)
         {
             //This method modified by Darshan on 16-09-2015 to stop courroupting of json file.
@@ -682,16 +975,12 @@ namespace INTUSOFT.Desktop.Forms
             this.Focus();
         }
 
-        void splashScreenTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
+        
 
-            if (IVLVariables.ivl_Camera.IsLogWritingCompleted)
-            {
-                splashScreen.Close();
-            }
-        }
-
-
+        /// <summary>
+        /// To intimate the UI that thumbnail is added
+        /// </summary>
+        /// <param name="thumbnailData"></param>
         void thumbnailUI1_imageaddedThumbnailData(ThumbnailData thumbnailData)
         {
             if (!isModifiedimage)
@@ -699,12 +988,15 @@ namespace INTUSOFT.Desktop.Forms
                 Args arg = new Args();
                 arg["ImageName"] = thumbnailData.fileName;
                 arg["id"] = thumbnailData.id;
-                if(!IVLVariables.ivl_Camera.IsCapturing)
-                _eventHandler.Notify(_eventHandler.ImageAdded, arg);
+                if (!IVLVariables.ivl_Camera.IsCapturing)
+                    _eventHandler.Notify(_eventHandler.ImageAdded, arg);
                 this.Focus();
             }
         }
 
+        /// <summary>
+        /// To update the font color of the main window UI
+        /// </summary>
         private void UpdateFontForeColor()
         {
             #region resize controls depending on the resolution
@@ -744,12 +1036,12 @@ namespace INTUSOFT.Desktop.Forms
                         Image_btn.Size = l.ImageScalingSize;
                     }
                     if (l.Name == cameraPower_toolstrip.Name || l.Name == server_toolstrip.Name || l.Name == database_toolstrip.Name || l.Name == uploader_ts.Name)
-                        for (int i = 0; i < l.Items.Count; i++) 
+                        for (int i = 0; i < l.Items.Count; i++)
                         {
                             l.Items[i].ForeColor = IVLVariables.GradientColorValues.FontForeColor;
                         }
                 }
-                
+
             }
             #endregion
         }
@@ -764,7 +1056,7 @@ namespace INTUSOFT.Desktop.Forms
             if (sender is Control)
             {
                 Control c = sender as Control;
-                
+
                 Rectangle Bounds = new Rectangle(0, 0, c.Bounds.Width, c.Bounds.Height);
                 //int CornerRadius = c.Bounds.Height / 2;
                 System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
@@ -789,51 +1081,11 @@ namespace INTUSOFT.Desktop.Forms
                     c.Region = new Region(path);
             }
         }
-        public GraphicsPath RoundedRect(Rectangle bounds, int radius)
-        {
-            int diameter = radius * 2;
-            Size size = new Size(diameter, diameter);
-            Rectangle arc = new Rectangle(bounds.Location, size);
-            GraphicsPath path = new GraphicsPath();
 
-            if (radius == 0)
-            {
-                path.AddRectangle(bounds);
-                return path;
-            }
-
-            // top left arc  
-            path.AddArc(arc, 180, 90);
-
-            // top right arc  
-            arc.X = bounds.Right - diameter;
-            path.AddArc(arc, 270, 90);
-
-            // bottom right arc  
-            arc.Y = bounds.Bottom - diameter;
-            path.AddArc(arc, 0, 90);
-
-            // bottom left arc 
-            arc.X = bounds.Left;
-            path.AddArc(arc, 90, 90);
-
-            path.CloseFigure();
-            return path;
-        }
-
-        public void DrawRoundedRectangle(Graphics graphics, Pen pen, Rectangle bounds, int cornerRadius)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
-            if (pen == null)
-                throw new ArgumentNullException("pen");
-
-            using (GraphicsPath path = RoundedRect(bounds, cornerRadius))
-            {
-                graphics.DrawPath(pen, path);
-            }
-        }
-
+        /// <summary>
+        /// To fire the event while control key or shift key pressed  
+        /// </summary>
+        /// <param name="dic"></param>
         void newMsgBox_shiftControlEvent(Dictionary<string, object> dic)
         {
             Args arg = new Args();
@@ -841,78 +1093,13 @@ namespace INTUSOFT.Desktop.Forms
             arg["isKeyUp"] = dic["isKeyUp"];
             _eventHandler.Notify(_eventHandler.IsShiftAndControl, arg);
         }
-        //This below function is added by darshan to update the global property.
-        public static void globalProperty()
-        {
-            List<global_property> globalPropertyList = new List<global_property>();
-            globalPropertyList = NewDataVariables._Repo.GetAll<global_property>().ToList<global_property>();
-            foreach (global_property item in globalPropertyList)
-            {
-                if (item.key.Equals( IVLVariables.CurrentSettings.UserSettings._HeaderText.text))
-                {
-                    if (!item.value.Equals( IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
-                    {
-                        if (!string.IsNullOrEmpty( IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
-                        {
-                            item.value =  IVLVariables.CurrentSettings.UserSettings._HeaderText.val;
-                            NewDataVariables._Repo.Update<global_property>(item);
-                        }
-                        else
-                        {
-                            item.value = string.Empty;
-                            NewDataVariables._Repo.Update<global_property>(item);
-                        }
-                    }
-                }
-                else
-                    if (item.key.Equals( IVLVariables.CurrentSettings.UserSettings._DoctorName.text))
-                    {
-                        if (!item.value.Equals( IVLVariables.CurrentSettings.UserSettings._DoctorName.val))
-                        {
-                            if (!string.IsNullOrEmpty( IVLVariables.CurrentSettings.UserSettings._DoctorName.val))
-                            {
-                                item.value =  IVLVariables.CurrentSettings.UserSettings._DoctorName.val;
-                                NewDataVariables._Repo.Update<global_property>(item);
-                            }
-                            else
-                            {
-                                item.value = string.Empty;
-                                NewDataVariables._Repo.Update<global_property>(item);
-                            }
-                        }
-                    }
-                    else if (item.key.Equals( IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Key",  IVLVariables.LangResourceCultureInfo)))
-                    {
-                        item.value =  IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Value",  IVLVariables.LangResourceCultureInfo);
-                        if (!item.value.Equals( IVLVariables.LangResourceManager.GetString("GlobalPropertyImage_Path_Value",  IVLVariables.LangResourceCultureInfo)))
-                        {
-                            NewDataVariables._Repo.Update<global_property>(item);
-                        }
-                    }
-                    else if (item.key.Equals( IVLVariables.LangResourceManager.GetString("ReportMainHeading_Text",  IVLVariables.LangResourceCultureInfo)))
-                    {
-                        if (!item.value.Equals( IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
-                        {
-                            if (!string.IsNullOrEmpty( IVLVariables.CurrentSettings.UserSettings._HeaderText.val))
-                            {
-                                item.value =  IVLVariables.CurrentSettings.UserSettings._HeaderText.val;
-                                NewDataVariables._Repo.Update<global_property>(item);
-                            }
-                            else
-                            {
-                                item.value = string.Empty;
-                                NewDataVariables._Repo.Update<global_property>(item);
-                            }
-                        }
-                    }
-            }
-        }
+
 
         /// <summary>
         /// To start and stop server and database timer
         /// </summary>
         /// <param name="arg"></param>
-        void StartStopServerDatabaseTimer(string s,Args arg)
+        void StartStopServerDatabaseTimer(string s, Args arg)
         {
             try
             {
@@ -920,19 +1107,19 @@ namespace INTUSOFT.Desktop.Forms
                     if ((bool)arg["StartTimer"])
                     {
                         serverTimer.Enabled = true;
-                        databaseTimer.Change(0,databaseTimerIntervel);
+                        databaseTimer.Change(0, databaseTimerIntervel);
                         serverTimer.Start();
                     }
                     else
                     {
                         serverTimer.Enabled = false;
-                        databaseTimer.Change(-1,-1);
+                        databaseTimer.Change(-1, -1);
                         serverTimer.Stop();
                     }
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -947,33 +1134,38 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 if (arg.ContainsKey("EnableEmrButton"))
-                     if ((bool)arg["EnableEmrButton"])
-                     {
-                         emr_btn.BackColor = Color.Transparent;
-                         emr_btn.ForeColor = this.FontColor;
-                         emr_btn.Enabled = true;
-                     }
-                     else
-                     {
-                         emr_btn.BackColor = Color.Transparent;
-                         emr_btn.ForeColor = this.FontColor;
-                         emr_btn.Enabled = false;
-                     }
+                    if ((bool)arg["EnableEmrButton"])
+                    {
+                        emr_btn.BackColor = Color.Transparent;
+                        emr_btn.ForeColor = this.FontColor;
+                        emr_btn.Enabled = true;
+                    }
+                    else
+                    {
+                        emr_btn.BackColor = Color.Transparent;
+                        emr_btn.ForeColor = this.FontColor;
+                        emr_btn.Enabled = false;
+                    }
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
-            
+
         }
+
+        /// <summary>
+        /// To check the mysql server status and database connection status
+        /// </summary>
+        /// <param name="state"></param>
         private void CheckDatabaseConnectivity(object state)
         {
             if (dataBaseServerConnection.GetMysqlServiceStatus())
             {
                 if (dataBaseServerConnection.GetDataBaseConnectionStatus())
                 {
-                 // int patCount =  NewDataVariables._Repo.GetPatientCount();
+                    // int patCount =  NewDataVariables._Repo.GetPatientCount();
                     //if (NewDataVariables.Patients == null)
                     //    NewDataVariables.Patients = NewDataVariables._Repo.GetAll<Patient>().ToList();
                     if (MysqlServiceConnection_lbl.ToolTipText != IVLVariables.LangResourceManager.GetString("MysqlServiceAvailableToolTip_Text", IVLVariables.LangResourceCultureInfo))
@@ -1012,11 +1204,11 @@ namespace INTUSOFT.Desktop.Forms
             }
         }
 
-        void databaseTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            CheckDatabaseConnectivity(new object());
-        }
 
+        /// <summary>
+        /// To make "IVLVariables.IsAnotherWindowOpen" bool true or false.
+        /// </summary>
+        /// <param name="isOpen"></param>
         void thumbnailUI1_anotherWindowOpen(bool isOpen)
         {
             IVLVariables.IsAnotherWindowOpen = isOpen;
@@ -1026,16 +1218,750 @@ namespace INTUSOFT.Desktop.Forms
             //    IVLVariables.ivl_Camera.TriggerOn();
         }
 
-        protected override CreateParams CreateParams
+        /// <summary>
+        /// IvlMainWindow_Load is a private event which will load panels.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IvlMainWindow_Load(object sender, EventArgs e)
         {
-            get
+            //int dayOfTheWeek = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorCaptureSteps.val);
+            //int month = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorPlySteps.val);
+            //List<Patient> pats = NewDataVariables._Repo.GetPageData<Patient>(500, 1).ToList().Where(x=>x.createdDate.Day == dayOfTheWeek && x.createdDate.Month == month ).ToList();
+            //StreamWriter stW = new StreamWriter("Data_"+dayOfTheWeek.ToString()+".csv");
+            //foreach (Patient item in pats)
+            //{
+            //    string str = item.identifiers.ToList()[0].value.ToString()+","+ item.firstName +","+ item.lastName +","+item.gender +","+(DateTime.Now.Year -  item.birthdate.Year).ToString() +",";
+            //    foreach (visit visitItem in item.visits)
+            //    {
+            //        if (visitItem.observations.Where(x=>x.voided == false).ToList().Count > 0)
+            //        {
+            //            if (visitItem.reports.Count > 0)
+            //            {
+            //                report r = visitItem.reports.ToList()[visitItem.reports.Count - 1];
+            //                IVLReport.JsonReportModel dataJson = (IVLReport.JsonReportModel)JsonConvert.DeserializeObject(r.dataJson, typeof(IVLReport.JsonReportModel));
+            //                str += dataJson.reportValues.Where(x=>x.Key == "Comments").ToList()[0].Value.ToString();
+            //            }
+            //        }
+            //    }
+            //    stW.WriteLine(str);
+            // }
+            //stW.Flush();
+            //stW.Close();
+            //stW.Dispose();
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo("AdobeCheckOSVersionInfo.exe");
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.UseShellExecute = false;
+            p.Start();
+            p.WaitForExit();
+            string adobeInfoJson = File.ReadAllText("AdobeOsInfo.json");
+            adobeOsInfo = new AdobeAndOSInfo();
+            if (!string.IsNullOrEmpty(adobeInfoJson))
+                try
+                {
+                    adobeOsInfo = (AdobeAndOSInfo)JsonConvert.DeserializeObject(adobeInfoJson, typeof(AdobeAndOSInfo));
+
+                }
+                catch (Exception)
+                {
+
+                }
+
+            con.prerquisitesCount = prerequisiteList.Count;
+            if (GetPrerequisitesInstalledCount() == con.prerquisitesCount)
             {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;    // Turn on WS_EX_COMPOSITED
-                return cp;
+                if (IVLVariables.isCommandLineArgsPresent)//to open directly the report window if  the batchfile is executed.
+                {
+                    if (IVLVariables.isCommandLineAppLaunch)
+                    {
+                        IVLVariables.ivl_Camera.AppLaunched = true;
+
+                        _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+                        if (IVLVariables.isCommandLineAppLaunch)
+
+                            if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
+                            {
+                                string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
+                                CustomMessageBox.Show(String.Format("{0}", powerOffText));
+
+                                Application.Exit();
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(IVLVariables.CmdImageSavePath))
+                                {
+                                    IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = true;
+                                }
+                                else
+                                {
+                                    IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = false;
+                                    IVLVariables.ivl_Camera.camPropsHelper._Settings.ImageSaveSettings.ProcessedImageDirPath = IVLVariables.CmdImageSavePath;
+                                }
+                                Args arg = new Args();
+                                arg["imageCount"] = 0;
+                                arg["isImaging"] = true;
+
+                                _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
+                            }
+                    }
+                    else
+                    {
+                        this.Visible = false;
+                        string batchFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "PatientDetails.json";
+                        if (File.Exists(batchFilePath))
+                        {
+                            IVLVariables.patDetails = (PatientDetailsForCommandLineArgs)JsonConvert.DeserializeObject(File.ReadAllText(batchFilePath), typeof(PatientDetailsForCommandLineArgs));
+                            for (int i = 0; i < IVLVariables.patDetails.observationPaths.Count; i++)
+                            {
+                                IVLVariables.patDetails.observationPaths[i] = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + IVLVariables.patDetails.observationPaths[i];
+                            }
+                        }
+
+
+                        string observationDetailsFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "observations.txt";
+                        if (File.Exists(observationDetailsFilePath))
+                        {
+                            string str = File.ReadAllText(observationDetailsFilePath);
+                            string[] tokens = str.Split(new[] { "-------------------------------------" }, StringSplitOptions.None);
+                            List<string> listObservation = tokens.ToList<string>();
+                            if (listObservation.Count == 7)
+                                listObservation.RemoveAt(listObservation.Count - 1);
+                            IVLVariables.observationDic = new Dictionary<string, string>();
+                            for (int i = 0; i < listObservation.Count; i = i + 2)
+                            {
+                                IVLVariables.observationDic.Add(listObservation[i], listObservation[i + 1].Trim());
+                            }
+                        }
+                        string emailJsonPath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "EmailData.json";
+                        if (File.Exists(emailJsonPath))
+                        {
+                            IVLVariables.mailData = (EmailsData)JsonConvert.DeserializeObject(File.ReadAllText(emailJsonPath), typeof(EmailsData));
+                            string toMail = IVLVariables.mailData.EmailReplyTo;
+                            string fromMail = IVLVariables.mailData.EmailTo;
+                            IVLVariables.mailData.EmailTo = toMail;
+                            IVLVariables.mailData.EmailReplyTo = fromMail;
+                        }
+                        _eventHandler.Notify(_eventHandler.CreateReportEvent, new Args());
+
+                    }
+                }
+                else
+                {
+                    isComponentInitialized = true;
+                    //CheckDatabaseConnectivity();
+                    dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
+                    //databaseTimer.Start();
+                    emr = new EmrManage();
+                    SetPanels();
+                    serverTimer.Start();
+                    IVLVariables.ivl_Camera.AppLaunched = true;
+                    _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+                }
+            }
+            else
+            {
+                //the below for loop is to add the not installed prerequisites to a string to show it on the message box.
+                for (int i = 0; i < prerequisiteList.Count; i++)
+                {
+                    uninstalledPrerquisite = uninstalledPrerquisite + prerequisiteList[i] + Environment.NewLine;
+                }
+                CustomMessageBox.Show(uninstalledPrerquisite + (IVLVariables.LangResourceManager.GetString("PrerequisitesNotInstalled_Text", IVLVariables.LangResourceCultureInfo)), IVLVariables.LangResourceManager.GetString("PrerequisitesWarning_Header_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information, 500, 300);
+                Application.Exit();
             }
         }
 
+        /// <summary>
+        /// To get the prerequisites count
+        /// </summary>
+        /// <returns></returns>
+        private int GetPrerequisitesInstalledCount()
+        {
+            if (IVLVariables.isCommandLineAppLaunch)
+            {
+                prerequisitesCount = 1;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));
+            }
+            if (adobeOsInfo.OSInfo.Contains("10"))
+            {
+
+                prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
+                prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));
+            }
+            else
+            {
+                CheckServicePackInstalled();
+
+            }
+            CheckRedistributableFilesInstalled();
+            CheckDriversInstalled();
+            CheckDotFrameWork();
+            if (IVLVariables.isCommandLineAppLaunch)
+            {
+                prerequisitesCount++;//if it is command line app launcah adobe will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));
+            }
+            else
+                CheckAdobeReaderInstalled();
+
+            return prerequisitesCount;
+        }
+
+        /// <summary>
+        /// To check whether service pack is installed or not
+        /// </summary>
+        private void CheckServicePackInstalled()
+        {
+            string windowsVersion = string.Empty;
+
+            #region Code to check whether service pack is installed
+            registry_key = servicePackPath;
+            key = Registry.LocalMachine;
+            key = key.OpenSubKey(registry_key);
+            {
+                windowsVersion = (key.GetValue(productNameText)).ToString();
+                if (!windowsVersion.Contains(con.windowsVersion10) && !windowsVersion.Contains(con.windowsVersion8))//checking whether the windows version is not 10, if it is 10 no need to check for service pack.
+                {
+                    if (Environment.OSVersion.ServicePack.Contains(con.servicePackVersion))//if the string contains the service pack string it will go inside and increase the prerequisite count.
+                    {
+                        prerequisitesCount++;
+                        prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
+                    }
+                }
+                else
+                {
+                    prerequisitesCount++;
+                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
+                }
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// To check whether the redistributable file is installed or not
+        /// </summary>
+        private void CheckRedistributableFilesInstalled()
+        {
+            #region Code to check VC2012, 2013, 2015 is installed
+            registry_key = remainingVcRedistributablePath;
+            key = Registry.LocalMachine;
+            key = key.OpenSubKey(registry_key);
+            foreach (string subKeyName in key.GetSubKeyNames())
+            {
+                using (RegistryKey subkey = key.OpenSubKey(subKeyName))
+                {
+                    string[] subKeys = subkey.GetValueNames();
+                    for (int i = 0; i < subKeys.Length; i++)
+                    {
+
+                        if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
+                        {
+                            string version = (string)subkey.GetValue(displayNameText);
+                            if (version.Contains(con.vcredistributable2013))//if the string contains the 2013 redistributable file
+                            {
+                                if (!vc2013Count)//if the bool is false
+                                {
+                                    vc2013Count = true;
+                                    prerequisitesCount++;//increasing the prerequisite count.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2013));//this is to indicate that vcredistributable2013 is installed.
+                                }
+                            }
+                            else if (prerequisiteList.Contains(con.vcredistributable2015) && version.Contains(con.vcredistributable2015))//if the string contains the 2015 redistributable file
+                            {
+
+                                if (!vc2015Count)//if the bool is false
+                                {
+                                    vc2015Count = true;
+                                    prerequisitesCount++;//increasing the prerequisite count.
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));//this is to indicate that vcredistributable2015 is installed.
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// To check for the camera, board and mysql drivers are installed or not.
+        /// </summary>
+        private void CheckDriversInstalled()
+        {
+            #region Code to check all the drivers installed
+            registry_key = versionsPath;
+            key = Registry.LocalMachine;
+            key = key.OpenSubKey(registry_key);
+            {
+                foreach (string subkeyName in key.GetSubKeyNames())
+                {
+                    using (RegistryKey subkey = key.OpenSubKey(subkeyName))
+                    {
+                        string[] subKeys = subkey.GetValueNames();
+                        for (int i = 0; i < subKeys.Length; i++)
+                        {
+
+                            if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
+                            {
+                                string version = (string)subkey.GetValue(displayNameText);
+                                if (version.Contains(con.mysqlVersion) && !IVLVariables.isCommandLineAppLaunch)//if the string contains the mysql in the registry key
+                                {
+                                    prerequisitesCount++;
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));//this is to indicate that mysqlVersion is installed.
+                                }
+                                if (version.Contains(con.cameraDriverVersion) && version.Contains(con.cameraVersionText))//if the string contains the camera driver in the registry key
+                                {
+                                    prerequisitesCount++;
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.cameraDriverVersion));//this is to indicate that cameraDriverVersion is installed.
+                                }
+                                if (version.Contains(con.boardDriver))//if the string contains the board driver in the registry key
+                                {
+                                    prerequisitesCount++;
+                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.boardDriver));//this is to indicate that boardDriver is installed.
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// To check the dot net framework is installed or not
+        /// </summary>
+        private void CheckDotFrameWork()
+        {
+
+            if (!frameworkVersionCount)//if the bool is false
+            {
+                frameworkVersionCount = DotNetUtils.IsCompatible();
+                if (frameworkVersionCount)
+                {
+                    prerequisitesCount++;//increasing the prerequisites count
+                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.frameworkVersion));//this is to indicate that frameworkVersion is installed.
+                }
+            }
+        }
+
+        /// <summary>
+        /// To check for the adobe is installed or not
+        /// </summary>
+        private void CheckAdobeReaderInstalled()
+        {
+            #region Code to check adobe reader is installed
+            if (adobeOsInfo.IsAdobeInstalled)
+            {
+                prerequisitesCount++;
+                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));//this is to indicate that adobeReaderVersion is installed.
+            }
+            #endregion
+        }
+
+        /// <summary>
+        /// Loads the user control into the PagePanel_p panel.
+        /// </summary>
+        private void SetPanels()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
+            {
+
+            }
+            this.Cursor = Cursors.Default;
+            PagePanel_p.Controls.Clear();
+            emr.Dock = DockStyle.Fill;
+            try
+            {
+                PagePanel_p.Controls.Add(emr);
+                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            IVLVariables.pageDisplayed = PageDisplayed.Emr;
+            Image_btn.Enabled = false;
+            emr.Show();
+
+
+            #region this has to be implemented later when login screen has been added
+            //loginScreen.Dock = DockStyle.Fill;
+            //PagePanel_p.Controls.Add(loginScreen);
+            ////isEmr = true;
+            //loginScreen.Show();
+            //commented to remove login screen at startup of the application by sriram on october 16th 2015
+            //loginScreen.Dock = DockStyle.Fill;
+            //loginScreen.Show();
+            #endregion
+        }
+
+        /// <summary>
+        /// Loads the image and its details into the thumbnailUI.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        private void showThumbnails(string s, Args arg)
+        {
+
+            //this.thumbnailUI1.isFirstThumbnail_Selected = true;
+            //the below code has been added by Darshan to solve defect no 0000525: numbering of thumbnail is mismatching in view image section.
+            this.thumbnailUI1.ResetThumbnailUI();
+            //imgList.fileNames = arg["Thumbnails"] as List<string>;
+            //imgList.ids = arg["id"] as List<int>;
+            //int count = imgList.ids.Count;
+            //imgList.isAnnotatedList = arg["isannotated"] as List<bool>;
+            //imgList.isCDRList = arg["isCDR"] as List<bool>;
+            //imgList.sides = arg["Side"] as List<int>;
+            // this.thumbnailUI1.AddThumbnails(imgList.fileNames, imgList.ids, imgList.sides, imgList.isAnnotatedList, imgList.isCDRList);
+
+            List<ThumbnailData> thumbnailDataList = arg["Thumbnails"] as List<ThumbnailData>;
+            this.thumbnailUI1.AddThumbnails(thumbnailDataList);
+            //The below code is commented so as not remove the corrupted images.
+            //This below if statement has been added by Darshan on 18-09-2015 to remove invalid images.
+            //if (this.thumbnailUI1.corrupted_images.Count > 0)
+            //{
+            //    imgList.ids = this.thumbnailUI1.corrupted_images;
+            //    for (int i = 0; i < imgList.ids.Count; i++)
+            //    {
+            //        remove_corruptedImages(imgList.ids[i], i);
+            //    }
+            //}
+        }
+
+
+        /// <summary>
+        /// To fire the event of navigating from emr to Live screen
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="e"></param>
+        void Consultation2Imaging(string a, Args e)
+        {
+            _eventHandler.Notify(_eventHandler.CameraUIShown, e);
+            emr_btn.Visible = true;
+            patientDetails_p.Visible = true;
+            Imaging_btn_Click(null, null);
+        }
+
+        /// <summary>
+        /// Navigates to live imaging screen from view imaging screen
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg1"></param>
+        private void NavigateFromViewToLive(string s, Args arg1)
+        {
+            bool isStartLive = false;
+            if (IVLVariables.isCommandLineAppLaunch)
+                isStartLive = true;
+            else
+            {
+                if (INTUSOFT.Data.Repository.NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)
+                    isStartLive = true;
+
+            }
+            if (!IVLVariables.ivl_Camera.IsCapturing && isStartLive)
+            {
+                this.thumbnail_tblpnl.Visible = true;
+                Args arg = new Args();
+                if (IVLVariables.isZoomEnabled)
+                    _eventHandler.Notify(_eventHandler.EnableZoomMagnification, new Args());
+                //brightnesspopup();
+                //if (!IVLVariables.isValueChanged)//to check whether any changes made in the image is saved or discarded.
+                {
+                    arg["isImaging"] = true;
+                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
+                    Image_btn.Enabled = false;
+                }
+            }
+            this.Focus();
+        }
+
+
+        /// <summary>
+        /// Select the thumbnail when clicked on it in viewimaging screen.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        private void ThumbnailSelected(String s, Args arg)
+        {
+            //if (arg.ContainsKey("ThumbnailFileName"))
+            //{
+            //    this.thumbnailUI1.ThumbnailSelected(arg["ThumbnailFileName"] as String);
+            //    thumbnailFileName = arg["ThumbnailFileName"] as String;
+            //}
+            if (arg.ContainsKey("ThumbnailData"))
+            {
+                ThumbnailData tData = arg["ThumbnailData"] as ThumbnailData;
+                this.thumbnailUI1.ThumbnailSelected(tData);
+                thumbnailFileName = tData.fileName;
+            }
+        }
+
+
+
+        /// <summary>
+        /// To update the live and view screen controls when power or camera is connected or disconnected.
+        /// </summary>
+        private void UpdateLiveViewScreen(Args arg)
+        {
+            if (isPowerConnected && isCameraConnected) // if both power and camera are connected 
+            {
+                if (IVLVariables.pageDisplayed == PageDisplayed.Image)//if it is not record screen.
+                {
+                    //if (imaging_UC.isImaging)//if it is in live screen mode.
+                    //{
+
+                    //    imaging_UC.setLiveScreen();//set live mode.
+                    //    //System.Threading.Thread.Sleep(5000);//to resume the live mode
+
+                    //}
+                    if (NewDataVariables.Active_Visit != null)
+                    {
+                        if (NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)//if it is in view mode and the visit'sdate is todays date
+                        {
+
+                            //IVLVariables.ivl_Camera.TriggerOn();//turn on the trigger in order to navigate from view to live via trigger press.
+                            Image_btn.Enabled = true;
+                        }
+                        else
+                        {
+                            Image_btn.Enabled = false;
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                if (!IVLVariables.isCommandLineAppLaunch && IVLVariables.pageDisplayed == PageDisplayed.Image)//if it is not from command line launch.
+                {
+                    if (arg.ContainsKey("ShowPopMsg"))
+                    {
+                        if ((bool)arg["ShowPopMsg"])
+                        {
+                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("FolderPath_Warning_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Error);
+
+                        }
+                        //_eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+
+
+                    }
+                    GoToViewScreen("", new Args());
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// To fire the event of navigating to view screen and enabling and disabling of UI buttons.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        private void GoToViewScreen(string s, Args arg)
+        {
+            if (splashScreen.Visible && !splashScreen.CanFocus)
+                splashScreen.Close();
+            if (_eventHandler.isHandlerPresent(_eventHandler.EnableDisableEmrButton))
+            {
+                arg["EnableEmrButton"] = true;
+                _eventHandler.Notify(_eventHandler.EnableDisableEmrButton, arg);
+            }
+
+            if (NewDataVariables.Active_Obs == null || NewDataVariables.Obs.Count == 0)//if the active observation is null.
+            {
+                imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
+                this.thumbnailUI1.NoImages_Selected();//to select the no images selected label.
+
+            }
+            else
+            {
+                #region Thumbnail data populate to display if the camera or power is disconnected in live
+                ThumbnailModule.ThumbnailData tData = new ThumbnailModule.ThumbnailData();
+                tData.fileName = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                tData.id = NewDataVariables.Active_Obs.observationId;
+                if (NewDataVariables.Active_Obs.eyeSide == 'L')
+                    tData.side = 1;
+                else
+                    tData.side = 0;
+                tData.isAnnotated = NewDataVariables.Active_Obs.annotationsAvailable;
+                tData.isCDR = NewDataVariables.Active_Obs.cdrAnnotationAvailable;
+
+                //arg["ThumbnailFileName"] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
+                arg["ThumbnailData"] = tData;
+                #endregion
+                imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
+            }
+        }
+
+
+        /// <summary>
+        /// This event will set status of the camera status.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        private void ShowCameraConnection(string s, Args arg)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(mShowCameraDelegate, s, arg);
+            }
+
+            if ((bool)arg["isCameraConnected"])
+            {
+                {
+                    if (isCameraConnected)
+                        return;
+                    isCameraConnected = true;
+                    //CameraStatus_pbx.Image = cameraConnected;
+                    if (IVLVariables.ivl_Camera.camPropsHelper.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLVariables.ivl_Camera.camPropsHelper.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
+                    {
+                        if (!IVLVariables.ivl_Camera.CameraName.Contains("E3CMOS06300KPA(USB2.0)"))//if camera is connected to usb port 3.0
+                        {
+                            cameraImage_lbl.Image = cameraConnected;
+                            cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
+
+                        }
+                        else
+                        {
+                            cameraImage_lbl.Image = CameraError;
+                            cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraWarningUsb2_0ToolTipText", IVLVariables.LangResourceCultureInfo);
+
+                        }
+                    }
+                    else
+                    {
+                        cameraImage_lbl.Image = cameraConnected;
+                        cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
+                    }
+                }
+            }
+            else if (!(bool)arg["isCameraConnected"])
+            {
+                if (IVLVariables.isCommandLineAppLaunch)
+
+                    if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
+                    {
+                        string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
+                        CustomMessageBox.Show(String.Format("{0}", powerOffText));
+                        Application.Exit();
+                    }
+                if (!isCameraConnected)
+                    return;
+                isCameraConnected = false;
+
+                cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOff_ToolTipText", IVLVariables.LangResourceCultureInfo);
+                // CameraStatus_pbx.Image = cameraDisconnected;
+                cameraImage_lbl.Image = cameraDisconnected;
+
+
+            }
+
+            if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+            {
+                emr.UpdateVisitButton();
+            }
+            else
+                UpdateLiveViewScreen(arg);
+            if (arg.ContainsKey("ShowPopMsg"))
+                arg.Remove("ShowPopMsg");
+        }
+
+        /// <summary>
+        /// This will set the power connection status.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg"></param>
+        private void ShowPowerConnection(string s, Args arg)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(mShowPowerDelegate, s, arg);
+            }
+
+            if ((bool)arg["isPowerConnected"])
+            {
+                if (isPowerConnected)
+                    return;
+                //powerConnectionStatus_pbx.Image = PowerConnected;
+                powerImage_lbl.Image = PowerConnected;
+                isPowerConnected = true;
+                powerImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("PowerOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
+
+
+            }
+            else if (!(bool)arg["isPowerConnected"])
+            {
+                if (IVLVariables.isCommandLineAppLaunch)
+
+                    if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
+                    {
+                        string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
+                        CustomMessageBox.Show(String.Format("{0}", powerOffText));
+
+                        Application.Exit();
+                    }
+                if (!isPowerConnected)
+                    return;
+                //powerConnectionStatus_pbx.Image = PowerDisconnected;
+                powerImage_lbl.Image = PowerDisconnected;
+                powerImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("PowerOff_ToolTipText", IVLVariables.LangResourceCultureInfo);
+                isPowerConnected = false;
+
+
+            }
+            if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+            {
+                emr.UpdateVisitButton();
+            }
+            else
+            {
+                UpdateLiveViewScreen(arg);
+                if (arg.ContainsKey("ShowPopMsg"))
+                    arg.Remove("ShowPopMsg");
+            }
+        }
+
+        /// <summary>
+        /// Enables or disables the add images button on the conslutation grid based on camera connection.
+        /// </summary>
+        private void TimerUIUpdation()
+        {
+            if (!IVLVariables.ApplicationClosing && !IVLVariables.ivl_Camera.IsCapturing)
+            {
+                if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
+                {
+                    Time_lbl.Text = DateTime.Now.ToString(" HH:mm ");
+                    Date_lbl.Text = DateTime.Today.ToShortDateString();//The date format has been changed to maintain a uniform date format.
+                }
+                else
+                {
+                    Time_lbl.Text = DateTime.Now.ToString("  hh:mm tt ");
+                    Date_lbl.Text = DateTime.Today.ToShortDateString();//The date format has been changed to maintain a uniform date format.
+                }
+
+            }
+            //if (!CheckIfServiceIsRunning(mysqlServiceName))
+            //{
+            //    System.Diagnostics.Process proc = new System.Diagnostics.Process();
+
+            //    proc.StartInfo.FileName = "mysqlServiceStart.bat";
+            //    proc.StartInfo.Verb = "runas";
+            //   proc.StartInfo.CreateNoWindow = false;
+            //   proc.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            //   proc.Start();
+            //   proc.WaitForExit(10000);
+            //} this.Focus();
+        }
+
+        /// <summary>
+        /// To call timer updation method when server timer is elapsed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void serverTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             // this.Focus();
@@ -1049,37 +1975,21 @@ namespace INTUSOFT.Desktop.Forms
         //    base.WndProc(ref m);
         //}
 
+
+        /// <summary>
+        /// To change the focus to main window
+        /// </summary>
         void thumbnailUI1_sendFocusBackToParent()
         {
             this.Focus();
         }
 
+
         /// <summary>
-        /// This will unselect the image when control key is pressed.And selects the the multiple images on shift or control selection.
+        /// To change the focus back to UI
         /// </summary>
         /// <param name="s"></param>
         /// <param name="arg"></param>
-        public void isshiftandcontrol(string s, Args arg)
-        {
-            KeyEventArgs e = arg["keyArg"] as KeyEventArgs;
-            if (!IVLVariables.isReportWindowOpen)
-            {
-                if ((bool)arg["isKeyUp"])
-                    IvlMainWindow_KeyUp(null, e);
-                else
-                    IvlMainWindow_KeyDown(null, e);
-            }
-            else
-            {
-                _eventHandler.Notify(_eventHandler.ReportImagesIsShiftControl, arg);
-            }
-        }
-
-        public void ScrollControl()
-        {
-            this.thumbnailUI1.ScrollControlIntoView(this.thumbnailUI1);
-        }
-
         private void enableCapturePowerStatusTimer(String s, Args arg)
         {
             this.Focus();
@@ -1156,8 +2066,7 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ivl_Camera.OpenCameraBoard();
             //IVLVariables.ivl_Camera.ConnectCamera();
         }
-        delegate void DelegateLive2ViewViaTrigger(string s, Args arg);
-        private DelegateLive2ViewViaTrigger m_DelegateLive2ViewViaTrigger;
+
 
 
         /// <summary>
@@ -1165,291 +2074,32 @@ namespace INTUSOFT.Desktop.Forms
         /// </summary>
         /// <param name="s"></param>
         /// <param name="arg"></param>
-        void updateCaptureRLiveUI( String s , Args arg)
+        void updateCaptureRLiveUI(String s, Args arg)
         {
-               
-                     if((bool)arg["CaptureSequence"])
-                       //if (!IVLVariables.ivl_Camera.IsCapturing && !this.imaging_UC.isImagingDisabled)// start capture event
-                        {
-                            serverTimer.Enabled = false;
-                            serverTimer.Stop();
-                            _eventHandler.Notify(_eventHandler.CaptureEvent, new Args());
-                        }
-                       else
-                       {
-                            if (this.InvokeRequired)
-                            {
-                               this.Invoke(m_DelegateLive2ViewViaTrigger, "", new Args());
-                            }
-                            else
-                                NavigateFromViewToLive("", new Args());
-                        }
-                       
+
+            if ((bool)arg["CaptureSequence"])
+            //if (!IVLVariables.ivl_Camera.IsCapturing && !this.imaging_UC.isImagingDisabled)// start capture event
+            {
+                serverTimer.Enabled = false;
+                serverTimer.Stop();
+                _eventHandler.Notify(_eventHandler.CaptureEvent, new Args());
+            }
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(m_DelegateLive2ViewViaTrigger, "", new Args());
+                }
+                else
+                    NavigateFromViewToLive("", new Args());
+            }
+
         }
+        
         /// <summary>
-        /// This event is fired when any key is pressed.
+        /// To change the UI color when the color is changed.
         /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="keyData"></param>
-        /// <returns></returns>
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Space)
-            {
-
-                if (keyData == Keys.Space)
-                {
-                    if (IVLVariables.pageDisplayed == PageDisplayed.Image)
-                    {
-
-                        //Thread t1 = new Thread(() =>
-                        if (!IVLVariables.isCommandLineAppLaunch)//this has been added to ensure the launch is not from command  line.
-                        {
-                            brightnesspopup();//this has been added to check for any changes in the images like brightness or contrast is changed.
-                            if (!IVLVariables.isValueChanged)//if the modified image is not saved it wont let to live screen.
-                            {
-                                if (NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)
-                                {
-                                    this.Cursor = Cursors.WaitCursor;
-                                    IVLVariables.ivl_Camera.CaptureStartTime = DateTime.Now;
-                                    IVLVariables.ivl_Camera.HowImageWasCaptured = IntucamHelper.CapturedUIMode.SpaceBar;
-                                    //ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
-                                    //{
-                                    IVLVariables.ivl_Camera.MRNValue = NewDataVariables.Active_PatientIdentifier.value;
-                                    IVLVariables.ivl_Camera.VisitDate = NewDataVariables.Active_Visit.createdDate.Date.ToString().Replace('/', '_').Remove(10);
-                                    if (!IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(false))
-                                    {
-                                        thumbnailUI1.isCaptureSequenceInProgress = IVLVariables.isCapturing;
-                                        this.Cursor = Cursors.Default;
-                                    }
-                                //}));
-                                }
-                            }
-                            //);
-                            //t1.Start();
-                        }
-                        else
-                        {
-                            this.Cursor = Cursors.WaitCursor;
-                            IVLVariables.ivl_Camera.CaptureStartTime = DateTime.Now;
-                            IVLVariables.ivl_Camera.HowImageWasCaptured = IntucamHelper.CapturedUIMode.SpaceBar;
-                            if (!IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(false))
-                            {
-                                thumbnailUI1.isCaptureSequenceInProgress = IVLVariables.isCapturing;
-                                this.Cursor = Cursors.Default;
-                            }
-                        }
-                    }
-
-
-
-
-
-                    //IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(IVLVariables.istrigger);
-                }
-                //this.Focus();
-            }
-            else if (keyData == Keys.Enter)
-            {
-                #region Removed Login functionality for QA- 2099
-                //if (IVLVariables.pageDisplayed == PageDisplayed.Login)
-                //    loginScreen.Login();
-                #endregion
-
-            }
-            else if (keyData == (Keys.Alt | Keys.I))
-            {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)// display software and firmware version details only in EMR screen
-                {
-                    System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                    System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                    string version = fvi.FileVersion;
-                    string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
-                    //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
-                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + con.SoftwareReleaseDate;
-                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Information_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
-                }
-            }
-            else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 
-            {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
-                {
-                    if (p == null)
-                    {
-                        p = new Process();
-                        p.StartInfo = new ProcessStartInfo("ReportTemplateCreator.exe");
-                    }
-                    p.Start();
-                }
-            }
-            else if (keyData == Keys.PageUp)
-            {
-                //this.TopMost = !this.TopMost;//has been commented to prevent the custom message box getting background.
-            }
-            else if (keyData == Keys.Delete)
-            {
-                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
-                    if (thumbnail_tblpnl.Visible)
-                    {
-                        thumbnailUI1.thumbnailDelete();
-                    }
-            }
-            else if ((keyData == Keys.Up))
-            {
-                if (!IVLVariables.ivl_Camera.CameraIsLive && !IVLVariables.ivl_Camera.IsCapturing/*Added to handle to avoid selection change of thumbnail when  capturing sequence is in progress to fix defect 0001667 */) //0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
-                    if (this.thumbnail_tblpnl.Visible)
-                    {
-                        thumbnailUI1.ThumbnailUpArrow();
-                    }
-            }
-            else if (keyData == Keys.Down)
-            {
-                if (!IVLVariables.ivl_Camera.CameraIsLive && !IVLVariables.ivl_Camera.IsCapturing/*Added to handle to avoid selection change of thumbnail when  capturing sequence is in progress to fix defect 0001667 */) //0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
-                    if (thumbnail_tblpnl.Visible)
-                    {
-                        thumbnailUI1.ThumbnailDownArrow();
-                        Point p = this.thumbnailUI1.Location;
-                    }
-            }
-            else if (keyData == (Keys.Alt | Keys.C))
-            {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
-                {
-                    if (tForm == null)
-                    {
-                        tForm = new ThemesForm();
-                        tForm.gradientColorChangeEvent += gForm_gradientColorChangeEvent;
-                    }
-                    if (!tForm.Visible)
-                        tForm.ShowDialog();
-                    else
-                        tForm.Focus();
-
-                    //if (gForm == null)
-                    //    gForm = new GradientForm();
-                    //gForm.gradientColorChangeEvent += gForm_gradientColorChangeEvent;
-                    //gForm.ShowDialog();
-                }
-            }
-            //else if (keyData == (Keys.Control | Keys.N))
-            //{
-            //    if (isEmr)
-            //        emr.CreatePatient();
-            //}
-            //else if (keyData == (Keys.Control | Keys.Alt | Keys.N))
-            //{
-            //    if (isEmr)
-            //        emr.CreateConsultation();
-            //}
-            //else if (keyData == (Keys.Control | Keys.D))
-            //{
-            //    if (isEmr)
-            //        emr.DeletePatient();
-            //}
-            //else if (keyData == (Keys.Control | Keys.Alt | Keys.D))
-            //{
-            //    if (isEmr)
-            //        emr.DeleteConsultation();
-            //}
-            //else if (keyData == (Keys.Control | Keys.U))
-            //{
-            //    if (isEmr)
-            //        emr.UpdatePatient();
-            //}
-            else if (keyData == (Keys.Control | Keys.I))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.Add))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.S))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.Z))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.B | Keys.Add))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.B | Keys.Subtract))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.Add))
-            {
-
-            }
-            else if (keyData == (Keys.Control | Keys.Subtract))
-            {
-
-            }
-            else if (keyData == (Keys.Alt | Keys.Add))
-            {
-
-            }
-            else if (keyData == (Keys.Alt | Keys.Subtract))
-            {
-
-            }
-            else if (keyData == (Keys.Add))
-            {
-
-            }
-            else if (keyData == (Keys.Subtract))
-            {
-
-            }
-            else if (keyData == (Keys.Up | Keys.Shift))
-            {
-                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
-                    if (thumbnail_tblpnl.Visible)
-                    {
-                        thumbnailUI1.ThumbnailUpArrow();
-                    }
-            }
-            else if (keyData == (Keys.Down | Keys.Shift))
-            {
-                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
-                    if (thumbnail_tblpnl.Visible)
-                    {
-                        thumbnailUI1.ThumbnailDownArrow();
-                    }
-            }
-            else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
-            {
-                if (PagePanel_p.Contains(emr))
-                {
-                    settings_window();
-                }
-            }
-            else if (keyData == (Keys.Control | Keys.Alt | Keys.E))//Ctrl + Alt + e for invoking EEPROM settings UI which is editable
-            {
-                if (PagePanel_p.Contains(emr))
-                {
-                    EEPROM.Settings_UCL.IsReadOnly = false;
-                    EEPROM_Window eeprom = new EEPROM_Window();
-                    eeprom.ShowDialog();
-                }
-            }
-            else if (keyData == (Keys.Alt | Keys.E))// Alt + e for invoking EEPROM settings UI which is read only
-            {
-                if (PagePanel_p.Contains(emr))
-                {
-                    EEPROM.Settings_UCL.IsReadOnly = true;
-
-                    EEPROM_Window eeprom = new EEPROM_Window();
-                    eeprom.ShowDialog();
-
-                }
-            }
-                return base.ProcessCmdKey(ref msg, keyData);
-            }
-
+        /// <param name="ColorValues"></param>
         void gForm_gradientColorChangeEvent(Dictionary<string, object> ColorValues)
         {
             if (ColorValues.ContainsKey("Ok"))
@@ -1489,10 +2139,10 @@ namespace INTUSOFT.Desktop.Forms
             }
         }
 
-        bool isModifiedimage = false;
+
 
         /// <summary>
-        /// 
+        /// To get the image files 
         /// </summary>
         /// <param name="s"></param>
         /// <param name="arg"></param>
@@ -1514,723 +2164,44 @@ namespace INTUSOFT.Desktop.Forms
                 _eventHandler.Notify(_eventHandler.GetImageFilesFromThumbnails, arg);
         }
 
-        int Thumbnail_id = 0, side = 0;
-        bool isImaging = false;
-
-        /// <summary>
-        /// Select the thumbnail when clicked on it in viewimaging screen.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg"></param>
-        private void ThumbnailSelected(String s, Args arg)
-        {
-            //if (arg.ContainsKey("ThumbnailFileName"))
-            //{
-            //    this.thumbnailUI1.ThumbnailSelected(arg["ThumbnailFileName"] as String);
-            //    thumbnailFileName = arg["ThumbnailFileName"] as String;
-            //}
-            if (arg.ContainsKey("ThumbnailData"))
-            {
-                ThumbnailData tData = arg["ThumbnailData"] as ThumbnailData;
-                this.thumbnailUI1.ThumbnailSelected(tData);
-                thumbnailFileName = tData.fileName;
-            }
-        }
-
-        //This below function has been added by Darshan BS,this function will create backup files for all json files.
-        public static IEnumerable<Control> GetControls(Control form)
-        {
-            foreach (Control childControl in form.Controls)
-            {   // Recurse child controls.
-                foreach (Control grandChild in GetControls(childControl))
-                {
-                    yield return grandChild;
-                }
-                yield return childControl;
-            }
-        }
-
-        /// <summary>
-        /// To update the live and view screen controls when power or camera is connected or disconnected.
-        /// </summary>
-        private void UpdateLiveViewScreen(Args arg)
-        {
-            if (isPowerConnected && isCameraConnected) // if both power and camera are connected 
-            {
-               if( IVLVariables.pageDisplayed == PageDisplayed.Image)//if it is not record screen.
-                {
-                    //if (imaging_UC.isImaging)//if it is in live screen mode.
-                    //{
-
-                    //    imaging_UC.setLiveScreen();//set live mode.
-                    //    //System.Threading.Thread.Sleep(5000);//to resume the live mode
-
-                    //}
-                    if (NewDataVariables.Active_Visit != null)
-                    {
-                        if (NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)//if it is in view mode and the visit'sdate is todays date
-                        {
-                            
-                            //IVLVariables.ivl_Camera.TriggerOn();//turn on the trigger in order to navigate from view to live via trigger press.
-                            Image_btn.Enabled = true;
-                        }
-                        else
-                        {
-                            Image_btn.Enabled = false;
-                        }
-                    }
-                }
-            }
-
-            else
-            {
-                if (!IVLVariables.isCommandLineAppLaunch && IVLVariables.pageDisplayed == PageDisplayed.Image)//if it is not from command line launch.
-                {
-                    if (arg.ContainsKey("ShowPopMsg"))
-                    {
-                        if ((bool)arg["ShowPopMsg"])
-                        {
-                            CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("FolderPath_Warning_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Error);
-                       
-                        }
-                        //_eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
-                       
-                    
-                    }
-                        GoToViewScreen("", new Args());
-                     
-                }
-            }
-        }
-
-        private void GoToViewScreen(string s, Args arg)
-        {
-            if(splashScreen.Visible && !splashScreen.CanFocus)
-            splashScreen.Close();
-            if (_eventHandler.isHandlerPresent(_eventHandler.EnableDisableEmrButton))
-            {
-                arg["EnableEmrButton"] = true;
-                _eventHandler.Notify(_eventHandler.EnableDisableEmrButton, arg);
-            }
-
-            if (NewDataVariables.Active_Obs == null || NewDataVariables.Obs.Count == 0)//if the active observation is null.
-            {
-                imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
-                this.thumbnailUI1.NoImages_Selected();//to select the no images selected label.
-            
-            }
-            else
-            {
-                #region Thumbnail data populate to display if the camera or power is disconnected in live
-                ThumbnailModule.ThumbnailData tData = new ThumbnailModule.ThumbnailData();
-                tData.fileName = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-                tData.id = NewDataVariables.Active_Obs.observationId;
-                if (NewDataVariables.Active_Obs.eyeSide == 'L')
-                    tData.side = 1;
-                else
-                    tData.side = 0;
-                tData.isAnnotated = NewDataVariables.Active_Obs.annotationsAvailable;
-                tData.isCDR = NewDataVariables.Active_Obs.cdrAnnotationAvailable;
-
-                //arg["ThumbnailFileName"] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_Obs.value;
-                arg["ThumbnailData"] = tData;
-                #endregion
-                imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
-            }
-        }
-        /// <summary>
-        /// This event will set status of the camera status.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg"></param>
-        private void ShowCameraConnection(string s, Args arg)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(mShowCameraDelegate, s, arg);
-            }
-
-            if ((bool)arg["isCameraConnected"])
-            {
-                {
-                    if (isCameraConnected)
-                        return;
-                    isCameraConnected = true;
-                    //CameraStatus_pbx.Image = cameraConnected;
-                    if (IVLVariables.ivl_Camera.camPropsHelper.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLVariables.ivl_Camera.camPropsHelper.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
-                    {
-                        if (!IVLVariables.ivl_Camera.CameraName.Contains("E3CMOS06300KPA(USB2.0)"))//if camera is connected to usb port 3.0
-                        {
-                            cameraImage_lbl.Image = cameraConnected;
-                            cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
-
-                        }
-                        else
-                        {
-                            cameraImage_lbl.Image = CameraError;
-                            cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraWarningUsb2_0ToolTipText", IVLVariables.LangResourceCultureInfo);
-
-                        }
-                    }
-                    else
-                    {
-                        cameraImage_lbl.Image = cameraConnected;
-                        cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
-                    }
-                }
-            }
-            else if (!(bool)arg["isCameraConnected"])
-            {
-                if (IVLVariables.isCommandLineAppLaunch)
-
-                    if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
-                    {
-                        string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
-                        CustomMessageBox.Show(String.Format("{0}", powerOffText));
-                        Application.Exit();
-                    }
-                if (!isCameraConnected)
-                    return;
-                isCameraConnected = false;
-                
-                cameraImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("CameraOff_ToolTipText", IVLVariables.LangResourceCultureInfo);
-                // CameraStatus_pbx.Image = cameraDisconnected;
-                cameraImage_lbl.Image = cameraDisconnected;
-               
-                
-            }
-
-            if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
-            {
-                emr.UpdateVisitButton();
-            }
-            else
-                UpdateLiveViewScreen(arg);
-            if (arg.ContainsKey("ShowPopMsg"))
-                arg.Remove("ShowPopMsg");
-        }
-
-        /// <summary>
-        /// This will set the power connection status.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg"></param>
-        private void ShowPowerConnection(string s, Args arg)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(mShowPowerDelegate, s, arg);
-            }
-
-            if ((bool)arg["isPowerConnected"])
-            {
-                if (isPowerConnected)
-                    return;
-                //powerConnectionStatus_pbx.Image = PowerConnected;
-                powerImage_lbl.Image = PowerConnected;
-                isPowerConnected = true;
-                powerImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("PowerOn_ToolTipText", IVLVariables.LangResourceCultureInfo);
 
 
-            }
-            else if (!(bool)arg["isPowerConnected"])
-            {
-                if (IVLVariables.isCommandLineAppLaunch)
+        #region Commented Codes of Private Methods by Kishore on 30 Aug 2019, since these codes are not used.
 
-                    if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
-                    {
-                        string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
-                        CustomMessageBox.Show(String.Format("{0}", powerOffText));
-                       
-                        Application.Exit();
-                    }
-                if (!isPowerConnected)
-                    return;
-                //powerConnectionStatus_pbx.Image = PowerDisconnected;
-                powerImage_lbl.Image = PowerDisconnected;
-                powerImage_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("PowerOff_ToolTipText", IVLVariables.LangResourceCultureInfo);
-                isPowerConnected = false;
-                
-              
-            }
-            if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
-            {
-                emr.UpdateVisitButton();
-            }
-            else
-            {
-                UpdateLiveViewScreen(arg);
-               if( arg.ContainsKey("ShowPopMsg"))
-                    arg.Remove("ShowPopMsg");
-            }
-        }
+        //void splashScreenTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
 
-        /// <summary>
-        /// Enables or disables the add images button on the conslutation grid based on camera connection.
-        /// </summary>
-        private void TimerUIUpdation()
-        {
-            if (!IVLVariables.ApplicationClosing && !IVLVariables.ivl_Camera.IsCapturing)
-            {
-                if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
-                {
-                    Time_lbl.Text = DateTime.Now.ToString(" HH:mm ");
-                    Date_lbl.Text = DateTime.Today.ToShortDateString();//The date format has been changed to maintain a uniform date format.
-                }
-                else
-                {
-                    Time_lbl.Text = DateTime.Now.ToString("  hh:mm tt ");
-                    Date_lbl.Text = DateTime.Today.ToShortDateString();//The date format has been changed to maintain a uniform date format.
-                }
-               
-            }
-            //if (!CheckIfServiceIsRunning(mysqlServiceName))
-            //{
-            //    System.Diagnostics.Process proc = new System.Diagnostics.Process();
+        //    if (IVLVariables.ivl_Camera.IsLogWritingCompleted)
+        //    {
+        //        splashScreen.Close();
+        //    }
+        //}
 
-            //    proc.StartInfo.FileName = "mysqlServiceStart.bat";
-            //    proc.StartInfo.Verb = "runas";
-            //   proc.StartInfo.CreateNoWindow = false;
-            //   proc.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            //   proc.Start();
-            //   proc.WaitForExit(10000);
-            //} this.Focus();
-        }
-        AdobeAndOSInfo adobeOsInfo  ;
-        /// <summary>
-        /// IvlMainWindow_Load is a private event which will load panels.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void IvlMainWindow_Load(object sender, EventArgs e)
-        {
-            //int dayOfTheWeek = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorCaptureSteps.val);
-            //int month = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorPlySteps.val);
-            //List<Patient> pats = NewDataVariables._Repo.GetPageData<Patient>(500, 1).ToList().Where(x=>x.createdDate.Day == dayOfTheWeek && x.createdDate.Month == month ).ToList();
-            //StreamWriter stW = new StreamWriter("Data_"+dayOfTheWeek.ToString()+".csv");
-            //foreach (Patient item in pats)
-            //{
-            //    string str = item.identifiers.ToList()[0].value.ToString()+","+ item.firstName +","+ item.lastName +","+item.gender +","+(DateTime.Now.Year -  item.birthdate.Year).ToString() +",";
-            //    foreach (visit visitItem in item.visits)
-            //    {
-            //        if (visitItem.observations.Where(x=>x.voided == false).ToList().Count > 0)
-            //        {
-            //            if (visitItem.reports.Count > 0)
-            //            {
-            //                report r = visitItem.reports.ToList()[visitItem.reports.Count - 1];
-            //                IVLReport.JsonReportModel dataJson = (IVLReport.JsonReportModel)JsonConvert.DeserializeObject(r.dataJson, typeof(IVLReport.JsonReportModel));
-            //                str += dataJson.reportValues.Where(x=>x.Key == "Comments").ToList()[0].Value.ToString();
-            //            }
-            //        }
-            //    }
-            //    stW.WriteLine(str);
-            // }
-            //stW.Flush();
-            //stW.Close();
-            //stW.Dispose();
-            Process p = new Process();
-            p.StartInfo = new ProcessStartInfo("AdobeCheckOSVersionInfo.exe");
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.UseShellExecute = false;
-            p.Start();
-            p.WaitForExit();
-            string adobeInfoJson = File.ReadAllText("AdobeOsInfo.json");
-            adobeOsInfo = new AdobeAndOSInfo();
-            if (!string.IsNullOrEmpty(adobeInfoJson))
-                try
-                {
-                    adobeOsInfo = (AdobeAndOSInfo)JsonConvert.DeserializeObject(adobeInfoJson, typeof(AdobeAndOSInfo));
+        //void databaseTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    CheckDatabaseConnectivity(new object());
+        //}
 
-                }
-                catch (Exception)
-                {
-                    
-                }
+        ///// <summary>
+        ///// Will open the intucloud on a default browser.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Settings_btn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        //System.Diagnostics.Process.Start("http://ec2-54-164-57-137.compute-1.amazonaws.com:8080/intucloud2/#/login"); // older implementation for intucloud launch using web app.
+        //    }
+        //    catch { }
+        //}
 
-            Constants.prerquisitesCount = prerequisiteList.Count;
-            if (GetPrerequisitesInstalledCount() == Constants.prerquisitesCount)
-            {
-                    if (IVLVariables.isCommandLineArgsPresent)//to open directly the report window if  the batchfile is executed.
-                    {
-                        if (IVLVariables.isCommandLineAppLaunch)
-                        {
-                            IVLVariables.ivl_Camera.AppLaunched = true;
+        #endregion
 
-                            _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
-                            if (IVLVariables.isCommandLineAppLaunch)
+        #endregion
 
-                                if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
-                                {
-                                    string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
-                                    CustomMessageBox.Show(String.Format("{0}", powerOffText));
+        #region private events
 
-                                    Application.Exit();
-                                }
-                                else
-                                {
-                                    if (string.IsNullOrEmpty(IVLVariables.CmdImageSavePath))
-                                    {
-                                        IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = true;
-                                    }
-                                    else
-                                    {
-                                        IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = false;
-                                        IVLVariables.ivl_Camera.camPropsHelper._Settings.ImageSaveSettings.ProcessedImageDirPath = IVLVariables.CmdImageSavePath;
-                                    }
-                                    Args arg = new Args();
-                                    arg["imageCount"] = 0;
-                                    arg["isImaging"] = true;
-
-                                    _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
-                                }
-                        }
-                        else
-                        {
-                            this.Visible = false;
-                            string batchFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "PatientDetails.json";
-                            if (File.Exists(batchFilePath))
-                            {
-                                IVLVariables.patDetails = (PatientDetailsForCommandLineArgs)JsonConvert.DeserializeObject(File.ReadAllText(batchFilePath), typeof(PatientDetailsForCommandLineArgs));
-                                for (int i = 0; i < IVLVariables.patDetails.observationPaths.Count; i++)
-                                {
-                                    IVLVariables.patDetails.observationPaths[i] = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + IVLVariables.patDetails.observationPaths[i];
-                                }
-                            }
-
-
-                            string observationDetailsFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "observations.txt";
-                            if (File.Exists(observationDetailsFilePath))
-                            {
-                                string str = File.ReadAllText(observationDetailsFilePath);
-                                string[] tokens = str.Split(new[] { "-------------------------------------" }, StringSplitOptions.None);
-                                List<string> listObservation = tokens.ToList<string>();
-                                if (listObservation.Count == 7)
-                                    listObservation.RemoveAt(listObservation.Count - 1);
-                                IVLVariables.observationDic = new Dictionary<string, string>();
-                                for (int i = 0; i < listObservation.Count; i = i + 2)
-                                {
-                                    IVLVariables.observationDic.Add(listObservation[i], listObservation[i + 1].Trim());
-                                }
-                            }
-                            string emailJsonPath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "EmailData.json";
-                            if (File.Exists(emailJsonPath))
-                            {
-                                IVLVariables.mailData = (EmailsData)JsonConvert.DeserializeObject(File.ReadAllText(emailJsonPath), typeof(EmailsData));
-                                string toMail = IVLVariables.mailData.EmailReplyTo;
-                                string fromMail = IVLVariables.mailData.EmailTo;
-                                IVLVariables.mailData.EmailTo = toMail;
-                                IVLVariables.mailData.EmailReplyTo = fromMail;
-                            }
-                            _eventHandler.Notify(_eventHandler.CreateReportEvent, new Args());
-
-                        }
-                    }
-                    else
-                    {
-                        isComponentInitialized = true;
-                        //CheckDatabaseConnectivity();
-                        dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
-                        //databaseTimer.Start();
-                        emr = new EmrManage();
-                        SetPanels();
-                        serverTimer.Start();
-                        IVLVariables.ivl_Camera.AppLaunched = true;
-                        _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
-                    }
-            }
-            else
-            {
-                //the below for loop is to add the not installed prerequisites to a string to show it on the message box.
-                for (int i = 0; i < prerequisiteList.Count; i++)
-                {
-                    uninstalledPrerquisite = uninstalledPrerquisite + prerequisiteList[i] + Environment.NewLine;
-                }
-                CustomMessageBox.Show(uninstalledPrerquisite + (IVLVariables.LangResourceManager.GetString("PrerequisitesNotInstalled_Text", IVLVariables.LangResourceCultureInfo)), IVLVariables.LangResourceManager.GetString("PrerequisitesWarning_Header_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information, 500, 300);
-                Application.Exit();
-            }
-        }
-
-        private int GetPrerequisitesInstalledCount()
-        {
-            if (IVLVariables.isCommandLineAppLaunch)
-            {
-                prerequisitesCount = 1;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));
-            }
-            if (adobeOsInfo.OSInfo.Contains("10"))
-            {
-
-                prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisitesCount++;//if it is command line app launcah mysql will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));
-            }
-            else
-            {
-                CheckServicePackInstalled();
-
-            }
-            CheckRedistributableFilesInstalled();
-            CheckDriversInstalled();
-            CheckDotFrameWork();
-            if ( IVLVariables.isCommandLineAppLaunch)
-            {
-                prerequisitesCount++;//if it is command line app launcah adobe will not be there to compensate the total prerequisitesCount of prerequisite making the prerequisitesCount as 1.
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));
-            }
-            else
-            CheckAdobeReaderInstalled();
-
-            return prerequisitesCount;
-        }
-
-        private void CheckServicePackInstalled()
-        {
-            string windowsVersion = string.Empty;
-
-            #region Code to check whether service pack is installed
-            registry_key = servicePackPath;
-            key = Registry.LocalMachine;
-            key = key.OpenSubKey(registry_key);
-            {
-                windowsVersion = (key.GetValue(productNameText)).ToString();
-                if (!windowsVersion.Contains(con.windowsVersion10) && !windowsVersion.Contains(con.windowsVersion8))//checking whether the windows version is not 10, if it is 10 no need to check for service pack.
-                {
-                    if (Environment.OSVersion.ServicePack.Contains(con.servicePackVersion))//if the string contains the service pack string it will go inside and increase the prerequisite count.
-                    {
-                        prerequisitesCount++;
-                        prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
-                    }
-                }
-                else
-                {
-                    prerequisitesCount++;
-                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.servicePackVersion));//this is to indicate that service pack is installed.
-                }
-            }
-            #endregion
-        }
-
-        private void CheckRedistributableFilesInstalled()
-        {
-            #region Code to check VC2012, 2013, 2015 is installed
-            registry_key = remainingVcRedistributablePath;
-            key = Registry.LocalMachine;
-            key = key.OpenSubKey(registry_key);
-            foreach (string subKeyName in key.GetSubKeyNames())
-            {
-                using (RegistryKey subkey = key.OpenSubKey(subKeyName))
-                {
-                    string[] subKeys = subkey.GetValueNames();
-                    for (int i = 0; i < subKeys.Length; i++)
-                    {
-
-                        if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
-                        {
-                            string version = (string)subkey.GetValue(displayNameText);
-                            if (version.Contains(con.vcredistributable2013))//if the string contains the 2013 redistributable file
-                            {
-                                if (!vc2013Count)//if the bool is false
-                                {
-                                    vc2013Count = true;
-                                    prerequisitesCount++;//increasing the prerequisite count.
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2013));//this is to indicate that vcredistributable2013 is installed.
-                                }
-                            }
-                            else if (prerequisiteList.Contains(con.vcredistributable2015)&& version.Contains(con.vcredistributable2015))//if the string contains the 2015 redistributable file
-                            {
-                               
-                                if (!vc2015Count)//if the bool is false
-                                {
-                                    vc2015Count = true;
-                                    prerequisitesCount++;//increasing the prerequisite count.
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.vcredistributable2015));//this is to indicate that vcredistributable2015 is installed.
-                                }
-                             }
-                        }
-                    }
-                }
-            }
-            #endregion
-        }
-
-        private void CheckDriversInstalled()
-        {
-            #region Code to check all the drivers installed
-            registry_key = versionsPath;
-            key = Registry.LocalMachine;
-            key = key.OpenSubKey(registry_key);
-            {
-                foreach (string subkeyName in key.GetSubKeyNames())
-                {
-                    using (RegistryKey subkey = key.OpenSubKey(subkeyName))
-                    {
-                        string[] subKeys = subkey.GetValueNames();
-                        for (int i = 0; i < subKeys.Length; i++)
-                        {
-
-                            if (subKeys[i].Contains(displayNameText))//to check whether the key in the registry contains display name text 
-                            {
-                                string version = (string)subkey.GetValue(displayNameText);
-                                if (version.Contains(con.mysqlVersion) && !IVLVariables.isCommandLineAppLaunch)//if the string contains the mysql in the registry key
-                                {
-                                    prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.mysqlVersion));//this is to indicate that mysqlVersion is installed.
-                                }
-                                if (version.Contains(con.cameraDriverVersion) && version.Contains(con.cameraVersionText))//if the string contains the camera driver in the registry key
-                                {
-                                    prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.cameraDriverVersion));//this is to indicate that cameraDriverVersion is installed.
-                                }
-                                if (version.Contains(con.boardDriver))//if the string contains the board driver in the registry key
-                                {
-                                    prerequisitesCount++;
-                                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.boardDriver));//this is to indicate that boardDriver is installed.
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            #endregion
-        }
-        private void CheckDotFrameWork()
-        {
-
-            if (!frameworkVersionCount)//if the bool is false
-            {
-                frameworkVersionCount = DotNetUtils.IsCompatible();
-                if (frameworkVersionCount)
-                {
-                    prerequisitesCount++;//increasing the prerequisites count
-                    prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.frameworkVersion));//this is to indicate that frameworkVersion is installed.
-                }
-            }
-        }
-        private void CheckAdobeReaderInstalled()
-        {
-            #region Code to check adobe reader is installed
-            if (adobeOsInfo.IsAdobeInstalled)
-            {
-                prerequisitesCount++;
-                prerequisiteList.RemoveAt(prerequisiteList.IndexOf(con.adobeReaderVersion));//this is to indicate that adobeReaderVersion is installed.
-            }
-            #endregion
-        }
-
-        /// <summary>
-        /// Loads the user control into the PagePanel_p panel.
-        /// </summary>
-        private void SetPanels()
-        {
-            this.Cursor = Cursors.WaitCursor;
-            while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
-            {
-                
-            }
-            this.Cursor = Cursors.Default;
-            PagePanel_p.Controls.Clear();
-            emr.Dock = DockStyle.Fill;
-            try
-            {
-                PagePanel_p.Controls.Add(emr);
-                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            IVLVariables.pageDisplayed = PageDisplayed.Emr;
-            Image_btn.Enabled = false;
-            emr.Show();
-
-
-            #region this has to be implemented later when login screen has been added
-            //loginScreen.Dock = DockStyle.Fill;
-            //PagePanel_p.Controls.Add(loginScreen);
-            ////isEmr = true;
-            //loginScreen.Show();
-            //commented to remove login screen at startup of the application by sriram on october 16th 2015
-            //loginScreen.Dock = DockStyle.Fill;
-            //loginScreen.Show();
-            #endregion
-        }
-
-        /// <summary>
-        /// Loads the image and its details into the thumbnailUI.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg"></param>
-        private void showThumbnails(string s, Args arg)
-        {
-
-            //this.thumbnailUI1.isFirstThumbnail_Selected = true;
-            //the below code has been added by Darshan to solve defect no 0000525: numbering of thumbnail is mismatching in view image section.
-            this.thumbnailUI1.ResetThumbnailUI();
-            //imgList.fileNames = arg["Thumbnails"] as List<string>;
-            //imgList.ids = arg["id"] as List<int>;
-            //int count = imgList.ids.Count;
-            //imgList.isAnnotatedList = arg["isannotated"] as List<bool>;
-            //imgList.isCDRList = arg["isCDR"] as List<bool>;
-            //imgList.sides = arg["Side"] as List<int>;
-           // this.thumbnailUI1.AddThumbnails(imgList.fileNames, imgList.ids, imgList.sides, imgList.isAnnotatedList, imgList.isCDRList);
-
-            List<ThumbnailData> thumbnailDataList = arg["Thumbnails"] as List<ThumbnailData>;
-            this.thumbnailUI1.AddThumbnails(thumbnailDataList);
-            //The below code is commented so as not remove the corrupted images.
-            //This below if statement has been added by Darshan on 18-09-2015 to remove invalid images.
-            //if (this.thumbnailUI1.corrupted_images.Count > 0)
-            //{
-            //    imgList.ids = this.thumbnailUI1.corrupted_images;
-            //    for (int i = 0; i < imgList.ids.Count; i++)
-            //    {
-            //        remove_corruptedImages(imgList.ids[i], i);
-            //    }
-            //}
-        }
-
-        void Consultation2Imaging(string a, Args e)
-        {
-            _eventHandler.Notify(_eventHandler.CameraUIShown, e);
-            emr_btn.Visible = true;
-            patientDetails_p.Visible = true;
-            Imaging_btn_Click(null, null);
-        }
-
-        /// <summary>
-        /// Navigates to live imaging screen from view imaging screen
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg1"></param>
-        private void NavigateFromViewToLive(string s, Args arg1)
-        {
-            bool isStartLive = false;
-            if (IVLVariables.isCommandLineAppLaunch)
-                isStartLive = true;
-            else
-            {
-              if(  INTUSOFT.Data.Repository.NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date )
-                  isStartLive = true;
-
-            }
-            if (!IVLVariables.ivl_Camera.IsCapturing && isStartLive)
-            {
-                this.thumbnail_tblpnl.Visible = true;
-                Args arg = new Args();
-                if (IVLVariables.isZoomEnabled)
-                    _eventHandler.Notify(_eventHandler.EnableZoomMagnification, new Args());
-                //brightnesspopup();
-                //if (!IVLVariables.isValueChanged)//to check whether any changes made in the image is saved or discarded.
-                {
-                    arg["isImaging"] = true;
-                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
-                    Image_btn.Enabled = false;
-                }
-            }
-            this.Focus();
-        }
 
         /// <summary>
         /// Invokes the StartCaptureSequenceForSpaceBarAndTrigger()
@@ -2319,115 +2290,6 @@ namespace INTUSOFT.Desktop.Forms
                     }
             }
         }
-
-        /// <summary>
-        /// Loads the setting window when alt+s is pressed.
-        /// </summary>
-        public void settings_window()
-        {
-            string appLogoFilePath = @"ImageResources\LogoImageResources\IntuSoft.ico";
-
-            SettingsWindow settings = new SettingsWindow();
-            if (File.Exists(appLogoFilePath))
-                settings.Icon = new System.Drawing.Icon(appLogoFilePath, 256, 256);
-            settings.FormBorderStyle = FormBorderStyle.FixedSingle;
-            //This below bool variable is added by Darshan on 21-08-2015 to solve Defect no:0000585: annotation window,report window,view full info,user settings window, when trigger press capture is happening.
-            IVLVariables.IsAnotherWindowOpen = true;
-            settings.ShowDialog();
-            //This below bool variable is added by Darshan on 21-08-2015 to solve Defect no:0000585: annotation window,report window,view full info,user settings window, when trigger press capture is happening.
-            IVLVariables.IsAnotherWindowOpen = false;
-        }
-
-        /// <summary>
-        /// Will open the intucloud on a default browser.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Settings_btn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //System.Diagnostics.Process.Start("http://ec2-54-164-57-137.compute-1.amazonaws.com:8080/intucloud2/#/login"); // older implementation for intucloud launch using web app.
-            }
-            catch { }
-        }
-
-        #region Public methods
-
-        //This below method has been added by Darshan to solve defect no 0000319
-        /// <summary>
-        /// This method will display a pop up when brightness or contrast is changed in view image screen.
-        /// </summary>
-        public void brightnesspopup()
-        {
-            if (IVLVariables.isValueChanged)
-            {
-                _eventHandler.Notify(_eventHandler.SaveImgChanges, new Args());
-            }
-        }
-
-        /// <summary>
-        /// This function which will update the patient details when any detail related to a patient is changed.
-        /// </summary>
-        public void updatePatient()
-        {
-            //Patient p =DataVariables._patientRepo.GetById(IVLVariables.ActivePatID);
-            //This below code has been Added by Darshan on 31-07-2015 to support advance searching.
-            NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].patientLastModifiedDate = DateTime.Now;
-            NewIVLDataMethods.UpdatePatient();
-            NewDataVariables.Active_PatientIdentifier.lastModifiedDate = DateTime.Now;
-            NewIVLDataMethods.UpdatePatientIdentifier();
-        }
-
-        public bool CheckIfServiceIsRunning(string serviceName)
-        {
-            ServiceController mysqlSe = new ServiceController();
-            mysqlSe.ServiceName = serviceName;
-            if (mysqlSe.Status == ServiceControllerStatus.Running)
-            {
-                // Service already running
-                //mysqlSe.Dispose();
-                return true;
-            }
-            else
-            {
-
-                return false;
-            }
-        }
-        #endregion
-        #region private methods
-
-        //This below method has been added by Darshan on 18-09-2015 to delete the corrupted images.
-        /// <summary>
-        /// This function will remove the corrupted images.
-        /// </summary>
-        /// <param name="id">id of the image</param>
-        /// <param name="index">index in the list of images</param>
-        public void remove_corruptedImages(int id, int index)
-        {
-            //foreach (int item in this.thumbnailUI1.corrupted_images)
-            {
-            //    if (item == id)
-                {
-                    imgList.ids.RemoveAt(index);
-                    //VisitModel vs = DataVariables._visitViewRepo.GetById(IVLVariables.ActiveVisitID);
-                    //vs.NoOfImages--;
-                    //DataVariables._visitViewRepo.Update(vs);
-                    obs ob = NewDataVariables._Repo.GetById<obs>(id);
-                    ob.voided = true;
-                    NewDataVariables._Repo.Update<obs>(ob);
-                    //ImageModel im = DataVariables._imageRepo.GetById(id);
-                    //im.HideShowRow = true;
-                    //DataVariables._imageRepo.Update(im);
-                    //imgList.sides.RemoveAt(index);
-                    //imgList.fileNames.RemoveAt(index);
-                    emr.corrupted_count++;
-                }
-            }
-        }
-        #endregion
-        #region private events
 
         /// <summary>
         /// This event will help user to navigate from live imaging screen or view imaging screen to patient details screen.
@@ -3120,7 +2982,7 @@ namespace INTUSOFT.Desktop.Forms
            
         }
 
-        #endregion
+
 
         private void HospitalLogo_pbx_Resize(object sender, EventArgs e)
         {
@@ -3131,9 +2993,282 @@ namespace INTUSOFT.Desktop.Forms
         {
             ResizeToRoundedRectangle(sender, companyLogo_pbx.Height / 2);
         }
+        #endregion
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;    // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
+        /// <summary>
+        /// This event is fired when any key is pressed.
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Space)
+            {
+
+                if (keyData == Keys.Space)
+                {
+                    if (IVLVariables.pageDisplayed == PageDisplayed.Image)
+                    {
+
+                        //Thread t1 = new Thread(() =>
+                        if (!IVLVariables.isCommandLineAppLaunch)//this has been added to ensure the launch is not from command  line.
+                        {
+                            brightnesspopup();//this has been added to check for any changes in the images like brightness or contrast is changed.
+                            if (!IVLVariables.isValueChanged)//if the modified image is not saved it wont let to live screen.
+                            {
+                                if (NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date)
+                                {
+                                    this.Cursor = Cursors.WaitCursor;
+                                    IVLVariables.ivl_Camera.CaptureStartTime = DateTime.Now;
+                                    IVLVariables.ivl_Camera.HowImageWasCaptured = IntucamHelper.CapturedUIMode.SpaceBar;
+                                    //ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
+                                    //{
+                                    IVLVariables.ivl_Camera.MRNValue = NewDataVariables.Active_PatientIdentifier.value;
+                                    IVLVariables.ivl_Camera.VisitDate = NewDataVariables.Active_Visit.createdDate.Date.ToString().Replace('/', '_').Remove(10);
+                                    if (!IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(false))
+                                    {
+                                        thumbnailUI1.isCaptureSequenceInProgress = IVLVariables.isCapturing;
+                                        this.Cursor = Cursors.Default;
+                                    }
+                                    //}));
+                                }
+                            }
+                            //);
+                            //t1.Start();
+                        }
+                        else
+                        {
+                            this.Cursor = Cursors.WaitCursor;
+                            IVLVariables.ivl_Camera.CaptureStartTime = DateTime.Now;
+                            IVLVariables.ivl_Camera.HowImageWasCaptured = IntucamHelper.CapturedUIMode.SpaceBar;
+                            if (!IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(false))
+                            {
+                                thumbnailUI1.isCaptureSequenceInProgress = IVLVariables.isCapturing;
+                                this.Cursor = Cursors.Default;
+                            }
+                        }
+                    }
 
 
- 
+
+
+
+                    //IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(IVLVariables.istrigger);
+                }
+                //this.Focus();
+            }
+            else if (keyData == Keys.Enter)
+            {
+                #region Removed Login functionality for QA- 2099
+                //if (IVLVariables.pageDisplayed == PageDisplayed.Login)
+                //    loginScreen.Login();
+                #endregion
+
+            }
+            else if (keyData == (Keys.Alt | Keys.I))
+            {
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)// display software and firmware version details only in EMR screen
+                {
+                    System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                    System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                    string version = fvi.FileVersion;
+                    string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
+                    //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
+                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + con.SoftwareReleaseDate;
+                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Information_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
+                }
+            }
+            else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 
+            {
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+                {
+                    if (p == null)
+                    {
+                        p = new Process();
+                        p.StartInfo = new ProcessStartInfo("ReportTemplateCreator.exe");
+                    }
+                    p.Start();
+                }
+            }
+            else if (keyData == Keys.PageUp)
+            {
+                //this.TopMost = !this.TopMost;//has been commented to prevent the custom message box getting background.
+            }
+            else if (keyData == Keys.Delete)
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.thumbnailDelete();
+                    }
+            }
+            else if ((keyData == Keys.Up))
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive && !IVLVariables.ivl_Camera.IsCapturing/*Added to handle to avoid selection change of thumbnail when  capturing sequence is in progress to fix defect 0001667 */) //0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (this.thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.ThumbnailUpArrow();
+                    }
+            }
+            else if (keyData == Keys.Down)
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive && !IVLVariables.ivl_Camera.IsCapturing/*Added to handle to avoid selection change of thumbnail when  capturing sequence is in progress to fix defect 0001667 */) //0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.ThumbnailDownArrow();
+                        Point p = this.thumbnailUI1.Location;
+                    }
+            }
+            else if (keyData == (Keys.Alt | Keys.C))
+            {
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+                {
+                    if (tForm == null)
+                    {
+                        tForm = new ThemesForm();
+                        tForm.gradientColorChangeEvent += gForm_gradientColorChangeEvent;
+                    }
+                    if (!tForm.Visible)
+                        tForm.ShowDialog();
+                    else
+                        tForm.Focus();
+
+                    //if (gForm == null)
+                    //    gForm = new GradientForm();
+                    //gForm.gradientColorChangeEvent += gForm_gradientColorChangeEvent;
+                    //gForm.ShowDialog();
+                }
+            }
+            //else if (keyData == (Keys.Control | Keys.N))
+            //{
+            //    if (isEmr)
+            //        emr.CreatePatient();
+            //}
+            //else if (keyData == (Keys.Control | Keys.Alt | Keys.N))
+            //{
+            //    if (isEmr)
+            //        emr.CreateConsultation();
+            //}
+            //else if (keyData == (Keys.Control | Keys.D))
+            //{
+            //    if (isEmr)
+            //        emr.DeletePatient();
+            //}
+            //else if (keyData == (Keys.Control | Keys.Alt | Keys.D))
+            //{
+            //    if (isEmr)
+            //        emr.DeleteConsultation();
+            //}
+            //else if (keyData == (Keys.Control | Keys.U))
+            //{
+            //    if (isEmr)
+            //        emr.UpdatePatient();
+            //}
+            else if (keyData == (Keys.Control | Keys.I))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.Add))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.S))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.Z))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.B | Keys.Add))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.B | Keys.Subtract))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.Add))
+            {
+
+            }
+            else if (keyData == (Keys.Control | Keys.Subtract))
+            {
+
+            }
+            else if (keyData == (Keys.Alt | Keys.Add))
+            {
+
+            }
+            else if (keyData == (Keys.Alt | Keys.Subtract))
+            {
+
+            }
+            else if (keyData == (Keys.Add))
+            {
+
+            }
+            else if (keyData == (Keys.Subtract))
+            {
+
+            }
+            else if (keyData == (Keys.Up | Keys.Shift))
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.ThumbnailUpArrow();
+                    }
+            }
+            else if (keyData == (Keys.Down | Keys.Shift))
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.ThumbnailDownArrow();
+                    }
+            }
+            else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
+            {
+                if (PagePanel_p.Contains(emr))
+                {
+                    settings_window();
+                }
+            }
+            else if (keyData == (Keys.Control | Keys.Alt | Keys.E))//Ctrl + Alt + e for invoking EEPROM settings UI which is editable
+            {
+                if (PagePanel_p.Contains(emr))
+                {
+                    EEPROM.Settings_UCL.IsReadOnly = false;
+                    EEPROM_Window eeprom = new EEPROM_Window();
+                    eeprom.ShowDialog();
+                }
+            }
+            else if (keyData == (Keys.Alt | Keys.E))// Alt + e for invoking EEPROM settings UI which is read only
+            {
+                if (PagePanel_p.Contains(emr))
+                {
+                    EEPROM.Settings_UCL.IsReadOnly = true;
+
+                    EEPROM_Window eeprom = new EEPROM_Window();
+                    eeprom.ShowDialog();
+
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
     }
 
     public class ImageList
@@ -3169,6 +3304,13 @@ namespace INTUSOFT.Desktop.Forms
             NET471
         }
 
+        #region Public Methods
+
+        /// <summary>
+        /// To check and show whether the dot net version installed is compatible with this software or not
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
         public static bool IsCompatible(DotNetRelease req = DotNetRelease.NET45)
         {
             DotNetRelease r = GetRelease();
@@ -3184,6 +3326,11 @@ namespace INTUSOFT.Desktop.Forms
             }
         }
 
+        /// <summary>
+        /// To get the dot net release
+        /// </summary>
+        /// <param name="release"></param>
+        /// <returns></returns>
         public static DotNetRelease GetRelease(int release = default(int))
         {
             int r = release != default(int) ? release : GetVersion();
@@ -3198,6 +3345,10 @@ namespace INTUSOFT.Desktop.Forms
             return DotNetRelease.NOTFOUND;
         }
 
+        /// <summary>
+        /// To get the framework version installed in the system
+        /// </summary>
+        /// <returns></returns>
         public static int GetVersion()
         {
             int release = 0;
@@ -3208,5 +3359,8 @@ namespace INTUSOFT.Desktop.Forms
             }
             return release;
         }
+
+        #endregion
+
     }
 }

@@ -21,6 +21,9 @@ namespace INTUSOFT.Data.Repository
 {
     public class NHibernateHelper_MySQL
     {
+        #region Variables
+
+        
         public static string dbPath = string.Empty;
         public static string userName = "";
         public static string password = "";
@@ -48,52 +51,19 @@ namespace INTUSOFT.Data.Repository
         public static bool isDatabaseCreating = false;
 
         public static ISessionFactory _sessionFactory;
-
-        private static ISessionFactory SessionFactory
-        {
-           
-            get
-            {
-                {
-                    if (_sessionFactory == null)
-                    {
-                        //try
-                        {
-                            //serverPath = "192.168.0.146";
-                            //dbName = "intunewmodel";
-                            dbConnectionString = "Server="+serverPath+";Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-                            _sessionFactory = Fluently.Configure().Database(MySQLConfiguration.Standard
-                                                           .ConnectionString(
-                                                               dbConnectionString)
-                                             )
-                                             .Mappings(m =>
-                                                       m.HbmMappings
-                                                           .AddFromAssemblyOf<Person>()).ExposeConfiguration(config =>
-                                                           {
-                                                               config.SetInterceptor(new CustomInterceptor());
-                                                           })
-                                              .ExposeConfiguration(BuildSchema)
-                                             .BuildSessionFactory();
-                        }
-                        //catch (Exception ex)
-                        //{
-                        //    int x = 0;
-                        //    int i = x;
-                        //}
-                    }
-                    return _sessionFactory;
-                }
-            }
-            set
-            {
-                _sessionFactory = value;
-            }
-        }
+        #endregion
+        
 
         public static void CloseSession()
         {
             SessionFactory = null;
         }
+
+        #region Public Methods
+
+
+        #region Commented codes by Kishore on 30 Aug 2019, since thes code are not used
+
 
         /// <summary>
         /// Added to check weather the specified column exists or not.
@@ -101,50 +71,55 @@ namespace INTUSOFT.Data.Repository
         /// <param name="reader"></param>
         /// <param name="columnName"></param>
         /// <returns></returns>
-        public static bool ColumnExists(string tablename, string columnName)
-        {
-            using (MySqlConnection conn = new MySqlConnection(dbConnectionString))
-            {
-                string cmdStr = "SELECT * FROM  " + tablename + "";
-                MySqlCommand cmd = new MySqlCommand(cmdStr, conn);
-                conn.Open();
-                MySqlDataReader reader = cmd.ExecuteReader();
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    if (reader.GetName(i) == columnName)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        //public static bool ColumnExists(string tablename, string columnName)
+        //{
+        //    using (MySqlConnection conn = new MySqlConnection(dbConnectionString))
+        //    {
+        //        string cmdStr = "SELECT * FROM  " + tablename + "";
+        //        MySqlCommand cmd = new MySqlCommand(cmdStr, conn);
+        //        conn.Open();
+        //        MySqlDataReader reader = cmd.ExecuteReader();
+        //        for (int i = 0; i < reader.FieldCount; i++)
+        //        {
+        //            if (reader.GetName(i) == columnName)
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        public static bool TableExists(string tableName)
-        {
-            bool tableExists = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string cmdStr = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + dbName + "'AND table_name = '" + tableName + "'";
-                MySqlCommand cmd = new MySqlCommand(cmdStr, conn);
-                conn.Open();
-                MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    int count = reader.GetInt32(0);
-                    if (count == 0)
-                    {
-                        tableExists = false;
-                    }
-                    else if (count == 1)
-                    {
-                        tableExists = true;
-                    }
-                }
-            }
-            return tableExists;
-        }
+        //public static bool TableExists(string tableName)
+        //{
+        //    bool tableExists = false;
+        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
+        //    {
+        //        string cmdStr = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '" + dbName + "'AND table_name = '" + tableName + "'";
+        //        MySqlCommand cmd = new MySqlCommand(cmdStr, conn);
+        //        conn.Open();
+        //        MySqlDataReader reader = cmd.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            int count = reader.GetInt32(0);
+        //            if (count == 0)
+        //            {
+        //                tableExists = false;
+        //            }
+        //            else if (count == 1)
+        //            {
+        //                tableExists = true;
+        //            }
+        //        }
+        //    }
+        //    return tableExists;
+        //}
 
+        #endregion
+
+        /// <summary>
+        /// To open the database connection 
+        /// </summary>
         public static void OpenSession()
         {
             if (hibernateSession == null)
@@ -225,6 +200,155 @@ namespace INTUSOFT.Data.Repository
         //    //CustomMessageBox.Show(st.ElapsedMilliseconds.ToString());
         //}
 
+        
+        /// <summary>
+        /// To execute the sql script
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void ExecuteSqlScriptFromFile(string fileName)
+        {
+            MySqlConnection connection;
+            connection = new MySqlConnection(connectionString);
+            connection.Open();
+            if (File.Exists(fileName))
+            {
+                FileInfo file = new FileInfo(fileName);
+                string script = file.OpenText().ReadToEnd();
+                script = script.Replace("dbName", dbName);//This code will replace the database name in the Intusoft-runtime.properties file to the dbname in create_Inntusoft_MRS.sql file.
+                MySqlScript mysqlscript = new MySqlScript(connection, script);
+                 mysqlscript.Execute();
+                connection.Close();
+            }
+            if (connectionString != dbConnectionString)
+                connectionString = dbConnectionString;
+        }
+
+
+        /// <summary>
+        /// To check for database existing or not and returns bool
+        /// </summary>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        public static bool DbExists(string dbName)
+        {
+            try
+            {
+                MySqlConnection connection;
+                connection = new MySqlConnection(connectionString);
+                connection.Open();
+                string cmdStr = "show databases";
+                MySqlCommand cmd = new MySqlCommand(cmdStr, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                List<string> dbs = new List<string>();
+                while (reader.Read())
+                {
+                    dbs.Add(reader.GetString(0));
+                }
+                connection.Close();
+                if (dbs.Contains(dbName.ToLower()))
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                DbExists(dbName);//Run till connection is established.
+                return false;
+            }
+        }
+
+        #region Commented Codes by Kishore on 30 Aug 2019, since thes code are not used.
+
+
+        // public static int NoOfRowsOfaTable(string tableName)
+        // {
+        //     string commandLine = "SELECT COUNT(*) FROM " + tableName + "";
+        //     using (MySqlConnection connect = new MySqlConnection(dbConnectionString))
+        //     using (MySqlCommand cmd = new MySqlCommand(commandLine, connect))
+        //     {
+        //         connect.Open();
+        //         int count = 0;
+        //          count = Convert.ToInt32(cmd.ExecuteScalar());
+        //         return count;
+        //     }
+        // }
+
+        // public static void ExecuteBatchFile(string batchFileName)
+        // {
+        //     if (File.Exists(batchFileName))
+        //     {
+        //         Process proc = new Process();
+        //         proc.StartInfo.FileName = batchFileName;
+        //         proc.StartInfo.CreateNoWindow = false;
+        //         proc.Start();
+        //         proc.WaitForExit(5000);
+        //     }
+        // }
+
+        // public static bool CheckForMySQLServer()
+        //{
+        //    string query = "SELECT Name FROM Win32_Product WHERE Name LIKE '%MySQL Server%'";
+        //    var searcher = new ManagementObjectSearcher(query);
+        //    var collection = searcher.Get();
+        //    CustomMessageBox.Show(collection.Count.ToString());
+        //    return collection.Count > 0;
+        //}
+        #endregion
+
+        #endregion
+
+
+        #region Private Methods
+
+
+        /// <summary>
+        /// Getter and setter for database connection and database mapping
+        /// </summary>
+        private static ISessionFactory SessionFactory
+        {
+
+            get
+            {
+                {
+                    if (_sessionFactory == null)
+                    {
+                        //try
+                        {
+                            //serverPath = "192.168.0.146";
+                            //dbName = "intunewmodel";
+                            dbConnectionString = "Server=" + serverPath + ";Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                            _sessionFactory = Fluently.Configure().Database(MySQLConfiguration.Standard
+                                                           .ConnectionString(
+                                                               dbConnectionString)
+                                             )
+                                             .Mappings(m =>
+                                                       m.HbmMappings
+                                                           .AddFromAssemblyOf<Person>()).ExposeConfiguration(config =>
+                                                           {
+                                                               config.SetInterceptor(new CustomInterceptor());
+                                                           })
+                                              .ExposeConfiguration(BuildSchema)
+                                             .BuildSessionFactory();
+                        }
+                        //catch (Exception ex)
+                        //{
+                        //    int x = 0;
+                        //    int i = x;
+                        //}
+                    }
+                    return _sessionFactory;
+                }
+            }
+            set
+            {
+                _sessionFactory = value;
+            }
+        }
+
+        /// <summary>
+        /// To create a new database or alter the existing database.
+        /// </summary>
+        /// <param name="config"></param>
         private static void BuildSchema(NHibernate.Cfg.Configuration config)
         {
             if (!isDatabaseCreating)
@@ -260,84 +384,6 @@ namespace INTUSOFT.Data.Repository
             }
         }
 
-        public static void ExecuteSqlScriptFromFile(string fileName)
-        {
-            MySqlConnection connection;
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            if (File.Exists(fileName))
-            {
-                FileInfo file = new FileInfo(fileName);
-                string script = file.OpenText().ReadToEnd();
-                script = script.Replace("dbName", dbName);//This code will replace the database name in the Intusoft-runtime.properties file to the dbname in create_Inntusoft_MRS.sql file.
-                MySqlScript mysqlscript = new MySqlScript(connection, script);
-                 mysqlscript.Execute();
-                connection.Close();
-            }
-            if (connectionString != dbConnectionString)
-                connectionString = dbConnectionString;
-        }
-
-        public static bool DbExists(string dbName)
-        {
-            try
-            {
-                MySqlConnection connection;
-                connection = new MySqlConnection(connectionString);
-                connection.Open();
-                string cmdStr = "show databases";
-                MySqlCommand cmd = new MySqlCommand(cmdStr, connection);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                List<string> dbs = new List<string>();
-                while (reader.Read())
-                {
-                    dbs.Add(reader.GetString(0));
-                }
-                connection.Close();
-                if (dbs.Contains(dbName.ToLower()))
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception ex)
-            {
-                DbExists(dbName);//Run till connection is established.
-                return false;
-            }
-        }
-
-        public static int NoOfRowsOfaTable(string tableName)
-        {
-            string commandLine = "SELECT COUNT(*) FROM " + tableName + "";
-            using (MySqlConnection connect = new MySqlConnection(dbConnectionString))
-            using (MySqlCommand cmd = new MySqlCommand(commandLine, connect))
-            {
-                connect.Open();
-                int count = 0;
-                 count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count;
-            }
-        }
-
-        public static void ExecuteBatchFile(string batchFileName)
-        {
-            if (File.Exists(batchFileName))
-            {
-                Process proc = new Process();
-                proc.StartInfo.FileName = batchFileName;
-                proc.StartInfo.CreateNoWindow = false;
-                proc.Start();
-                proc.WaitForExit(5000);
-            }
-        }
-
-       public static bool CheckForMySQLServer()
-       {
-           string query = "SELECT Name FROM Win32_Product WHERE Name LIKE '%MySQL Server%'";
-           var searcher = new ManagementObjectSearcher(query);
-           var collection = searcher.Get();
-           CustomMessageBox.Show(collection.Count.ToString());
-           return collection.Count > 0;
-       }
+        #endregion
     }
 }
