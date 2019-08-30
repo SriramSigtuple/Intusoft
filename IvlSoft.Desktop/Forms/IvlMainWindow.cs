@@ -113,6 +113,8 @@ namespace INTUSOFT.Desktop.Forms
         public IvlMainWindow()
         {
             IVLVariables.GradientColorValues = new Desktop.GradientColor();
+
+            #region Read or write the prerequisite json file
             if (File.Exists(preRequisitesFileName))
             {
                 string str = File.ReadAllText(preRequisitesFileName);
@@ -125,6 +127,8 @@ namespace INTUSOFT.Desktop.Forms
                 string str = JsonConvert.SerializeObject(con);
                 File.WriteAllText(preRequisitesFileName, str);
             }
+            #endregion
+
             _eventHandler = IVLEventHandler.getInstance();
             prerequisiteList = new List<string>();
             prerequisiteList.Add(con.adobeReaderVersion);

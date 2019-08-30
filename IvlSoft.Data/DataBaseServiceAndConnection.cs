@@ -23,7 +23,7 @@ namespace INTUSOFT.Data
         string serviceName = string.Empty;
         public DataBaseServiceAndConnection(string ServiceName)
         {
-            serviceName = ServiceName;
+            serviceName = ServiceName; //to get the service name from the json file which is read in ivl main window class
         }
 
         public bool GetMysqlServiceStatus()
