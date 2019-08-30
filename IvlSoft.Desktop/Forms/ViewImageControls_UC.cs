@@ -634,10 +634,13 @@ namespace INTUSOFT.Desktop.Forms
                         }
                         Reports_dgv.Refresh();
                         reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
-                        isGridPopulating = false;
                     }
+                    isGridPopulating = false;
 
                 }
+                else
+                    isGridPopulating = false;
+
             }
             catch (Exception ex)
             {

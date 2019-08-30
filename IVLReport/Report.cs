@@ -821,7 +821,7 @@ namespace IVLReport
         /// Read an saved report.
         /// </summary>
         /// <param name="xmlFile">report string</param>
-        public bool readXML(string xmlData, bool isNewReport = false)
+        public bool readXML(string xmlData, bool isCloudReport = false)
         {
             bool isChangeTemplate = false;//ool created to handle return value of changetemplate.By Ashutosh 05-09-2018.
             try
@@ -880,7 +880,7 @@ namespace IVLReport
                 landscape_rb.Enabled = false;
                 foreach (Control item in this.reportCanvas_pnl.Controls)
                 {
-                    item.Enabled = isNewReport;
+                    item.Enabled = isCloudReport;
                 }
                 reportSize_cbx.Enabled = false;
                 this.Cursor = Cursors.Default;
@@ -897,12 +897,12 @@ namespace IVLReport
                         {
                             XmlSerializer xmlSer = new XmlSerializer(typeof(ReportXmlProperties));
                             ReportXmlProperties reportXml = xmlSer.Deserialize(xmlReader) as ReportXmlProperties;
-                            readExistingTemplate(reportXml,isNewReport);
+                            readExistingTemplate(reportXml,isCloudReport);
                         }
                     }
                 }
             }
-            return isNewReport;
+            return true;
         }
 
         private  void CreateQRCodeBM()

@@ -25,6 +25,7 @@ namespace INTUSOFT.Data.NewDbModel
             this.voidedDate = DateTime.Now;
             this.createdDate = DateTime.Now;
             this.lastModifiedDate = DateTime.Now;
+            this.cloudReports = new HashSet<CloudAnalysisReport>();
             #endregion
         }
 
