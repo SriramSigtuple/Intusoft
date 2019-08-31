@@ -36,7 +36,7 @@ namespace IVLUploader.ViewModels
         public  MainWindowViewModel()
        {
             logger.Info("Constructor Start");
-            //logger.
+            
             GlobalVariables.RESTClientHelper = RESTClientHelper.GetInstance();
             if(File.Exists("UploaderSettings.json"))
             {

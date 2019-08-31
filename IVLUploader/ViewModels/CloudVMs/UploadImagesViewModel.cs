@@ -24,12 +24,12 @@ namespace IVLUploader.ViewModels
         /// </summary>
         public UploadImagesViewModel(UploadModel uploadModel)
         {
-            logger.Info("");
+            
              RESTClientHelper = new RESTClientHelper();
 
             UploadModel = uploadModel;
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            logger.Info("");
+            
 
         }
 
@@ -51,14 +51,14 @@ namespace IVLUploader.ViewModels
         public async Task<Response_CookieModel> StartUpload(Cookie cookie, Dictionary<string,object> keyValuePairs)
 
         {
-            logger.Info("");
+            
 
             UploadModel.URL = UploadModel.URL_Model.GetUrl();
 
             Response_CookieModel response =  await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
 
            
-            logger.Info("");
+            
 
             return response;
         }

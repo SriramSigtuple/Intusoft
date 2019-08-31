@@ -29,13 +29,13 @@ namespace IntuUploader.Utilities
         public static RESTClientHelper GetInstance()
 
         {
-            logger.Info("");
+            
 
             if (clientHelper == null)
                 clientHelper = new RESTClientHelper();
 
             GlobalVariables.eventLog.Info("Get Singleton Instance of Rest Client Helper");
-            logger.Info("");
+            
 
             return clientHelper;
 
@@ -50,7 +50,7 @@ namespace IntuUploader.Utilities
         public async Task<Response_CookieModel> RestCall( BaseCloudModel model, Cookie cookie, Dictionary<string,object> keyValuePairs)
 
         {
-            logger.Info("");
+            
 
             string responseMsg = null;
             Response_CookieModel response_cookie = new Response_CookieModel();
@@ -173,24 +173,24 @@ namespace IntuUploader.Utilities
 
             //JToken token = (JToken)JsonConvert.DeserializeObject(responseMsg);
             //return token;
-            logger.Info("");
+            
 
             return response_cookie;
         }
 
         public string GetBodyForREST(Dictionary<string,object> inputDictionary)
         {
-            logger.Info("");
+            
 
             //reference https://stackoverflow.com/questions/5597349/how-do-i-convert-a-dictionary-to-a-json-string-in-c
             var convertedDictionary = inputDictionary.ToDictionary(item => item.Key.ToString(), item => item.Value.ToString()); //This converts your dictionary to have the Key and Value of type string.
-            logger.Info("");
+            
 
             return JsonConvert.SerializeObject(convertedDictionary);
         }
         public void PostImage(ref MultipartFormDataContent form, KeyValuePair<string,object> fileNameKVP)
         {
-            logger.Info("");
+            
 
             //HttpClient httpClient = new HttpClient();
             //MultipartFormDataContent form = new MultipartFormDataContent();
@@ -201,19 +201,19 @@ namespace IntuUploader.Utilities
 
             //httpClient.Dispose();
             //string sd = response.Content.ReadAsStringAsync().Result;
-            logger.Info("");
+            
 
         }
 
         private byte[] ImageFileToByteArray(FileInfo finf)
         {
-            logger.Info("");
+            
 
             FileStream fs = File.OpenRead(finf.FullName);
             byte[] bytes = new byte[fs.Length];
             fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
             fs.Close();
-            logger.Info("");
+            
 
             return bytes;
         }

@@ -24,11 +24,11 @@ namespace IVLUploader.ViewModels
         /// </summary>
         public InitiateAnalysisViewModel(InitiateAnalysisModel intiateAnalysisModel)
         {
-            logger.Info("");
+            
             rESTClient = new RESTClientHelper();
             InitiateAnalysisModel = intiateAnalysisModel;
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            logger.Info("");
+            
 
         }
 
@@ -56,13 +56,13 @@ namespace IVLUploader.ViewModels
         }
         public async Task<Response_CookieModel> InitiateAnalysis(Cookie cookie)
         {
-            logger.Info("");
+            
 
             InitiateAnalysisModel.Body = JsonConvert.SerializeObject(InitiateAnalysisModel);
             InitiateAnalysisModel.URL = InitiateAnalysisModel.URL_Model.GetUrl();
 
             Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(InitiateAnalysisModel, cookie, new System.Collections.Generic.Dictionary<string, object>());
-            logger.Info("");
+            
 
             return jsonToken;
         }

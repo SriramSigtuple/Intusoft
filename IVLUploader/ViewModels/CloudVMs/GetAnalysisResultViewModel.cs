@@ -23,23 +23,23 @@ namespace IVLUploader.ViewModels
         /// </summary>
         public GetAnalysisResultViewModel(GetAnalysisResultModel getAnalysisResultModel)
         {
-            logger.Info("");
+            
             rESTClient = new RESTClientHelper();
             GetAnalysisResultModel = getAnalysisResultModel;
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            logger.Info("");
+            
 
 
         }
 
         public async Task<Response_CookieModel> GetAnalysisResult(Cookie cookie)
         {
-            logger.Info("");
+            
 
             GetAnalysisResultModel.URL = GetAnalysisResultModel.URL_Model.GetUrl();
 
             Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(GetAnalysisResultModel, cookie, new Dictionary<string, object>());
-            logger.Info("");
+            
 
             return jsonToken;
             //JObject GetAnalysisStatus_JObject = JObject.Parse(jsonToken.responseBody);

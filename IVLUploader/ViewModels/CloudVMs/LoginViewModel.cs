@@ -35,13 +35,13 @@ namespace IVLUploader.ViewModels
         }
         public async Task<Response_CookieModel> StartLogin()
         {
-            logger.Info("");
+            
 
             LoginModel.Body = JsonConvert.SerializeObject(LoginModel);
             LoginModel.URL = LoginModel.URL_Model.GetUrl();
 
             Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(LoginModel,new System.Net.Cookie(),new System.Collections.Generic.Dictionary<string, object>());
-            logger.Info("");
+            
             return jsonToken;
         }
 

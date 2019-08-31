@@ -40,7 +40,17 @@ namespace IVLUploader
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
+        { 
+            if(_currentVm.InternetCheckViewModel.SentItemsViewModel.activeFileCloudVM.isBusy ||_currentVm.InternetCheckViewModel.OutboxViewModel.activeFileCloudVM.isBusy)
+            {
+                MessageBox.Show("Uploads are in progress ", "Warning", MessageBoxButton.OK);
+                while(_currentVm.InternetCheckViewModel.SentItemsViewModel.activeFileCloudVM.isBusy || _currentVm.InternetCheckViewModel.OutboxViewModel.activeFileCloudVM.isBusy)
+                {
+                    this.Cursor = Cursors.Wait;
+                }
+                this.Cursor = Cursors.Arrow;
+                //e.Cancel = true;
+            }
             //if (_currentVm.IsServerRunning && _currentVm.UploadFiles.Count > 0 && _currentVm.fileUploader.IsLogin)
             //{
             //    MessageBoxResult res = MessageBox.Show("Do you want to cancel the current upload ?", "Warning", MessageBoxButton.YesNo);

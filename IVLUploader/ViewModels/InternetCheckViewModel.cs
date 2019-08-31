@@ -26,15 +26,15 @@ namespace IVLUploader.ViewModels
         const int MaxRetryCount = 60;// TODO : to be configured
 
         int retryCount = 0;
-        OutboxViewModel OutboxViewModel;
-        SentItemsViewModel SentItemsViewModel;
+       public OutboxViewModel OutboxViewModel;
+       public SentItemsViewModel SentItemsViewModel;
         private static InternetCheckViewModel _internetCheckViewModel;
         /// <summary>
         /// Constructor
         /// </summary>
         private InternetCheckViewModel()
         {
-            logger.Info("");
+            
 
             OutboxViewModel = OutboxViewModel.GetInstance();
 
@@ -45,7 +45,7 @@ namespace IVLUploader.ViewModels
 
            
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
-            logger.Info("");
+            
 
 
         }
@@ -55,11 +55,11 @@ namespace IVLUploader.ViewModels
         /// <returns></returns>
         public static InternetCheckViewModel GetInstance()
         {
-            logger.Info("");
+            
 
             if (_internetCheckViewModel == null)
                 _internetCheckViewModel = new InternetCheckViewModel();
-            logger.Info("");
+            
 
             return _internetCheckViewModel;
         }
@@ -70,7 +70,7 @@ namespace IVLUploader.ViewModels
         /// <param name="state"></param>
         private void PingDNS(object state)
         {
-            logger.Info("");
+            
 
             IPStatus status = IPStatus.Unknown;
             try
@@ -93,6 +93,7 @@ namespace IVLUploader.ViewModels
                 else
                 {
                     InternetPresent = false;
+                    
                     if (RetryCount == MaxRetryCount)
                     {
                         //showMessageBox();
@@ -103,7 +104,7 @@ namespace IVLUploader.ViewModels
 
                 }
             }
-            logger.Info("");
+            
 
         }
 
@@ -127,6 +128,11 @@ namespace IVLUploader.ViewModels
                 SentItemsViewModel.StartStopSentItemsTimer(value);
                 OutboxViewModel.StartStopSentItemsTimer(value);
                 OnPropertyChanged("InternetPresent");
+                if(value == false)
+                {
+                    SentItemsViewModel.activeFileCloudVM.isBusy = false;
+                    OutboxViewModel.activeFileCloudVM.isBusy = false;
+                }
             }
         }
         /// <summary>

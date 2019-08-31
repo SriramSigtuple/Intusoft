@@ -10,7 +10,7 @@ namespace IntuUploader.Utilities
 
         public static string GetUrl(this URL_Model urlModel)
         {
-            logger.Info("");
+            
 
             var url = urlModel.API_URL;
 
@@ -22,7 +22,7 @@ namespace IntuUploader.Utilities
 
             if (!string.IsNullOrEmpty(urlModel.API_URL_End_Point))
                 url += "/" + urlModel.API_URL_End_Point;
-            logger.Info("");
+            
 
             return url;
         }
