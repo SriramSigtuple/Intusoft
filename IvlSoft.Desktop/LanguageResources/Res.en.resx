@@ -1972,4 +1972,10 @@
   <data name="ImagesSelected_Text" xml:space="preserve">
     <value> Image/s Selected</value>
   </data>
+  <data name="Internet_Connection_Status_Text" xml:space="preserve">
+    <value>Internet Connection Status</value>
+  </data>
+  <data name="No_Internet_Text" xml:space="preserve">
+    <value>No Internet connection. Please connect and retry.</value>
+  </data>
 </root>

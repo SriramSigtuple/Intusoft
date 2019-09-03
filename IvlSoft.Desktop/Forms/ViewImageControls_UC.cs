@@ -3263,11 +3263,16 @@ namespace INTUSOFT.Desktop.Forms
 
             if (images.Length <= Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._noOfImagesForReport.val))
             {
-                if(!isUpload)
+                if(IVLVariables.isInternetConnected)
                 {
                     PopulateModelsForMandaraUpload();
                     CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString() + " " + IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
 
+
+                }
+                else
+                {
+                    CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("No_Internet_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Internet_Connection_Status_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
 
                 }
 

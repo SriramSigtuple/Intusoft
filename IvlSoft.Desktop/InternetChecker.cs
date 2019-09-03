@@ -90,7 +90,7 @@ namespace INTUSOFT.Desktop
                     InternetPresent = false;
                     if (RetryCount == MaxRetryCount)
                     {
-                        CustomMessageBox.Show("'No Internet connection. Please connect and retry","Internet Connection Status",CustomMessageBoxButtons.OK,CustomMessageBoxIcon.Warning);
+                        //CustomMessageBox.Show("'No Internet connection. Please connect and retry","Internet Connection Status",CustomMessageBoxButtons.OK,CustomMessageBoxIcon.Warning);
                         RetryCount = 0;
                     }
                     else
