@@ -467,6 +467,7 @@ namespace IVLUploader.ViewModels
 
                 int rightImageCnt = (int)((double)right_tokens.Count / 9);
                 int leftImageCnt = (int)((double)left_tokens.Count / 9);
+
                 for (int i = 0; i < rightImageCnt; i++)
                 {
                     var indx = i * 9;
@@ -474,9 +475,10 @@ namespace IVLUploader.ViewModels
                     imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
                     imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
                     imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
+                    inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
+
                     if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
                     {
-                        inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
 
                         if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
                         {
@@ -497,6 +499,11 @@ namespace IVLUploader.ViewModels
 
                         }
                     }
+                    else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.RightAIImpressions))
+                    {
+                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                    }
                 }
                 for (int i = 0; i < leftImageCnt; i++)
                 {
@@ -507,10 +514,11 @@ namespace IVLUploader.ViewModels
                     imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
                     imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
                     imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
+                    inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
+
                     if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
                     {
 
-                        inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
                         if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
                         {
                             inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
@@ -529,6 +537,11 @@ namespace IVLUploader.ViewModels
                             inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
 
                         }
+                    }
+                    else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.LeftAIImpressions))
+                    {
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
                     }
 
                 }
