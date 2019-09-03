@@ -831,13 +831,7 @@ namespace INTUSOFT.Desktop.Forms
 
                                 }
                             }
-                            if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name)))
-                            {
-                                File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
-
-                            }
-                            
-                            File.Move(fileInfo.FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), fileInfo.Name));
+                          
 
                         }
                         catch (Exception ex)
@@ -896,7 +890,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 #endregion
 
-                if (!imaging_UC.isLiveScreen )
+                if (!imaging_UC.isLiveScreen && this.TopMost)
                 {
                     Args arg = new Args();
                     _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
@@ -925,10 +919,26 @@ namespace INTUSOFT.Desktop.Forms
             }
             else
             {
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+
                 foreach (var item in cloudAnalysisReports)
                 {
                     NewDataVariables._Repo.Update<CloudAnalysisReport>(item);
+                    List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.fileName).ToList();
+                    if(resultList.Any())
+                    {
+                        var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
+
+                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name)))
+                        {
+                            File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
+
+                        }
+
+                        File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
+                    }
                 }
+                 
             }
         }
 
@@ -1130,10 +1140,11 @@ namespace INTUSOFT.Desktop.Forms
                         serverTimer.Stop();
                     }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
             }
         }
 
@@ -1160,10 +1171,11 @@ namespace INTUSOFT.Desktop.Forms
                         emr_btn.Enabled = false;
                     }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
             }
 
         }
@@ -1276,7 +1288,7 @@ namespace INTUSOFT.Desktop.Forms
                     adobeOsInfo = (AdobeAndOSInfo)JsonConvert.DeserializeObject(adobeInfoJson, typeof(AdobeAndOSInfo));
 
                 }
-                catch (Exception)
+                catch (Exception )
                 {
 
                 }
@@ -1595,7 +1607,8 @@ namespace INTUSOFT.Desktop.Forms
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
             }
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
@@ -2523,7 +2536,7 @@ namespace INTUSOFT.Desktop.Forms
                             actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
                             actualMaskSettings.Add(maskSettings[i]);
                         }
-                        else if(!rightEyeImages.Any())
+                        else if(ImageNames[i].Contains("-RE-") &&  !rightEyeImages.Any())
                         {
                             rightEyeImages.Add(imageFilePath);
                             actualImageNames.Add("OD 1");

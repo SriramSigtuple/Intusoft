@@ -56,6 +56,7 @@ namespace INTUSOFT.Data.Repository
 
         public static void CloseSession()
         {
+            SessionFactory.Close();
             SessionFactory = null;
         }
 
@@ -123,12 +124,22 @@ namespace INTUSOFT.Data.Repository
         public static void OpenSession()
         {
             if (hibernateSession == null)
-                hibernateSession = SessionFactory.OpenSession();
+                hibernateSession =  SessionFactory.OpenSession();
             else
                 if (!hibernateSession.IsOpen)
-                    hibernateSession = SessionFactory.OpenSession();
-        }
+            {
+                hibernateSession= SessionFactory.OpenSession();
+            }
+          //else
+          //      hibernateSession = SessionFactory.GetCurrentSession();
 
+            //if (!CurrentSessionContext.HasBind(GetSessionFactory()))
+            //    CurrentSessionContext.Bind(GetSessionFactory().OpenSession());
+
+            //return GetSessionFactory().GetCurrentSession();
+
+        }
+    
         //Old Implementataion.
         //private static void BuildSchema(NHibernate.Cfg.Configuration config)
         //{

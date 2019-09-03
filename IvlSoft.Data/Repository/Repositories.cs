@@ -56,10 +56,14 @@ namespace INTUSOFT.Data.Repository
                         NHibernateHelper_MySQL.hibernateSession.Flush();
                         transaction.Commit();
                     }
+                    NHibernateHelper_MySQL.CloseSession();
+
                     return true;
                 }
                 catch (Exception ex)
                 {
+                    NHibernateHelper_MySQL.CloseSession();
+
                     ExceptionLogWriter.WriteLog(ex, Exception_Log);
                     return false;
                 }
@@ -79,10 +83,12 @@ namespace INTUSOFT.Data.Repository
                         NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                         transaction.Commit();
                     }
+                    NHibernateHelper_MySQL.CloseSession();
                     return true;
                 }
                 catch (Exception ex)
                 {
+                    NHibernateHelper_MySQL.CloseSession();
                     ExceptionLogWriter.WriteLog(ex, Exception_Log);
                     return false;
                 }
@@ -95,6 +101,7 @@ namespace INTUSOFT.Data.Repository
             NHibernateHelper_MySQL.OpenSession();
           // T t = NHibernateHelper_MySQL.hibernateSession.Load<T>(id);
             T t = NHibernateHelper_MySQL.hibernateSession.Get<T>(id);
+            NHibernateHelper_MySQL.CloseSession();
             return t;
         }
 
@@ -110,6 +117,8 @@ namespace INTUSOFT.Data.Repository
                 {
                     _genericObject[i] = GetRealEntity<T>(_genericObject[i]);
                 }
+                NHibernateHelper_MySQL.CloseSession();
+
                 return _genericObject;
             }
            
@@ -120,6 +129,8 @@ namespace INTUSOFT.Data.Repository
             {
                 NHibernateHelper_MySQL.OpenSession();
                 T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
+                NHibernateHelper_MySQL.CloseSession();
+
                 return value;
             }
           
@@ -138,6 +149,8 @@ namespace INTUSOFT.Data.Repository
                 //    T obj = _genericObject[i];
                 //    _genericObject[i] = _genericObject[i];
                 //}
+                NHibernateHelper_MySQL.CloseSession();
+
                 return _genericObject;
             }
            
@@ -153,26 +166,30 @@ namespace INTUSOFT.Data.Repository
                     NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                     transaction.Commit();
                 }
+                NHibernateHelper_MySQL.CloseSession();
+
             }
-            
+
         }
 
         public ICollection<T> GetByCategory<T>(string _Category, object val) where T : class,IBaseModel
         {
            // lock (this)
-            {
+                var _genericObject = new List<T>() ;
                 NHibernateHelper_MySQL.OpenSession();
                 {
                     using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
                     {
                         //ICriteria criteriacrit = NHibernateHelper_MySQL.hibernateSession.CreateCriteria<T>().Add(Restrictions.Eq(_Category, val));
-                        var _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(typeof(T)).Add(Restrictions.Eq(_Category, val)).List<T>();
+                         _genericObject = NHibernateHelper_MySQL.hibernateSession.CreateCriteria(typeof(T)).Add(Restrictions.Eq(_Category, val)).List<T>().ToList<T>();
                         _genericObject = _genericObject.Where(GetPredicate<T>(TypeOfPredicate.Voided)).ToList<T>();
-                        return _genericObject;
+                        //return _genericObject;
                     }
                 }
-            }
-           
+                NHibernateHelper_MySQL.CloseSession();
+
+            return _genericObject;
+
         }
         public int GetPatientCount() //to get the patient count through sql querying instead of getting patients from the database everytime, this has been added to solve the defect no 0001780 by Kishore on Jan 18 2018.
         {
@@ -190,6 +207,8 @@ namespace INTUSOFT.Data.Repository
                             //returnVal = Convert.ToInt32( queryVal.ToString());
                         }
                     }
+                NHibernateHelper_MySQL.CloseSession();
+
                 return returnVal;
             }
           
