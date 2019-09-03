@@ -476,7 +476,13 @@ namespace IVLUploader.ViewModels
                         QI_Result = (string)right_tokens[indx + 6],
                         ImageName = (string)right_tokens[indx]
                     });
-                    if (inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result.Contains("PDR"))
+                    if (inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1].Analysis_Result.Equals("PDR"))
+                    {
+                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
+                        break;
+                    }
+                   else if (inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1].Analysis_Result.Equals("NPDR"))
                     {
                         inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
@@ -499,10 +505,17 @@ namespace IVLUploader.ViewModels
                         QI_Result = (string)left_tokens[indx + 6],
                         ImageName = (string)left_tokens[indx]
                     });
-                    if (inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result.Contains("PDR"))
+                    if (inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1].Analysis_Result.Equals("PDR"))
                     {
                         inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
                         inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
+                        break;
+                    }
+                    else if (inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1].Analysis_Result.Equals("NPDR"))
+                    {
+                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                        inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
+
                     }
                     else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
                     {

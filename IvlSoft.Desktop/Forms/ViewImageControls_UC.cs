@@ -502,8 +502,8 @@ namespace INTUSOFT.Desktop.Forms
             {
                 if (!isGridPopulating && Reports_dgv.Width > 1)
                 {
-                    Reports_dgv.DataSource = new List<report>().ToDataTable();
                     isGridPopulating = true;
+                    Reports_dgv.DataSource = new List<report>().ToDataTable();
                     Reports_dgv.ForeColor = Color.Black;
                     //if (NewDataVariables.Reports == null)
                     if (NewDataVariables.Active_Visit.reports != null)
