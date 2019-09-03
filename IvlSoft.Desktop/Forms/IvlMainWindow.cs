@@ -787,7 +787,7 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles("*.json");
                 #region Inbox Response
                 foreach (var fileInfo in fileInfos)
                 {
@@ -848,7 +848,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Outbox Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles("*.json");
 
                 foreach (var fileInfo in fileInfos)
                 {
@@ -863,7 +863,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Active Directory Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles("*.json");
                 foreach (var fileInfo in fileInfos)
                 {
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
@@ -877,7 +877,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Sent items Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles();
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles("*.json");
                 foreach (var fileInfo in fileInfos)
                 {
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
@@ -889,6 +889,7 @@ namespace INTUSOFT.Desktop.Forms
 
                 }
                 #endregion
+                UpdateCloudFiles(changedCloudAnalysisReports);
 
                 //Console.WriteLine(this.WindowState.ToString()) ;
                 if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
@@ -896,7 +897,6 @@ namespace INTUSOFT.Desktop.Forms
                     Args arg = new Args();
                     _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
                 }
-                UpdateCloudFiles(changedCloudAnalysisReports);
             }
             catch (Exception ex)
             {
@@ -920,7 +920,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else
             {
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles();
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles("*.json");
 
                 foreach (var item in cloudAnalysisReports)
                 {
@@ -930,12 +930,12 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
-                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name)))
+                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name)) )
                         {
                             File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
 
                         }
-
+                        if(File.Exists(doneFile))
                         File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
                     }
                 }

@@ -470,58 +470,65 @@ namespace IVLUploader.ViewModels
                 for (int i = 0; i < rightImageCnt; i++)
                 {
                     var indx = i * 9;
-                    inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel
+                    ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
+                    imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
+                    imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
+                    imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
+                    if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
                     {
-                        Analysis_Result = (string)right_tokens[indx + 7],
-                        QI_Result = (string)right_tokens[indx + 6],
-                        ImageName = (string)right_tokens[indx]
-                    });
-                    if (inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1].Analysis_Result.Equals("PDR"))
-                    {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
-                        break;
-                    }
-                   else if (inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1].Analysis_Result.Equals("NPDR"))
-                    {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
+                        inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
 
-                    }
-                    else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
-                    {
-                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.RightEyeDetails[0] = inboxAnalysisStatusModel.RightEyeDetails[inboxAnalysisStatusModel.RightEyeDetails.Count - 1];
+                        if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
+                        {
+                            inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                            break;
+                        }
+                        else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
+                        {
+                            inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
 
+                        }
+                        else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
+                        {
+                            inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+
+                        }
                     }
                 }
                 for (int i = 0; i < leftImageCnt; i++)
                 {
                     var indx = i * 9;
-                    inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel
+
+                    ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
+
+                    imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
+                    imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
+                    imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
+                    if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
                     {
 
-                        Analysis_Result = (string)left_tokens[indx + 7],
-                        QI_Result = (string)left_tokens[indx + 6],
-                        ImageName = (string)left_tokens[indx]
-                    });
-                    if (inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1].Analysis_Result.Equals("PDR"))
-                    {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
-                        break;
-                    }
-                    else if (inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1].Analysis_Result.Equals("NPDR"))
-                    {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
+                        inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
+                        if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
+                        {
+                            inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+                            break;
+                        }
+                        else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
+                        {
+                            inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
 
-                    }
-                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
-                    {
-                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                        inboxAnalysisStatusModel.LeftEyeDetails[0] = inboxAnalysisStatusModel.LeftEyeDetails[inboxAnalysisStatusModel.LeftEyeDetails.Count - 1];
+                        }
+                        else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
+                        {
+                            inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
 
+                        }
                     }
 
                 }
