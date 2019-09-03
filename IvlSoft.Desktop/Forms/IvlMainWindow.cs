@@ -890,7 +890,8 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 #endregion
 
-                if (!imaging_UC.isLiveScreen && this.TopMost)
+                //Console.WriteLine(this.WindowState.ToString()) ;
+                if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
                 {
                     Args arg = new Args();
                     _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);

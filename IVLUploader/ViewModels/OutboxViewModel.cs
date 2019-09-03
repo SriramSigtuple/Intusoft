@@ -142,7 +142,7 @@ namespace IVLUploader.ViewModels
         {
             
 
-             FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles();
+             FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles("*.json");
             bool filesPresent = activeDirFileInfos.Any();
             {
                 try
