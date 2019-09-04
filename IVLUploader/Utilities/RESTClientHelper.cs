@@ -110,6 +110,7 @@ namespace IntuUploader.Utilities
                         }
                         else
                         {
+
                             FileInfo finf = (FileInfo)item.Value;
                             var stream = new FileStream(finf.FullName, FileMode.Open);
 
@@ -126,6 +127,7 @@ namespace IntuUploader.Utilities
                     }
 
                 }
+                
                 switch (model.MethodType.Method)
                 {
                     case "POST":
@@ -173,7 +175,10 @@ namespace IntuUploader.Utilities
 
             //JToken token = (JToken)JsonConvert.DeserializeObject(responseMsg);
             //return token;
-            
+
+            logger.Info(response_cookie.responseBody);
+            logger.Info(response_cookie.Cookie);
+            logger.Info(response_cookie.StatusCode);
 
             return response_cookie;
         }
@@ -185,8 +190,10 @@ namespace IntuUploader.Utilities
             //reference https://stackoverflow.com/questions/5597349/how-do-i-convert-a-dictionary-to-a-json-string-in-c
             var convertedDictionary = inputDictionary.ToDictionary(item => item.Key.ToString(), item => item.Value.ToString()); //This converts your dictionary to have the Key and Value of type string.
             
+            var dataJson = JsonConvert.SerializeObject(convertedDictionary);
+            logger.Info("Data = " + dataJson);
 
-            return JsonConvert.SerializeObject(convertedDictionary);
+            return dataJson;
         }
         public void PostImage(ref MultipartFormDataContent form, KeyValuePair<string,object> fileNameKVP)
         {

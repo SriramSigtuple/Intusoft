@@ -575,7 +575,8 @@ namespace INTUSOFT.Desktop.Forms
                            eyeFundusImage.visit = NewDataVariables.Active_Visit;
                           if( string.IsNullOrEmpty (eyeFundusImage.checkSum))
                             {
-                             eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName)));
+                                var finf = new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName));
+                                eyeFundusImage.checkSum = Common.MD5Helper.GetMd5Hash(finf)  ;
                             }
                            //newObs.eye_fundus_image = eyeFundusImage;
                            //eyeFundusImage.obs_id = newObs;

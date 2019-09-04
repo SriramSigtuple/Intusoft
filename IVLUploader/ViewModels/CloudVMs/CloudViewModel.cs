@@ -11,7 +11,7 @@ using BaseViewModel;
 using NLog;
 using System.Windows;
 using System;
-
+using IntuUploader.Utilities;
 namespace IVLUploader.ViewModels
 {
     /// <summary>
@@ -381,15 +381,29 @@ namespace IVLUploader.ViewModels
             {
                 Dictionary<string, object> kvp = new Dictionary<string, object>();
                 kvp.Add("relative_path", ActiveCloudModel.UploadModel.relative_path[i]);
+                var fInf = new FileInfo(ActiveCloudModel.UploadModel.images[i]);
                 kvp.Add("image", new FileInfo(ActiveCloudModel.UploadModel.images[i]));
+                var checkSumValue = fInf.GetMd5Hash();
+                if(ActiveCloudModel.UploadModel.checksums[i].Equals(checkSumValue))
                 kvp.Add("checksum", ActiveCloudModel.UploadModel.checksums[i]);
+                else
+                {
+                    kvp.Add("checksum", checkSumValue);
+                    logger.Info("CheckSum Mismatch");
+                    logger.Info("CheckSum From File" + ActiveCloudModel.UploadModel.checksums[i]);
+                    logger.Info("CheckSum From Code" + checkSumValue);
+
+                }
+
                 kvp.Add("slide_id", ActiveCloudModel.UploadModel.slide_id);
                 kvp.Add("upload_type", ActiveCloudModel.UploadModel.upload_type);
 
                 for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
                     {
                         response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
-
+                        logger.Info(response.responseBody);
+                        logger.Info(response.StatusCode);
+                        logger.Info(response.Cookie);
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
                             response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;

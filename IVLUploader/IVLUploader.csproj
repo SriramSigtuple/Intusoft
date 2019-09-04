@@ -131,6 +131,7 @@
     <Compile Include="LogginVM.cs" />
     <Compile Include="LoginHelper.cs" />
     <Compile Include="Commands\ShowSampleWindowCommand.cs" />
+    <Compile Include="Utilities\MD5Helper.cs" />
     <Compile Include="UploaderSettings.cs" />
     <Compile Include="Utilities\RESTClientHelper.cs" />
     <Compile Include="Utilities\URL_ComputeHelper.cs" />
