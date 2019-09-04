@@ -164,7 +164,7 @@ namespace IVLUploader.ViewModels
                 {
                     logger.Info(ex);
                     activeFileCloudVM.isBusy = false;
-                    
+                    CreateMissingPendingFiles();
                 }
 
             
@@ -173,27 +173,37 @@ namespace IVLUploader.ViewModels
 
         private  void UpdateActiveCloudVM(FileInfo fileInfo)
         {
-            if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+            try
             {
+                if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+                {
 
-                StartStopSentItemsTimer(false);
-                activeFileCloudVM.isBusy = true;
+                    StartStopSentItemsTimer(false);
+                    activeFileCloudVM.isBusy = true;
 
-                StreamReader st = new StreamReader(fileInfo.FullName);
-                var json = st.ReadToEnd();
-                st.Close();
-                st.Dispose();
-                //Console.WriteLine("sent items {0}", fileInfo.Name);
-                File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
+                    StreamReader st = new StreamReader(fileInfo.FullName);
+                    var json = st.ReadToEnd();
+                    st.Close();
+                    st.Dispose();
+                    //Console.WriteLine("sent items {0}", fileInfo.Name);
+                    File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
 
-                CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
 
 
-                activeFileCloudVM.SetCloudModel(activeFileCloudModel);
+                    activeFileCloudVM.SetCloudModel(activeFileCloudModel);
 
-                activeFileCloudVM.ActiveFnf = fileInfo;
-                activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.ActiveFnf = fileInfo;
+                    activeFileCloudVM.StartAnalsysisFlow();
+                }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                activeFileCloudVM.isBusy = false;
+                CreateMissingPendingFiles();
+            }
+            
                 
         }
         private void ActiveFileCloudVM_startStopEvent(bool isStart)

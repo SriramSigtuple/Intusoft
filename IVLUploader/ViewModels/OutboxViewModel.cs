@@ -156,13 +156,13 @@ namespace IVLUploader.ViewModels
         /// <param name="directoryEnum"></param>
         private void GetFileFromActiveDir(DirectoryEnum directoryEnum)
         {
-            
-
-             FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles("*.json");
-            bool filesPresent = activeDirFileInfos.Any();
+            try
             {
-                try
+
+                FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles("*.json");
+                bool filesPresent = activeDirFileInfos.Any();
                 {
+
                     if (filesPresent)
                     {
                         logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
@@ -180,16 +180,16 @@ namespace IVLUploader.ViewModels
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    logger.Info(ex);
-                    activeFileCloudVM.isBusy = false;
 
-                }
 
             }
 
-            
+            catch (Exception ex)
+            {
+                logger.Info(ex);
+                activeFileCloudVM.isBusy = false;
+                CreateMissingPendingFiles();
+            }
 
         }
 
@@ -199,27 +199,37 @@ namespace IVLUploader.ViewModels
         /// <param name="fileInfo"></param>
         private void UpdateActiveCloudVM(FileInfo fileInfo)
         {
-            if(File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+            try
             {
-                activeFileCloudVM.isBusy = true;
-                StartStopSentItemsTimer(false);
+                if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+                {
+                    activeFileCloudVM.isBusy = true;
+                    StartStopSentItemsTimer(false);
 
-                StreamReader st = new StreamReader(fileInfo.FullName);
-                var json = st.ReadToEnd();
-                st.Close();
-                st.Dispose();
-                logger.Info("active Dir filename {0}", fileInfo.Name);
+                    StreamReader st = new StreamReader(fileInfo.FullName);
+                    var json = st.ReadToEnd();
+                    st.Close();
+                    st.Dispose();
+                    logger.Info("active Dir filename {0}", fileInfo.Name);
 
-                File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
-                CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-               
-                activeFileCloudVM.SetCloudModel(activeFileCloudModel);
-                activeFileCloudVM.ActiveFnf = fileInfo;
+                    File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
+                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+
+                    activeFileCloudVM.SetCloudModel(activeFileCloudModel);
+                    activeFileCloudVM.ActiveFnf = fileInfo;
 
 
-                activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalsysisFlow();
 
+                }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                activeFileCloudVM.isBusy = false;
+                CreateMissingPendingFiles();
+            }
+            
           
         }
 
