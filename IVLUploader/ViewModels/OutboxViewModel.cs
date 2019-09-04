@@ -134,11 +134,27 @@ namespace IVLUploader.ViewModels
 
         }
 
+        public void CreateMissingPendingFiles()
+        {
+            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir)).GetFiles("*.json");
+            //the below code is to write a pending file if any existing file in active directory has no pending file.
+            if (activeDirFileInfoArr.Any())
+            {
+                if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending")))
+                {
+                    StreamWriter st1 = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
+                    st1.Flush();
+                    st1.Close();
+                    st1.Dispose();
+                }
+            }
+        }
+
         /// <summary>
         /// To update the active cloud view model.
         /// </summary>
         /// <param name="directoryEnum"></param>
-        private async void GetFileFromActiveDir(DirectoryEnum directoryEnum)
+        private void GetFileFromActiveDir(DirectoryEnum directoryEnum)
         {
             
 

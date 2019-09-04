@@ -197,7 +197,8 @@ namespace INTUSOFT.Desktop.Forms
             //toolStrip1.Renderer = new Custom.Controls.FormToolStripRenderer();
             UpdateControlsForCurrentResolution();
             UpdateFontForeColor();
-            Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
+            CreateReportDatagridviewColumns();
+            
             List<string> date = new List<string>();
             List<string> time = new List<string>();
             //Reports_dgv.DataSource = NewDataVariables.Reports.ToDataTable();
@@ -488,10 +489,6 @@ namespace INTUSOFT.Desktop.Forms
             showExisitingReports();
         }
 
-        private void CreateReportsDataGridView()
-        {
-
-        }
         bool isGridPopulating = false;
         /// <summary>
         /// The below code has been added to show the exisiting reports.
@@ -504,8 +501,8 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     isGridPopulating = true;
                     Reports_dgv.DataSource = new List<report>().ToDataTable();
+                    SetReportGridViewColumnVisibility();
                     Reports_dgv.ForeColor = Color.Black;
-                    //if (NewDataVariables.Reports == null)
                     if (NewDataVariables.Active_Visit.reports != null)
                     {
                         NewDataVariables.Reports = NewDataVariables.Active_Visit.reports.ToList();
@@ -519,50 +516,7 @@ namespace INTUSOFT.Desktop.Forms
                         if (NewDataVariables.Reports.Any())
                         {
                             Reports_dgv.DataSource = NewDataVariables.Reports.ToDataTable();
-                            if (!Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Delete_Text", IVLVariables.LangResourceCultureInfo)))
-                            {
-                                Reports_dgv.ClearSelection();
-                                var col2 = new DataGridViewTextBoxColumn();
-                                var col3 = new DataGridViewTextBoxColumn();
-                                var col4 = new DataGridViewTextBoxColumn();
-                                var col7 = new DataGridViewTextBoxColumn();
-                                DataGridViewLinkColumn col5 = new DataGridViewLinkColumn();
-                                DataGridViewImageColumn col6 = new DataGridViewImageColumn();
-                                col2.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col2.Name = IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col3.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col3.Name = IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col4.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col4.Name = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col7.HeaderText = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
-                                col7.Name = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
-                                //col5.HeaderText = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
-                                //col5.Name = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
-                                {
-                                    Reports_dgv.Columns.AddRange(new DataGridViewColumn[] { col2, col3, col4, col7 });
-                                }
-                                //DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-                                //foreach (DataGridViewRow item in Reports_dgv.Rows)
-                                //{
-                                //    DataGridViewLinkCell linCell = new DataGridViewLinkCell();
-                                //    linCell.Value = "view";
-                                //    //col5.Text = linCell;
-                                //    item.Cells[IVLVariables.LangResourceManager.GetString( "Report_View_Text] = linCell;
-                                //}
-                                for (int i = 0; i < Reports_dgv.Columns.Count; i++)
-                                {
-                                    if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) ||
-                                        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) ||
-                                        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)) ||// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-                                        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-                                    {
-                                        Reports_dgv.Columns[i].Visible = true;
-                                    }
-                                    else
-                                        Reports_dgv.Columns[i].Visible = false;
-                                }
-                            ResizeReportGridView();
-                            }
+
                             for (int i = 0; i < NewDataVariables.Reports.Count; i++)
                             {
                                 Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
@@ -593,12 +547,6 @@ namespace INTUSOFT.Desktop.Forms
                                     Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
                                 }
                             }
-                            //Console.WriteLine(Reports_dgv.Width);
-                            //Reports_dgv.Sort(Reports_dgv.Columns[1], ListSortDirection.Ascending);
-                            //for (int i = 0; i < Reports_dgv.Columns.Count; i++)
-                            //{
-                            //    Reports_dgv.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                            //}
                             
                             reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
                         }
@@ -632,6 +580,54 @@ namespace INTUSOFT.Desktop.Forms
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
                 //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
+        }
+
+
+        private void CreateReportDatagridviewColumns()
+        {
+            Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
+            if (!Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)) && !Reports_dgv.Columns.Contains(IVLVariables.LangResourceManager.GetString("Report_Delete_Text", IVLVariables.LangResourceCultureInfo)))
+            {
+                Reports_dgv.ClearSelection();
+                var col2 = new DataGridViewTextBoxColumn();
+                var col3 = new DataGridViewTextBoxColumn();
+                var col4 = new DataGridViewTextBoxColumn();
+                var col7 = new DataGridViewTextBoxColumn();
+                DataGridViewLinkColumn col5 = new DataGridViewLinkColumn();
+                DataGridViewImageColumn col6 = new DataGridViewImageColumn();
+                col2.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo); ;
+                col2.Name = IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo); ;
+                col3.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo); ;
+                col3.Name = IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo); ;
+                col4.HeaderText = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
+                col4.Name = IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo); ;
+                col7.HeaderText = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
+                col7.Name = IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo); ;
+                //col5.HeaderText = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
+                //col5.Name = IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo);;
+                {
+                    Reports_dgv.Columns.AddRange(new DataGridViewColumn[] { col2, col3, col4, col7 });
+                }
+                SetReportGridViewColumnVisibility();
+                
+            }
+        }
+
+        private void SetReportGridViewColumnVisibility()
+        {
+            for (int i = 0; i < Reports_dgv.Columns.Count; i++)
+            {
+                if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) ||
+                    Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) ||
+                    Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)) ||// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
+                    Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
+                {
+                    Reports_dgv.Columns[i].Visible = true;
+                }
+                else
+                    Reports_dgv.Columns[i].Visible = false;
+            }
+            ResizeReportGridView();
         }
 
         private void ResizeReportGridView()
