@@ -35,6 +35,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BaseViewModel">
+      <HintPath>..\BaseViewModel\bin\Release\BaseViewModel.dll</HintPath>
+    </Reference>
     <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common\bin\$(Configuration)\Common.dll</HintPath>
@@ -59,11 +62,15 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageLabelVM.cs" />
     <Compile Include="ImageViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ImageViewer.Designer.cs">
       <DependentUpon>ImageViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="labelText.xaml.cs">
+      <DependentUpon>labelText.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThumbnailController.cs" />
@@ -76,6 +83,7 @@
     <Compile Include="ThumbnailUI.Designer.cs">
       <DependentUpon>ThumbnailUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Value2StatusColorConvertor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ImageViewer.resx">
@@ -87,6 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="labelText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

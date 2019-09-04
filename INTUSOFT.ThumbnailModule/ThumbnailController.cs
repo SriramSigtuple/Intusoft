@@ -8,7 +8,7 @@ namespace INTUSOFT.ThumbnailModule
 {
     public class ThumbnailControllerEventArgs : EventArgs
     {
-        public ThumbnailControllerEventArgs(string imageFilename,int id ,int index,int side,bool isannotated,bool isCDR)
+        public ThumbnailControllerEventArgs(string imageFilename,int id ,int index,int side,bool isannotated,bool isCDR,int qiStatus)
         {
             this.ImageFilename = imageFilename;
             this.id = id;
@@ -16,7 +16,20 @@ namespace INTUSOFT.ThumbnailModule
             this.side = side;
             this.IsAnnotated = isannotated;
             this.isCDR = isCDR;
+            this.qiStatus = qiStatus;
         }
+        public ThumbnailControllerEventArgs(ThumbnailData thumbnailData,int index)
+        {
+            //this.ImageFilename = thumbnailData.fileName;
+            //this.id = thumbnailData.id;
+            this.index = index;
+            //this.side = thumbnailData.side;
+            //this.IsAnnotated = thumbnailData.isAnnotated;
+            //this.isCDR = thumbnailData.isCDR;
+            //this.qiStatus = thumbnailData.QIStatus;
+            this.thumbnailData = thumbnailData;
+        }
+
         public ThumbnailControllerEventArgs(string imageFilename, bool isRemove)
         {
             this.ImageFilename = imageFilename;
@@ -27,8 +40,11 @@ namespace INTUSOFT.ThumbnailModule
         public int side;
         public bool isRemove;
         public int index;
+        public int qiStatus;
         public bool IsAnnotated;
         public bool isCDR;
+        public ThumbnailData thumbnailData;
+
     }
 
     public delegate void ThumbnailControllerEventHandler(object sender, ThumbnailControllerEventArgs e);
@@ -67,10 +83,10 @@ namespace INTUSOFT.ThumbnailModule
             
         }
         //String[] ThumbnailNames;
-        public void CreateThumbnails( List<string> FileNames,List<int> ids,List<int> sides,List<bool> isannotated,List<bool> isCDR)
+        public void CreateThumbnails( List<string> FileNames,List<int> ids,List<int> sides,List<bool> isannotated,List<bool> isCDR,List<int> qiStatuses)
         {
             CancelScanning = false;
-            this.AddFolderIntern(FileNames, ids, sides, isannotated,isCDR);
+            this.AddFolderIntern(FileNames, ids, sides, isannotated,isCDR,qiStatuses);
             //ThumbnailNames = FileNames;
             //ThreadStart threadStart = new ThreadStart(AddFolder);
 
@@ -116,14 +132,14 @@ namespace INTUSOFT.ThumbnailModule
         //This below line has been added by Darshan on 18-09-2015 to check image is a valid image or not.
          
         public List<int> image_ids = new List<int>();  
- private void AddFolderIntern(List<string> folderPath,List<int> ids,List<int> sides,List<bool> isannotated,List<bool> isCDR)
+ private void AddFolderIntern(List<string> folderPath,List<int> ids,List<int> sides,List<bool> isannotated,List<bool> isCDR,List<int> qiStatuses)
         {
             int count =0;
             foreach(var file in folderPath)
             {
                // if (CancelScanning) break;
                 int indx = folderPath.IndexOf(file); ;
-                 this.OnAdd(this, new ThumbnailControllerEventArgs(file, ids[indx], count, sides[indx], isannotated[indx],isCDR[indx]));
+                 this.OnAdd(this, new ThumbnailControllerEventArgs(file, ids[indx], count, sides[indx], isannotated[indx],isCDR[indx],qiStatuses[indx]));
                 if(!ImageViewer.isValidImage) // check validity of the image
                     image_ids.Add(ids[indx]);// add corrupted images id to a list
 
@@ -140,7 +156,8 @@ namespace INTUSOFT.ThumbnailModule
      {
          // if (CancelScanning) break;
          int indx = ThumbnailList.IndexOf(file); ;
-         this.OnAdd(this, new ThumbnailControllerEventArgs(file.fileName, file.id, count, file.side, file.isAnnotated, file.isCDR));
+                this.OnAdd(this, new ThumbnailControllerEventArgs(file, indx));
+         //this.OnAdd(this, new ThumbnailControllerEventArgs(file.fileName, file.id, count, file.side, file.isAnnotated, file.isCDR,file.QIStatus));
          if (!ImageViewer.isValidImage) // check validity of the image
              image_ids.Add(file.id);// add corrupted images id to a list
 

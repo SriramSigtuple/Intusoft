@@ -478,11 +478,11 @@ namespace INTUSOFT.Desktop.Forms
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
                 Directory.CreateDirectory(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val);
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus));
 
             //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir)))
             //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir));
@@ -496,17 +496,17 @@ namespace INTUSOFT.Desktop.Forms
             //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir)))
             //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus));
 
-            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir)))
-                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir));
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus));
 
 
             #endregion 
@@ -787,7 +787,7 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles("*.json");
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
                 #region Inbox Response
                 foreach (var fileInfo in fileInfos)
                 {
@@ -848,7 +848,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Outbox Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir)).GetFiles("*.json");
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)).GetFiles("*.json");
 
                 foreach (var fileInfo in fileInfos)
                 {
@@ -863,7 +863,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Active Directory Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir)).GetFiles("*.json");
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)).GetFiles("*.json");
                 foreach (var fileInfo in fileInfos)
                 {
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
@@ -877,7 +877,7 @@ namespace INTUSOFT.Desktop.Forms
                 #endregion
 
                 #region Sent items Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir)).GetFiles("*.json");
+                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir,AnalysisType.Fundus)).GetFiles("*.json");
                 foreach (var fileInfo in fileInfos)
                 {
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
@@ -920,7 +920,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else
             {
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir)).GetFiles("*.json");
+                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
 
                 foreach (var item in cloudAnalysisReports)
                 {
@@ -930,13 +930,13 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
-                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name)) )
+                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name)) )
                         {
-                            File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
+                            File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
 
                         }
                         if(File.Exists(doneFile))
-                        File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir), resultList[0].Name));
+                        File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
                     }
                 }
                  

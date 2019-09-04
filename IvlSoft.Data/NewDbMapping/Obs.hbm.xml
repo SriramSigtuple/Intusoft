@@ -17,6 +17,7 @@
 	
 	<many-to-one name="createdBy" class="users" column="created_by" not-null="true" />
 	<property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />
+	<property name="qiStatus" type="int" column="qi_status" length="1" not-null="true" />
 	
 	<property name="voided" type="Boolean" column="voided" length="1" not-null="true" />
 	<many-to-one name="voidedBy" class="users" column="voided_by" />

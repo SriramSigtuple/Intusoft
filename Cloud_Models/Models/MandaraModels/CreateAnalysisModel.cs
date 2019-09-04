@@ -45,6 +45,8 @@ namespace Cloud_Models.Models
         /// ID of the Patient  
         /// </summary>
         public int PatientID = 0;
+
+        public int AnalysisType = 1; 
         public CreateAnalysisModel()
         {
             MethodType = HttpMethod.Post;

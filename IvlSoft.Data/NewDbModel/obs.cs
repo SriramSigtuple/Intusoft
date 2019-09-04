@@ -50,7 +50,8 @@ namespace INTUSOFT.Data.NewDbModel
             DateTime dateVoided,
             string voidedReason,
             string UUID,
-            string checkSum
+            string checkSum,
+            int QIStatus
                  )
         {
             return new obs
@@ -75,7 +76,9 @@ namespace INTUSOFT.Data.NewDbModel
                 groupMembers=groupMembers,
                 voidedBy = VoidedBy,
                 voidedReason = voidedReason,
-                checkSum = checkSum
+                checkSum = checkSum,
+                qiStatus = QIStatus
+
                 //uuid=UUID
             };
         }
@@ -86,6 +89,8 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual Concept concept { get; set; }
 
         public virtual int observationId { get; set; }
+
+        public virtual int qiStatus { get; set; }
 
         public virtual Patient patient { get; set; }
 

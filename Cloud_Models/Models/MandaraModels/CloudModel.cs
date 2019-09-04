@@ -15,7 +15,7 @@ namespace Cloud_Models.Models
         public int patientID;
         public int reportID;
         public int cloudID;
-
+        public int ImageID;
         public Cookie LoginCookie;
 
         public LoginModel LoginModel;

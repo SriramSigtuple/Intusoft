@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BaseViewModel;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -60,7 +61,10 @@ namespace INTUSOFT.ThumbnailModule
         public static bool isValueChanged = false;
         public event ThumbnailImageEventHandler OnImageSizeChanged;
         List<string> image_names;
-
+        Bitmap gradeableBM;
+        Bitmap nonGradeableBM;
+        Bitmap qiProgressBM;
+        Bitmap qiFailedBM;
         public void SizeChanged()
         {
             if (this.OnImageSizeChanged != null)//This condition check has been added to see that OnImageSizeChanged is initialized or not.
@@ -88,6 +92,28 @@ namespace INTUSOFT.ThumbnailModule
             m_Controller.OnAdd += new ThumbnailControllerEventHandler(m_Controller_OnAdd);
             m_Controller.corruptedImages += m_Controller_corruptedImages;
             image_names = new List<string>();
+
+            gradeableBM = new Bitmap(100, 200);
+            nonGradeableBM = new Bitmap(100, 200);
+            qiFailedBM = new Bitmap(100, 200);
+            qiProgressBM = new Bitmap(100, 200);
+
+            Graphics graphics = Graphics.FromImage(gradeableBM);
+            graphics.FillRectangle(Brushes.LimeGreen, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(nonGradeableBM);
+            graphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(qiFailedBM);
+            graphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
+            graphics = Graphics.FromImage(qiProgressBM);
+            graphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradeableBM.Width, gradeableBM.Height));
+            graphics.Dispose();
+
         }
 
         private void Thumbnail_FLP__CountChangedEvent()
@@ -121,14 +147,14 @@ namespace INTUSOFT.ThumbnailModule
             this.thumbnail_FLP.SelectedThumbnailFileNames.Clear();
             this.thumbnail_FLP.TotalThumbnails = 0;
         }
-        public void ChangeThumbnailSide(int id, int side, bool isannotated, bool isCDR,string fileName)
+        public void ChangeThumbnailSide(int id, int side, bool isannotated, bool isCDR,string fileName,int qiStatus = 0)
         {
             //isannotated has been added by Darshan to solve defect no 0000527: Annotated images displaying wrong names.
             foreach (Control item in thumbnail_FLP.Controls)
             {
                 if (item is ImageViewer)
                 {
-                    ImageViewer imgView = item as ImageViewer;
+                    ImageViewer imgView = (ImageViewer)item as ImageViewer;
                     if (imgView.ImageID == id)
                     {
                         imgView.ImageSide = side;
@@ -137,8 +163,9 @@ namespace INTUSOFT.ThumbnailModule
                         this.isCDR = isCDR;
                         imgView.IsAnnotated = isannotated;
                         imgView.IsCDR = isCDR;
-                        imgView.label1.Text = GetImage_Name(imgView.ImageSide, imgView.Index);
-                        imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+                        //imgView.QIStatus_P.BackColor = GetQIStatusColor(qiStatus);
+                        imgView.ImageLabel.Name =  GetImage_Name(imgView.ImageSide, imgView.Index);
+                        //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                         if (!string.IsNullOrEmpty(fileName))
                             imgView.ImageLocation = fileName;
                         imgView.LoadImage(imgView.ImageLocation, id, 256, 256);//Update the side changed image in thumbnail when image side is changed,added by Darshan(Defect no 0000702).
@@ -147,10 +174,23 @@ namespace INTUSOFT.ThumbnailModule
                 }
             }
         }
-        public void AddThumbnails(List<string> FileNames, List<int> ids, List<int> sides, List<bool> isannotated, List<bool> isCDR)
+        private Color GetQIStatusColor(int status)
+        {
+            switch(status)
+            {
+                case 1: return Color.Yellow;
+                case 2: return Color.Green;
+                case 3: return Color.Gray;
+                case 4: return Color.Red;
+                default: return Color.Transparent;
+
+
+            }
+        }
+        public void AddThumbnails(List<string> FileNames, List<int> ids, List<int> sides, List<bool> isannotated, List<bool> isCDR,List<int>qiStatuses)
         {
             this.thumbnail_FLP.Controls.Clear();
-            m_Controller.CreateThumbnails(FileNames, ids, sides, isannotated, isCDR);
+            m_Controller.CreateThumbnails(FileNames, ids, sides, isannotated, isCDR,qiStatuses);
         }
         public void AddThumbnails(List <ThumbnailData> ThumbnailList)
         {
@@ -170,11 +210,11 @@ namespace INTUSOFT.ThumbnailModule
                 {
                     if (items[j] is ImageViewer)
                     {
-                        ImageViewer imgView = items[j] as ImageViewer;
+                        ImageViewer imgView =(ImageViewer) items[j] as ImageViewer;
                         if (imgView.Index == thumbnail_FLP.SelectedThumbnails[i])
                         {
                             fileNames.Add(imgView.ImageLocation);
-                            ImageNames.Add(imgView.label1.Text);
+                            ImageNames.Add(imgView.ImageLabel.Name);
                         }
                     }
                 }
@@ -188,23 +228,23 @@ namespace INTUSOFT.ThumbnailModule
             //        if (imgView.IsActive)
             //        {
             //            fileNames.Add(imgView.ImageLocation);
-            //            ImageNames.Add(imgView.label1.Text);
+            //            ImageLabel.Names.Add(imgView.label1.Text);
             //        }
             //    }
             //}
             Dictionary<string, List<string>> retValFileNames = new Dictionary<string, List<string>>();
             retValFileNames.Add("FileNames", fileNames);
-            retValFileNames.Add("ImageNames", ImageNames);
+            retValFileNames.Add("ImageLabel.Names", ImageNames);
             return retValFileNames;
         }
 
         public void AddThumbnailEvent(Dictionary<string, object> val)
         {
             isThumbnailAddEvent = true;
-            AddImage(val["ImageName"] as string, (int)val["id"], -1, (int)val["side"], (bool)val["isannotated"], (bool)val["isCDR"]);
+            AddImage(val["ImageLabel.Name"] as string, (int)val["id"], -1, (int)val["side"], (bool)val["isannotated"], (bool)val["isCDR"]);
             imageadded(val);
             ImageViewer img = new ImageViewer();
-            img.ImageLocation = val["ImageName"] as string;
+            img.ImageLocation = val["ImageLabel.Name"] as string;
             if (!(bool)val.ContainsKey("isModifiedimage"))
                 ThumbnailSelected(img.ImageLocation);
             //  thumbnailSelection(img);
@@ -212,7 +252,7 @@ namespace INTUSOFT.ThumbnailModule
         public void AddThumbnailEvent(ThumbnailData thumbnailData)
         {
             isThumbnailAddEvent = true;
-            AddImage(thumbnailData.fileName, thumbnailData.id, -1, thumbnailData.side, thumbnailData.isAnnotated, thumbnailData.isCDR);
+            AddImage(thumbnailData);
            // imageadded(val);
             imageaddedThumbnailData(thumbnailData);
             ImageViewer img = new ImageViewer();
@@ -229,7 +269,7 @@ namespace INTUSOFT.ThumbnailModule
                 {
                     if (item is ImageViewer)
                     {
-                        ImageViewer img = item as ImageViewer;
+                        ImageViewer img = (ImageViewer)item as ImageViewer;
                         if (img.ImageLocation == (string)val)//;["ThumbnailFileName"])
                         {
                             if (!image_names.Contains(img.ImageLocation))
@@ -253,7 +293,7 @@ namespace INTUSOFT.ThumbnailModule
                 {
                     if (item is ImageViewer)
                     {
-                        ImageViewer img = item as ImageViewer;
+                        ImageViewer img = (ImageViewer)item as ImageViewer;
                         if (img.ImageLocation == (string)tdata.fileName)//;["ThumbnailFileName"])
                         {
                             if (!image_names.Contains(img.ImageLocation))
@@ -331,9 +371,14 @@ namespace INTUSOFT.ThumbnailModule
                 this.thumbnail_FLP.SelectedThumbnails.Clear();
             }
         }
+        //private void m_Controller_OnAdd(object sender, ThumbnailControllerEventArgs e)
+        //{
+        //    this.AddImage(e.ImageFilename, e.id, e.index, e.side, e.IsAnnotated, e.isCDR);
+        //    this.Invalidate();
+        //}
         private void m_Controller_OnAdd(object sender, ThumbnailControllerEventArgs e)
         {
-            this.AddImage(e.ImageFilename, e.id, e.index, e.side, e.IsAnnotated, e.isCDR);
+            this.AddImage(e.thumbnailData,e.index);
             this.Invalidate();
         }
         private void m_Controller_OnRemove(object sender, ThumbnailControllerEventHandler e)
@@ -360,12 +405,16 @@ namespace INTUSOFT.ThumbnailModule
 
         delegate void DelegateAddImage(string imageFilename, int id, int index, int side, bool isannotated, bool isCDR);
         private DelegateAddImage m_AddImageDelegate;
+        
+        delegate void DelegateAddImageTData(ThumbnailData thumbnailData, int index);
+        private DelegateAddImageTData m_AddImageDelegateTdata;
+
         delegate void DelegateRemoveImage(string str, int id);
 
         //bool val = false;
         private string GetImage_Name(int side, int index)
         {
-            string imageName = "";
+            string ImageName = "";
 
             if (side == 0)
             {
@@ -373,20 +422,20 @@ namespace INTUSOFT.ThumbnailModule
 
                 if (isannotated && isCDR)
                 {
-                    imageName = "OD" + "C" + "  " + val;
+                    ImageName = "OD" + "C" + "  " + val;
 
                 }
                 else if (isannotated)
                 {
-                    imageName = "OD" + "A" + "  " + val;
+                    ImageName = "OD" + "A" + "  " + val;
                 }
                 else if (isCDR)
                 {
-                    imageName = "OS" + "C" + "  " + val;
+                    ImageName = "OS" + "C" + "  " + val;
                 }
                 else
                 {
-                    imageName = "OD" + "  " + val;
+                    ImageName = "OD" + "  " + val;
                 }
                 //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
             }
@@ -396,21 +445,21 @@ namespace INTUSOFT.ThumbnailModule
                     string val = string.Format("{0}{1}", "0", index);
                     if (isannotated && isCDR)
                     {
-                        imageName = "OS" + "C" + "  " + val;
+                        ImageName = "OS" + "C" + "  " + val;
                     }
                     else if (isannotated)
                     {
-                        imageName = "OS" + "A" + "  " + val;
+                        ImageName = "OS" + "A" + "  " + val;
                     }
                     else if (isCDR)
                     {
-                        imageName = "OS" + "C" + "  " + val;
+                        ImageName = "OS" + "C" + "  " + val;
                     }
                     else
-                        imageName = "OS" + "  " + val;
+                        ImageName = "OS" + "  " + val;
                     //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                 }
-            return imageName;
+            return ImageName;
         }
 
         private void AddImage(string imageFilename, int id, int indx, int side, bool isannotated, bool isCDR)
@@ -447,9 +496,8 @@ namespace INTUSOFT.ThumbnailModule
                 imageViewer.IsAnnotated = isannotated;
                 imageViewer.IsCDR = isCDR;
                 imageViewer.IsThumbnail = true;
-                imageViewer.MouseClick += new MouseEventHandler(imageViewer_MouseClick);
                 // imageViewer.textBox1.Click += textBox1_Click;
-                imageViewer.label1.Click += label1_Click;
+                imageViewer.ImageLabel.ClickCommand = new RelayCommand(param=>ImageNameClick(imageViewer));
                 imageViewer.ImageLocation = imageFilename;
                 imageViewer.ImageSide = side;
                 string format_string;
@@ -467,8 +515,8 @@ namespace INTUSOFT.ThumbnailModule
                     imageViewer.Index = indx + 1;
                 this.isannotated = isannotated;
                 this.isCDR = isCDR;
-                imageViewer.label1.Text = GetImage_Name(imageViewer.ImageSide, imageViewer.Index);
-                imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index);
+                //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                 //if (indx == -1)
                 //{
                 //    imageViewer.Index = this.thumbnail_FLP.TotalThumbnails;//this.thumbnail_FLP.TotalThumbnails;
@@ -495,9 +543,100 @@ namespace INTUSOFT.ThumbnailModule
             }
         }
 
-        void label1_Click(object sender, EventArgs e)
+        private void AddImage(ThumbnailData thumbnailData,int indx = -1)
         {
-            ImageViewer img = (sender as Label).Parent as ImageViewer;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(m_AddImageDelegateTdata,  indx);
+                //this.BeginInvoke(m_AddImageDelegate, imageFilename, id, indx, side, isannotated, isCDR);
+            }
+            else
+            {
+                //int size = 192;
+                ImageViewer imageViewer = new ImageViewer();
+                imageViewer.Dock = DockStyle.Bottom;
+                imageViewer.LoadImage(thumbnailData.fileName, thumbnailData.id, 256, 256);
+                if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                {
+                    imageViewer.Width = 118;
+                    imageViewer.Height = 128;
+                }
+                else
+                    if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                {
+                    imageViewer.Width = 118;
+                    imageViewer.Height = 128;
+                }
+                else
+                {
+                    imageViewer.Width = 192;
+                    imageViewer.Height = 192;
+                }
+                //This below code has been added by darshan in order to solve defect no:0000530
+                this.thumbnail_FLP.AutoScrollOffset = new Point(0, imageViewer.Height);
+                imageViewer.IsAnnotated = isannotated;
+                imageViewer.IsCDR = isCDR;
+                imageViewer.IsThumbnail = true;
+                // imageViewer.textBox1.Click += textBox1_Click;
+                imageViewer.ImageLabel.ClickCommand = new RelayCommand(param => ImageNameClick(imageViewer));
+                imageViewer.Click += ImageViewer_Click;
+                imageViewer.ImageLocation = thumbnailData.fileName;
+                imageViewer.ImageSide = side;
+                string format_string;
+                //if (this.thumbnail_FLP.TotalThumbnails == 0)
+                //{
+                //    this.thumbnail_FLP.TotalThumbnails = 1;
+                //}
+                if (indx == -1)
+                {
+                    imageViewer.Index = this.thumbnail_FLP.TotalThumbnails;//this.thumbnail_FLP.TotalThumbnails;
+                    indx = ++imageViewer.Index;
+                    //imageViewer.Index = indx + 1;
+                }
+                else
+                    imageViewer.Index = indx + 1;
+                this.isannotated = isannotated;
+                this.isCDR = isCDR;
+                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index);
+               
+                imageViewer.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+                //if (indx == -1)
+                //{
+                //    imageViewer.Index = this.thumbnail_FLP.TotalThumbnails;//this.thumbnail_FLP.TotalThumbnails;
+                //    indx = imageViewer.Index;
+                //   // imageViewer.Index = indx + 1;
+
+                //}
+                //else
+                //    imageViewer.Index = indx + 1;
+                //// imageViewer.textBox1.Text = "\t\t" + this.thumbnailString + "\t\t" + imageViewer.Index.ToString();
+                //imageViewer.label1.Text = this.thumbnailString + "\t\t" + imageViewer.Index.ToString();
+                // imageViewer.label1.Enabled = false;
+                this.OnImageSizeChanged += new ThumbnailImageEventHandler(imageViewer.ImageSizeChanged);
+                //imageViewer.checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+                this.thumbnail_FLP.Controls.Add(imageViewer);
+                this.thumbnail_FLP.Controls.SetChildIndex(imageViewer, 0);
+                this.thumbnail_FLP.TotalThumbnails++;
+                //if (this.isFirstThumbnail_Selected)
+                //{
+                //    selectThumbnail(imageViewer);
+                //    this.thumbnail_FLP.Controls.SetChildIndex(imageViewer, 0);
+                //    isThumbnailAddEvent = false;
+                //}
+            }
+        }
+
+        private void ImageViewer_Click(object sender, EventArgs e)
+        {
+            ImageViewer img = sender as ImageViewer;
+            if (File.Exists(img.ImageLocation))
+                thumbnailSelection(img);
+        }
+
+        void ImageNameClick(ImageViewer img)
+        {
+            //ImageViewer img = (sender as Label).Parent as ImageViewer;
             if(File.Exists(img.ImageLocation))
             thumbnailSelection(img);
         }
@@ -520,20 +659,20 @@ namespace INTUSOFT.ThumbnailModule
             if (this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
             {
                 m_ActiveImageViewer.IsActive = false;
-                int imagename_index;
+                int ImageName_index;
                 //if (image_names.Last() == m_ActiveImageViewer.ImageLocation && image_names.First() == m_ActiveImageViewer.ImageLocation)
                 //{
-                imagename_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
+                ImageName_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
                 //}
                 //else
                 //    if (image_names.Last() == m_ActiveImageViewer.ImageLocation)
                 //    {
-                //        imagename_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
-                //        imagename_index--;
+                //        ImageLabel.Name_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
+                //        ImageLabel.Name_index--;
                 //    }
                 //    else
                 //    {
-                //        imagename_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
+                //        ImageLabel.Name_index = image_names.IndexOf(m_ActiveImageViewer.ImageLocation);
                 //    }
                 image_names.Remove(m_ActiveImageViewer.ImageLocation);
                 this.thumbnail_FLP.SelectedThumbnails.Remove(m_ActiveImageViewer.Index);
@@ -546,14 +685,14 @@ namespace INTUSOFT.ThumbnailModule
                     {
                         if (item is ImageViewer)
                         {
-                            ImageViewer imgViewer = item as ImageViewer;
+                            ImageViewer imgViewer = (ImageViewer)item as ImageViewer;
                             if (imgViewer.ImageLocation == image_names[image_names.Count - 1])
                             {
                                 ThumbnailData data = new ThumbnailData();
                                 data.fileName = imgViewer.ImageLocation;
                                 data.id = imgViewer.ImageID;
                                 data.side = imgViewer.ImageSide;
-                                data.Name = imgViewer.ImageName;
+                                data.Name = imgViewer.ImageLabel.Name;
                                 displayThumbnailImage(data);
                             }
                         }
@@ -576,7 +715,7 @@ namespace INTUSOFT.ThumbnailModule
                         data.fileName = m_ActiveImageViewer.ImageLocation;
                         data.id = m_ActiveImageViewer.ImageID;
                         data.side = m_ActiveImageViewer.ImageSide;
-                        data.Name = m_ActiveImageViewer.ImageName;
+                        data.Name = m_ActiveImageViewer.ImageLabel.Name;
                         displayThumbnailImage(data);
                     }
                     if (!this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
@@ -636,7 +775,7 @@ namespace INTUSOFT.ThumbnailModule
                                 data.fileName = m_ActiveImageViewer.ImageLocation;
                                 data.id = m_ActiveImageViewer.ImageID;
                                 data.side = m_ActiveImageViewer.ImageSide;
-                                data.Name = m_ActiveImageViewer.ImageName;
+                                data.Name = m_ActiveImageViewer.ImageLabel.Name;
                                 displayThumbnailImage(data);
                                 //verticalSroll(tempImgViewer);
                                 tempImgViewer.IsActive = true;
@@ -702,7 +841,7 @@ namespace INTUSOFT.ThumbnailModule
                 data.fileName = m_ActiveImageViewer.ImageLocation;
                 data.id = m_ActiveImageViewer.ImageID;
                 data.side = m_ActiveImageViewer.ImageSide;
-                data.Name = m_ActiveImageViewer.ImageName;
+                data.Name = m_ActiveImageViewer.ImageLabel.Name;
                 displayThumbnailImage(data);
             }
             
@@ -791,12 +930,12 @@ namespace INTUSOFT.ThumbnailModule
             ImageViewer[] item2 = new ImageViewer[thumbnail_FLP.Controls.Count];//to update the items in thumbnail after deleting image.By Ashutosh 11-08-2017.
             for (int i = 0; i < thumbnail_FLP.Controls.Count; i++)
             {
-                item2[i] = thumbnail_FLP.Controls[i] as ImageViewer;
+                item2[i] = (ImageViewer)thumbnail_FLP.Controls[i] as ImageViewer;
                 item2[i].Index = item2.Length - i;
             }
             for (int i = 0; i < thumbnail_FLP.Controls.Count; i++)
             {
-                item2[i] = thumbnail_FLP.Controls[i] as ImageViewer;
+                item2[i] = (ImageViewer)thumbnail_FLP.Controls[i] as ImageViewer;
                 if (i == 0)
                 {
                     this.thumbnailSelection(item2[i]);
@@ -820,8 +959,8 @@ namespace INTUSOFT.ThumbnailModule
                         //This below code has been added by darshan in order to solve defect no:0000530
                         isCDR = imgView.IsCDR;
                         isannotated = imgView.IsAnnotated;
-                        imgView.label1.Text = GetImage_Name(imgView.ImageSide, imgView.Index);
-                        imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+                        imgView.ImageLabel.Name = GetImage_Name(imgView.ImageSide, imgView.Index);
+                        //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                     }
                 }
             }
@@ -849,7 +988,7 @@ namespace INTUSOFT.ThumbnailModule
             //    return;
         }
 
-        public void SelectThumbnail(string imageName)
+        public void SelectThumbnail(string name)
         {
             foreach (var item in thumbnail_FLP.Controls)
             {
@@ -860,7 +999,7 @@ namespace INTUSOFT.ThumbnailModule
                     {
                         imgView.IsActive = false;
                     }
-                    if (imgView.ImageLocation == imageName)
+                    if (imgView.ImageLocation == name)
                     {
                         thumbnailSelection(imgView);
                         imgView.IsActive = true;
@@ -880,7 +1019,7 @@ namespace INTUSOFT.ThumbnailModule
                 {
                     if (item is ImageViewer)
                     {
-                        ImageViewer img = item as ImageViewer;
+                        ImageViewer img = (ImageViewer)item as ImageViewer;
                         if (img.Index == index)
                         {
                             //thumbnail_FLP.AutoScrollPosition = (img.Location);
@@ -913,7 +1052,7 @@ namespace INTUSOFT.ThumbnailModule
                 {
                     if (item is ImageViewer)
                     {
-                        ImageViewer img = item as ImageViewer;
+                        ImageViewer img = (ImageViewer)item ;
                         if (img.Index == index)
                         {
                             //thumbnail_FLP.AutoScrollPosition = (img.Location);
@@ -971,5 +1110,6 @@ namespace INTUSOFT.ThumbnailModule
         public string fileName;
         public string Name;
         public bool isModified;
+        public int QIStatus;
     }
 }

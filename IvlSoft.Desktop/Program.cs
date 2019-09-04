@@ -126,6 +126,8 @@ namespace INTUSOFT.Desktop
 
                             LogManager.Configuration.Variables["dir"] = IVLVariables.appDirPathName;
                             LogManager.Configuration.Variables["dir2"] = DateTime.Now.ToString("yyyy-MM-dd");
+                            LogManager.Configuration.Variables["dir3"] = DateTime.Now.ToString("HH:mm:ss");
+                         
                         #region Previous Log Codes Commented
                         //string filePath = new FileInfo(Application.ExecutablePath).Directory.FullName + Path.DirectorySeparatorChar
                         //                                 + "Logs" + Path.DirectorySeparatorChar + DateTime.Now.ToString("dd-MM-yyyy") + Path.DirectorySeparatorChar; //log file path

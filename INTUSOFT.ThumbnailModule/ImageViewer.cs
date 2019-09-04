@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using INTUSOFT.Custom.Controls;
 using Common;
+using System.Diagnostics;
+
 namespace INTUSOFT.ThumbnailModule
 {
     public partial class ImageViewer : FormUserControl
@@ -34,6 +36,8 @@ namespace INTUSOFT.ThumbnailModule
             m_IsActive = false;
             
             InitializeComponent();
+            ImageLabel = new ImageLabelVM();
+            labelText1.DataContext = ImageLabel;
             this.DoubleBuffered = true;
         }
         bool val = false;
@@ -113,12 +117,20 @@ namespace INTUSOFT.ThumbnailModule
             this.Invalidate();
         }
         private string _ImageName;
-        
 
-public string ImageName
-{
-  get { return  _ImageName = label1.Text; }
-}
+
+        private ImageLabelVM imageLabel;
+
+        public ImageLabelVM ImageLabel
+        {
+            get { return imageLabel; }
+            set { imageLabel = value;
+            }
+        }
+        //        public string ImageLabel.Name
+        //{
+        //  get { return  _ImageLabel.Name = label1.Text; }
+        //}
         public void LoadImage(string imageFilename, int Id, int width, int height)
         {
             Common.CommonMethods c = Common.CommonMethods.CreateInstance();
@@ -255,9 +267,6 @@ public string ImageName
         {
 
         }
-
-
-
 
     }
 }

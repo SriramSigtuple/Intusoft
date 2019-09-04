@@ -17,8 +17,9 @@ namespace INTUSOFT.Desktop
         public enum GainLevels { Low, Medium, High };
     public enum PageDisplayed {Login, Emr, Image };
     public enum CloudReportStatus {Initialized = 1,Uploading,Processing, View, Failed};
+    public enum QIStatus {NotAnalysed = 0, InProgress = 1, Gradable, NonGradable, Failed};
 
-    public enum ImagingPages { Live,View,Report,Annotation,CDR};
+    public enum AnalysisType { QI,Fundus}
     public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
 
 
@@ -110,7 +111,7 @@ namespace INTUSOFT.Desktop
         public static Common.ValidatorDatas.EmailsData mailData;
         public static Dictionary<string, string> observationDic;
         public static Common.Validators.FileNameFolderPathValidator FileFolderValidator;
-        public static ImagingPages CurrentImagingPage = ImagingPages.View;
+        //public static ImagingPages CurrentImagingPage = ImagingPages.View;
         public static DateTime currentVisitDateTime;
 
         /// <summary>
@@ -141,28 +142,29 @@ namespace INTUSOFT.Desktop
         public static Themes IVLThemes;
 
 
-        public static string GetCloudDirPath(DirectoryEnum directoryEnum)
+        public static string GetCloudDirPath(DirectoryEnum directoryEnum, AnalysisType analysisType)
         {
             var dirName = string.Empty;
+            var analysisName = analysisType.ToString("g");
             switch (directoryEnum)
             {
                 case DirectoryEnum.OutboxDir:
-                    dirName = CurrentSettings.CloudSettings.OutboxPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.OutboxPath.val);
                     break;
                 case DirectoryEnum.ActiveDir:
-                    dirName = CurrentSettings.CloudSettings.ActiveDirPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.ActiveDirPath.val);
                     break;
                 case DirectoryEnum.SentItemsDir:
-                    dirName = CurrentSettings.CloudSettings.SentItemsPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.SentItemsPath.val);
                     break;
                 case DirectoryEnum.ProcessedDir:
-                    dirName = CurrentSettings.CloudSettings.ProcessedPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.ProcessedPath.val);
                     break;
                 case DirectoryEnum.InboxDir:
-                    dirName = CurrentSettings.CloudSettings.InboxPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.InboxPath.val);
                     break;
                 case DirectoryEnum.ReadDir:
-                    dirName = CurrentSettings.CloudSettings.ReadPath.val;
+                    dirName = Path.Combine(analysisName, CurrentSettings.CloudSettings.ReadPath.val);
                     break;
                 case DirectoryEnum.LoginDir:
                     dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.LoginPath.val);

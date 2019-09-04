@@ -3418,7 +3418,7 @@ namespace INTUSOFT.Desktop.Forms
                 cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
                 var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
-                var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
+                var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
                 File.WriteAllText(outboxFilePath, cloudModelJson);
                 cloudAnalysisReport.fileName = new FileInfo(outboxFilePath).Name;
                 NewDataVariables._Repo.Update(cloudAnalysisReport);

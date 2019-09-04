@@ -220,3 +220,23 @@ END$$
 DELIMITER ;
 CALL add_check_sum_Col();
 COMMIT;
+
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
+drop procedure if exists add_qi_status_Col;
+CREATE PROCEDURE add_qi_status_Col() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'qi_status';
+IF colName is null THEN 
+    ALTER TABLE  observation ADD qi_status INT(1) NOT NULL  DEFAULT 0;
+END IF; 
+END$$
+DELIMITER ;
+CALL add_qi_status_Col();
+COMMIT;
