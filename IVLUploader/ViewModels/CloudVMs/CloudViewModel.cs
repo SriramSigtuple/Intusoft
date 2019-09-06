@@ -1,18 +1,15 @@
-﻿using IntuUploader;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Cloud_Models.Models;
-using Cloud_Models.Enums;
 using BaseViewModel;
 using NLog;
-using System.Windows;
 using System;
-
-namespace IVLUploader.ViewModels
+using IntuUploader.Utilities;
+namespace IntuUploader.ViewModels
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google
@@ -142,13 +139,13 @@ namespace IVLUploader.ViewModels
 
                     File.Delete(ActiveFnf.FullName);
 
-                    StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name));
+                    StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir,AnalysisType), ActiveFnf.Name));
                     st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
                     st.Flush();
                     st.Close();
                     st.Dispose();
 
-                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
+                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
                     st.Flush();
                     st.Close();
                     st.Dispose();
@@ -313,7 +310,9 @@ namespace IVLUploader.ViewModels
             catch (Exception ex)
             {
 
-                throw;
+                logger.Error(ex);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", ex.Message);
+
             }
 
            
@@ -325,40 +324,49 @@ namespace IVLUploader.ViewModels
         /// </summary>
         private void CreateAnalysis()
         {
-            logger.Info("Create Analysis");
-
-            logger.Info("Create Analysis  {0}", ActiveFnf.Name);
-            isValidLoginCookie();
-            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
-
-            ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
-            List<JToken> products = Login_JObject["message"]["products"].ToList();
-            foreach (var item in products)
+            try
             {
-               if( item.ToString().Contains("Fundus"))
-                    ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                logger.Info("Create Analysis");
 
+                logger.Info("Create Analysis  {0}", ActiveFnf.Name);
+                isValidLoginCookie();
+                JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+
+                ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+                List<JToken> products = Login_JObject["message"]["products"].ToList();
+                foreach (var item in products)
+                {
+                    if (item.ToString().Contains(AnalysisType.ToString("g")))
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+
+                }
+                ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
+                ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.StartCreateAnalysis(ActiveCloudModel.LoginCookie).Result;
+                logger.Info("Create Analysis Result status {0}  {1}", ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode, ActiveFnf.Name);
+
+                logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, Formatting.Indented));
+                if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    ActiveCloudModel.CreateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
+
+                    StartAnalsysisFlow();
+
+                }
+                else
+                {
+                    ActiveCloudModel.CreateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
+
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, "Create");
+
+
+                }
             }
-            ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
-            ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.StartCreateAnalysis(ActiveCloudModel.LoginCookie).Result;
-            logger.Info("Create Analysis Result status {0}  {1}",ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode,ActiveFnf.Name);
-
-            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, Formatting.Indented));
-            if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            catch (Exception ex)
             {
-                ActiveCloudModel.CreateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
-
-                StartAnalsysisFlow();
-
+                logger.Error(ex);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
             }
-            else
-            {
-                ActiveCloudModel.CreateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
 
-                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, "Create");
-
-
-            }
 
         }
 
@@ -368,54 +376,77 @@ namespace IVLUploader.ViewModels
         /// </summary>
         private void UploadFiles2Analysis()
         {
-            isValidLoginCookie();
-            logger.Info("Upload Analysis");
-
-            Response_CookieModel response = null;
-            ActiveCloudModel.UploadModel.analysis_id =
-            ActiveCloudModel.UploadModel.URL_Model.API_URL_Mid_Point =
-                               ActiveCloudModel.InitiateAnalysisModel.id =
-                                       (string)JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.responseBody)["analysis_id"];
-            ActiveCloudModel.UploadModel.slide_id = ActiveCloudModel.CreateAnalysisModel.sample_id;
-            for (int i = 0; i < ActiveCloudModel.UploadModel.images.Length; i++)
+            try
             {
-                Dictionary<string, object> kvp = new Dictionary<string, object>();
-                kvp.Add("relative_path", ActiveCloudModel.UploadModel.relative_path[i]);
-                kvp.Add("image", new FileInfo(ActiveCloudModel.UploadModel.images[i]));
-                kvp.Add("checksum", ActiveCloudModel.UploadModel.checksums[i]);
-                kvp.Add("slide_id", ActiveCloudModel.UploadModel.slide_id);
-                kvp.Add("upload_type", ActiveCloudModel.UploadModel.upload_type);
+                isValidLoginCookie();
+                logger.Info("Upload Analysis");
 
-                for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
+                Response_CookieModel response = null;
+                ActiveCloudModel.UploadModel.analysis_id =
+                ActiveCloudModel.UploadModel.URL_Model.API_URL_Mid_Point =
+                                   ActiveCloudModel.InitiateAnalysisModel.id =
+                                           (string)JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.responseBody)["analysis_id"];
+                ActiveCloudModel.UploadModel.slide_id = ActiveCloudModel.CreateAnalysisModel.sample_id;
+                for (int i = 0; i < ActiveCloudModel.UploadModel.images.Length; i++)
+                {
+                    Dictionary<string, object> kvp = new Dictionary<string, object>();
+                    kvp.Add("relative_path", ActiveCloudModel.UploadModel.relative_path[i]);
+                    var fInf = new FileInfo(ActiveCloudModel.UploadModel.images[i]);
+                    kvp.Add("image", new FileInfo(ActiveCloudModel.UploadModel.images[i]));
+                    var checkSumValue = fInf.GetMd5Hash();
+                    if (ActiveCloudModel.UploadModel.checksums[i].Equals(checkSumValue))
+                        kvp.Add("checksum", ActiveCloudModel.UploadModel.checksums[i]);
+                    else
+                    {
+                        kvp.Add("checksum", checkSumValue);
+                        logger.Info("CheckSum Mismatch");
+                        logger.Info("CheckSum From File" + ActiveCloudModel.UploadModel.checksums[i]);
+                        logger.Info("CheckSum From Code" + checkSumValue);
+
+                    }
+
+                    kvp.Add("slide_id", ActiveCloudModel.UploadModel.slide_id);
+                    kvp.Add("upload_type", ActiveCloudModel.UploadModel.upload_type);
+
+                    for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
                     {
                         response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
-
+                        logger.Info(response.responseBody);
+                        logger.Info(response.StatusCode);
+                        logger.Info(response.Cookie);
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
                             response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
                         }
                         else
                         {
-                             ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList.Add(response);   
-                             break;
+                            ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList.Add(response);
+                            break;
                         }
 
                     }
-            
 
+
+                }
+                logger.Info("Upload Analysis {0}", response.StatusCode);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    ManageFailureResponse(response, "Upload");
+
+                }
+                else if (GlobalVariables.isInternetPresent)
+                {
+                    ActiveCloudModel.UploadModel.CompletedStatus = true;
+                    StartAnalsysisFlow();
+                }
             }
-            logger.Info("Upload Analysis {0}",response.StatusCode);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            catch (Exception ex)
             {
-                ManageFailureResponse(response, "Upload");
+                logger.Error(ex);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
+            }
 
-            }
-            else if (GlobalVariables.isInternetPresent)
-            { 
-                ActiveCloudModel.UploadModel.CompletedStatus = true;
-                StartAnalsysisFlow();
-            }
         }
 
 
@@ -424,126 +455,160 @@ namespace IVLUploader.ViewModels
         /// </summary>
         private  void GetAnalysisResult()
         {
-            isValidLoginCookie();
-            logger.Info("Get Analysis Result");
-
-            ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
-            logger.Info("Get Analysis Result status {0}",ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
-
-            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
-
-            if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode == System.Net.HttpStatusCode.OK)
-
+            try
             {
+                isValidLoginCookie();
+                logger.Info("Get Analysis Result");
 
-                InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
+                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
+                logger.Info("Get Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
-                inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
-                inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
-                inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
-                inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
+                logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
 
-                JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
-                ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
-                List<JToken> products = Login_JObject["message"]["products"].ToList();
-                string sub_category = string.Empty;
-                foreach (var item in products)
+                if (ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode == System.Net.HttpStatusCode.OK)
+
                 {
-                    if (item.ToString().Contains("Fundus"))
+
+                    InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
+
+                    inboxAnalysisStatusModel.cloudID = ActiveCloudModel.cloudID;
+                    inboxAnalysisStatusModel.reportID = ActiveCloudModel.reportID;
+                    inboxAnalysisStatusModel.visitID = ActiveCloudModel.visitID;
+                    inboxAnalysisStatusModel.patientID = ActiveCloudModel.patientID;
+
+                    JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+                    ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+                    List<JToken> products = Login_JObject["message"]["products"].ToList();
+                    string sub_category = string.Empty;
+                    if(AnalysisType == AnalysisType.Fundus)
                     {
-                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
-                        sub_category = (string)item["sub_ctgy"];
+                        foreach (var item in products)
+                        {
+                            if (item.ToString().Contains("Fundus"))
+                            {
+                                ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                                sub_category = (string)item["sub_ctgy"];
+                            }
+                        }
+                        inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
+                          "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id);
                     }
-                }
-                inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
-                  "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id );
-                    
+                   
 
-                JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
-                inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
 
-                List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
-                List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
+                    JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
+                    inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
 
-                int rightImageCnt = (int)((double)right_tokens.Count / 9);
-                int leftImageCnt = (int)((double)left_tokens.Count / 9);
-                for (int i = 0; i < rightImageCnt; i++)
-                {
-                    var indx = i * 9;
-                    ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-                    imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
-                    imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
-                    imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
-                    if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
+                    List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
+                    List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
+
+                    int rightImageCnt = (int)((double)right_tokens.Count / 9);
+                    int leftImageCnt = (int)((double)left_tokens.Count / 9);
+
+                    for (int i = 0; i < rightImageCnt; i++)
                     {
+                        var indx = i * 9;
+                        ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
+                        imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
+                        imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
+                        imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
                         inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
 
-                        if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
+                        if(AnalysisType == AnalysisType.Fundus)
                         {
-                            inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-                            break;
-                        }
-                        else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                        {
-                            inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                            if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
+                            {
 
-                        }
-                        else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
-                        {
-                            inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                                if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
+                                {
+                                    inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                                    break;
+                                }
+                                else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
+                                {
+                                    inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
 
+                                }
+                                else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
+                                {
+                                    inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+
+                                }
+                            }
+                            else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.RightAIImpressions))
+                            {
+                                inboxAnalysisStatusModel.RightAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
+                            }
                         }
+                        
                     }
-                }
-                for (int i = 0; i < leftImageCnt; i++)
-                {
-                    var indx = i * 9;
-
-                    ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-
-                    imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
-                    imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
-                    imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
-                    if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
+                    for (int i = 0; i < leftImageCnt; i++)
                     {
+                        var indx = i * 9;
 
+                        ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
+
+                        imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
+                        imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
+                        imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
                         inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
-                        if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
-                        {
-                            inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-                            break;
-                        }
-                        else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                        {
-                            inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
 
-                        }
-                        else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
+                        if (AnalysisType == AnalysisType.Fundus)
                         {
-                            inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                            inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+                            if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
+                            {
 
+                                if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
+                                {
+                                    inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+                                    break;
+                                }
+                                else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
+                                {
+                                    inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+
+                                }
+                                else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
+                                {
+                                    inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
+                                    inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+
+                                }
+                            }
+                            else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.LeftAIImpressions))
+                            {
+                                inboxAnalysisStatusModel.LeftAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
+                                inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
+                            }
                         }
+
                     }
 
+                    Write2Inbox(inboxAnalysisStatusModel);
+
+
+                    //this.Dispose();
                 }
 
-                Write2Inbox(inboxAnalysisStatusModel);
+                else
+                {
 
-
-                //this.Dispose();
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, "Result");
+                }
             }
-
-            else
+            catch (Exception ex) 
             {
-                
-                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, "Result");
+
+                logger.Error(ex);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
             }
+            
 
         }
 
@@ -571,9 +636,9 @@ namespace IVLUploader.ViewModels
                     st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                 }
-                catch (Exception ex)
+                catch (Exception exp)
                 {
-                   
+                    logger.Error(exp);
                 }
                 finally
                 {
@@ -615,6 +680,7 @@ namespace IVLUploader.ViewModels
                 }
                 catch (Exception ex)
                 {
+                    logger.Error(ex);
                 }
 
                 finally
@@ -669,16 +735,16 @@ namespace IVLUploader.ViewModels
             StreamWriter st = null;
             try
             {
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name), false);
+                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name), false);
                 st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                 st.Flush();
                 st.Close();
                 st.Dispose();
 
 
-                if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name)))
-                    File.Delete(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name));
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir), ActiveFnf.Name), false);
+                if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name)))
+                    File.Delete(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name));
+                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name), false);
                 st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
                 st.Flush();
                 st.Close();
@@ -698,7 +764,7 @@ namespace IVLUploader.ViewModels
                 if (File.Exists(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending")))
                     File.Delete(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"));
 
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir), ActiveFnf.Name.Split('.')[0] + "_done"), false);
+                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_done"), false);
                 st.Flush();
                 st.Close();
                 st.Dispose();
@@ -761,7 +827,17 @@ namespace IVLUploader.ViewModels
 
             }
         }
+        private AnalysisType analysisType;
 
+        public AnalysisType AnalysisType
+        {
+            get { return analysisType; }
+            set
+            {
+                analysisType = value;
+                OnPropertyChanged("AnalysisType");
+            }
+        }
         public void SetValueMethod(object param)
         {
             //this.FileUploadStatus = 100;

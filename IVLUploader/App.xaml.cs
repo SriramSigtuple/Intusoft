@@ -1,16 +1,11 @@
-﻿using IntuUploader;
-using NLog;
+﻿using NLog;
+using SingleInstanceApp;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using SingleInstanceApp;
-namespace IVLUploader
+namespace IntuUploader
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -20,7 +15,7 @@ namespace IVLUploader
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private const string Unique = "IVLUploader";
+        private const string Unique = "IntuUploader";
 
     [STAThread]
         public static void Main()

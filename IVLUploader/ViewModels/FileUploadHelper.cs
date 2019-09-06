@@ -13,7 +13,7 @@ using System.Threading;
 using System.Net.Http.Handlers;
 using Cloud_Models.Models;
 
-namespace IVLUploader.ViewModels
+namespace IntuUploader.ViewModels
 {
    public class FileUploadHelper:ViewBaseModel
     {

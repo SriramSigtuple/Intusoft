@@ -3,7 +3,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                  xmlns:convertor="clr-namespace:IVLUploader.Convertors" mc:Ignorable="d"
+                  xmlns:convertor="clr-namespace:IntuUploader.Convertors" mc:Ignorable="d"
              xmlns:Logger="clr-namespace:NlogViewer;assembly=NlogViewer"
                  d:DesignHeight="230" d:DesignWidth="457"
                  DataContext="{Binding RelativeSource={RelativeSource Self}}">

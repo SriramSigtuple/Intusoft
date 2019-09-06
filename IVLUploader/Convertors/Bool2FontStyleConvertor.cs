@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-namespace IVLUploader.Convertors
+namespace IntuUploader.Convertors
 {
     public class Bool2FontStyleConvertor :IValueConverter
     {

@@ -1,14 +1,12 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
-using System.Windows.Input;
 using IntuUploader.Utilities;
 using Newtonsoft.Json;
-using System.Net;
-using System.Threading.Tasks;
-using IntuUploader;
 using NLog;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace IVLUploader.ViewModels
+namespace IntuUploader.ViewModels
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google

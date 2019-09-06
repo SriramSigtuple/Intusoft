@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace IVLUploader.Commands
+namespace IntuUploader.Commands
 {
     /// <summary>
     /// Hides the main window.

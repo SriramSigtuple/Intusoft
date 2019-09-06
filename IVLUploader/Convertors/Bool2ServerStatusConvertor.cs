@@ -7,7 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 
 
-namespace IVLUploader.Convertors
+namespace IntuUploader.Convertors
 {
   public  class Bool2ServerStatusConvertor : IValueConverter
     {

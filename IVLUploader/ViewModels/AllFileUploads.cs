@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BaseViewModel;
 using System.Collections.ObjectModel;
-namespace IVLUploader.ViewModels
+namespace IntuUploader.ViewModels
 {
    public class AllFileUploads : ViewBaseModel
     {

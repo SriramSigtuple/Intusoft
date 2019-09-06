@@ -1,23 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using IVLUploader.ViewModels;
-using Newtonsoft.Json;
-using System.IO;
-using NLog;
-
-namespace IVLUploader
+using IntuUploader.ViewModels;
+namespace IntuUploader
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -25,7 +9,6 @@ namespace IVLUploader
     public partial class MainWindow : Window
     {
         MainWindowViewModel _currentVm;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -37,14 +20,34 @@ namespace IVLUploader
         {
             _currentVm = new MainWindowViewModel();
             this.DataContext = _currentVm;
+            MyNotifyIcon.DataContext = this;
+
+        }
+        /// <summary>
+        /// Sets <see cref="Window.WindowStartupLocation"/> and
+        /// <see cref="Window.Owner"/> properties of a dialog that
+        /// is about to be displayed.
+        /// </summary>
+        /// <param name="window">The processed window.</param>
+        private void ShowDialog(Window window)
+        {
+            window.Owner = this;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.ShowDialog();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         { 
-            if(_currentVm.InternetCheckViewModel.SentItemsViewModel.activeFileCloudVM.isBusy ||_currentVm.InternetCheckViewModel.OutboxViewModel.activeFileCloudVM.isBusy)
+            if(_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
+                ||_currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.isBusy 
+                ||_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy)
             {
                 MessageBox.Show("Uploads are in progress ", "Warning", MessageBoxButton.OK);
-                while(_currentVm.InternetCheckViewModel.SentItemsViewModel.activeFileCloudVM.isBusy || _currentVm.InternetCheckViewModel.OutboxViewModel.activeFileCloudVM.isBusy)
+                while (_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
+                || _currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.isBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy)
                 {
                     this.Cursor = Cursors.Wait;
                 }

@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:INTUSOFT.ThumbnailModule"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              xmlns:convertor1="clr-namespace:INTUSOFT.ThumbnailModule.Con"
              mc:Ignorable="d" 
              d:DesignHeight="47.841" d:DesignWidth="554.817" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" >
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+            <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     
     <UserControl.Resources>
         <convertor1:Value2StatusColorConvertor x:Key="Value2StatusColorConvertor"/>

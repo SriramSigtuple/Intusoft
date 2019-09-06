@@ -18,46 +18,86 @@ namespace IntuUploader
         //    return fileInfos;
         //}
 
-        public static string GetDirPath(DirectoryEnum directoryEnum)
+        //public static string GetDirPath(DirectoryEnum directoryEnum)
+        //{
+        //    var dirName = string.Empty;
+        //    switch(directoryEnum)
+        //    {
+        //        case DirectoryEnum.OutboxDir:
+        //            dirName = GlobalVariables.CloudPaths.outboxStr;
+        //            break;
+        //        case DirectoryEnum.ActiveDir:
+        //            dirName = GlobalVariables.CloudPaths.activefileDirStr;
+        //            break;
+        //        case DirectoryEnum.LoginDir:
+        //            dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.loginDirStr);
+        //            break;
+        //        case DirectoryEnum.CreateAnalysis:
+        //            dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.createAnalysisDirStr);
+        //            break;
+        //        case DirectoryEnum.UploadDir:
+        //            dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.uploadDirStr);
+        //            break;
+        //        case DirectoryEnum.StartAnalysisDir:
+        //            dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.startAnalysisDirStr);
+        //            break;
+        //        case DirectoryEnum.SentItemsDir:
+        //            dirName = GlobalVariables.CloudPaths.sentItemsStr;
+        //            break;
+        //        case DirectoryEnum.ProcessedDir:
+        //            dirName = GlobalVariables.CloudPaths.ProcessedStr;
+        //            break;
+        //        case DirectoryEnum.InboxDir:
+        //            dirName = GlobalVariables.CloudPaths.inboxStr;
+        //            break;
+        //        case DirectoryEnum.ReadDir:
+        //            dirName = GlobalVariables.CloudPaths.ReadStr;
+        //            break;
+
+        //    }
+        //    return Path.Combine(GlobalVariables.CloudPaths.CloudPath, dirName);
+
+        //}
+
+        public static string GetDirPath(DirectoryEnum directoryEnum, AnalysisType analysisType)
         {
             var dirName = string.Empty;
-            switch(directoryEnum)
+            var analysisName = analysisType.ToString("g");
+            switch (directoryEnum)
             {
                 case DirectoryEnum.OutboxDir:
-                    dirName = GlobalVariables.CloudPaths.outboxStr;
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.outboxStr);
                     break;
                 case DirectoryEnum.ActiveDir:
-                    dirName = GlobalVariables.CloudPaths.activefileDirStr;
-                    break;
-                case DirectoryEnum.LoginDir:
-                    dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.loginDirStr);
-                    break;
-                case DirectoryEnum.CreateAnalysis:
-                    dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.createAnalysisDirStr);
-                    break;
-                case DirectoryEnum.UploadDir:
-                    dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.uploadDirStr);
-                    break;
-                case DirectoryEnum.StartAnalysisDir:
-                    dirName = Path.Combine(GlobalVariables.CloudPaths.activefileDirStr, GlobalVariables.CloudPaths.startAnalysisDirStr);
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.activefileDirStr);
                     break;
                 case DirectoryEnum.SentItemsDir:
-                    dirName = GlobalVariables.CloudPaths.sentItemsStr;
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.sentItemsStr);
                     break;
                 case DirectoryEnum.ProcessedDir:
-                    dirName = GlobalVariables.CloudPaths.ProcessedStr;
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.ProcessedStr);
                     break;
                 case DirectoryEnum.InboxDir:
-                    dirName = GlobalVariables.CloudPaths.inboxStr;
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.inboxStr);
                     break;
                 case DirectoryEnum.ReadDir:
-                    dirName = GlobalVariables.CloudPaths.ReadStr;
+                    dirName = Path.Combine(analysisName,GlobalVariables.CloudPaths.ReadStr);
                     break;
-
+                //case DirectoryEnum.LoginDir:
+                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.LoginPath.val);
+                //    break;
+                //case DirectoryEnum.CreateAnalysis:
+                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.CreateAnalysisPath.val);
+                //    break;
+                //case DirectoryEnum.UploadDir:
+                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.UploadPath.val);
+                //    break;
+                //case DirectoryEnum.StartAnalysisDir:
+                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.StartAnalysisPath.val);
+                //    break;
             }
             return Path.Combine(GlobalVariables.CloudPaths.CloudPath, dirName);
 
         }
-
     }
 }

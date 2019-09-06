@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace IVLUploader.Convertors
+namespace IntuUploader.Convertors
 {
     public class LogBgValueConverter : IValueConverter
     {

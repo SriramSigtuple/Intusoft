@@ -1,17 +1,14 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
-using IntuUploader;
 using Newtonsoft.Json;
 using NLog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Windows.Input;
 using System.Timers;
-using System.Windows;
+using System.Windows.Input;
 
-namespace IVLUploader.ViewModels
+namespace IntuUploader.ViewModels
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google
@@ -27,28 +24,34 @@ namespace IVLUploader.ViewModels
 
         int retryCount = 0;
         private static OutboxViewModel _outboxViewModel;
+
+        private string activeDirPath = string.Empty;
+        private string outboxDirPath = string.Empty;
         /// <summary>
         /// Constructor
         /// </summary>
-        private OutboxViewModel()
+        public OutboxViewModel(AnalysisType analysisType)
         {
-            
 
+            AnalysisType = analysisType;
+            activeDirPath = GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir, AnalysisType);
+            outboxDirPath = GlobalMethods.GetDirPath(DirectoryEnum.OutboxDir, AnalysisType);
             if (activeFileCloudVM == null)
             {
                 activeFileCloudVM = new CloudViewModel();
                 activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
+                activeFileCloudVM.AnalysisType = AnalysisType;
 
             }
             OutboxFileChecker = new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
             OutboxFileChecker.Elapsed += OutboxFileChecker_Elapsed;
-            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir)).GetFiles("*.json");
+            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(activeDirPath).GetFiles("*.json");
             //the below code is to write a pending file if any existing file in active directory has no pending file.
             if (activeDirFileInfoArr.Any())
             {
-                if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending")))
+                if (!File.Exists(Path.Combine(activeDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending")))
                 {
-                    StreamWriter st1 = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
+                    StreamWriter st1 = new StreamWriter(Path.Combine(activeDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
                     st1.Flush();
                     st1.Close();
                     st1.Dispose();
@@ -58,6 +61,18 @@ namespace IVLUploader.ViewModels
             
 
 
+        }
+
+        private AnalysisType analysisType;
+
+        public AnalysisType AnalysisType
+        {
+            get { return analysisType; }
+            set
+            {
+                analysisType = value;
+                OnPropertyChanged("AnalysisType");
+            }
         }
 
         private void OutboxFileChecker_Elapsed(object sender, ElapsedEventArgs e)
@@ -70,20 +85,20 @@ namespace IVLUploader.ViewModels
         //    OutBoxTimerCallback(new object());
         //}
 
-        /// <summary>
-        /// Implementing singleton pattern in order to handle to values across the module
-        /// </summary>
-        /// <returns></returns>
-        public static OutboxViewModel GetInstance()
-        {
+        ///// <summary>
+        ///// Implementing singleton pattern in order to handle to values across the module
+        ///// </summary>
+        ///// <returns></returns>
+        //public static OutboxViewModel GetInstance()
+        //{
             
 
-            if (_outboxViewModel == null)
-                _outboxViewModel = new OutboxViewModel();
+        //    if (_outboxViewModel == null)
+        //        _outboxViewModel = new OutboxViewModel();
             
 
-            return _outboxViewModel;
-        }
+        //    return _outboxViewModel;
+        //}
 
         /// <summary>
         /// Method to get Files from outbox to active directory
@@ -93,10 +108,10 @@ namespace IVLUploader.ViewModels
         {
             
 
-            FileInfo[] outboxDirFileInfoArr = new DirectoryInfo(GlobalMethods.GetDirPath(DirectoryEnum.OutboxDir)).GetFiles("*.json");
+            FileInfo[] outboxDirFileInfoArr = new DirectoryInfo(outboxDirPath).GetFiles("*.json");
 
 
-            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir)).GetFiles("*.json");
+            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(activeDirPath).GetFiles("*.json");
             if (!(activeDirFileInfoArr.Any()) && outboxDirFileInfoArr.Any())
             {
                 logger.Info(JsonConvert.SerializeObject(activeDirFileInfoArr, Formatting.Indented));
@@ -106,8 +121,8 @@ namespace IVLUploader.ViewModels
                     //the below code is to write a pending file in the active directory if any file in active file directory.
                     if(File.Exists(outboxDirFileInfoArr[0].FullName))
                     {
-                        outboxDirFileInfoArr[0].MoveTo(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), outboxDirFileInfoArr[0].Name));
-                       StreamWriter st1 = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir), outboxDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
+                        outboxDirFileInfoArr[0].MoveTo(Path.Combine(activeDirPath, outboxDirFileInfoArr[0].Name));
+                       StreamWriter st1 = new StreamWriter(Path.Combine(activeDirPath, outboxDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
                         st1.Flush();
                         st1.Close();
                         st1.Dispose();
@@ -134,19 +149,35 @@ namespace IVLUploader.ViewModels
 
         }
 
+        public void CreateMissingPendingFiles()
+        {
+            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(activeDirPath).GetFiles("*.json");
+            //the below code is to write a pending file if any existing file in active directory has no pending file.
+            if (activeDirFileInfoArr.Any())
+            {
+                if (!File.Exists(Path.Combine(activeDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending")))
+                {
+                    StreamWriter st1 = new StreamWriter(Path.Combine(activeDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
+                    st1.Flush();
+                    st1.Close();
+                    st1.Dispose();
+                }
+            }
+        }
+
         /// <summary>
         /// To update the active cloud view model.
         /// </summary>
         /// <param name="directoryEnum"></param>
-        private async void GetFileFromActiveDir(DirectoryEnum directoryEnum)
+        private void GetFileFromActiveDir(DirectoryEnum directoryEnum)
         {
-            
-
-             FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum)).GetFiles("*.json");
-            bool filesPresent = activeDirFileInfos.Any();
+            try
             {
-                try
+
+                FileInfo[] activeDirFileInfos = new DirectoryInfo(GlobalMethods.GetDirPath(directoryEnum, AnalysisType)).GetFiles("*.json");
+                bool filesPresent = activeDirFileInfos.Any();
                 {
+
                     if (filesPresent)
                     {
                         logger.Info(JsonConvert.SerializeObject(activeDirFileInfos[0], Formatting.Indented));
@@ -164,16 +195,16 @@ namespace IVLUploader.ViewModels
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    logger.Info(ex);
-                    activeFileCloudVM.isBusy = false;
 
-                }
 
             }
 
-            
+            catch (Exception ex)
+            {
+                logger.Info(ex);
+                activeFileCloudVM.isBusy = false;
+                CreateMissingPendingFiles();
+            }
 
         }
 
@@ -183,27 +214,37 @@ namespace IVLUploader.ViewModels
         /// <param name="fileInfo"></param>
         private void UpdateActiveCloudVM(FileInfo fileInfo)
         {
-            if(File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+            try
             {
-                activeFileCloudVM.isBusy = true;
-                StartStopSentItemsTimer(false);
+                if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
+                {
+                    activeFileCloudVM.isBusy = true;
+                    StartStopSentItemsTimer(false);
 
-                StreamReader st = new StreamReader(fileInfo.FullName);
-                var json = st.ReadToEnd();
-                st.Close();
-                st.Dispose();
-                logger.Info("active Dir filename {0}", fileInfo.Name);
+                    StreamReader st = new StreamReader(fileInfo.FullName);
+                    var json = st.ReadToEnd();
+                    st.Close();
+                    st.Dispose();
+                    logger.Info("active Dir filename {0}", fileInfo.Name);
 
-                File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
-                CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
-               
-                activeFileCloudVM.SetCloudModel(activeFileCloudModel);
-                activeFileCloudVM.ActiveFnf = fileInfo;
+                    File.Delete(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending"));
+                    CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
+
+                    activeFileCloudVM.SetCloudModel(activeFileCloudModel);
+                    activeFileCloudVM.ActiveFnf = fileInfo;
 
 
-                activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalsysisFlow();
 
+                }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                activeFileCloudVM.isBusy = false;
+                CreateMissingPendingFiles();
+            }
+            
           
         }
 

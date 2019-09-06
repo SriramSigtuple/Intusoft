@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 namespace IntuUploader
 {
     public enum DirectoryEnum {OutboxDir,ActiveDir,LoginDir,CreateAnalysis,UploadDir,StartAnalysisDir,SentItemsDir,ProcessedDir,InboxDir,ReadDir };
+
+    public enum AnalysisType { QI, Fundus }
+
     public static class GlobalVariables
     {
         public static RESTClientHelper RESTClientHelper;

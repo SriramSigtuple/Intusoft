@@ -17,6 +17,7 @@ namespace INTUSOFT.ThumbnailModule
         private ThumbnailController m_Controller;
         private ImageViewer m_ActiveImageViewer;
         private bool isThumbnailAddEvent = false;
+        Random r;
         //    public ImageRepository imageRepo;
         public delegate void ShowImageFromThumbnail(ThumbnailData s, EventArgs e);
         public event ShowImageFromThumbnail showImgFromThumbnail;
@@ -46,8 +47,6 @@ namespace INTUSOFT.ThumbnailModule
         public string DeleteSingleImageMsg = "";
         public string DeletedImageMsg = "";
         public string DeletedImageHeader = "";
-        public bool isannotated = false;
-        public bool isCDR = false;
         public bool isCaptureSequenceInProgress = false;
         public string thumbnailString = "Image";
         public int sizeChanged = 1;
@@ -80,6 +79,7 @@ namespace INTUSOFT.ThumbnailModule
             this.AutoScroll = true;
             corrupted_images = new List<int>();
             thumbnail_FLP._CountChangedEvent += Thumbnail_FLP__CountChangedEvent;
+            r = new Random(5);
             //    imageRepo = new ImageRepository();
             //_eventHandler = IVLEventHandler.getInstance();
             //_eventHandler.Register(__eventHandler.ThumbnailAdd, new NotificationHandler(AddThumbnailEvent));
@@ -159,12 +159,10 @@ namespace INTUSOFT.ThumbnailModule
                     {
                         imgView.ImageSide = side;
                         this.side = side;
-                        this.isannotated = isannotated;
-                        this.isCDR = isCDR;
                         imgView.IsAnnotated = isannotated;
                         imgView.IsCDR = isCDR;
                         //imgView.QIStatus_P.BackColor = GetQIStatusColor(qiStatus);
-                        imgView.ImageLabel.Name =  GetImage_Name(imgView.ImageSide, imgView.Index);
+                        imgView.ImageLabel.Name =  GetImage_Name(imgView.ImageSide, imgView.Index,imgView.IsAnnotated,imgView.IsCDR);
                         //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                         if (!string.IsNullOrEmpty(fileName))
                             imgView.ImageLocation = fileName;
@@ -234,7 +232,7 @@ namespace INTUSOFT.ThumbnailModule
             //}
             Dictionary<string, List<string>> retValFileNames = new Dictionary<string, List<string>>();
             retValFileNames.Add("FileNames", fileNames);
-            retValFileNames.Add("ImageLabel.Names", ImageNames);
+            retValFileNames.Add("ImageNames", ImageNames);
             return retValFileNames;
         }
 
@@ -412,7 +410,7 @@ namespace INTUSOFT.ThumbnailModule
         delegate void DelegateRemoveImage(string str, int id);
 
         //bool val = false;
-        private string GetImage_Name(int side, int index)
+        private string GetImage_Name(int side, int index, bool isAnnotated, bool isCDR)
         {
             string ImageName = "";
 
@@ -420,12 +418,12 @@ namespace INTUSOFT.ThumbnailModule
             {
                 string val = string.Format("{0}{1}", "0", index);
 
-                if (isannotated && isCDR)
+                if (isAnnotated && isCDR)
                 {
                     ImageName = "OD" + "C" + "  " + val;
 
                 }
-                else if (isannotated)
+                else if (isAnnotated)
                 {
                     ImageName = "OD" + "A" + "  " + val;
                 }
@@ -443,11 +441,11 @@ namespace INTUSOFT.ThumbnailModule
                 if (side == 1)
                 {
                     string val = string.Format("{0}{1}", "0", index);
-                    if (isannotated && isCDR)
+                    if (isAnnotated && isCDR)
                     {
                         ImageName = "OS" + "C" + "  " + val;
                     }
-                    else if (isannotated)
+                    else if (isAnnotated)
                     {
                         ImageName = "OS" + "A" + "  " + val;
                     }
@@ -462,6 +460,55 @@ namespace INTUSOFT.ThumbnailModule
             return ImageName;
         }
 
+        private string GetImage_Name(ThumbnailData thumbnailData , int index)
+        {
+            string ImageName = "";
+
+            if (side == 0)
+            {
+                string val = string.Format("{0}{1}", "0", index);
+
+                if (thumbnailData.isCDR && thumbnailData.isAnnotated)
+                {
+                    ImageName = "OD" + "C" + "  " + val;
+
+                }
+                else if (thumbnailData.isAnnotated)
+                {
+                    ImageName = "OD" + "A" + "  " + val;
+                }
+                else if (thumbnailData.isCDR)
+                {
+                    ImageName = "OS" + "C" + "  " + val;
+                }
+                else
+                {
+                    ImageName = "OD" + "  " + val;
+                }
+                //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+            }
+            else
+                if (side == 1)
+            {
+                string val = string.Format("{0}{1}", "0", index);
+                if (thumbnailData.isCDR && thumbnailData.isAnnotated)
+                {
+                    ImageName = "OS" + "C" + "  " + val;
+                }
+                else if (thumbnailData.isAnnotated)
+                {
+                    ImageName = "OS" + "A" + "  " + val;
+                }
+                else if (thumbnailData.isCDR)
+                {
+                    ImageName = "OS" + "C" + "  " + val;
+                }
+                else
+                    ImageName = "OS" + "  " + val;
+                //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+            }
+            return ImageName;
+        }
         private void AddImage(string imageFilename, int id, int indx, int side, bool isannotated, bool isCDR)
         {
             if (this.InvokeRequired)
@@ -513,9 +560,9 @@ namespace INTUSOFT.ThumbnailModule
                 }
                 else
                     imageViewer.Index = indx + 1;
-                this.isannotated = isannotated;
-                this.isCDR = isCDR;
-                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index);
+                imageViewer.IsAnnotated = isannotated;
+                imageViewer.IsCDR = isCDR;
+                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index,imageViewer.IsAnnotated,imageViewer.IsCDR);
                 //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                 //if (indx == -1)
                 //{
@@ -574,14 +621,14 @@ namespace INTUSOFT.ThumbnailModule
                 }
                 //This below code has been added by darshan in order to solve defect no:0000530
                 this.thumbnail_FLP.AutoScrollOffset = new Point(0, imageViewer.Height);
-                imageViewer.IsAnnotated = isannotated;
-                imageViewer.IsCDR = isCDR;
+                imageViewer.IsAnnotated = thumbnailData.isAnnotated;
+                imageViewer.IsCDR = thumbnailData.isCDR;
                 imageViewer.IsThumbnail = true;
                 // imageViewer.textBox1.Click += textBox1_Click;
                 imageViewer.ImageLabel.ClickCommand = new RelayCommand(param => ImageNameClick(imageViewer));
                 imageViewer.Click += ImageViewer_Click;
                 imageViewer.ImageLocation = thumbnailData.fileName;
-                imageViewer.ImageSide = side;
+                imageViewer.ImageSide = thumbnailData.side;
                 string format_string;
                 //if (this.thumbnail_FLP.TotalThumbnails == 0)
                 //{
@@ -595,10 +642,10 @@ namespace INTUSOFT.ThumbnailModule
                 }
                 else
                     imageViewer.Index = indx + 1;
-                this.isannotated = isannotated;
-                this.isCDR = isCDR;
-                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index);
-               
+                //this.isannotated = isannotated;
+                //this.isCDR = isCDR;
+                imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index, imageViewer.IsAnnotated, imageViewer.IsCDR);
+
                 imageViewer.ImageLabel.QiStatus = thumbnailData.QIStatus;
                 //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                 //if (indx == -1)
@@ -957,9 +1004,9 @@ namespace INTUSOFT.ThumbnailModule
                     {
                         imgView.Index = count--;
                         //This below code has been added by darshan in order to solve defect no:0000530
-                        isCDR = imgView.IsCDR;
-                        isannotated = imgView.IsAnnotated;
-                        imgView.ImageLabel.Name = GetImage_Name(imgView.ImageSide, imgView.Index);
+                        //isCDR = imgView.IsCDR;
+                        //isannotated = imgView.IsAnnotated;
+                        imgView.ImageLabel.Name = GetImage_Name(imgView.ImageSide, imgView.Index,imgView.IsAnnotated,imgView.IsCDR);
                         //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                     }
                 }

@@ -4,8 +4,7 @@ using System;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Input;
-using IntuUploader;
-namespace IVLUploader.ViewModels
+namespace IntuUploader.ViewModels
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google
@@ -26,19 +25,42 @@ namespace IVLUploader.ViewModels
         const int MaxRetryCount = 60;// TODO : to be configured
 
         int retryCount = 0;
-       public OutboxViewModel OutboxViewModel;
-       public SentItemsViewModel SentItemsViewModel;
         private static InternetCheckViewModel _internetCheckViewModel;
+
+        private UploaderVM qIUploaderVM;
+
+        public UploaderVM QIUploaderVM
+        {
+            get { return qIUploaderVM; }
+            set { qIUploaderVM = value;
+                OnPropertyChanged("QIUploaderVM");
+
+            }
+        }
+
+        private UploaderVM fundusUploaderVM;
+
+        public UploaderVM FundusUploaderVM
+        {
+            get { return fundusUploaderVM; }
+            set { fundusUploaderVM = value;
+                OnPropertyChanged("FundusUploaderVM");
+
+            }
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
         private InternetCheckViewModel()
         {
-            
+            QIUploaderVM = new UploaderVM(AnalysisType.QI);
+            FundusUploaderVM = new UploaderVM(AnalysisType.QI);
 
-            OutboxViewModel = OutboxViewModel.GetInstance();
+            //OutboxViewModel = OutboxViewModel.GetInstance();
 
-            SentItemsViewModel = SentItemsViewModel.GetInstance();
+            //SentItemsViewModel = SentItemsViewModel.GetInstance();
+
             myPing = new Ping();
             pingOptions = new PingOptions();
             PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0,(int) (GlobalVariables.UploaderSettings.InternetCheckTimerInterval *1000));
@@ -125,14 +147,9 @@ namespace IVLUploader.ViewModels
             {
                 internetPresent = value;
                 GlobalVariables.isInternetPresent = value;
-                SentItemsViewModel.StartStopSentItemsTimer(value);
-                OutboxViewModel.StartStopSentItemsTimer(value);
+                FundusUploaderVM.StartStopTimer = value;
+                QIUploaderVM.StartStopTimer = value;
                 OnPropertyChanged("InternetPresent");
-                if(value == false)
-                {
-                    SentItemsViewModel.activeFileCloudVM.isBusy = false;
-                    OutboxViewModel.activeFileCloudVM.isBusy = false;
-                }
             }
         }
         /// <summary>

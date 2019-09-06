@@ -58,6 +58,8 @@ namespace INTUSOFT.Desktop.Forms
         int topBorderHeight;
         int bottomBorderHeight;
         Bitmap negativeSymbol, positiveSymbol;
+
+        Bitmap gradable_bm, nonGradable_bm, qiProgress_bm, qiFailed_bm;
         Bitmap overlayBm;
         int prevSensorPos = 0;
         static Imaging_UC _imaging_UC;
@@ -98,7 +100,7 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.DisplayCapturedImage, new NotificationHandler(DisplayCapturedImage));
             eventHandler.Register(eventHandler.UpdateOverlay, new NotificationHandler(updateOverlay));
 
-            toolStrip1.Visible = false;
+            //status_ts.Visible = false;
             liveImagingControl = new LiveImageControls_UC();
             viewImagingControl = new ViewImageControls_UC();
             liveImagingControl.Dock = DockStyle.Fill;
@@ -177,7 +179,7 @@ namespace INTUSOFT.Desktop.Forms
             negativeDiaptor_pbx.Image = negativeSymbol;
             positiveDiaptor_pbx.Image = positiveSymbol;
             IVLVariables.ivl_Camera.camPropsHelper.CreatePositiveNegativeDiaptorSymbols();
-            toolStrip1.Renderer = new INTUSOFT.Custom.Controls.FormToolStripRenderer();
+            status_ts.Renderer = new INTUSOFT.Custom.Controls.FormToolStripRenderer();
 
             IVLVariables.ivl_Camera.Pbx = (PictureBox)display_pbx;
             IVLVariables.ivl_Camera.MaskOverlayPbx = (PictureBox)maskOverlay_Pbx;
@@ -203,7 +205,42 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ivl_Camera.ExposureStatus_lbl = this.ExposureStatus_lbl;
             IVLVariables.ivl_Camera.gainStatus_lbl = this.gainStatus_lbl ;
 
-           #endregion
+            #endregion
+
+            #region QI status display bitmaps creation
+            gradable_bm = new Bitmap(100, 200);
+            nonGradable_bm = new Bitmap(100, 200);
+            qiProgress_bm = new Bitmap(100, 200);
+            qiFailed_bm = new Bitmap(100, 200);
+
+            Graphics qiGraphics = Graphics.FromImage(gradable_bm);
+            qiGraphics.FillRectangle(Brushes.Green, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            qiGraphics.Dispose();
+            gradableImg_lbl.Image = gradable_bm;
+            gradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("Gradable_Text", IVLVariables.LangResourceCultureInfo);
+
+             qiGraphics = Graphics.FromImage(nonGradable_bm);
+            qiGraphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            qiGraphics.Dispose();
+            nonGradableImg_lbl.Image = nonGradable_bm;
+            nonGradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("NonGradable_Text", IVLVariables.LangResourceCultureInfo);
+
+
+            qiGraphics = Graphics.FromImage(qiProgress_bm);
+            qiGraphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            qiGraphics.Dispose();
+            QIProgressImg_lbl.Image = qiProgress_bm;
+            QIProgressText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIProgress_Text", IVLVariables.LangResourceCultureInfo);
+
+
+            qiGraphics = Graphics.FromImage(qiFailed_bm);
+            qiGraphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            qiGraphics.Dispose();
+            QIFailedImg_lbl.Image = qiFailed_bm;
+            QIFailedText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIFailed_Text", IVLVariables.LangResourceCultureInfo);
+            #endregion
+
+
         }
         bool isFFAImage = false;
         private void DisplayImageFromCamera(string s, Args arg)
@@ -561,7 +598,7 @@ namespace INTUSOFT.Desktop.Forms
             }
        
 
-           toolStrip1.Visible = true;
+           status_ts.Visible = true;
            liveImagingControl.SetCurrentMode((ImagingMode)IVLVariables._ivlConfig.Mode);
            isImaging = true;
             isLiveScreen = true;

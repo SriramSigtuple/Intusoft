@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace IVLUploader.Convertors
+namespace IntuUploader.Convertors
 {
     public class LogFgValueConverter : IValueConverter
     {

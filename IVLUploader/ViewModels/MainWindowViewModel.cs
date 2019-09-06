@@ -1,26 +1,19 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
+using IntuUploader.Commands;
 using IntuUploader.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Collections.Generic;
-using System.Web;
-using Cloud_Models;
-using System.Diagnostics;
-using System.Threading;
-using System.Collections.ObjectModel;
-using IntuUploader;
-using NLog;
-using IVLUploader.Commands;
-namespace IVLUploader.ViewModels
+using Hardcodet.Wpf.TaskbarNotification;
+
+namespace IntuUploader.ViewModels
 {
     public class MainWindowViewModel:ViewBaseModel
     {
@@ -36,7 +29,6 @@ namespace IVLUploader.ViewModels
         public  MainWindowViewModel()
        {
             logger.Info("Constructor Start");
-            
             GlobalVariables.RESTClientHelper = RESTClientHelper.GetInstance();
             if(File.Exists("UploaderSettings.json"))
             {
@@ -100,6 +92,7 @@ namespace IVLUploader.ViewModels
 
 
         }
+
 
         //async void Login()
         //{
