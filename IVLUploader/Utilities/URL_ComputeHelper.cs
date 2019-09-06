@@ -14,15 +14,29 @@ namespace IntuUploader.Utilities
 
             var url = urlModel.API_URL;
 
+
             if (!string.IsNullOrEmpty(urlModel.API_URL_Start_Point))
-                url += urlModel.API_URL_Start_Point;
+            {
+                if (!string.IsNullOrEmpty(url) && !url[url.Length - 1].Equals('/'))
+                    url += "/" + urlModel.API_URL_Start_Point;
+                else
+                    url += urlModel.API_URL_Start_Point;
+            }
 
             if (!string.IsNullOrEmpty(urlModel.API_URL_Mid_Point))
-                url += "/" + urlModel.API_URL_Mid_Point;
-
+            {
+                if (!string.IsNullOrEmpty(url) && !url[url.Length - 1].Equals('/'))
+                    url += "/" + urlModel.API_URL_Mid_Point;
+                else
+                    url += urlModel.API_URL_Mid_Point;
+            }
             if (!string.IsNullOrEmpty(urlModel.API_URL_End_Point))
-                url += "/" + urlModel.API_URL_End_Point;
-            
+            {
+                if (!string.IsNullOrEmpty(url) && !url[url.Length - 1].Equals('/'))
+                    url += "/" + urlModel.API_URL_End_Point;
+                else
+                    url += urlModel.API_URL_End_Point;
+            }
 
             return url;
         }

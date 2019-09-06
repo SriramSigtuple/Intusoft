@@ -579,7 +579,7 @@ namespace INTUSOFT.Desktop.Forms
                            eyeFundusImage.visit = NewDataVariables.Active_Visit;
                           if( string.IsNullOrEmpty (eyeFundusImage.checkSum))
                             {
-                             eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName)));
+                             eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName))).responseMessage;
                             }
                            //newObs.eye_fundus_image = eyeFundusImage;
                            //eyeFundusImage.obs_id = newObs;
@@ -693,7 +693,7 @@ namespace INTUSOFT.Desktop.Forms
             for (int i = 0; i < cloudModel.UploadModel.images.Length; i++)
             {
                 FileInfo ImgFinf = new FileInfo(cloudModel.UploadModel.images[i]);
-                cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash();
+                cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash().responseMessage;
                 cloudModel.UploadModel.relative_path[i] = IVLVariables.MRN + "/" + (cloudModel.UploadModel.eyeSideArr[i].Contains("R") ? "RE" : "LE") + "/" + ImgFinf.Name;
             }
 

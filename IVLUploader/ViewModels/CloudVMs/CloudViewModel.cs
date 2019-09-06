@@ -1,14 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using BaseViewModel;
+using Cloud_Models.Models;
+using Common;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using Cloud_Models.Models;
-using BaseViewModel;
-using NLog;
-using System;
-using IntuUploader.Utilities;
+
 namespace IntuUploader.ViewModels
 {
     /// <summary>
@@ -394,14 +395,14 @@ namespace IntuUploader.ViewModels
                     var fInf = new FileInfo(ActiveCloudModel.UploadModel.images[i]);
                     kvp.Add("image", new FileInfo(ActiveCloudModel.UploadModel.images[i]));
                     var checkSumValue = fInf.GetMd5Hash();
-                    if (ActiveCloudModel.UploadModel.checksums[i].Equals(checkSumValue))
+                    if (ActiveCloudModel.UploadModel.checksums[i].Equals(checkSumValue.responseMessage))
                         kvp.Add("checksum", ActiveCloudModel.UploadModel.checksums[i]);
                     else
                     {
-                        kvp.Add("checksum", checkSumValue);
+                        kvp.Add("checksum", checkSumValue.responseMessage);
                         logger.Info("CheckSum Mismatch");
                         logger.Info("CheckSum From File" + ActiveCloudModel.UploadModel.checksums[i]);
-                        logger.Info("CheckSum From Code" + checkSumValue);
+                        logger.Info("CheckSum From Code" + checkSumValue.responseMessage);
 
                     }
 

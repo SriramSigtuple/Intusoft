@@ -3396,7 +3396,7 @@ namespace INTUSOFT.Desktop.Forms
                    eye_fundus_image eye =  NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
                     if (string.IsNullOrEmpty(eye.checkSum))
                     {
-                        eye.checkSum = (ImgFinf).GetMd5Hash();
+                        eye.checkSum = (ImgFinf).GetMd5Hash().responseMessage;
                         NewDataVariables._Repo.Update<eye_fundus_image>(eye);
                     }
                     cloudModel.UploadModel.checksums[i] = eye.checkSum;
