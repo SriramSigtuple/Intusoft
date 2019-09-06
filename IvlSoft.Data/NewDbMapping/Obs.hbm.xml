@@ -14,6 +14,7 @@
 	<property name="value" type="String" column="value" length="65535" />
 	<property name="checkSum" type="String" column="check_sum" length="65535" />
 	<property name="comments" type="String" column="comment" length="255" />
+	<property name="qiFileName" type="String" column="qi_filename" length="255" />
 	
 	<many-to-one name="createdBy" class="users" column="created_by" not-null="true" />
 	<property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />

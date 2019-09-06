@@ -1237,11 +1237,12 @@ namespace INTUSOFT.Desktop.Forms
                         tData.id = item.observationId;
                        eye_fundus_image _eyeFundusImage = NewDataVariables.Obs.Find(x => x.observationId == tData.id);
                         //List<eye_fundus_image> eyeFundusList = NewDataVariables.EyeFundusImage.Where(x=>x.eyeFundusImageId == tData.id).ToList() ;
-                       // eye_fundus_image _eyeFundusImage = eyeFundusList[0];
-                        if (_eyeFundusImage.eyeSide == 'L')
-                            tData.side = 1;
-                        else
-                            tData.side = 0;
+                        // eye_fundus_image _eyeFundusImage = eyeFundusList[0];
+                     tData.side =   _eyeFundusImage.eyeSide.Equals('L')? 1 : 0;
+                        //if (_eyeFundusImage.eyeSide == 'L')
+                        //    tData.side = 1;
+                        //else
+                        //    tData.side = 0;
                         tData.isAnnotated = _eyeFundusImage.annotationsAvailable;
                         tData.isCDR = _eyeFundusImage.cdrAnnotationAvailable;
                         thumbnailList.Add(tData);

@@ -577,10 +577,10 @@ namespace INTUSOFT.Desktop.Forms
                            eyeFundusImage.lastModifiedDate = DateTime.Now;
                            eyeFundusImage.patient = pat;
                            eyeFundusImage.visit = NewDataVariables.Active_Visit;
-                          if( string.IsNullOrEmpty (eyeFundusImage.checkSum))
-                            {
-                             eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName))).responseMessage;
-                            }
+                          //if( string.IsNullOrEmpty (eyeFundusImage.checkSum))
+                          //  {
+                          //   eyeFundusImage.checkSum =   Common.MD5Helper.GetMd5Hash(new FileInfo(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, imageName)));
+                          //  }
                            //newObs.eye_fundus_image = eyeFundusImage;
                            //eyeFundusImage.obs_id = newObs;
 
@@ -592,34 +592,35 @@ namespace INTUSOFT.Desktop.Forms
                            pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0] = NewDataVariables.Active_Visit;
                            NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x => x.personId == NewDataVariables.Active_Patient)] = pat;
 
-                           NewIVLDataMethods.UpdatePatient();
-                           NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
-                           NewDataVariables.Obs.Add(eyeFundusImage);
-                           tdata.id = eyeFundusImage.observationId;
-                            Push2QI(eyeFundusImage);
-                           // arg["id"] = newObs.observationId;
-                           //foreach (var item in NewDataVariables.Visits)
-                           //{
-                           //    visitDate.Add(item.createdDate);
-                           //}
-                           //DataTable d = NewDataVariables.Visits.ToDataTable();
-                           //d.Columns.Add(IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo), typeof(Button));
-                           //SetVisitData(d);
-                           //clearVisitGrid();
+                          
+                            eyeFundusImage.qiFileName =  Push2QI(eyeFundusImage);
+                            NewIVLDataMethods.UpdatePatient();
+                            NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
+                            NewDataVariables.Obs.Add(eyeFundusImage);
+                            tdata.id = eyeFundusImage.observationId;
+                            // arg["id"] = newObs.observationId;
+                            //foreach (var item in NewDataVariables.Visits)
+                            //{
+                            //    visitDate.Add(item.createdDate);
+                            //}
+                            //DataTable d = NewDataVariables.Visits.ToDataTable();
+                            //d.Columns.Add(IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo), typeof(Button));
+                            //SetVisitData(d);
+                            //clearVisitGrid();
 
-                           //if (eyeFundusImage.eyeSide == 'L')
-                           //{
-                           //    tdata.side = 1;
-                           //    arg["side"] = 1;
-                           //}
-                           //else
-                           //{
-                           //    tdata.side = 0;
-                           //    arg["side"] = 0;
-                           //} 
-                           //if (!arg.ContainsKey("isModifiedimage"))
-                           //    arg["isModifiedimage"] = false;
-                       }
+                            //if (eyeFundusImage.eyeSide == 'L')
+                            //{
+                            //    tdata.side = 1;
+                            //    arg["side"] = 1;
+                            //}
+                            //else
+                            //{
+                            //    tdata.side = 0;
+                            //    arg["side"] = 0;
+                            //} 
+                            //if (!arg.ContainsKey("isModifiedimage"))
+                            //    arg["isModifiedimage"] = false;
+                        }
                        else
                        {
                            //if (eyeSide == 'L')
@@ -686,14 +687,14 @@ namespace INTUSOFT.Desktop.Forms
             cloudModel.UploadModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
             cloudModel.UploadModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES_INPUT.val;
             cloudModel.UploadModel.RetryCount = 3;
-            cloudModel.UploadModel.images = new string[] { NewDataVariables.Active_Obs.value};
+            cloudModel.UploadModel.images = new string[] {Path.Combine( IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val ,NewDataVariables.Active_Obs.value)};
             cloudModel.UploadModel.checksums = new string[1];
             cloudModel.UploadModel.relative_path = new string[1];
             cloudModel.UploadModel.eyeSideArr = new string[] { eye_Fundus_Image.eyeSide.ToString() };
             for (int i = 0; i < cloudModel.UploadModel.images.Length; i++)
             {
                 FileInfo ImgFinf = new FileInfo(cloudModel.UploadModel.images[i]);
-                cloudModel.UploadModel.checksums[i] = (ImgFinf).GetMd5Hash().responseMessage;
+                cloudModel.UploadModel.checksums[i] = "";
                 cloudModel.UploadModel.relative_path[i] = IVLVariables.MRN + "/" + (cloudModel.UploadModel.eyeSideArr[i].Contains("R") ? "RE" : "LE") + "/" + ImgFinf.Name;
             }
 
@@ -714,12 +715,13 @@ namespace INTUSOFT.Desktop.Forms
             return cloudModel;
         }
 
-        private void Push2QI(eye_fundus_image eye_Fundus)
+        private string Push2QI(eye_fundus_image eye_Fundus)
         {
             CloudModel cloudModel =  GetQIModel(eye_Fundus);
             var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
             var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI), DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
             File.WriteAllText(outboxFilePath, cloudModelJson);
+            return new FileInfo(outboxFilePath).Name;
             // car = NewDataVariables._Repo.GetById<obs>(cloudModel.ImageID);
             //car.fileName = new FileInfo(outboxFilePath).Name;
             //NewDataVariables._Repo.Update<CloudAnalysisReport>(car);

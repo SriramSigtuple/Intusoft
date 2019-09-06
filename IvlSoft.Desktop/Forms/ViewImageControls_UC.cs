@@ -92,6 +92,7 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.SaveImgChanges, new NotificationHandler(Saveimg_changes));
             eventHandler.Register(eventHandler.CreateReportEvent, new NotificationHandler(createReportEvent));
             eventHandler.Register(eventHandler.RefreshExistingReport, new NotificationHandler(RefreshShowReports));
+            eventHandler.Register(eventHandler.RefreshThumbnails, new NotificationHandler(RefreshThumbnails));
             thumbnailData = new ThumbnailData();
 
 
@@ -1825,7 +1826,8 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     else
                     {
-                        NewDataVariables.Active_Obs = NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.observationId == id)];
+
+                        NewDataVariables.Active_Obs = NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(thumbnailData.fileName).Name)];
                         if (NewDataVariables.Active_Obs.eyeSide == 'L')
                             thumbnailData.side = 1;
                         else
@@ -2585,17 +2587,17 @@ namespace INTUSOFT.Desktop.Forms
                         if (!IVLVariables.isCommandLineAppLaunch)
                         {
                             NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
-                            arg["id"] = NewDataVariables.Active_Obs.observationId;//
+                           thumbnailData.id = NewDataVariables.Active_Obs.observationId;//
                             //the below code has been added by Darshan to solve defect no 0000510: Duplicate numbering in comments if pressed on control key.
-                            arg["isannotated"] = NewDataVariables.Active_Obs.annotationsAvailable;
-                            arg["isCDR"] = NewDataVariables.Active_Obs.cdrAnnotationAvailable;// This line has been added to handle the crash  when iscdr is missing od and os changed by sriram on september 24 2015
+                           thumbnailData.isAnnotated = NewDataVariables.Active_Obs.annotationsAvailable;
+                           thumbnailData.isCDR = NewDataVariables.Active_Obs.cdrAnnotationAvailable;// This line has been added to handle the crash  when iscdr is missing od and os changed by sriram on september 24 2015
 
                         }
                         else
                         {
-                            arg["id"] = thumbnailData.id;
-                            arg["isannotated"] = thumbnailData.isAnnotated;
-                            arg["isCDR"] = thumbnailData.isCDR;// This line has been added to handle the crash  when iscdr is missing od and os changed by sriram on september 24 2015
+                            //arg["id"] = thumbnailData.id;
+                            //arg["isannotated"] = thumbnailData.isAnnotated;
+                            //arg["isCDR"] = thumbnailData.isCDR;// This line has been added to handle the crash  when iscdr is missing od and os changed by sriram on september 24 2015
 
                         }
 
@@ -2623,7 +2625,7 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 1;
-                            arg["side"] = 1;//has been added to change the side in the thumbnail
+                           // arg["side"] = 1;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Left;
 
                         }
@@ -2652,7 +2654,7 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 0;
-                            arg["side"] = 0;//has been added to change the side in the thumbnail
+                           // arg["side"] = 0;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Right;
 
 
@@ -2761,10 +2763,9 @@ namespace INTUSOFT.Desktop.Forms
                             FileInfo finf = new FileInfo(thumbnailData.fileName);
 
                             string[] str = finf.Name.Split('_');
-                            if ((int)arg["side"] == 1)
-                                str[0] = "OS";
-                            else
-                                str[0] = "OD";
+
+                            str[0] = thumbnailData.side.Equals(1) ? "OS" : "OD";
+
                             string fileName = string.Join("_", str);
                             finf = new FileInfo(finf.Directory.FullName + Path.DirectorySeparatorChar + fileName);
                             thumbnailData.fileName = finf.FullName;
@@ -2779,6 +2780,7 @@ namespace INTUSOFT.Desktop.Forms
 
                         //bm = colorBm;
                         //colorBm = bm.Clone() as Bitmap;
+                        arg["thumbnailData"] = thumbnailData;
                         eventHandler.Notify(eventHandler.ChangeThumbnailSide, arg);//added after colorBm.Save to show the side changed image in thumbnail list.
                         arg["rawImage"] = OriginalBm;
                         eventHandler.Notify(eventHandler.DisplayImage, arg);
@@ -2794,6 +2796,58 @@ namespace INTUSOFT.Desktop.Forms
             {
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
                 //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
+            }
+        }
+        bool updatingThumbnails = false;
+        private void RefreshThumbnails(string s,Args arg)
+        {
+            if (!IVLVariables.isCommandLineAppLaunch)
+            {
+                if(!updatingThumbnails)
+                {
+                    updatingThumbnails = true;
+                    List<eye_fundus_image> ChangedThumbnails = (List<eye_fundus_image>)arg["ChangedObsList"];
+                    foreach (var item in ChangedThumbnails)
+                    {
+                        FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
+
+                        //  var pat = item.patient;
+                        //  var visit = item.visit;
+                        //NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x=>x.personId == item.patient.personId)].visits.ToList().IndexOf(item)
+                        if (item.patient.personId == NewDataVariables.Active_Patient && item.visit == NewDataVariables.Active_Visit)
+                        {
+                            thumbnailData.id = item.observationId;
+
+                            thumbnailData.QIStatus = item.qiStatus;
+                            thumbnailData.fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item.value);
+                            arg["ImgLoc"] = thumbnailData.fileName;
+                            thumbnailData.side = item.eyeSide.Equals('L') ? 1 : 0;
+                            thumbnailData.isAnnotated = item.annotationsAvailable;
+                            thumbnailData.isCDR = item.cdrAnnotationAvailable;
+                            arg["thumbnailData"] = thumbnailData;
+                            eventHandler.Notify(eventHandler.ChangeThumbnailSide, arg);
+                        }
+                        if (NewDataVariables._Repo.Update<eye_fundus_image>(item))
+                        {
+                            List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
+                            if (resultList.Any())
+                            {
+                                var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
+
+                                if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name)))
+                                {
+                                    File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+
+                                }
+                                if (File.Exists(doneFile))
+                                    File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+                            }
+
+                        }
+                    }
+                    updatingThumbnails = false;
+                }
+
             }
         }
 

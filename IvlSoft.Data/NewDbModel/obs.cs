@@ -51,7 +51,8 @@ namespace INTUSOFT.Data.NewDbModel
             string voidedReason,
             string UUID,
             string checkSum,
-            int QIStatus
+            int QIStatus,
+            string QIFileName
                  )
         {
             return new obs
@@ -77,7 +78,8 @@ namespace INTUSOFT.Data.NewDbModel
                 voidedBy = VoidedBy,
                 voidedReason = voidedReason,
                 checkSum = checkSum,
-                qiStatus = QIStatus
+                qiStatus = QIStatus,
+                qiFileName = QIFileName
 
                 //uuid=UUID
             };
@@ -125,6 +127,7 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual string value { get; set; }
 
         public virtual string comments { get; set; }
+        public virtual string qiFileName { get; set; }
         
         public virtual string checkSum { get; set; }
         //public virtual string uuid { get; set; }

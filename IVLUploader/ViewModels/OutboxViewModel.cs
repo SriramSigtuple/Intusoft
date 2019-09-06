@@ -32,6 +32,7 @@ namespace IntuUploader.ViewModels
         /// </summary>
         public OutboxViewModel(AnalysisType analysisType)
         {
+            logger.Info("OutboxVM Constructor, Analysis Type {0}", analysisType.ToString("g"));
 
             AnalysisType = analysisType;
             activeDirPath = GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir, AnalysisType);
@@ -106,7 +107,8 @@ namespace IntuUploader.ViewModels
         /// <param name="state"></param>
         private void OutBoxTimerCallback(object state)
         {
-            
+            logger.Info("OutBox VM Timer, Analysis Type {0}", analysisType.ToString("g"));
+
 
             FileInfo[] outboxDirFileInfoArr = new DirectoryInfo(outboxDirPath).GetFiles("*.json");
 

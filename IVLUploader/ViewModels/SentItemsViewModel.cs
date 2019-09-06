@@ -44,6 +44,8 @@ namespace IntuUploader.ViewModels
         /// </summary>
         public SentItemsViewModel(AnalysisType analysisType)
         {
+            logger.Info("SentItems VM Constructor, Analysis Type {0}", analysisType.ToString("g"));
+
             AnalysisType = analysisType;
             activeDirPath = GlobalMethods.GetDirPath(DirectoryEnum.ActiveDir, AnalysisType);
             sentItemsDirPath = GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir, AnalysisType);
@@ -100,7 +102,9 @@ namespace IntuUploader.ViewModels
         /// <param name="state"></param>
         private void SentItemsStatusCheckTimerCallback(object state)
         {
-            
+
+            logger.Info("SentItems VM Timer, Analysis Type {0}", analysisType.ToString("g"));
+
             if (fileIndx == 0)
             {
                 sentItemsDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");

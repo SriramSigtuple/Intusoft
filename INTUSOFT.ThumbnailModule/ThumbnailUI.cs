@@ -172,6 +172,33 @@ namespace INTUSOFT.ThumbnailModule
                 }
             }
         }
+
+        public void ChangeThumbnailSide(ThumbnailData thumbnailData)
+        {
+            //isannotated has been added by Darshan to solve defect no 0000527: Annotated images displaying wrong names.
+            foreach (Control item in thumbnail_FLP.Controls)
+            {
+                if (item is ImageViewer)
+                {
+                    ImageViewer imgView = (ImageViewer)item as ImageViewer;
+                    if (imgView.ImageID == thumbnailData.id)
+                    {
+                        imgView.ImageSide = thumbnailData.side;
+                        imgView.IsAnnotated = thumbnailData.isAnnotated;
+                        imgView.IsCDR = thumbnailData.isCDR;
+                        imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                        //imgView.QIStatus_P.BackColor = GetQIStatusColor(qiStatus);
+                        imgView.ImageLabel.Name = GetImage_Name(imgView.ImageSide, imgView.Index, imgView.IsAnnotated, imgView.IsCDR);
+                        //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
+                        if (!string.IsNullOrEmpty(thumbnailData.fileName))
+                            imgView.ImageLocation = thumbnailData.fileName;
+                        imgView.LoadImage(imgView.ImageLocation, id, 256, 256);//Update the side changed image in thumbnail when image side is changed,added by Darshan(Defect no 0000702).
+                        imgView.Refresh();
+                    }
+                }
+            }
+        }
+
         private Color GetQIStatusColor(int status)
         {
             switch(status)
@@ -624,8 +651,10 @@ namespace INTUSOFT.ThumbnailModule
                 imageViewer.IsAnnotated = thumbnailData.isAnnotated;
                 imageViewer.IsCDR = thumbnailData.isCDR;
                 imageViewer.IsThumbnail = true;
+                imageViewer.ImageID = thumbnailData.id;
+
                 // imageViewer.textBox1.Click += textBox1_Click;
-                imageViewer.ImageLabel.ClickCommand = new RelayCommand(param => ImageNameClick(imageViewer));
+                //imageViewer.ImageLabel.ClickCommand = new RelayCommand(param => ImageNameClick(imageViewer));
                 imageViewer.Click += ImageViewer_Click;
                 imageViewer.ImageLocation = thumbnailData.fileName;
                 imageViewer.ImageSide = thumbnailData.side;
@@ -677,7 +706,8 @@ namespace INTUSOFT.ThumbnailModule
         private void ImageViewer_Click(object sender, EventArgs e)
         {
             ImageViewer img = sender as ImageViewer;
-            if (File.Exists(img.ImageLocation))
+
+                if (File.Exists(img.ImageLocation))
                 thumbnailSelection(img);
         }
 
