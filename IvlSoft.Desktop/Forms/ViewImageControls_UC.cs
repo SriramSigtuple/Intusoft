@@ -2806,15 +2806,14 @@ namespace INTUSOFT.Desktop.Forms
                 if(!updatingThumbnails)
                 {
                     updatingThumbnails = true;
-                    List<eye_fundus_image> ChangedThumbnails = (List<eye_fundus_image>)arg["ChangedObsList"];
+                    List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x=>x.visit == NewDataVariables.Active_Visit).ToList();
                     foreach (var item in ChangedThumbnails)
                     {
-                        FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
 
                         //  var pat = item.patient;
                         //  var visit = item.visit;
                         //NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x=>x.personId == item.patient.personId)].visits.ToList().IndexOf(item)
-                        if (item.patient.personId == NewDataVariables.Active_Patient && item.visit == NewDataVariables.Active_Visit)
+                        //if (item.patient.personId == NewDataVariables.Active_Patient && item.visit == NewDataVariables.Active_Visit)
                         {
                             thumbnailData.id = item.observationId;
 
@@ -2827,23 +2826,7 @@ namespace INTUSOFT.Desktop.Forms
                             arg["thumbnailData"] = thumbnailData;
                             eventHandler.Notify(eventHandler.ChangeThumbnailSide, arg);
                         }
-                        if (NewDataVariables._Repo.Update<eye_fundus_image>(item))
-                        {
-                            List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
-                            if (resultList.Any())
-                            {
-                                var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
-
-                                if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name)))
-                                {
-                                    File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
-
-                                }
-                                if (File.Exists(doneFile))
-                                    File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
-                            }
-
-                        }
+                       
                     }
                     updatingThumbnails = false;
                 }

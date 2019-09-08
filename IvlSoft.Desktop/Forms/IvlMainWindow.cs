@@ -45,6 +45,9 @@ namespace INTUSOFT.Desktop.Forms
         delegate void DelegateUpdateCloudValues(List<CloudAnalysisReport> models);
         private DelegateUpdateCloudValues m_DelegateUpdateCloudValues;
 
+        delegate void DelegateUpdateObsValues(List<eye_fundus_image> models);
+        private DelegateUpdateObsValues delegateUpdateObsValues;
+
         System.Diagnostics.Stopwatch stW;
         Process p;
         SplashScreen splashScreen;
@@ -474,6 +477,8 @@ namespace INTUSOFT.Desktop.Forms
 
             UpdateFontForeColor();
             m_DelegateUpdateCloudValues = new DelegateUpdateCloudValues(this.UpdateCloudFiles);
+
+            delegateUpdateObsValues = new DelegateUpdateObsValues(this.UpdateObservationResultsFromCloud);
 
             #region Create Cloud Directories
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
@@ -999,7 +1004,7 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.NotAnalysed;
+                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Initialized;
                         changedObsList.Add(NewDataVariables.Obs[indx]);
                     }
 
@@ -1015,7 +1020,7 @@ namespace INTUSOFT.Desktop.Forms
 
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.InProgress;
+                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Uploading;
                         changedObsList.Add(NewDataVariables.Obs[indx]);
 
                     }
@@ -1029,7 +1034,7 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.InProgress;
+                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Processing;
                         changedObsList.Add(NewDataVariables.Obs[indx]);
                     }
 
@@ -1044,6 +1049,7 @@ namespace INTUSOFT.Desktop.Forms
                     arg["ChangedObsList"] = changedObsList;
                     _eventHandler.Notify(_eventHandler.RefreshThumbnails, arg);
                 }
+                UpdateObservationResultsFromCloud(changedObsList);
             }
             catch (Exception ex)
             {
@@ -1090,7 +1096,36 @@ namespace INTUSOFT.Desktop.Forms
             }
         }
 
+        private void UpdateObservationResultsFromCloud(List<eye_fundus_image> eye_Fundus_Images)
+        {
+            if(this.InvokeRequired)
+            {
+                this.Invoke(delegateUpdateObsValues, eye_Fundus_Images);
+            }
 
+            foreach (var item in eye_Fundus_Images)
+            {
+                if (NewDataVariables._Repo.Update<eye_fundus_image>(item))
+                {
+                    FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
+
+                    List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
+                    if (resultList.Any())
+                    {
+                        var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
+
+                        if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name)))
+                        {
+                            File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+
+                        }
+                        if (File.Exists(doneFile))
+                            File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+                    }
+
+                }
+            }
+        }
 
         /// <summary>
         /// To show the selected thumbnail image

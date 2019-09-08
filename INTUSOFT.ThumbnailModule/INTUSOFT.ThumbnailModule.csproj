@@ -86,6 +86,7 @@
     <Compile Include="ThumbnailUI.Designer.cs">
       <DependentUpon>ThumbnailUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Value2ToolTipTextConvertor.cs" />
     <Compile Include="Value2StatusColorConvertor.cs" />
   </ItemGroup>
   <ItemGroup>

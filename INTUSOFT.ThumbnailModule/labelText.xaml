@@ -17,6 +17,7 @@
     
     <UserControl.Resources>
         <convertor1:Value2StatusColorConvertor x:Key="Value2StatusColorConvertor"/>
+        <convertor1:Value2ToolTipTextConvertor x:Key="Value2ToolTipTextConvertor"/>
     </UserControl.Resources>
 
     <!--<i:Interaction.Triggers>
@@ -27,7 +28,13 @@
     <Grid>
        
         <StackPanel Orientation="Horizontal" >
-            <Rectangle Width="21" Fill="{Binding QiStatus, Converter={StaticResource Value2StatusColorConvertor}, UpdateSourceTrigger=PropertyChanged}"/>
+            <Rectangle Width="21" Fill="{Binding QiStatus, Converter={StaticResource Value2StatusColorConvertor}, UpdateSourceTrigger=PropertyChanged}">
+                <Rectangle.ToolTip>
+                    <ToolTip
+                        Content="{Binding Path=QiStatus,Converter={StaticResource Value2ToolTipTextConvertor},Mode=OneWay}"/>
+                </Rectangle.ToolTip>
+            </Rectangle>
+            
             <TextBlock Name="ImageName_lbl" Text="{Binding Name}" FontFamily="Tahoma" FontSize="15" Margin="5,2,0,0" TextAlignment="Center" FontWeight="ExtraBold"  />
         </StackPanel>
     </Grid>

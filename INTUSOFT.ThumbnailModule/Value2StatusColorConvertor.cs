@@ -20,16 +20,16 @@ namespace INTUSOFT.ThumbnailModule.Con
                             solidColorBrush = new SolidColorBrush(System.Windows.Media.Colors.Transparent);
 
                         break;
-                        case 1:
+                    case 1: case 2 :case 3 :
                             solidColorBrush = new SolidColorBrush(System.Windows.Media.Colors.Yellow);
                             break;
-                        case 2:
+                        case 4:
                             solidColorBrush = new SolidColorBrush(System.Windows.Media.Colors.Green);
                             break;
-                        case 3:
+                        case 5:
                             solidColorBrush = new SolidColorBrush(System.Windows.Media.Colors.Gray);
                             break;
-                        case 4:
+                        case 6:
                             solidColorBrush = new SolidColorBrush(System.Windows.Media.Colors.Red);
                             break;
                         default:
