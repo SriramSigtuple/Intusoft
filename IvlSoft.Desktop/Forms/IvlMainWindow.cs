@@ -484,23 +484,12 @@ namespace INTUSOFT.Desktop.Forms
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
                 Directory.CreateDirectory(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val);
 
+            #region Create Fundus Analysis Directories
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus));
 
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus));
-
-            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir)))
-            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.LoginDir));
-
-            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.CreateAnalysis)))
-            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.CreateAnalysis));
-
-            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.UploadDir)))
-            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.UploadDir));
-
-            //if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir)))
-            //    Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.StartAnalysisDir));
 
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus));
@@ -513,14 +502,46 @@ namespace INTUSOFT.Desktop.Forms
 
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus));
+            #endregion
 
+            #region Create QI Analysis Directories
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI));
 
-            #endregion 
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI));
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.QI)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.QI));
+            #endregion
+
+            #endregion
+
+            LaunchUploader();
+
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
         }
 
+        private void LaunchUploader()
+        {
+            Process process = new Process();
+            if (File.Exists(@"Uploader\IntuUploader.exe"))
+            {
+                process.StartInfo = new ProcessStartInfo(@"Uploader\IntuUploader.exe");
+                process.Start();
 
+            }
+        }
         #region Public Methods
 
         /// <summary>
@@ -3240,31 +3261,35 @@ namespace INTUSOFT.Desktop.Forms
             {
                 //if (!updatingThumbnails)
                 {
-                    List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
-                    updatingThumbnails = true;
-                    ChangedThumbnails.Reverse();
-                    foreach (var eye_Fundus_Image in ChangedThumbnails)
+                    if(NewDataVariables.Obs != null  && NewDataVariables.Active_Visit != null)
                     {
-                        //if (eye_Fundus_Image.visit.Equals(NewDataVariables.Active_Visit))
+                        List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
+                        updatingThumbnails = true;
+                        ChangedThumbnails.Reverse();
+                        foreach (var eye_Fundus_Image in ChangedThumbnails)
                         {
-                            Args arg = new Args();
-                            ThumbnailData thumbnailData = new ThumbnailData
+                            //if (eye_Fundus_Image.visit.Equals(NewDataVariables.Active_Visit))
                             {
-                                id = eye_Fundus_Image.observationId,
+                                Args arg = new Args();
+                                ThumbnailData thumbnailData = new ThumbnailData
+                                {
+                                    id = eye_Fundus_Image.observationId,
 
-                                QIStatus = eye_Fundus_Image.qiStatus,
-                                fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
-                                side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
-                                isAnnotated = eye_Fundus_Image.annotationsAvailable,
-                                isCDR = eye_Fundus_Image.cdrAnnotationAvailable
-                            };
-                            arg["ImgLoc"] = thumbnailData.fileName;
-                            arg["thumbnailData"] = thumbnailData;
-                            _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
+                                    QIStatus = eye_Fundus_Image.qiStatus,
+                                    fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
+                                    side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
+                                    isAnnotated = eye_Fundus_Image.annotationsAvailable,
+                                    isCDR = eye_Fundus_Image.cdrAnnotationAvailable
+                                };
+                                arg["ImgLoc"] = thumbnailData.fileName;
+                                arg["thumbnailData"] = thumbnailData;
+                                _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
 
+                            }
+                            updatingThumbnails = false;
                         }
-                        updatingThumbnails = false;
                     }
+                  
                   
                 }
 

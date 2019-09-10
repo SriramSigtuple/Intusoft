@@ -390,8 +390,9 @@ namespace INTUSOFT.Data.Repository
                     //    ExecuteBatchFile(batchFileName);
                     //}
                 }
-                isDatabaseCreating = true;
                 ExecuteSqlScriptFromFile(grantPrivileges);
+                isDatabaseCreating = true;
+
             }
         }
 

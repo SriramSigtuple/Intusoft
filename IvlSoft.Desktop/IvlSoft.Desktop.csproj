@@ -119,7 +119,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\IVLReport\bin\$(Configuration)\IVLReport.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\library\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\library\Newtonsoft.Json.dll</HintPath>
