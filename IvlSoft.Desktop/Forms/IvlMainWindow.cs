@@ -803,8 +803,8 @@ namespace INTUSOFT.Desktop.Forms
 
                         try
                         {
-                            var doneFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done";
-                            if (File.Exists(doneFile))
+                            var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
+                            if (File.Exists(pendingFile))
                             {
                                 StreamReader st = new StreamReader(fileInfo.FullName);
                                 var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
@@ -813,7 +813,7 @@ namespace INTUSOFT.Desktop.Forms
 
                                 if (responseValue.Status == "success")
                                 {
-                                    if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
+                                    //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
                                     {
                                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
 
@@ -822,17 +822,19 @@ namespace INTUSOFT.Desktop.Forms
                                         NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = responseValue.RightAIImpressions;
                                         //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                                         changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+
                                     }
 
                                 }
                                 else if (responseValue.Status == "failure")
                                 {
-                                    if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
+                                    //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
                                     {
                                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
                                         NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
                                         //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                                         changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+
 
                                     }
 
@@ -913,9 +915,9 @@ namespace INTUSOFT.Desktop.Forms
 
                 }
                 #endregion
+                if(changedCloudAnalysisReports.Any())
                 UpdateCloudFiles(changedCloudAnalysisReports);
 
-                //Console.WriteLine(this.WindowState.ToString()) ;
                 if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
                 {
                     Args arg = new Args();
@@ -931,11 +933,15 @@ namespace INTUSOFT.Desktop.Forms
 
 
         }
-
+        bool isQIUpdating = false;
         private void InboxQICheck(object state)
         {
             try
             {
+                if(!isQIUpdating)
+                {
+                    isQIUpdating = true;
+               
                 List<eye_fundus_image> changedObsList = new List<eye_fundus_image>();
 
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
@@ -947,8 +953,8 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         try
                         {
-                            var doneFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done";
-                            if (File.Exists(doneFile))
+                            var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
+                            if (File.Exists(pendingFile))
                             {
                                 StreamReader st = new StreamReader(fileInfo.FullName);
                                 var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
@@ -957,7 +963,7 @@ namespace INTUSOFT.Desktop.Forms
 
                                 if (responseValue.Status == "success")
                                 {
-                                    if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
+                                    //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
                                     {
                                         if(responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
                                         {
@@ -970,13 +976,15 @@ namespace INTUSOFT.Desktop.Forms
                                         else
                                             if(responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
                                         {
-                                            if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
+                                            if (responseValue.RightEyeDetails[0].QI_Result.Equals("Gradable"))
                                                 NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Gradable;
-                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
+                                            else if (responseValue.RightEyeDetails[0].QI_Result.Equals("NonGradable"))
                                                 NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.NonGradable;
                                         }
 
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
+                                        //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
+
                                     }
 
                                 }
@@ -986,7 +994,7 @@ namespace INTUSOFT.Desktop.Forms
                                     {
                                         NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Failed;
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
-
+                                        //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
                                     }
 
                                 }
@@ -1069,7 +1077,8 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     UpdateObservationResultsFromCloud(changedObsList);
                 }
-
+                    isQIUpdating = false;
+                }
             }
             catch (Exception ex)
             {
@@ -1097,8 +1106,9 @@ namespace INTUSOFT.Desktop.Forms
                   if( NewDataVariables._Repo.Update<CloudAnalysisReport>(item))
                     {
                         List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.fileName).ToList();
-                        if (resultList.Any())
+                        if (resultList.Any() && (item.cloudAnalysisReportStatus == (int) CloudReportStatus.View || item.cloudAnalysisReportStatus == (int) CloudReportStatus.Failed))
                         {
+                            var pendingFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_pending";
                             var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
                             if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name)))
@@ -1106,8 +1116,11 @@ namespace INTUSOFT.Desktop.Forms
                                 File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
 
                             }
-                            if (File.Exists(doneFile))
+                            if (File.Exists(pendingFile))
+                            {
                                 File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
+                                File.Move(pendingFile, doneFile);
+                            }
                         }
                    
                     }
@@ -1130,8 +1143,10 @@ namespace INTUSOFT.Desktop.Forms
                     FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
 
                     List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
-                    if (resultList.Any())
+                    var itemQIStatus = item.qiStatus == (int)QIStatus.Failed || item.qiStatus == (int)QIStatus.Gradable || item.qiStatus == (int)QIStatus.NonGradable;
+                    if (resultList.Any() && itemQIStatus)
                     {
+                        var pendingFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_pending";
                         var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
                         if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name)))
@@ -1139,8 +1154,11 @@ namespace INTUSOFT.Desktop.Forms
                             File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
 
                         }
-                        if (File.Exists(doneFile))
+                        if (File.Exists(pendingFile))
+                        {
                             File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+                            File.Move(pendingFile, doneFile);
+                        }
                     }
 
                 }

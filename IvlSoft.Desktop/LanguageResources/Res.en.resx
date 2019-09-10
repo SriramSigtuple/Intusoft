@@ -1999,4 +1999,10 @@
   <data name="SomeNonGradableImagesUpload_Text" xml:space="preserve">
     <value>The images include Non-Gradable image(s). Do you still want to proceed?</value>
   </data>
+  <data name="QIFailedImagesUpload_Text" xml:space="preserve">
+    <value>QI analysis process has failed for a few images, do you still want to upload ?</value>
+  </data>
+  <data name="QIFailedNNongradableImagesUpload_Text" xml:space="preserve">
+    <value>The images include Non-Gradable/ QI analysis failed image(s). Do you still want to proceed?</value>
+  </data>
 </root>

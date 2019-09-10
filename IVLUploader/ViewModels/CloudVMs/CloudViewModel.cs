@@ -794,7 +794,7 @@ namespace IntuUploader.ViewModels
                 if (File.Exists(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending")))
                     File.Delete(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"));
 
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_done"), false);
+                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
                 st.Flush();
                 st.Close();
                 st.Dispose();
