@@ -1990,4 +1990,13 @@
   <data name="QIProgress_Text" xml:space="preserve">
     <value>QI in Progress</value>
   </data>
+  <data name="AllNonGradableImagesUpload_Text" xml:space="preserve">
+    <value>All the images are Non-Gradable image(s). Do you still want to upload?</value>
+  </data>
+  <data name="QIInProgressImagesUpload_Text" xml:space="preserve">
+    <value>Quality analyses in Progress. Please wait</value>
+  </data>
+  <data name="SomeNonGradableImagesUpload_Text" xml:space="preserve">
+    <value>The images include Non-Gradable image(s). Do you still want to proceed?</value>
+  </data>
 </root>

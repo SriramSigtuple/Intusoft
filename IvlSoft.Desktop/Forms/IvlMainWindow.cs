@@ -800,6 +800,7 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
                     if (indx >= 0)
                     {
+
                         try
                         {
                             var doneFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done";
@@ -860,8 +861,15 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
                     if (indx >= 0)
-                    {  NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
-                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    {
+
+                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Initialized)
+                        {
+                            NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
+                            changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                        }
+
+                           
                     }
                        
                 }
@@ -876,8 +884,14 @@ namespace INTUSOFT.Desktop.Forms
 
                     if (indx >= 0)
                     {
+                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Uploading)
+                        {
+
                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Uploading;
                         changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+
+                        }
+                           
                     }
                 }
                 #endregion
@@ -889,8 +903,12 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
                     if (indx >= 0)
                     {
-                        NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
+                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Processing)
+                        {
+                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
                         changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                        }
+                       
                     }
 
                 }
@@ -945,7 +963,7 @@ namespace INTUSOFT.Desktop.Forms
                                         {
                                             if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
                                                 NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Gradable;
-                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Non-Gradable"))
+                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
                                                     NewDataVariables.Obs[indx].qiStatus =(int) QIStatus.NonGradable;
 
                                         }
@@ -954,27 +972,20 @@ namespace INTUSOFT.Desktop.Forms
                                         {
                                             if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
                                                 NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Gradable;
-                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Non-Gradable"))
+                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
                                                 NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.NonGradable;
                                         }
 
-                                        //CreateCloudReport(responseValue);
-                                        //NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = responseValue.LeftAIImpressions;
-                                        //NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = responseValue.RightAIImpressions;
-                                        //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
                                     }
 
                                 }
                                 else if (responseValue.Status == "failure")
                                 {
-                                    if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
+                                    //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
                                     {
                                         NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Failed;
-                                        //NewDataVariables.Obs[indx].failureMessage = responseValue.FailureMessage;
-                                        //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
-
 
                                     }
 
@@ -1004,8 +1015,13 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Initialized;
-                        changedObsList.Add(NewDataVariables.Obs[indx]);
+                        
+                       // if(NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Initialised)
+                        {
+                              NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Initialised;
+                              changedObsList.Add(NewDataVariables.Obs[indx]);
+                        }
+                      
                     }
 
                 }
@@ -1020,8 +1036,12 @@ namespace INTUSOFT.Desktop.Forms
 
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Uploading;
-                        changedObsList.Add(NewDataVariables.Obs[indx]);
+                      // if( NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Uploading)
+                        {
+                            NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Uploading;
+                            changedObsList.Add(NewDataVariables.Obs[indx]);
+                        }
+                      
 
                     }
                 }
@@ -1034,22 +1054,22 @@ namespace INTUSOFT.Desktop.Forms
                     int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
                     if (indx >= 0)
                     {
-                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Processing;
-                        changedObsList.Add(NewDataVariables.Obs[indx]);
+                       // if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Processing)
+                        {
+                            NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Processing;
+                            changedObsList.Add(NewDataVariables.Obs[indx]);
+                        }
                     }
 
                 }
                 #endregion
-                //UpdateCloudFiles(changedCloudAnalysisReports);
+                RefreshThumbnails();
 
-                //Console.WriteLine(this.WindowState.ToString()) ;
-                if (IVLVariables.pageDisplayed == PageDisplayed.Image)// && this.WindowState == FormWindowState.Minimized)
+                if (changedObsList.Any())
                 {
-                    Args arg = new Args();
-                    arg["ChangedObsList"] = changedObsList;
-                    _eventHandler.Notify(_eventHandler.RefreshThumbnails, arg);
+                    UpdateObservationResultsFromCloud(changedObsList);
                 }
-                UpdateObservationResultsFromCloud(changedObsList);
+
             }
             catch (Exception ex)
             {
@@ -3195,7 +3215,43 @@ namespace INTUSOFT.Desktop.Forms
            
         }
 
+        bool updatingThumbnails = false;
+        private void RefreshThumbnails()
+        {
+            if (!IVLVariables.isCommandLineAppLaunch)
+            {
+                //if (!updatingThumbnails)
+                {
+                    List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
+                    updatingThumbnails = true;
+                    ChangedThumbnails.Reverse();
+                    foreach (var eye_Fundus_Image in ChangedThumbnails)
+                    {
+                        //if (eye_Fundus_Image.visit.Equals(NewDataVariables.Active_Visit))
+                        {
+                            Args arg = new Args();
+                            ThumbnailData thumbnailData = new ThumbnailData
+                            {
+                                id = eye_Fundus_Image.observationId,
 
+                                QIStatus = eye_Fundus_Image.qiStatus,
+                                fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
+                                side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
+                                isAnnotated = eye_Fundus_Image.annotationsAvailable,
+                                isCDR = eye_Fundus_Image.cdrAnnotationAvailable
+                            };
+                            arg["ImgLoc"] = thumbnailData.fileName;
+                            arg["thumbnailData"] = thumbnailData;
+                            _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
+
+                        }
+                        updatingThumbnails = false;
+                    }
+                  
+                }
+
+            }
+        }
 
         private void HospitalLogo_pbx_Resize(object sender, EventArgs e)
         {

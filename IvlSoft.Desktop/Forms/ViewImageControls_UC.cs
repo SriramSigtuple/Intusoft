@@ -92,7 +92,6 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.SaveImgChanges, new NotificationHandler(Saveimg_changes));
             eventHandler.Register(eventHandler.CreateReportEvent, new NotificationHandler(createReportEvent));
             eventHandler.Register(eventHandler.RefreshExistingReport, new NotificationHandler(RefreshShowReports));
-            eventHandler.Register(eventHandler.RefreshThumbnails, new NotificationHandler(RefreshThumbnails));
             thumbnailData = new ThumbnailData();
 
 
@@ -2798,41 +2797,7 @@ namespace INTUSOFT.Desktop.Forms
                 //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
-        bool updatingThumbnails = false;
-        private void RefreshThumbnails(string s,Args arg)
-        {
-            if (!IVLVariables.isCommandLineAppLaunch)
-            {
-                if(!updatingThumbnails)
-                {
-                    updatingThumbnails = true;
-                    List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x=>x.visit == NewDataVariables.Active_Visit).ToList();
-                    foreach (var item in ChangedThumbnails)
-                    {
-
-                        //  var pat = item.patient;
-                        //  var visit = item.visit;
-                        //NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x=>x.personId == item.patient.personId)].visits.ToList().IndexOf(item)
-                        //if (item.patient.personId == NewDataVariables.Active_Patient && item.visit == NewDataVariables.Active_Visit)
-                        {
-                            thumbnailData.id = item.observationId;
-
-                            thumbnailData.QIStatus = item.qiStatus;
-                            thumbnailData.fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item.value);
-                            arg["ImgLoc"] = thumbnailData.fileName;
-                            thumbnailData.side = item.eyeSide.Equals('L') ? 1 : 0;
-                            thumbnailData.isAnnotated = item.annotationsAvailable;
-                            thumbnailData.isCDR = item.cdrAnnotationAvailable;
-                            arg["thumbnailData"] = thumbnailData;
-                            eventHandler.Notify(eventHandler.ChangeThumbnailSide, arg);
-                        }
-                       
-                    }
-                    updatingThumbnails = false;
-                }
-
-            }
-        }
+        
 
         /// <summary>
         /// Changes the image side to od(right side).
@@ -3335,10 +3300,45 @@ namespace INTUSOFT.Desktop.Forms
             {
                 if(IVLVariables.isInternetConnected)
                 {
-                    PopulateModelsForMandaraUpload();
-                    CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString() + " " + IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                    List<int> NonGradableImagesStatusList = new List<int>();
+                    List<int> QIProgressList = new List<int>();
+                    for (int i = 0; i < currentReportImageFiles.Length; i++)
+                    {
+                        FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
+                        eye_fundus_image eye = NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
+                        if (eye.qiStatus == (int)QIStatus.NonGradable)
+                            NonGradableImagesStatusList.Add(eye.qiStatus);
+                        if (eye.qiStatus == (int)QIStatus.Initialised || eye.qiStatus == (int)QIStatus.Uploading || eye.qiStatus == (int)QIStatus.Processing)
+                            QIProgressList.Add(eye.qiStatus);
+                    }
 
+                    if (QIProgressList.Any())
+                        CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("QIInProgressImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                    else if (NonGradableImagesStatusList.Count == currentReportImageFiles.Length)
+                    {
+                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("AllNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            PopulateModelsForMandaraUpload();
+                            CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString() + " " + IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                        }
+                    }
+                    else if (NonGradableImagesStatusList.Any())
+                    {
+                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("SomeNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            PopulateModelsForMandaraUpload();
+                            CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString() + " " + IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
 
+                        }
+
+                    }
+                    else
+                    {
+                        PopulateModelsForMandaraUpload();
+                        CustomMessageBoxPopUp(currentReportImageFiles.Length.ToString() + " " + IVLVariables.LangResourceManager.GetString("UploadConfirmation_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                    }
                 }
                 else
                 {

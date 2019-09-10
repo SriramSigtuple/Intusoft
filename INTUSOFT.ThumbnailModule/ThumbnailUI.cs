@@ -181,7 +181,7 @@ namespace INTUSOFT.ThumbnailModule
                 if (item is ImageViewer)
                 {
                     ImageViewer imgView = (ImageViewer)item as ImageViewer;
-                    if (imgView.ImageID == thumbnailData.id)
+                    if (imgView.ImageLocation == thumbnailData.fileName)
                     {
                         imgView.ImageSide = thumbnailData.side;
                         imgView.IsAnnotated = thumbnailData.isAnnotated;
@@ -198,7 +198,10 @@ namespace INTUSOFT.ThumbnailModule
                 }
             }
         }
+        public void UpdateQIStatus(ThumbnailData thumbnailData)
+        {
 
+        }
         private Color GetQIStatusColor(int status)
         {
             switch(status)

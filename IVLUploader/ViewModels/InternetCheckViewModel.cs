@@ -55,7 +55,7 @@ namespace IntuUploader.ViewModels
         private InternetCheckViewModel()
         {
             QIUploaderVM = new UploaderVM(AnalysisType.QI);
-            FundusUploaderVM = new UploaderVM(AnalysisType.QI);
+            FundusUploaderVM = new UploaderVM(AnalysisType.Fundus);
 
             //OutboxViewModel = OutboxViewModel.GetInstance();
 
