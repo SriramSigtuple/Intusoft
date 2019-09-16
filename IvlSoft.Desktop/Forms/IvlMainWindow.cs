@@ -527,7 +527,7 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
 
             LaunchUploader();
-
+            IVLVariables.ReportListVM = ReportListVM.GetInstance();
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
         }
@@ -1456,7 +1456,7 @@ namespace INTUSOFT.Desktop.Forms
                         databaseConnection_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo);
                     }
                     CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK);
-
+                    INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating = true;
                     Application.Exit();
                 }
             }

@@ -4695,6 +4695,7 @@ namespace INTUSOFT.Data.Repository
                 _visit = value;
                 //Obs = _Repo.GetByCategory<obs>("visit", Active_Visit).ToList();
                 Obs = _visit.observations.Where(x => x.voided == false).OrderBy(x => x.createdDate).ToList();
+                Reports = _Repo.GetAll<report>().Where(x => x.visit.visitId == _visit.visitId).ToList();
                 Reports = _visit.reports.Where(x => x.voided == false).OrderByDescending(x => x.createdDate).ToList();
                 
                 //if (EyeFundusImage == null)

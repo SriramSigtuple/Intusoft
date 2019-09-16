@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewImageControls_UC));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -39,7 +36,6 @@
             this.rightSide_btn = new INTUSOFT.Custom.Controls.FormButtons();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.Reports_dgv = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.reportsCreated_lbl = new System.Windows.Forms.Label();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
@@ -103,11 +99,11 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.reportGridView_p = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Reports_dgv)).BeginInit();
             this.panel3.SuspendLayout();
             this.toolStrip3.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -220,9 +216,9 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.Reports_dgv, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.panel3, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.toolStrip3, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.reportGridView_p, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -232,52 +228,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.54054F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(281, 222);
             this.tableLayoutPanel3.TabIndex = 1;
-            // 
-            // Reports_dgv
-            // 
-            this.Reports_dgv.AllowUserToAddRows = false;
-            this.Reports_dgv.AllowUserToResizeColumns = false;
-            this.Reports_dgv.AllowUserToResizeRows = false;
-            this.Reports_dgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.Reports_dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Reports_dgv.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.Reports_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Khaki;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Reports_dgv.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Reports_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Reports_dgv.Location = new System.Drawing.Point(3, 30);
-            this.Reports_dgv.MultiSelect = false;
-            this.Reports_dgv.Name = "Reports_dgv";
-            this.Reports_dgv.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Reports_dgv.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.Reports_dgv.RowHeadersVisible = false;
-            this.Reports_dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Reports_dgv.Size = new System.Drawing.Size(275, 98);
-            this.Reports_dgv.TabIndex = 1;
-            this.Reports_dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellClick);
-            this.Reports_dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Reports_dgv_CellDoubleClick);
-            this.Reports_dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Reports_dgv_KeyDown);
             // 
             // panel3
             // 
@@ -1041,6 +991,14 @@
             this.toolStripContainer1.TabIndex = 1001;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
+            // reportGridView_p
+            // 
+            this.reportGridView_p.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.reportGridView_p.Location = new System.Drawing.Point(3, 30);
+            this.reportGridView_p.Name = "reportGridView_p";
+            this.reportGridView_p.Size = new System.Drawing.Size(275, 98);
+            this.reportGridView_p.TabIndex = 1002;
+            // 
             // ViewImageControls_UC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1056,7 +1014,6 @@
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Reports_dgv)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
@@ -1170,7 +1127,6 @@
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.ToolStrip increaseBrightnessToolStrip;
         private System.Windows.Forms.ToolStripButton increaseBrightness_btn;
-        private System.Windows.Forms.DataGridView Reports_dgv;
         private System.Windows.Forms.ToolStrip toolStrip3;
         private System.Windows.Forms.ToolStripButton newReport_btn;
         private System.Windows.Forms.ToolStripButton newAnnotation_btn;
@@ -1185,5 +1141,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label postProcessing_lbl;
         private System.Windows.Forms.Label file_lbl;
+        private ReportListView ReportListView;
+        private System.Windows.Forms.Panel reportGridView_p;
     }
 }

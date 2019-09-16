@@ -19,15 +19,16 @@
   <property name="isCloudReport" type="Boolean" column="is_cloud_report" length ="1" not-null="true" />
   <many-to-one name="Patient" class="Patient" column="patient_id" />
   <many-to-one name="lastModifiedBy" class="users" column="last_modified_by" />
+  <one-to-one name="cloudReport" constrained="true" lazy="no-proxy" foreign-key ="none" class="CloudAnalysisReport" />
 	<property name="lastModifiedDate" type="datetime" column="last_modified_date" length="19" />
   
 	<!-- Associations -->
   <many-to-one name="visit" class="visit" not-null="true" column="visit_id" />
   <many-to-one name="report_type" class="ReportType" not-null="true" column="report_type_id" />
-  <set name="cloudReports"  cascade="save-update" table="report" inverse="true" sort="natural">
+  <!--<set name="cloudReport"  cascade="save-update" table="report" sort="natural">
     <key not-null="true" column="report_id" />
     <one-to-many class="CloudAnalysisReport" />
-  </set>
+  </set>-->
   <!-- bi-directional one-to-many association to Obs -->
 	<!--<set name="obs" inverse="true" cascade="all" order-by="concept_id" access="field" >
 		<key column="visit_id" />

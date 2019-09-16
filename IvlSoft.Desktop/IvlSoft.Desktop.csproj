@@ -58,9 +58,34 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;x64</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Annotation">
       <HintPath>..\Annotation\bin\$(Configuration)\Annotation.dll</HintPath>
+    </Reference>
+    <Reference Include="BaseViewModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\BaseViewModel\bin\Debug\BaseViewModel.dll</HintPath>
     </Reference>
     <Reference Include="BCrypt.Net">
       <SpecificVersion>False</SpecificVersion>
@@ -293,6 +318,14 @@
     <Compile Include="Forms\RegisterUserWindow.designer.cs">
       <DependentUpon>RegisterUserWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ReportListView.xaml.cs">
+      <DependentUpon>ReportListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReportListVM.cs" />
+    <Compile Include="Forms\ReportVM.cs" />
+    <Compile Include="Forms\ReportView.xaml.cs">
+      <DependentUpon>ReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -311,7 +344,9 @@
     <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Value2StatusColorConvertor.cs" />
     <Compile Include="InternetChecker.cs" />
+    <Compile Include="ReportGridViewModel.cs" />
     <Compile Include="Themes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -865,7 +900,18 @@
       <Name>CameraModule</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Forms\ReportListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\ReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.WinFx.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)library\$(PlatformTarget)\*.dll" "$(TargetDir)"
 copy "$(SolutionDir)ReportTemplateCreator\bin\$(Configuration)\ReportTemplateCreator.exe" "$(TargetDir)"

@@ -25,7 +25,7 @@ namespace INTUSOFT.Data.NewDbModel
             this.voidedDate = DateTime.Now;
             this.createdDate = DateTime.Now;
             this.lastModifiedDate = DateTime.Now;
-            this.cloudReports = new HashSet<CloudAnalysisReport>();
+            this.cloudReport = new CloudAnalysisReport();
             #endregion
         }
 
@@ -45,7 +45,7 @@ namespace INTUSOFT.Data.NewDbModel
             DateTime dateVoided,
             string voidedReason,
             string UUID,
-            ISet<CloudAnalysisReport> CloudReports
+            CloudAnalysisReport CloudReport
                  )
         {
             return new report
@@ -65,7 +65,7 @@ namespace INTUSOFT.Data.NewDbModel
              voidedReason = voidedReason,
              isCloudReport = IsCloudReport,
              uuid=UUID,
-             cloudReports = CloudReports
+             cloudReport = CloudReport
             };
         }
         #region State Properties
@@ -98,7 +98,7 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual string dataJson { get; set; }
 
         public virtual string uuid { get; set; }
-        public virtual ISet<CloudAnalysisReport> cloudReports { get; set; }
+        public virtual CloudAnalysisReport cloudReport { get; set; }
 
         #endregion
 

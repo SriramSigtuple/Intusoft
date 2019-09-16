@@ -113,6 +113,7 @@ namespace INTUSOFT.EventHandler
         public string ShowSplashScreen = "ShowSplashScreen";
         public string RefreshExistingReport = "RefreshExistingReport";
         public string RefreshThumbnails = "RefreshThumbnails";
+        public string ReportGridDoubleClick = "ReportGridDoubleClick";
         // Alignment 
         public IVLEventHandler()
         {

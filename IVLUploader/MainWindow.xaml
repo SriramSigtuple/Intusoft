@@ -38,7 +38,8 @@
     <Grid>
         <StackPanel Orientation="Vertical" >
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="0,10,0,0" Height="53"><InlineUIContainer>
+                <TextBlock Margin="0,10,0,0" Height="53">
+                    <InlineUIContainer>
             		<Label Foreground="Black" Content="Sever Status" Height="41" FontWeight="Bold" Width="86" Margin="10,0,0,0"/>
             	</InlineUIContainer><Run Text=" "/>
                     <InlineUIContainer>
@@ -47,7 +48,6 @@
                        <TextBlock Text="{Binding Path=ServerRunningToolTip}" Foreground="Blue"/>
                    </Ellipse.ToolTip>
                     </Ellipse>
-                        
                     </InlineUIContainer>
                 </TextBlock>
             </StackPanel>
@@ -62,9 +62,8 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                </InlineUIContainer><Run Text=" "/><InlineUIContainer>
-
-                </InlineUIContainer></TextBlock>
+                </InlineUIContainer><Run Text=" "/>
+               </TextBlock>
 
             <!--<ListView x:Name="filesUploadListView" Background="Transparent" Margin="0,20,0,0" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource ="{Binding LogginVM, Mode=TwoWay}" Height="544">
                 <ListView.ItemContainerStyle>

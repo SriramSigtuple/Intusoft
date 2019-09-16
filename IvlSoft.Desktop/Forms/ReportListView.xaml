@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="INTUSOFT.Desktop.Forms.ReportListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:convertor="clr-namespace:INTUSOFT.Desktop.Forms.Convertor"
+             xmlns:local="clr-namespace:INTUSOFT.Desktop.Forms"
+             xmlns:VM="clr-namespace:INTUSOFT.Desktop"
+             mc:Ignorable="d" Width="201.186" Height="173">
+    <UserControl.Resources>
+        <Style x:Key="GridHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="ListViewItem" x:Key="listViewDoubleClick">
+            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="true" >
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Background" Value="Blue" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <convertor:DateConvertor x:Key="DateConvertor"/>
+        <convertor:TimeConvertor x:Key="TimeConvertor"/>
+        <convertor:CloudStatusConvertor x:Key="CloudStatusConvertor"/>
+        <convertor:IndexConverter x:Key="IndexConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <ListView Name="ReportList" SelectionMode="Single" ItemsSource="{Binding Reports, Mode=TwoWay}" ItemContainerStyle="{StaticResource listViewDoubleClick}" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Width="202" >
+            <ListView.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Text}"/>
+
+                </Style>
+            </ListView.Resources>
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="30"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </ListView.ItemContainerStyle>-->
+            <!--ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Name="FileNames_Grid">
+                        <local:ReportView Margin="0,5,0,0"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+          Header="SL"
+          DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                         AncestorType={x:Type ListViewItem}}, 
+                                         Converter={StaticResource IndexConverter}}" />
+                    <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Date" Width="50" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource DateConvertor}}"/>
+                    <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Time" Width="50" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource TimeConvertor}}" />
+                    <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Status" Width="60" DisplayMemberBinding="{Binding cloudReport.cloudAnalysisReportStatus,Converter={StaticResource ResourceKey= CloudStatusConvertor}}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

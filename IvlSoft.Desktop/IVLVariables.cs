@@ -48,6 +48,7 @@ namespace INTUSOFT.Desktop
         public static string appDirPathName = string.Empty;
         public static bool isInternetConnected = false;
         public static PageDisplayed pageDisplayed = PageDisplayed.Login;
+        public static ReportListVM ReportListVM;
 
         public static Settings CurrentSettings
         {

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Runtime.CompilerServices;
+
 namespace BaseViewModel
 {
     public abstract class ViewBaseModel:INotifyPropertyChanged,IDisposable
@@ -27,7 +29,7 @@ namespace BaseViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
             VerifyPropertyName(propertyName);
 

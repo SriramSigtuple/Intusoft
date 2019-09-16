@@ -1131,7 +1131,10 @@ namespace IVLReport
                     {
                         Label l = new Label();
                         if (IVLProps.Binding.Contains("ReportURL"))
+                        {
                             l = new LinkLabel();
+                            (l as LinkLabel).LinkClicked += Report_LinkClicked;
+                        }
                         IVLFont i = IVLProps.Font;
                         l.Text = IVLProps.Text;
                         if (IVLProps.Binding != BindingType.None.ToString() && IVLProps.Binding == BindingType.Name.ToString()) 
@@ -1250,6 +1253,16 @@ namespace IVLReport
 
             }
         }
+
+        private void Report_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var linklabel = (sender as LinkLabel);
+            linklabel.LinkVisited = true;
+            //var target = e.Link.LinkData as string;
+            System.Diagnostics.Process.Start(linklabel.Text);
+        }
+
+
         private void SegregateImagesWrtSides( IVL_ImagePanel imgPanel)
         {
             List<string> imageFilePaths = new List<string>();
