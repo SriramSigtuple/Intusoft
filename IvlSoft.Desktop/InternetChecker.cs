@@ -4,12 +4,13 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Windows.Input;
 using Common;
+using BaseViewModel;
 namespace INTUSOFT.Desktop
 {
     /// <summary>
     /// Class which implements the check for internet connection by pinging to 8.8.8.8 of google
     /// </summary>
-    public class InternetCheckViewModel 
+    public class InternetCheckViewModel : ViewBaseModel
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -39,7 +40,6 @@ namespace INTUSOFT.Desktop
             PingDNSTimer = new Timer(new TimerCallback(PingDNS), null, 0, (int)((Convert.ToDouble( IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000)));
 
 
-            //SetValue = new RelayCommand(param=> SetValueMethod(param));
             logger.Info("");
 
 
@@ -117,8 +117,27 @@ namespace INTUSOFT.Desktop
             get => internetPresent;
             set
             {
-                internetPresent = value;
-                IVLVariables.isInternetConnected = value;
+                //if(internetPresent != value)
+                {
+                    internetPresent = value;
+                    IVLVariables.isInternetConnected = value;
+                    OnPropertyChanged();
+                    if (value)
+                    {
+                        ServertToolTip =InternetConnectionStatus = IVLVariables.LangResourceManager.GetString("InternetConnected_Text", IVLVariables.LangResourceCultureInfo);
+                        //InternetConnectionStatus = IVLVariables.LangResourceManager.GetString("InternetConnected_Text", IVLVariables.LangResourceCultureInfo);
+
+                    }
+                    else
+                    {
+                        InternetConnectionStatus = IVLVariables.LangResourceManager.GetString("InternetDisconnected_Text", IVLVariables.LangResourceCultureInfo);
+                        ServertToolTip = IVLVariables.LangResourceManager.GetString("No_Internet_Text", IVLVariables.LangResourceCultureInfo);
+
+                    }
+
+                }
+
+
             }
         }
         /// <summary>
@@ -130,6 +149,32 @@ namespace INTUSOFT.Desktop
             set
             {
                 retryCount = value;
+            }
+        }
+        private string serverToolTip;
+
+        public string ServertToolTip
+        {
+            get { return serverToolTip; }
+            set {
+                serverToolTip = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string internetConnectionStatus;
+
+        public string InternetConnectionStatus
+        {
+            get { return internetConnectionStatus; }
+            set
+            {
+                //if(internetConnectionStatus != value)
+                {
+                    internetConnectionStatus = value;
+                    OnPropertyChanged("InternetConnectionStatus");
+                }
+          
             }
         }
 

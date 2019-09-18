@@ -31,8 +31,8 @@ namespace INTUSOFT.Desktop.Forms
 {
     public partial class LiveImageControls_UC : UserControl
     {
-        Logger ExceptionLog = LogManager.GetLogger("ExceptionLog");
-        ImageSaveHelper img;
+        static Logger exceptionLog = LogManager.GetLogger("ExceptionLog"); 
+         ImageSaveHelper img;
         IVLEventHandler eventHandler;
         Args arg = new Args();
         public delegate void FrameCaptured(string FileName, EventArgs e);
@@ -641,7 +641,7 @@ namespace INTUSOFT.Desktop.Forms
            }
            catch (Exception ex)
            {
-               Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
+               Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
            }
        }
@@ -687,7 +687,7 @@ namespace INTUSOFT.Desktop.Forms
             cloudModel.UploadModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
             cloudModel.UploadModel.URL_Model.API_URL_End_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES_INPUT.val;
             cloudModel.UploadModel.RetryCount = 3;
-            cloudModel.UploadModel.images = new string[] {Path.Combine( IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val ,NewDataVariables.Active_Obs.value)};
+            cloudModel.UploadModel.images = new string[] {Path.Combine( IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val ,eye_Fundus_Image.value)};
             cloudModel.UploadModel.checksums = new string[1];
             cloudModel.UploadModel.relative_path = new string[1];
             cloudModel.UploadModel.eyeSideArr = new string[] { eye_Fundus_Image.eyeSide.ToString() };

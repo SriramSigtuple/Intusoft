@@ -105,24 +105,37 @@ namespace IntuUploader.ViewModels
 
             logger.Info("SentItems VM Timer, Analysis Type {0}", analysisType.ToString("g"));
 
-            if (fileIndx == 0)
-            {
                 sentItemsDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");
+
+            fileIndx = 0;
+            if(sentItemsDirFileInfoArr.Any())
+            {
+                if (activeFileCloudVM.ActiveFnf != null)
+                if(sentItemsDirFileInfoArr.Where(x=>x.FullName == activeFileCloudVM.ActiveFnf.FullName).ToList().Any())
+                {
+                    var indx = sentItemsDirFileInfoArr.ToList().FindIndex(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName);
+
+                    if (indx < sentItemsDirFileInfoArr.Length-1)
+                        fileIndx = indx + 1;
+                }
+                GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
             }
 
-            for (int i = fileIndx; i < sentItemsDirFileInfoArr.Length; i++, fileIndx++)
-                {
-                if (File.Exists(Path.Combine(sentItemsDirPath, sentItemsDirFileInfoArr[i].Name.Split('.')[0] + "_pending")))
-                {
-                    GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
-                }
-                    
 
-                }
-                if (fileIndx == sentItemsDirFileInfoArr.Length)
-                    fileIndx = 0;
-            
+
+            //for (int i = fileIndx; i < sentItemsDirFileInfoArr.Length; i++, fileIndx++)
+            //    {
+            //    if (File.Exists(Path.Combine(sentItemsDirPath, sentItemsDirFileInfoArr[i].Name.Split('.')[0] + "_pending")))
+            //    {
+            //        GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
+            //    }
+
+
+            //    }
+            //    if (fileIndx == sentItemsDirFileInfoArr.Length)
+            //        fileIndx = 0;
+
 
         }
 
@@ -169,9 +182,11 @@ namespace IntuUploader.ViewModels
                     {
                              if (!activeFileCloudVM.isBusy)
                             {
-                                //Console.WriteLine("Get sent items file in active vm finf is null");
+                        logger.Info($"file Name ={activeDirFileInfo.Name}");
 
-                                UpdateActiveCloudVM(activeDirFileInfo);
+                        //Console.WriteLine("Get sent items file in active vm finf is null");
+
+                        UpdateActiveCloudVM(activeDirFileInfo);
 
                             }
                     }

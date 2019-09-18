@@ -50,7 +50,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;x64</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -251,6 +251,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GradientFormControl.Designer.cs" />
+    <Compile Include="Forms\InternetStatusUCL.xaml.cs">
+      <DependentUpon>InternetStatusUCL.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LiveGainExposureCalculation.cs" />
     <Compile Include="Forms\LiveImageControls45_UC.cs">
       <SubType>UserControl</SubType>
@@ -322,10 +325,6 @@
       <DependentUpon>ReportListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\ReportListVM.cs" />
-    <Compile Include="Forms\ReportVM.cs" />
-    <Compile Include="Forms\ReportView.xaml.cs">
-      <DependentUpon>ReportView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -346,7 +345,6 @@
     </Compile>
     <Compile Include="Forms\Value2StatusColorConvertor.cs" />
     <Compile Include="InternetChecker.cs" />
-    <Compile Include="ReportGridViewModel.cs" />
     <Compile Include="Themes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -901,11 +899,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Forms\ReportListView.xaml">
+    <Page Include="Forms\InternetStatusUCL.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\ReportView.xaml">
+    <Page Include="Forms\ReportListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

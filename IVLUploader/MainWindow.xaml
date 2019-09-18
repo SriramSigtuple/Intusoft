@@ -44,7 +44,7 @@
             	</InlineUIContainer><Run Text=" "/>
                     <InlineUIContainer>
             		<Ellipse Name="ServerStatus_ellipse" Height="50" Width="50" Fill="{Binding InternetCheckViewModel.InternetPresent, Converter={StaticResource BoolToServerStatusColor}, UpdateSourceTrigger=PropertyChanged}">
-                   <Ellipse.ToolTip>
+                        <Ellipse.ToolTip>
                        <TextBlock Text="{Binding Path=ServerRunningToolTip}" Foreground="Blue"/>
                    </Ellipse.ToolTip>
                     </Ellipse>

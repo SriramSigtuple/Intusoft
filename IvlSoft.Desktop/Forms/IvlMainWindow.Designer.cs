@@ -47,6 +47,7 @@
             this.patientDetails_p = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.InternetCheck_p = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.database_toolstrip = new System.Windows.Forms.ToolStrip();
             this.databaseConnection_lbl = new System.Windows.Forms.ToolStripLabel();
@@ -225,9 +226,9 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 4;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22.31281F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22.31229F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.369623F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.00528F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.30781F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.596466F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.70987F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(157, 679);
             this.tableLayoutPanel5.TabIndex = 0;
@@ -239,9 +240,9 @@
             this.toolStrip4.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.emr_btn});
-            this.toolStrip4.Location = new System.Drawing.Point(0, 302);
+            this.toolStrip4.Location = new System.Drawing.Point(0, 350);
             this.toolStrip4.Name = "toolStrip4";
-            this.toolStrip4.Size = new System.Drawing.Size(157, 56);
+            this.toolStrip4.Size = new System.Drawing.Size(157, 38);
             this.toolStrip4.TabIndex = 0;
             this.toolStrip4.Text = "toolStrip4";
             // 
@@ -301,9 +302,9 @@
             // patientDetails_p
             // 
             this.patientDetails_p.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.patientDetails_p.Location = new System.Drawing.Point(3, 361);
+            this.patientDetails_p.Location = new System.Drawing.Point(3, 391);
             this.patientDetails_p.Name = "patientDetails_p";
-            this.patientDetails_p.Size = new System.Drawing.Size(151, 315);
+            this.patientDetails_p.Size = new System.Drawing.Size(151, 285);
             this.patientDetails_p.TabIndex = 4;
             // 
             // groupBox1
@@ -314,7 +315,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.Khaki;
             this.groupBox1.Location = new System.Drawing.Point(3, 154);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(151, 145);
+            this.groupBox1.Size = new System.Drawing.Size(151, 193);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
@@ -323,16 +324,26 @@
             // 
             this.tableLayoutPanel8.ColumnCount = 1;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.InternetCheck_p, 0, 1);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 2);
             this.tableLayoutPanel8.Controls.Add(this.cameraPower_toolstrip, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 19);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(145, 123);
+            this.tableLayoutPanel8.RowCount = 3;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(145, 171);
             this.tableLayoutPanel8.TabIndex = 6;
+            // 
+            // InternetCheck_p
+            // 
+            this.InternetCheck_p.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InternetCheck_p.Location = new System.Drawing.Point(3, 60);
+            this.InternetCheck_p.Name = "InternetCheck_p";
+            this.InternetCheck_p.Size = new System.Drawing.Size(139, 51);
+            this.InternetCheck_p.TabIndex = 0;
             // 
             // tableLayoutPanel9
             // 
@@ -342,11 +353,11 @@
             this.tableLayoutPanel9.Controls.Add(this.database_toolstrip, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.server_toolstrip, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 64);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 117);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(139, 56);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(139, 51);
             this.tableLayoutPanel9.TabIndex = 2;
             // 
             // database_toolstrip
@@ -363,7 +374,7 @@
             this.database_toolstrip.Name = "database_toolstrip";
             this.database_toolstrip.Padding = new System.Windows.Forms.Padding(0);
             this.database_toolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.database_toolstrip.Size = new System.Drawing.Size(70, 56);
+            this.database_toolstrip.Size = new System.Drawing.Size(70, 51);
             this.database_toolstrip.TabIndex = 2;
             this.database_toolstrip.Text = "toolStrip3";
             // 
@@ -391,7 +402,7 @@
             this.server_toolstrip.Name = "server_toolstrip";
             this.server_toolstrip.Padding = new System.Windows.Forms.Padding(0);
             this.server_toolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.server_toolstrip.Size = new System.Drawing.Size(69, 56);
+            this.server_toolstrip.Size = new System.Drawing.Size(69, 51);
             this.server_toolstrip.TabIndex = 2;
             this.server_toolstrip.Text = "Server";
             // 
@@ -410,7 +421,6 @@
             // cameraPower_toolstrip
             // 
             this.cameraPower_toolstrip.BackColor = System.Drawing.Color.Transparent;
-            this.cameraPower_toolstrip.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cameraPower_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.cameraPower_toolstrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cameraPower_toolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -423,7 +433,7 @@
             this.cameraPower_toolstrip.Location = new System.Drawing.Point(0, 0);
             this.cameraPower_toolstrip.Name = "cameraPower_toolstrip";
             this.cameraPower_toolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.cameraPower_toolstrip.Size = new System.Drawing.Size(145, 61);
+            this.cameraPower_toolstrip.Size = new System.Drawing.Size(145, 55);
             this.cameraPower_toolstrip.TabIndex = 1;
             this.cameraPower_toolstrip.Text = "toolStrip1";
             // 
@@ -431,7 +441,7 @@
             // 
             this.toolStripSeparator2.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 61);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 55);
             // 
             // cameraImage_lbl
             // 
@@ -447,7 +457,7 @@
             // 
             this.toolStripSeparator5.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 61);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 55);
             // 
             // powerImage_lbl
             // 
@@ -698,5 +708,6 @@
         private System.Windows.Forms.Label noOfImagesSelected_lbl;
         private System.Windows.Forms.ToolStrip uploader_ts;
         private System.Windows.Forms.ToolStripButton PushToOutbox_btn;
+        private System.Windows.Forms.Panel InternetCheck_p;
     }
 }

@@ -2005,4 +2005,10 @@
   <data name="QIFailedNNongradableImagesUpload_Text" xml:space="preserve">
     <value>The images include Non-Gradable/ QI analysis failed image(s). Do you still want to proceed?</value>
   </data>
+  <data name="InternetConnected_Text" xml:space="preserve">
+    <value>Internet connected</value>
+  </data>
+  <data name="InternetDisconnected_Text" xml:space="preserve">
+    <value>Internet Disconnected</value>
+  </data>
 </root>

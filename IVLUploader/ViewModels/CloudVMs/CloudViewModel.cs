@@ -19,7 +19,7 @@ namespace IntuUploader.ViewModels
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public FileInfo ActiveFnf;
+        public FileInfo ActiveFnf = null;
 
         CloudModel activeCloudModel;
         LoginViewModel activeLoginViewModel;
@@ -212,8 +212,6 @@ namespace IntuUploader.ViewModels
                     }
                     else if ((string)analysisStatus_JObject["status"] == "failure")
                     {
-
-
 
                         ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result");
                         //this.Dispose();

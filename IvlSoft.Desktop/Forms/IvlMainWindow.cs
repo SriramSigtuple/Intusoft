@@ -26,6 +26,8 @@ using System.ServiceProcess;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
+
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class IvlMainWindow : BaseGradientForm
@@ -145,9 +147,10 @@ namespace INTUSOFT.Desktop.Forms
                 con = new Constants();
                 
             }
-            
+
             #endregion
 
+            
             _eventHandler = IVLEventHandler.getInstance();
             prerequisiteList = new List<string>();
             prerequisiteList.Add(con.adobeReaderVersion);
@@ -530,6 +533,12 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ReportListVM = ReportListVM.GetInstance();
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
+            InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
+            ElementHost elementHost = new ElementHost();
+            elementHost.Dock = DockStyle.Fill;
+            elementHost.Child = internetStatusUCL;
+            //reportListView.Parent = this.reportGridView_p;
+            this.InternetCheck_p.Controls.Add(elementHost);
         }
 
         private void LaunchUploader()
@@ -1847,7 +1856,10 @@ namespace INTUSOFT.Desktop.Forms
                 inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
                 inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
                 InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
-
+               
+                
+               // string[] var = new string[] { "akjd" };
+               //var value = var[1];
             }
             catch (Exception ex)
             {
@@ -3010,7 +3022,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else
             {
-                foreach (int item in ids)
+                foreach (string item in imageLocations)
                 {
                     //The below code has been modified for the defect no 0001791
 
@@ -3020,11 +3032,11 @@ namespace INTUSOFT.Desktop.Forms
                     //NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voidedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voided = true;
-                    eye_fundus_image ImageToDelete = NewDataVariables.Obs.Find(x => x.observationId == item);
+                    eye_fundus_image ImageToDelete = NewDataVariables.Obs.Find(x => x.value == new FileInfo(item).Name);
                     ImageToDelete.lastModifiedDate = DateTime.Now;
                     ImageToDelete.voidedDate = DateTime.Now;
                     ImageToDelete.voided = true;
-                    NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.observationId == item)] = ImageToDelete;
+                    NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(item).Name)] = ImageToDelete;
                     //NewIVLDataMethods.RemoveImage();
                 }
                 Patient pat = NewDataVariables.Patients.Find(x => x.personId == NewDataVariables.Active_Patient);
