@@ -31,41 +31,44 @@ namespace AdobeCheckOSVersionInfo
         private static bool isAdobeInstallationCheck(string osInfo)
         {
             RegistryKey adobe = null;
-            if (!osInfo.Contains("10"))
-             adobe = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Adobe");
-            else
-             adobe = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Classes").OpenSubKey("acrobat").OpenSubKey("DefaultIcon");
+            //if (!osInfo.Contains("10"))
+            // adobe = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Adobe");
+            //else
+            // adobe = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Classes").OpenSubKey("acrobat").OpenSubKey("DefaultIcon");
+             adobe = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("Microsoft").OpenSubKey("Windows").OpenSubKey("CurrentVersion").OpenSubKey("App Paths").OpenSubKey("AcroRd32.exe");
+            var path = adobe.GetValue("");
+            return (File.Exists(path.ToString()));
+            //if (File.Exists(path.ToString()))
+            //{
 
-            if (adobe != null)
-            {
-                RegistryKey acroRead = null;
-                if (!osInfo.Contains("10"))
-                {
-                    acroRead = adobe.OpenSubKey("Acrobat Reader");
-                    if (acroRead != null)
-                    {
-                        return true;
-                    }
-                    else
-                        return false;
-                }
-                else
-                {
-                    var names = adobe.GetValueNames();
-                    string value = (string) adobe.GetValue("");
-                    if (value.Contains("Reader 11.0\\Reader\\AcroRd32.exe"))
-                        return true;
-                    else
-                        return false;
-                }
+            //    //RegistryKey acroRead = null;
+            //    //if (!osInfo.Contains("10"))
+            //    //{
+            //    //    acroRead = adobe.OpenSubKey("Acrobat Reader");
+            //    //    if (acroRead != null)
+            //    //    {
+            //    //        return true;
+            //    //    }
+            //    //    else
+            //    //        return false;
+            //    //}
+            //    //else
+            //    //{
+            //    //    var names = adobe.GetValueNames();
+            //    //    string value = (string) adobe.GetValue("");
+            //    //    if (value.Contains("Reader 11.0\\Reader\\AcroRd32.exe"))
+            //    //        return true;
+            //    //    else
+            //    //        return false;
+            //    //}
 
 
-            }
-            else
-            {
-                return false;
-                ;
-            }
+            //}
+            //else
+            //{
+            //    return false;
+            //    ;
+            //}
         }
 
         private static string GetOSVersionInfo()

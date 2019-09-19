@@ -516,9 +516,10 @@ namespace INTUSOFT.Desktop.Forms
                     {
 
                         NewDataVariables.Reports = NewDataVariables.Active_Visit.reports.ToList();
+
                         foreach (var item in NewDataVariables.Reports)
                         {
-                            if(item.cloudReport == null)
+                            if(item.isCloudReport && item.cloudReport == null)
                             {
                                 item.cloudReport = NewDataVariables.CloudAnalysisReports.Where(x => x.Report.reportId == item.reportId).ToList()[0];
                             }
@@ -2130,7 +2131,7 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.isReportWindowOpen = false;
 
             }
-
+                INTUSOFT.Data.NewDbModel.report report = null;
             string reportXml = reportVal["xml"] as string;
             bool ismodified = Convert.ToBoolean(reportVal["IsModifed"]);
             if (isView && ismodified)
@@ -2143,7 +2144,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else
             {
-                INTUSOFT.Data.NewDbModel.report report = new INTUSOFT.Data.NewDbModel.report();
+                report = new INTUSOFT.Data.NewDbModel.report();
                 report.dataJson = reportXml;
                 report.createdDate = (DateTime)reportVal["dateTime"];
                 report.visit = NewDataVariables.Active_Visit;
@@ -2157,13 +2158,25 @@ namespace INTUSOFT.Desktop.Forms
                 report.report_type = rept;
                 report.Patient = NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0];
                 NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.Where(y => y.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].reports.Add(report);
-                //NewDataVariables.Active_Visit.reports.Add(report);
-                //NewIVLDataMethods.AddReport(report);
-                //NewIVLDataMethods.UpdateVisit();
+
+                    //NewDataVariables.Active_Visit.reports.Add(report);
+                    //NewIVLDataMethods.AddReport(report);
+                    //NewIVLDataMethods.UpdateVisit();
+                
                 NewDataVariables.Reports.Add(report);
-            }
-            //PatientDetais_update();
-            NewIVLDataMethods.UpdatePatient();
+               
+
+                }
+                //PatientDetais_update();
+                NewIVLDataMethods.UpdatePatient();
+                if(report!= null)
+                {
+                    CloudAnalysisReport cloudAnalysisReport = CloudAnalysisReport.CreateCloudAnalysisReport();
+                    cloudAnalysisReport.Report = report;
+                    NewDataVariables._Repo.Add<CloudAnalysisReport>(cloudAnalysisReport);
+                }
+               
+
             }
             else
             {
