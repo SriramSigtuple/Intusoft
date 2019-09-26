@@ -17,18 +17,18 @@ using System.Windows.Shapes;
 namespace INTUSOFT.Desktop.Forms
 {
     /// <summary>
-    /// Interaction logic for InternetStatusUCL.xaml
+    /// Interaction logic for InformationIconUCL.xaml
     /// </summary>
-    public partial class InternetStatusUCL : UserControl
+    public partial class InformationIconUCL : UserControl
     {
-        public InternetStatusUCL()
+        public InformationIconUCL(InfoVM infoVM)
         {
             InitializeComponent();
-            this.DataContext = InternetCheckViewModel.GetInstance();
-            this.Loaded += InternetStatusUCL_Loaded;
+            this.DataContext =infoVM;
+            this.Loaded += InformationIconUCL_Loaded;
         }
 
-        private void InternetStatusUCL_Loaded(object sender, RoutedEventArgs e)
+        private void InformationIconUCL_Loaded(object sender, RoutedEventArgs e)
         {
 
             HwndSource hwnd = System.Windows.PresentationSource.FromVisual(this) as HwndSource;

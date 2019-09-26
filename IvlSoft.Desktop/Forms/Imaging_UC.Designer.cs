@@ -54,7 +54,6 @@
             this.positiveDiaptor_pbx = new INTUSOFT.Custom.Controls.PictureBoxExtended();
             this.negativeArrow_pbx = new System.Windows.Forms.PictureBox();
             this.positiveArrow_pbx = new System.Windows.Forms.PictureBox();
-            this.resuming_lbl = new System.Windows.Forms.Label();
             this.NoImageSelected_lbl = new System.Windows.Forms.Label();
             this.display_pbx = new INTUSOFT.Custom.Controls.PictureBoxExtended();
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -129,7 +128,7 @@
             // 
             this.ExposureStatus_lbl.ForeColor = System.Drawing.Color.White;
             this.ExposureStatus_lbl.Name = "ExposureStatus_lbl";
-            this.ExposureStatus_lbl.Size = new System.Drawing.Size(54, 15);
+            this.ExposureStatus_lbl.Size = new System.Drawing.Size(55, 15);
             this.ExposureStatus_lbl.Text = "Exposure";
             // 
             // gainStatus_lbl
@@ -186,24 +185,21 @@
             this.QIProgressText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.QIProgressText_lbl.Name = "QIProgressText_lbl";
             this.QIProgressText_lbl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-
-            this.QIProgressText_lbl.Size = new System.Drawing.Size(0, 17);
+            this.QIProgressText_lbl.Size = new System.Drawing.Size(10, 17);
             // 
             // QIFailedImg_lbl
             // 
             this.QIFailedImg_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.QIFailedImg_lbl.Name = "QIFailedImg_lbl";
             this.QIFailedImg_lbl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-
-            this.QIFailedImg_lbl.Size = new System.Drawing.Size(0, 17);
+            this.QIFailedImg_lbl.Size = new System.Drawing.Size(10, 17);
             // 
             // QIFailedText_lbl
             // 
             this.QIFailedText_lbl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.QIFailedText_lbl.Name = "QIFailedText_lbl";
             this.QIFailedText_lbl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-
-            this.QIFailedText_lbl.Size = new System.Drawing.Size(0, 17);
+            this.QIFailedText_lbl.Size = new System.Drawing.Size(10, 17);
             // 
             // ImagingViewControls_p
             // 
@@ -218,7 +214,6 @@
             this.panel1.Controls.Add(this.maskOverlay_Pbx);
             this.panel1.Controls.Add(this.overlay_pbx);
             this.panel1.Controls.Add(this.motorSensor_tbpnl);
-            this.panel1.Controls.Add(this.resuming_lbl);
             this.panel1.Controls.Add(this.NoImageSelected_lbl);
             this.panel1.Controls.Add(this.display_pbx);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -346,17 +341,6 @@
             this.positiveArrow_pbx.TabIndex = 6;
             this.positiveArrow_pbx.TabStop = false;
             // 
-            // resuming_lbl
-            // 
-            this.resuming_lbl.AutoSize = true;
-            this.resuming_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.resuming_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resuming_lbl.Location = new System.Drawing.Point(328, 530);
-            this.resuming_lbl.Name = "resuming_lbl";
-            this.resuming_lbl.Size = new System.Drawing.Size(2, 26);
-            this.resuming_lbl.TabIndex = 3;
-            this.resuming_lbl.Visible = false;
-            // 
             // NoImageSelected_lbl
             // 
             this.NoImageSelected_lbl.BackColor = System.Drawing.Color.Transparent;
@@ -434,7 +418,6 @@
             this.status_ts.ResumeLayout(false);
             this.status_ts.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maskOverlay_Pbx)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.overlay_pbx)).EndInit();
             this.motorSensor_tbpnl.ResumeLayout(false);
@@ -452,7 +435,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label resuming_lbl;
         public INTUSOFT.Custom.Controls.PictureBoxExtended display_pbx;
         private System.Windows.Forms.Label NoImageSelected_lbl;
         //private System.Windows.Forms.PictureBox overlayRetinal_pbx;

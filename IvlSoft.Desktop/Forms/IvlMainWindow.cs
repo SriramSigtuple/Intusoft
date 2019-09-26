@@ -271,9 +271,16 @@ namespace INTUSOFT.Desktop.Forms
             serverTimer = new System.Timers.Timer();
             serverTimer.Elapsed += serverTimer_Elapsed;
             serverTimer.Interval = 60000;// Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._CameraPowerTimerInterval.val);
-            
+            IVLVariables.ReportListVM = ReportListVM.GetInstance();
+
+            InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
 
             InitializeComponent();
+           
+            elementHost1.Dock = DockStyle.Fill;
+            elementHost1.Child = internetStatusUCL;
+            this.InternetCheck_p.Controls.Add(elementHost1);
+
             IVLVariables.IVLThemes = Themes.GetInstance();
             IVLVariables.IVLThemes.GetAllThemeNames();
             IVLVariables.GradientColorValues = IVLVariables.IVLThemes.GetCurrentTheme();
@@ -530,15 +537,10 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
 
             LaunchUploader();
-            IVLVariables.ReportListVM = ReportListVM.GetInstance();
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
-            InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
-            ElementHost elementHost = new ElementHost();
-            elementHost.Dock = DockStyle.Fill;
-            elementHost.Child = internetStatusUCL;
+           
             //reportListView.Parent = this.reportGridView_p;
-            this.InternetCheck_p.Controls.Add(elementHost);
         }
 
         private void LaunchUploader()
@@ -820,6 +822,8 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="state"></param>
         private void InboxCheck(object state)
         {
+            InboxQICheck(new object());
+
             try
             {
                 List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
@@ -959,7 +963,6 @@ namespace INTUSOFT.Desktop.Forms
                 Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
             }
-
 
 
         }
@@ -1853,9 +1856,8 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 PagePanel_p.Controls.Add(emr);
-                inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                InternetCheckViewModel internetCheckViewModel = InternetCheckViewModel.GetInstance();
+                 inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                //inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
                
                 
                // string[] var = new string[] { "akjd" };

@@ -69,6 +69,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.HospitalLogo_pbx = new System.Windows.Forms.PictureBox();
             this.Header_lbl = new System.Windows.Forms.Label();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.thumbnail_tblpnl.SuspendLayout();
@@ -80,6 +81,7 @@
             this.ImagingButtonToolStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.InternetCheck_p.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.database_toolstrip.SuspendLayout();
             this.server_toolstrip.SuspendLayout();
@@ -339,6 +341,7 @@
             // 
             // InternetCheck_p
             // 
+            this.InternetCheck_p.Controls.Add(this.elementHost1);
             this.InternetCheck_p.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InternetCheck_p.Location = new System.Drawing.Point(3, 60);
             this.InternetCheck_p.Name = "InternetCheck_p";
@@ -608,6 +611,17 @@
             this.Header_lbl.Text = "label1";
             this.Header_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // elementHost1
+            // 
+            this.elementHost1.BackColor = System.Drawing.Color.Transparent;
+            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Location = new System.Drawing.Point(0, 0);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(139, 51);
+            this.elementHost1.TabIndex = 0;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = null;
+            // 
             // IvlMainWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -645,6 +659,7 @@
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
+            this.InternetCheck_p.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
             this.database_toolstrip.ResumeLayout(false);
@@ -709,5 +724,6 @@
         private System.Windows.Forms.ToolStrip uploader_ts;
         private System.Windows.Forms.ToolStripButton PushToOutbox_btn;
         private System.Windows.Forms.Panel InternetCheck_p;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
     }
 }

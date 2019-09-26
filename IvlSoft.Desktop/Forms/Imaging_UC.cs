@@ -19,6 +19,7 @@ using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Common;
+using System.Windows.Forms.Integration;
 
 namespace INTUSOFT.Desktop.Forms
 {
@@ -77,6 +78,9 @@ namespace INTUSOFT.Desktop.Forms
         string ComportCloseLabelText;
         string PowerOnLabelText;
         string PowerOffLabelText;
+        ElementHost infoIcon_p;
+        InformationIconUCL informationIcon ;
+
         public static Imaging_UC GetInstance()
         {
             if (_imaging_UC == null)
@@ -241,11 +245,35 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
 
 
+            
+            //elementHost.Dock = DockStyle.Bottom;
+            //reportListView.Parent = this.reportGridView_p;
+            //this.display_pbx.Visible = false;
+            //elementHost.Parent = display_pbx;
         }
         bool isFFAImage = false;
         private void DisplayImageFromCamera(string s, Args arg)
         {
+
             display_pbx.Image = arg["rawImage"] as Bitmap;
+            this.display_pbx.Controls.Clear();
+            
+            infoIcon_p = new ElementHost();
+            InfoVM infoVM = new InfoVM();
+            informationIcon = new InformationIconUCL(infoVM);
+            //infoIcon_p.Dock = DockStyle.Bottom;
+            infoIcon_p.BackColor = Color.Transparent;
+            infoIcon_p.Size = new Size(105, 150);
+            infoIcon_p.Child = informationIcon;
+            this.display_pbx.Controls.Add(infoIcon_p);
+
+            // infoIcon_p.Location = new Point(300, 300);
+            var heightValue = ( 1.75) * (double)(infoIcon_p.ClientSize.Height);
+          var value = (int) Math.Round(heightValue, MidpointRounding.AwayFromZero);
+                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 130,display_pbx.ClientSize.Height - 201);
+            //elementHost.Location = new Point(this.Width - 10, this.Height);
+            Console.WriteLine(infoIcon_p.Location);
+            Console.WriteLine(display_pbx.ClientSize);
         }
 
 
@@ -834,17 +862,20 @@ namespace INTUSOFT.Desktop.Forms
         {
             IVLVariables.ivl_Camera.camPropsHelper.LeftBitmap = new Bitmap(neg_pbx.Width, neg_pbx.Height);// Added this to manage the blinking happening in the UI to show the sensor position when the rotary is moved instead of using the panel drawing
             IVLVariables.ivl_Camera.camPropsHelper.RightBitmap = new Bitmap(pos_pbx.Width, pos_pbx.Height);// Added this to manage the blinking happening in the UI to show the sensor position when the rotary is moved instead of using the panel drawing
+
         }
         PaintEventArgs graphicsE;
         private void Imaging_UC_Paint(object sender, PaintEventArgs e)
         {
             graphicsE = e;
+
         }
 
         private void display_pbx_Paint(object sender, PaintEventArgs e)
         {
             int x = 0;
 
+            
         }
 
         private void overlay_pbx_Click(object sender, EventArgs e)

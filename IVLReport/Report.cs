@@ -423,9 +423,13 @@ namespace IVLReport
                     NoImagelabelvisible();
                 }
                 LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), _dataModel.ReportData["$CurrentTemplateName"].ToString().ToUpper() + "_" + _dataModel.ReportData["$CurrentTemplateSize"].ToString());
-                SetCurrentOrientationAndSize();
-                ChangeTemplate();
-                IntitializeSizeAndOrientaionControls(reportSize);
+                for (int i = 0; i < 3; i++)
+                {
+                    SetCurrentOrientationAndSize();
+                    ChangeTemplate();
+                    IntitializeSizeAndOrientaionControls(reportSize);
+
+                }
                 //setToolsStripLabels();
             }
             reportDefaultCursor();
@@ -1507,13 +1511,13 @@ namespace IVLReport
                 throw;
             }
             FileInfo finf = new FileInfo(_dataModel.CurrentTemplate);//Gets the file info of the current template.
-            if (index >= 0 && (finf.Name != changedTemplateFileName || reportControlStructureList == null))//Multiple expression if statement checks for index value , reportControlStructureList is null or not and Filename matches with current template.
+            if (index >= 0)// && (finf.Name != changedTemplateFileName || reportControlStructureList == null))//Multiple expression if statement checks for index value , reportControlStructureList is null or not and Filename matches with current template.
             {
                 p = new Panel();
                 LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), reportTemplateOrientation.ToString().ToUpper() + "_" + reportTemplateSize.ToString());
                 if(!_dataModel.ContainsCmdArgs)
                     _dataModel.CurrentTemplate = reportTemplates[index].FullName;
-                this.reportCanvas_pnl.Controls.Clear();
+                //this.reportCanvas_pnl.Controls.Clear();
                 SetCurrentOrientationAndSize();
                 parseXmlData(_dataModel.CurrentTemplate);//Reads the current template xml file
                 if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A4)

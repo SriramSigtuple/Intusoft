@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -128,6 +130,84 @@ namespace INTUSOFT.Desktop.Forms.Convertor
 
             }
         }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class InvertBoolConverter : IValueConverter
+    {
+
+        private bool _inverted = false;
+
+        public bool Inverted
+
+        {
+
+            get { return _inverted; }
+
+            set { _inverted = value; }
+
+        }
+
+
+
+        private bool _not = false;
+
+        public bool Not
+
+        {
+
+            get { return _not; }
+
+            set { _not = value; }
+
+        }
+
+
+
+        private object BoolToVisibility(object value)
+
+        {
+
+            if (!(value is bool))
+
+                return DependencyProperty.UnsetValue;
+
+
+
+            return ((bool)value ^ Not) ? Visibility.Visible
+
+                : Visibility.Collapsed;
+
+        }
+        private object VisibilityToBool(object value)
+
+        {
+
+            if (!(value is Visibility))
+
+                return DependencyProperty.UnsetValue;
+
+
+
+            return (((Visibility)value) == Visibility.Visible) ^ Not;
+
+        }
+
+
+        public object Convert(object value, Type targetType,
+
+                object parameter, CultureInfo culture)
+
+        {
+
+            return  BoolToVisibility(value);
+
+        }
+
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

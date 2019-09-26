@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Report));
-            this.reportCanvas_pnl = new System.Windows.Forms.Panel();
+            this.reportCanvas_pnl = new System.Windows.Forms.FlowLayoutPanel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.orientationStrip_lbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.orientationValue_lbl = new System.Windows.Forms.ToolStripStatusLabel();
@@ -82,6 +82,7 @@
             this.reportCanvas_pnl.BackColor = System.Drawing.Color.Transparent;
             this.reportCanvas_pnl.Controls.Add(this.statusStrip1);
             this.reportCanvas_pnl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.reportCanvas_pnl.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this.reportCanvas_pnl.Location = new System.Drawing.Point(0, 0);
             this.reportCanvas_pnl.Name = "reportCanvas_pnl";
             this.reportCanvas_pnl.Size = new System.Drawing.Size(941, 742);
@@ -96,9 +97,9 @@
             this.sizeValue_lbl,
             this.ReportStatus_lbl,
             this.ReportStatusVal_lbl});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 720);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(941, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(265, 22);
             this.statusStrip1.TabIndex = 1010;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -494,7 +495,7 @@
         #endregion
 
         private System.Windows.Forms.Panel toolBox_pnl;
-        private System.Windows.Forms.Panel reportCanvas_pnl;
+        private System.Windows.Forms.FlowLayoutPanel reportCanvas_pnl;
         private System.Windows.Forms.ToolStripPanel BottomToolStripPanel;
         private System.Windows.Forms.ToolStripPanel TopToolStripPanel;
         private System.Windows.Forms.ToolStripPanel RightToolStripPanel;
