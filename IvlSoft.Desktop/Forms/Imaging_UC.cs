@@ -20,6 +20,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Common;
 using System.Windows.Forms.Integration;
+using INTUSOFT.Data.Repository;
 
 namespace INTUSOFT.Desktop.Forms
 {
@@ -260,17 +261,20 @@ namespace INTUSOFT.Desktop.Forms
             
             infoIcon_p = new ElementHost();
             InfoVM infoVM = new InfoVM();
+            infoVM.DrQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_DR_AMD_Status)).ToString("g");
+            infoVM.AMDQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_DR_AMD_Status)).ToString("g");
+            infoVM.GlaucomaQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_Glaucoma_Status)).ToString("g");
             informationIcon = new InformationIconUCL(infoVM);
             //infoIcon_p.Dock = DockStyle.Bottom;
             infoIcon_p.BackColor = Color.Transparent;
-            infoIcon_p.Size = new Size(105, 150);
+            infoIcon_p.Size = new Size(135, 150);
             infoIcon_p.Child = informationIcon;
             this.display_pbx.Controls.Add(infoIcon_p);
 
             // infoIcon_p.Location = new Point(300, 300);
             var heightValue = ( 1.75) * (double)(infoIcon_p.ClientSize.Height);
           var value = (int) Math.Round(heightValue, MidpointRounding.AwayFromZero);
-                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 130,display_pbx.ClientSize.Height - 201);
+                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140,display_pbx.ClientSize.Height - 201);
             //elementHost.Location = new Point(this.Width - 10, this.Height);
             Console.WriteLine(infoIcon_p.Location);
             Console.WriteLine(display_pbx.ClientSize);

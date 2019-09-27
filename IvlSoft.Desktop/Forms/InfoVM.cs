@@ -83,38 +83,6 @@ namespace INTUSOFT.Desktop.Forms
 
             }
         }
-        private string amdQIData;
-
-        public string AMDQIData
-        {
-            get { return amdQIData; }
-            set
-            {
-                amdQIData = value;
-                OnPropertyChanged();
-
-            }
-        }
-
-        private string drQIData;
-
-        public string DRQIData
-        {
-            get { return drQIData; }
-            set
-            {
-                drQIData = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string glaucomaQIData;
-
-        public string GlaucomaQIData
-        {
-            get { return glaucomaQIData; }
-            set { glaucomaQIData = value; }
-        }
 
         public ICommand ClickCommand { get; set; }
 

@@ -6,7 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              xmlns:local="clr-namespace:INTUSOFT.Desktop.Forms"
              xmlns:Convertor ="clr-namespace:INTUSOFT.Desktop.Forms.Convertor"
-             mc:Ignorable="d" Width="102.076" Height="148.316" Name="InfoIconView">
+             mc:Ignorable="d" Width="129.576" Height="148.316" Name="InfoIconView">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
             <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
@@ -32,19 +32,19 @@
         Padding="0,0,0,0"
         Background="WhiteSmoke"
         BorderBrush="Black"
-        BorderThickness="1" RenderTransformOrigin="0.975,0.65" VerticalAlignment="Top" Grid.Column="1" Margin="16,2,0,-1" Grid.Row="1">
+        BorderThickness="1" RenderTransformOrigin="0.975,0.65" VerticalAlignment="Top" Grid.Column="1" Margin="32,2,0,-1" Grid.Row="1">
             <TextBlock 
-              Text="i" FontSize="15" FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,8,17,10" HorizontalAlignment="Right" Width="5">
+              Text="i" FontSize="20" FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,5,16,5" HorizontalAlignment="Right" Width="7">
             </TextBlock>
         </Border>
         <!--<WrapPanel Width="80" Background="Green" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Margin="1,-1,0,0" Grid.RowSpan="2" />-->
-        <WrapPanel Orientation="Vertical" Width="75" Background="WhiteSmoke" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="0,0,0,21" Grid.RowSpan="2">
+        <WrapPanel Orientation="Vertical" Width="102" Background="WhiteSmoke" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="0,0,0,21" Grid.RowSpan="2">
             <TextBlock Text="DR" Foreground="Red" FontWeight="Bold" Margin="10,10,0,0"/>
-            <TextBlock Text="Gradable" Foreground="Black"  Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding DrQI}" Foreground="Black"  Margin="10,0,0,0"/>
             <TextBlock Text="AMD" Foreground="Red" FontWeight="Bold" Margin="10,10,0,0"/>
-            <TextBlock Text="Gradable" Foreground="Black"  Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding AMDQI}" Foreground="Black"  Margin="10,0,0,0"/>
             <TextBlock Text="Glaucoma" Foreground="Red" FontWeight="Bold" Margin="10,10,0,0"/>
-            <TextBlock Text="Gradable" Foreground="Black"  Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding GlaucomaQI}" Foreground="Black"  Margin="10,0,0,0"/>
         </WrapPanel>
 
 

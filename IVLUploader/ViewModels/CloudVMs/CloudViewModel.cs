@@ -632,12 +632,14 @@ namespace IntuUploader.ViewModels
 
             inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel
             {
-                QI_Result = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty
+                QI_Result = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty,
+                QI_Result_Glaucoma = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty
             }
             ) ;
             inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel
             {
-                QI_Result = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty
+                QI_Result = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty,
+                QI_Result_Glaucoma = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty
             }
           );
 
