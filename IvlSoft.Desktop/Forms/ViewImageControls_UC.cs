@@ -3332,12 +3332,12 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
                         eye_fundus_image eye = NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
-                        if (eye.qiStatus == (int)QIStatus.NonGradable)
-                            NonGradableImagesStatusList.Add(eye.qiStatus);
-                        if (eye.qiStatus == (int)QIStatus.Failed)
-                            QIFailedList.Add(eye.qiStatus);
-                        if (eye.qiStatus == (int)QIStatus.Initialised || eye.qiStatus == (int)QIStatus.Uploading || eye.qiStatus == (int)QIStatus.Processing)
-                            QIProgressList.Add(eye.qiStatus);
+                        if (eye.qi_DR_AMD_Status == (int)QIStatus.NonGradable)
+                            NonGradableImagesStatusList.Add(eye.qi_DR_AMD_Status);
+                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Failed)
+                            QIFailedList.Add(eye.qi_DR_AMD_Status);
+                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Initialised || eye.qi_DR_AMD_Status == (int)QIStatus.Uploading || eye.qi_DR_AMD_Status == (int)QIStatus.Processing)
+                            QIProgressList.Add(eye.qi_DR_AMD_Status);
                     }
 
                     if (QIProgressList.Any()) // Selected Images contain QI Progess  

@@ -12,6 +12,7 @@ namespace Cloud_Models.Models
     {
         public string ImageName;
         public string QI_Result;
+        public string QI_Result_Glaucoma;
         public string Analysis_Result;
 
         public ImageAnalysisResultModel()

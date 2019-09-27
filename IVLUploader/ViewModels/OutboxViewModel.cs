@@ -5,9 +5,8 @@ using NLog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Timers;
 using System.Windows.Input;
-
+using System.Threading;
 namespace IntuUploader.ViewModels
 {
     /// <summary>
@@ -17,7 +16,7 @@ namespace IntuUploader.ViewModels
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        Timer OutboxFileChecker;
+        System.Threading.Timer OutboxFileChecker;
         int timeout = 10000;// TODO : to be configured
         int timerTick = 40000;// TODO : to be configured
         public CloudViewModel activeFileCloudVM;
@@ -44,8 +43,8 @@ namespace IntuUploader.ViewModels
                 activeFileCloudVM.AnalysisType = AnalysisType;
 
             }
-            OutboxFileChecker = new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
-            OutboxFileChecker.Elapsed += OutboxFileChecker_Elapsed;
+            OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, -1, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
+            //OutboxFileChecker.Elapsed += OutboxFileChecker_Elapsed;
             FileInfo[] activeDirFileInfoArr = new DirectoryInfo(activeDirPath).GetFiles("*.json");
             //the below code is to write a pending file if any existing file in active directory has no pending file.
             if (activeDirFileInfoArr.Any())
@@ -76,10 +75,10 @@ namespace IntuUploader.ViewModels
             }
         }
 
-        private void OutboxFileChecker_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            OutBoxTimerCallback(new object());
-        }
+        //private void OutboxFileChecker_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    OutBoxTimerCallback(new object());
+        //}
 
         //private void OutboxFileChecker_Elapsed(object sender, ElapsedEventArgs e)
         //{
@@ -259,13 +258,23 @@ namespace IntuUploader.ViewModels
         {
             if (isStart)
             {
-                OutboxFileChecker.Start();
-                OutBoxTimerCallback(new object());
+                OutboxFileChecker.Change(0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
+                //OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
+
+                //OutboxFileChecker.Start();
+                //OutBoxTimerCallback(new object());
 
             }
 
             else
-                OutboxFileChecker.Stop();
+            {
+                OutboxFileChecker.Change(-1, -1);// (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
+
+                //OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, );// (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
+
+                //OutboxFileChecker.Stop();
+
+            }
 
         }
         public ICommand SetValue

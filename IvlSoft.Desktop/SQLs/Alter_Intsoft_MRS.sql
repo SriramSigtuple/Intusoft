@@ -245,6 +245,27 @@ COMMIT;
 START TRANSACTION;
 USE `dbName`;
 DELIMITER $$
+drop procedure if exists add_qi_glaucoma_status_Col;
+CREATE PROCEDURE add_qi_glaucoma_status_Col() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'qi_glaucoma_status';
+IF colName is null THEN 
+    ALTER TABLE  observation ADD qi_glaucoma_status INT(1) NOT NULL  DEFAULT 0;
+END IF; 
+
+END$$
+DELIMITER ;
+CALL add_qi_glaucoma_status_Col();
+COMMIT;
+
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
 drop procedure if exists add_qi_filename_Col;
 CREATE PROCEDURE add_qi_filename_Col() 
 BEGIN
@@ -263,5 +284,25 @@ DELIMITER ;
 CALL add_qi_filename_Col();
 COMMIT;
 
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
+drop procedure if exists ChangeQIStatus2QI_DR_Glaucoma_Status;
 
+CREATE PROCEDURE ChangeQIStatus2QI_DR_Glaucoma_Status() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'qi_status';
+
+IF colName is not null THEN 
+   ALTER TABLE observation change COLUMN qi_status qi_dr_amd_status bigint(20) not null;
+END IF; 
+END$$
+DELIMITER ;
+CALL ChangeQIStatus2QI_DR_Glaucoma_Status();
+COMMIT;
 

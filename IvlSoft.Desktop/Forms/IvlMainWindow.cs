@@ -1001,19 +1001,29 @@ namespace INTUSOFT.Desktop.Forms
                                         if(responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
                                         {
                                             if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
-                                                NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Gradable;
+                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
                                             else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qiStatus =(int) QIStatus.NonGradable;
+                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status =(int) QIStatus.NonGradable;
 
-                                        }
+                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+
+                                            }
                                         else
                                             if(responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
                                         {
                                             if (responseValue.RightEyeDetails[0].QI_Result.Equals("Gradable"))
-                                                NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Gradable;
+                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
                                             else if (responseValue.RightEyeDetails[0].QI_Result.Equals("NonGradable"))
-                                                NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.NonGradable;
-                                        }
+                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
+
+                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                            }
 
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
                                         //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
@@ -1025,7 +1035,7 @@ namespace INTUSOFT.Desktop.Forms
                                 {
                                     //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
                                     {
-                                        NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Failed;
+                                        NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
                                         //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
                                     }
@@ -1059,7 +1069,7 @@ namespace INTUSOFT.Desktop.Forms
                         
                        // if(NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Initialised)
                         {
-                              NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Initialised;
+                              NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Initialised;
                               changedObsList.Add(NewDataVariables.Obs[indx]);
                         }
                       
@@ -1079,8 +1089,9 @@ namespace INTUSOFT.Desktop.Forms
                     {
                       // if( NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Uploading)
                         {
-                            NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Uploading;
-                            changedObsList.Add(NewDataVariables.Obs[indx]);
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Uploading;
+                            NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Uploading;
+                                changedObsList.Add(NewDataVariables.Obs[indx]);
                         }
                       
 
@@ -1097,7 +1108,8 @@ namespace INTUSOFT.Desktop.Forms
                     {
                        // if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Processing)
                         {
-                            NewDataVariables.Obs[indx].qiStatus = (int)QIStatus.Processing;
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Processing;
+                            NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Processing;
                             changedObsList.Add(NewDataVariables.Obs[indx]);
                         }
                     }
@@ -1145,10 +1157,7 @@ namespace INTUSOFT.Desktop.Forms
                             var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
                             if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name)))
-                            {
                                 File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
-
-                            }
                             if (File.Exists(pendingFile))
                             {
                                 File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
@@ -1176,17 +1185,14 @@ namespace INTUSOFT.Desktop.Forms
                     FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
 
                     List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
-                    var itemQIStatus = item.qiStatus == (int)QIStatus.Failed || item.qiStatus == (int)QIStatus.Gradable || item.qiStatus == (int)QIStatus.NonGradable;
+                    var itemQIStatus = item.qi_DR_AMD_Status == (int)QIStatus.Failed || item.qi_DR_AMD_Status == (int)QIStatus.Gradable || item.qi_DR_AMD_Status == (int)QIStatus.NonGradable;
                     if (resultList.Any() && itemQIStatus)
                     {
                         var pendingFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_pending";
                         var doneFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_done";
 
                         if (File.Exists(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name)))
-                        {
                             File.Delete(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
-
-                        }
                         if (File.Exists(pendingFile))
                         {
                             File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
@@ -3289,7 +3295,7 @@ namespace INTUSOFT.Desktop.Forms
                                 {
                                     id = eye_Fundus_Image.observationId,
 
-                                    QIStatus = eye_Fundus_Image.qiStatus,
+                                    QIStatus = eye_Fundus_Image.qi_DR_AMD_Status,
                                     fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
                                     side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
                                     isAnnotated = eye_Fundus_Image.annotationsAvailable,

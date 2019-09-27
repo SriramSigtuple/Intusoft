@@ -62,7 +62,8 @@ namespace IVLReport
             this.thumbnailUI1.NoOfImagesToBeSelectedText2 = _dataModel.NoOfImagesAllowedText2;
             this.thumbnailUI1.NoOfImagesToBeSelectedHeader = _dataModel.NoOfImagesAllowedHeader;
             this.thumbnailUI1.ResetThumbnailUI();
-            this.thumbnailUI1.AddThumbnails(_dataModel.VisitImageFiles.ToList(), _dataModel.VisitImageIds.ToList(), _dataModel.VisitImagesides.ToList(),_dataModel.isannotated.ToList(),_dataModel.isCDR.ToList(),new List<int>(_dataModel.isCDR.Length));
+            this.thumbnailUI1.AddThumbnails(_dataModel.VisitImageFiles.ToList(), _dataModel.VisitImageIds.ToList(),
+                _dataModel.VisitImagesides.ToList(),_dataModel.isannotated.ToList(),_dataModel.isCDR.ToList(),Enumerable.Repeat<int>(0, _dataModel.VisitImageFiles.Length).ToList());
 
             if (_dataModel.CurrentImgFiles.Length > 1)//to ensure the control key is pressed.
                 this.thumbnailUI1.isControlKeyPressed = true;

@@ -51,7 +51,8 @@ namespace INTUSOFT.Data.NewDbModel
             string voidedReason,
             string UUID,
             string checkSum,
-            int QIStatus,
+            int QI_Dr_AMD_Status,
+            int QI_Glaucoma_Status,
             string QIFileName
                  )
         {
@@ -78,7 +79,8 @@ namespace INTUSOFT.Data.NewDbModel
                 voidedBy = VoidedBy,
                 voidedReason = voidedReason,
                 checkSum = checkSum,
-                qiStatus = QIStatus,
+                qi_DR_AMD_Status = QI_Dr_AMD_Status,
+                qi_Glaucoma_Status = QI_Glaucoma_Status,
                 qiFileName = QIFileName
 
                 //uuid=UUID
@@ -92,7 +94,8 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual int observationId { get; set; }
 
-        public virtual int qiStatus { get; set; }
+        public virtual int qi_DR_AMD_Status { get; set; }
+        public virtual int qi_Glaucoma_Status { get; set; }
 
         public virtual Patient patient { get; set; }
 

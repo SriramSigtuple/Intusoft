@@ -236,12 +236,6 @@
     <Compile Include="Forms\DiagnosisUC.designer.cs">
       <DependentUpon>DiagnosisUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DisplayPictureBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\DisplayPictureBox.Designer.cs">
-      <DependentUpon>DisplayPictureBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\EEPROM_Window.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -413,9 +407,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DiagnosisUC.resx">
       <DependentUpon>DiagnosisUC.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DisplayPictureBox.resx">
-      <DependentUpon>DisplayPictureBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EEPROM_Window.resx">
       <DependentUpon>EEPROM_Window.cs</DependentUpon>

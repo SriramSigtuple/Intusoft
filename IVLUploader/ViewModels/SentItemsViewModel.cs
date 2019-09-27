@@ -5,8 +5,7 @@ using NLog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Timers;
-//using System.Threading;
+using System.Threading;
 using System.Windows.Input;
 
 namespace IntuUploader.ViewModels
@@ -56,8 +55,10 @@ namespace IntuUploader.ViewModels
                 activeFileCloudVM.AnalysisType = AnalysisType;
 
             }
-            SentItemsStatusCheckTimer = new Timer((int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
-            SentItemsStatusCheckTimer.Elapsed += SentItemsStatusCheckTimer_Elapsed;
+            SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, -1, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
+
+            //SentItemsStatusCheckTimer = new Timer((int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
+            //SentItemsStatusCheckTimer.Elapsed += SentItemsStatusCheckTimer_Elapsed;
 
             sentItemsDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");
             foreach (var item in sentItemsDirFileInfoArr)
@@ -77,10 +78,10 @@ namespace IntuUploader.ViewModels
 
         }
 
-        private void SentItemsStatusCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            SentItemsStatusCheckTimerCallback(new object());
-        }
+        //private void SentItemsStatusCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    SentItemsStatusCheckTimerCallback(new object());
+        //}
 
         ///// <summary>
         ///// Implementing singleton pattern in order to handle to values across the module
@@ -246,15 +247,17 @@ namespace IntuUploader.ViewModels
         {
             if (isStart)
             {
-                SentItemsStatusCheckTimer.Start();
-                SentItemsStatusCheckTimerCallback(new object());
-
+                //SentItemsStatusCheckTimer.Start();
+                //SentItemsStatusCheckTimerCallback(new object());
+                SentItemsStatusCheckTimer.Change(0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
             }
                
             //SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.SentItemsTimerInterval * 1000));
             else
             {
-                SentItemsStatusCheckTimer.Stop();
+                SentItemsStatusCheckTimer.Change(-1,-1);
+
+                //SentItemsStatusCheckTimer.Stop();
                 //SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, 0, Timeout.Infinite);
             }
 
