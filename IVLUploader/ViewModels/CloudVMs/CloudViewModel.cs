@@ -335,7 +335,9 @@ namespace IntuUploader.ViewModels
                 List<JToken> products = Login_JObject["message"]["products"].ToList();
                 foreach (var item in products)
                 {
-                    if (item.ToString().Contains(AnalysisType.ToString("g")))
+                    if (item["sub_ctgy"].ToString().ToLower().Contains(AnalysisType.ToString("g").ToLower()))
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                    else if ((item["ctgy"].ToString().ToLower().Contains(AnalysisType.ToString("g").ToLower())))
                         ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
 
                 }
@@ -490,7 +492,7 @@ namespace IntuUploader.ViewModels
                         {
                             foreach (var item in products)
                             {
-                                if (item.ToString().Contains("Fundus"))
+                                if (item["sub_ctgy"].ToString().ToLower().Contains("fundus"))
                                 {
                                     ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
                                     sub_category = (string)item["sub_ctgy"];
