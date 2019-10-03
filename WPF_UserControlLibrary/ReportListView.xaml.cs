@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -17,8 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ListView = System.Windows.Controls.ListView;
 using INTUSOFT.EventHandler;
+using System.Windows.Interop;
 
-namespace INTUSOFT.Desktop.Forms
+namespace Intusoft.WPF.UserControls
 {
 
     /// <summary>
@@ -32,8 +32,19 @@ namespace INTUSOFT.Desktop.Forms
         {
             InitializeComponent();
             this.DataContext = ReportListVM.GetInstance() ;
+            this.Loaded += ReportListView_Loaded;
             eventHandler = IVLEventHandler.getInstance();
 
+        }
+
+        private void ReportListView_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            HwndSource hwnd = System.Windows.PresentationSource.FromVisual(this) as HwndSource;
+            HwndTarget target = hwnd.CompositionTarget;
+            target.RenderMode = RenderMode.SoftwareOnly;
+
+            UpdateLayout();
         }
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)

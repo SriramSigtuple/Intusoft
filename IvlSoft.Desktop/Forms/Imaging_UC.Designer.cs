@@ -351,6 +351,7 @@
             this.NoImageSelected_lbl.TabIndex = 5;
             this.NoImageSelected_lbl.Text = "label1";
             this.NoImageSelected_lbl.Visible = false;
+            this.NoImageSelected_lbl.Click += new System.EventHandler(this.NoImageSelected_lbl_Click);
             // 
             // display_pbx
             // 

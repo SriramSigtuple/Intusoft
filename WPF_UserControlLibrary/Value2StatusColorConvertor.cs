@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Activities.Expressions;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-namespace INTUSOFT.Desktop.Forms.Convertor
+using Common.Enums;
+namespace Intusoft.WPF.UserControls.Convertor
 {
-  public class DateConvertor :IValueConverter
+    public class DateConvertor :IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
             {
@@ -33,7 +29,7 @@ namespace INTUSOFT.Desktop.Forms.Convertor
         {
             var val = (DateTime)value;
 
-            if (System.Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
+            if (System.Convert.ToBoolean(InternetCheckViewModel.Settings.UserSettings._Is24clock.val))
             return val.ToString("HH:mm");
             else
             return val.ToString("hh:mm tt");
@@ -52,6 +48,7 @@ namespace INTUSOFT.Desktop.Forms.Convertor
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+          
             return Enum.GetName(typeof(CloudReportStatus),(int)value);
 
 

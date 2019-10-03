@@ -1,11 +1,10 @@
-﻿<UserControl x:Class="INTUSOFT.Desktop.Forms.InformationIconUCL"
+﻿<UserControl x:Class="Intusoft.WPF.UserControls.InformationIconUCL"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-             xmlns:local="clr-namespace:INTUSOFT.Desktop.Forms"
-             xmlns:Convertor ="clr-namespace:INTUSOFT.Desktop.Forms.Convertor"
+             xmlns:Convertor ="clr-namespace:Intusoft.WPF.UserControls.Convertor"
              mc:Ignorable="d" Width="129.576" Height="148.316" Name="InfoIconView">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -38,7 +37,7 @@
             </TextBlock>
         </Border>
         <!--<WrapPanel Width="80" Background="Green" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Margin="1,-1,0,0" Grid.RowSpan="2" />-->
-        <WrapPanel Orientation="Vertical" Width="102" Background="WhiteSmoke" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="0,0,0,21" Grid.RowSpan="2">
+        <WrapPanel Orientation="Vertical" Width="102" Background="WhiteSmoke" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor},FallbackValue= Hidden}" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="0,0,0,21" Grid.RowSpan="2">
             <TextBlock Text="DR" Foreground="Red" FontWeight="Bold" Margin="10,10,0,0"/>
             <TextBlock Text="{Binding DrQI}" Foreground="Black"  Margin="10,0,0,0"/>
             <TextBlock Text="AMD" Foreground="Red" FontWeight="Bold" Margin="10,10,0,0"/>

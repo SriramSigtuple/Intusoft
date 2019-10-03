@@ -70,6 +70,7 @@
             this.HospitalLogo_pbx = new System.Windows.Forms.PictureBox();
             this.Header_lbl = new System.Windows.Forms.Label();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.internetStatusUCL1 = new Intusoft.WPF.UserControls.InternetStatusUCL();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.thumbnail_tblpnl.SuspendLayout();
@@ -613,14 +614,13 @@
             // 
             // elementHost1
             // 
-            this.elementHost1.BackColor = System.Drawing.Color.Transparent;
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
             this.elementHost1.Name = "elementHost1";
             this.elementHost1.Size = new System.Drawing.Size(139, 51);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = null;
+            this.elementHost1.Child = this.internetStatusUCL1;
             // 
             // IvlMainWindow
             // 
@@ -725,5 +725,6 @@
         private System.Windows.Forms.ToolStripButton PushToOutbox_btn;
         private System.Windows.Forms.Panel InternetCheck_p;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private Intusoft.WPF.UserControls.InternetStatusUCL internetStatusUCL1;
     }
 }

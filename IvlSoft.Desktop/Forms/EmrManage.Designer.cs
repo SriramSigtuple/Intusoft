@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmrManage));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.PatientDetails_panel = new System.Windows.Forms.Panel();
             this.PatientsGroupBox_p = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -76,8 +78,8 @@
             this.Visits_lbl = new System.Windows.Forms.ToolStripLabel();
             this.Consultation_ts = new System.Windows.Forms.ToolStrip();
             this.NewVisit_Btn = new System.Windows.Forms.ToolStripButton();
-            this.DeleteConsultation_btn = new System.Windows.Forms.ToolStripButton();
             this.LiveImaging_btn = new System.Windows.Forms.ToolStripButton();
+            this.DeleteConsultation_btn = new System.Windows.Forms.ToolStripButton();
             this.ViewImages_btn = new System.Windows.Forms.ToolStripButton();
             this.visitsView_dgv = new INTUSOFT.Custom.Controls.FormDataGridView();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -221,7 +223,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 97.0297F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 2.970297F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 182F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 183F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel4.Controls.Add(this.ResetSearch_linklbl, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -240,7 +242,7 @@
             this.ResetSearch_linklbl.LinkColor = System.Drawing.Color.Aqua;
             this.ResetSearch_linklbl.Location = new System.Drawing.Point(3, 0);
             this.ResetSearch_linklbl.Name = "ResetSearch_linklbl";
-            this.ResetSearch_linklbl.Size = new System.Drawing.Size(165, 28);
+            this.ResetSearch_linklbl.Size = new System.Drawing.Size(164, 28);
             this.ResetSearch_linklbl.TabIndex = 1;
             this.ResetSearch_linklbl.TabStop = true;
             this.ResetSearch_linklbl.Text = "linkLabel1";
@@ -691,19 +693,6 @@
             this.NewVisit_Btn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.NewVisit_Btn.Click += new System.EventHandler(this.newConsultation_btn_Click);
             // 
-            // DeleteConsultation_btn
-            // 
-            this.DeleteConsultation_btn.AutoSize = false;
-            this.DeleteConsultation_btn.ForeColor = System.Drawing.Color.Black;
-            this.DeleteConsultation_btn.Image = ((System.Drawing.Image)(resources.GetObject("DeleteConsultation_btn.Image")));
-            this.DeleteConsultation_btn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.DeleteConsultation_btn.Name = "DeleteConsultation_btn";
-            this.DeleteConsultation_btn.Size = new System.Drawing.Size(70, 58);
-            this.DeleteConsultation_btn.Text = "Delete";
-            this.DeleteConsultation_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.DeleteConsultation_btn.Visible = false;
-            this.DeleteConsultation_btn.Click += new System.EventHandler(this.DeleteConsultation_btn_Click);
-            // 
             // LiveImaging_btn
             // 
             this.LiveImaging_btn.AutoSize = false;
@@ -716,6 +705,19 @@
             this.LiveImaging_btn.Text = "Imaging";
             this.LiveImaging_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.LiveImaging_btn.Click += new System.EventHandler(this.LiveImaging_btn_Click);
+            // 
+            // DeleteConsultation_btn
+            // 
+            this.DeleteConsultation_btn.AutoSize = false;
+            this.DeleteConsultation_btn.ForeColor = System.Drawing.Color.Black;
+            this.DeleteConsultation_btn.Image = ((System.Drawing.Image)(resources.GetObject("DeleteConsultation_btn.Image")));
+            this.DeleteConsultation_btn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DeleteConsultation_btn.Name = "DeleteConsultation_btn";
+            this.DeleteConsultation_btn.Size = new System.Drawing.Size(70, 58);
+            this.DeleteConsultation_btn.Text = "Delete";
+            this.DeleteConsultation_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.DeleteConsultation_btn.Visible = false;
+            this.DeleteConsultation_btn.Click += new System.EventHandler(this.DeleteConsultation_btn_Click);
             // 
             // ViewImages_btn
             // 
@@ -747,6 +749,14 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.visitsView_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.visitsView_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.visitsView_dgv.DefaultCellStyle = dataGridViewCellStyle2;
             this.visitsView_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.visitsView_dgv.Location = new System.Drawing.Point(3, 486);
             this.visitsView_dgv.MultiSelect = false;
@@ -787,15 +797,23 @@
             this.patGridView_dgv.BackgroundColor = System.Drawing.Color.Gray;
             this.patGridView_dgv.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.patGridView_dgv.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.patGridView_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.patGridView_dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.patGridView_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.patGridView_dgv.DefaultCellStyle = dataGridViewCellStyle4;
             this.patGridView_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.patGridView_dgv.Location = new System.Drawing.Point(3, 3);
             this.patGridView_dgv.MultiSelect = false;

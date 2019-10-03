@@ -14,23 +14,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace INTUSOFT.Desktop.Forms
+namespace Intusoft.WPF.UserControls
 {
     /// <summary>
-    /// Interaction logic for InformationIconUCL.xaml
+    /// Interaction logic for InternetStatusUCL.xaml
     /// </summary>
-    public partial class InformationIconUCL : UserControl
+    public partial class InternetStatusUCL : UserControl
     {
-        public InformationIconUCL(InfoVM infoVM)
+        public InternetStatusUCL()
         {
             InitializeComponent();
-            this.DataContext =infoVM;
-            this.Loaded += InformationIconUCL_Loaded;
+            this.DataContext = InternetCheckViewModel.GetInstance();
+           // this.Loaded += InternetStatusUCL_Loaded;
         }
 
-        private void InformationIconUCL_Loaded(object sender, RoutedEventArgs e)
-        {
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             HwndSource hwnd = System.Windows.PresentationSource.FromVisual(this) as HwndSource;
             HwndTarget target = hwnd.CompositionTarget;
             target.RenderMode = RenderMode.SoftwareOnly;

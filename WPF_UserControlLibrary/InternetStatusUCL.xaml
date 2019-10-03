@@ -1,11 +1,10 @@
-﻿<UserControl x:Class="INTUSOFT.Desktop.Forms.InternetStatusUCL"
+﻿<UserControl x:Class="Intusoft.WPF.UserControls.InternetStatusUCL"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:INTUSOFT.Desktop.Forms"
-             xmlns:convertor="clr-namespace:INTUSOFT.Desktop.Forms.Convertor"
-             mc:Ignorable="d" Width="66.983" Height="69.266">
+             xmlns:convertor="clr-namespace:Intusoft.WPF.UserControls.Convertor"
+             mc:Ignorable="d" Width="66.983" Height="69.266" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <convertor:Bool2ServerStatusConvertor x:Key="BoolToServerStatusColor"/>
         <convertor:TextColorStatusConvertor x:Key="TextColorStatusConvertor"/>

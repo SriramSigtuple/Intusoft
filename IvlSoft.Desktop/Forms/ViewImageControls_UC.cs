@@ -1,6 +1,7 @@
 ﻿using Annotation;
 using Cloud_Models.Models;
 using Common;
+using Common.Enums;
 using Common.ValidatorDatas;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -223,12 +224,15 @@ namespace INTUSOFT.Desktop.Forms
             }
             // Reports_dgv.Enabled = !IVLVariables.isCommandLineAppLaunch;
             // file_lbl.Enabled = !IVLVariables.isCommandLineAppLaunch;
-            ReportListView reportListView = new ReportListView();
-            ElementHost elementHost = new ElementHost();
-            elementHost.Dock = DockStyle.Fill;
-            elementHost.Child = reportListView;
+            //ReportListView reportListView = new ReportListView();
+            //ElementHost elementHost = new ElementHost();
+            //elementHost.Dock = DockStyle.Fill;
+            //elementHost.Child = reportListView;
+            //IVLVariables.ReportListVM.WindowWidth = 202;
+            ResizeReportGridView();
+
             //reportListView.Parent = this.reportGridView_p;
-            this.reportGridView_p.Controls.Add(elementHost);
+            //this.reportGridView_p.Controls.Add(elementHost);
             
         }
 
@@ -524,12 +528,12 @@ namespace INTUSOFT.Desktop.Forms
                                 item.cloudReport = NewDataVariables.CloudAnalysisReports.Where(x => x.Report.reportId == item.reportId).ToList()[0];
                             }
                         }
-
                         //NewDataVariables.Reports = NewDataVariables.Reports.OrderBy(x => x.createdDate).ToList();
                         //NewDataVariables.Reports.Reverse();
                         List<report> reports = NewDataVariables.Reports.OrderByDescending(x => x.createdDate).ToList();                    //reports.Reverse();
-                        IVLVariables.ReportListVM.Reports = new BindingList<report>(reports);
+                        //IVLVariables.ReportListVM.Reports = new BindingList<report>(reports);
                         //IVLVariables.ReportListVM.Reports = new BindingList<report>(NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit);
+                        Intusoft.WPF.UserControls.ReportListVM.GetInstance().Reports = new BindingList<report>(reports);
                         reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
 
                         //Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
@@ -649,46 +653,59 @@ namespace INTUSOFT.Desktop.Forms
 
         private void ResizeReportGridView()
         {
+            var reportListVM = Intusoft.WPF.UserControls.ReportListVM.GetInstance();
             try
             {
-                //if (Screen.PrimaryScreen.Bounds.Width == 1920)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 10.5F, GraphicsUnit.Pixel);
-                //    }
-                //}
-                //else if (Screen.PrimaryScreen.Bounds.Width == 1366)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
+                if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                {
+                    ////Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
+                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
+                    //{
+                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 10.5F, GraphicsUnit.Pixel);
+                    //}
+                    reportListVM.Width = 90;
+                    reportListVM.FontSize = 30;
+                    //IVLVariables.ReportListVM.WindowWidth = 400;
 
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 30;
+                }
+                else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                {
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
 
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                //    }
-                //}
-                //else if (Screen.PrimaryScreen.Bounds.Width == 1280)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                //    }
-                //}
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 30;
+
+                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
+                    //{
+                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
+                    //}
+                    reportListVM.Width = 62;
+                    reportListVM.FontSize = 12;
+                    //IVLVariables.ReportListVM.WindowWidth = 202;
+
+                }
+                else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                {
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
+                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
+                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
+                    //{
+                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
+                    //}
+                    reportListVM.Width = 40;
+                    reportListVM.FontSize = 10;
+                    //IVLVariables.ReportListVM.WindowWidth = 180;
+
+                }
             }
             catch (Exception ex)
             {
@@ -4106,6 +4123,7 @@ namespace INTUSOFT.Desktop.Forms
 
             leftToolTip.SetToolTip(leftSide_btn, IVLVariables.LangResourceManager.GetString("OS_Tool_Tip_Text", IVLVariables.LangResourceCultureInfo));
         }
+
 
         private void rightSide_btn_MouseHover(object sender, EventArgs e)
         {

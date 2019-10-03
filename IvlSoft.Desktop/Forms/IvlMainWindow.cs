@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Enums;
 using Common.ValidatorDatas;
 using INTUSOFT.Configuration;
 using INTUSOFT.Custom.Controls;
@@ -27,7 +28,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-
+using GainLevels = INTUSOFT.Imaging.GainLevels;
+using Intusoft.WPF.UserControls;
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class IvlMainWindow : BaseGradientForm
@@ -53,6 +55,7 @@ namespace INTUSOFT.Desktop.Forms
         System.Diagnostics.Stopwatch stW;
         Process p;
         SplashScreen splashScreen;
+        ElementHost elementHost;
         Imaging_UC imaging_UC;
         System.Timers.Timer serverTimer;// old system.timer 
         System.Threading.Timer databaseTimer;
@@ -230,7 +233,7 @@ namespace INTUSOFT.Desktop.Forms
             dataBaseServerConnection = new DataBaseServiceAndConnection(mysqlServiceName + con.sqlServiceText);
             IVLVariables.CurrentSettings.CameraSettings._LiveDigitalGain.min = 0;
             IVLVariables.CurrentSettings.CameraSettings._DigitalGain.min = 0;
-
+            
             #region below block of code has been added to read the db name , user name and password for db connection string
            
             var data = new Dictionary<string, string>();
@@ -268,18 +271,18 @@ namespace INTUSOFT.Desktop.Forms
             else if (IVLVariables.CurrentSettings.UserSettings._Language.val.ToString().Equals("Spanish") || IVLVariables.CurrentSettings.UserSettings._Language.val.ToString().Equals("es"))
                 selcetedLanguage = "es";
             IVLVariables.LangResourceCultureInfo = CultureInfo.CreateSpecificCulture(selcetedLanguage);
+            InternetCheckViewModel.Settings = IVLVariables.CurrentSettings;
+            InternetCheckViewModel.CultureInfo = IVLVariables.LangResourceCultureInfo;
+            InternetCheckViewModel.ResourceManager = IVLVariables.LangResourceManager;
             serverTimer = new System.Timers.Timer();
             serverTimer.Elapsed += serverTimer_Elapsed;
             serverTimer.Interval = 60000;// Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._CameraPowerTimerInterval.val);
-            IVLVariables.ReportListVM = ReportListVM.GetInstance();
+            //IVLVariables.ReportListVM = ReportListVM.GetInstance();
 
-            InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
+            //InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
 
             InitializeComponent();
-           
-            elementHost1.Dock = DockStyle.Fill;
-            elementHost1.Child = internetStatusUCL;
-            this.InternetCheck_p.Controls.Add(elementHost1);
+
 
             IVLVariables.IVLThemes = Themes.GetInstance();
             IVLVariables.IVLThemes.GetAllThemeNames();
@@ -1327,6 +1330,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
 
             }
+
             #endregion
         }
 
@@ -2293,7 +2297,7 @@ namespace INTUSOFT.Desktop.Forms
         private void CursorUpdate(String s, Args arg)
         {
             if (Convert.ToBoolean(arg["isDefault"]))
-                this.Cursor = Cursors.Default;
+                this.Cursor = System.Windows.Forms.Cursors.Default;
             else
                 this.Cursor = Cursors.WaitCursor;
             if (arg.ContainsKey("isImaging"))
@@ -2541,7 +2545,7 @@ namespace INTUSOFT.Desktop.Forms
             this.thumbnail_tblpnl.Visible = false;
         }
 
-        private void IvlMainWindow_KeyDown(object sender, KeyEventArgs e)
+        private void IvlMainWindow_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             #region The shift key is disabled to handle issue QA-2115
             //if (e.KeyCode == Keys.ShiftKey)
@@ -2560,7 +2564,7 @@ namespace INTUSOFT.Desktop.Forms
         }
 
 
-        private void IvlMainWindow_KeyUp(object sender, KeyEventArgs e)
+        private void IvlMainWindow_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -2687,7 +2691,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="e"></param>
         private void IvlMainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             e.Cancel = IVLVariables.ivl_Camera.IsCapturing;// added to avoid closing of application when capture of the image is in progress by sriram
             if (IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
                 return;// added to avoid closing of application when capture of the image is in progress by sriram
@@ -2995,14 +2999,15 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.CurrentLiveGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.LiveCurrentGainLevel.val);
                 IVLVariables.CurrentCaptureGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.CaptureCurrentGainLevel.val);
             }
-            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
-            _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
+            //_eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
 
 
 
 
             PagePanel_p.Controls.Add(imaging_UC);
+            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
+
             this.Refresh();
             this.Focus();
         }
@@ -3218,6 +3223,11 @@ namespace INTUSOFT.Desktop.Forms
                 CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ExportCompleted_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("ImageViewer_ExportImages_Button_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Information);
         }
 
+        private void elementHost1_ChildChanged(object sender, ChildChangedEventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// This will getuniquefilepath if file already exisits in the path.
         /// </summary>
@@ -3304,7 +3314,8 @@ namespace INTUSOFT.Desktop.Forms
                                 arg["ImgLoc"] = thumbnailData.fileName;
                                 arg["thumbnailData"] = thumbnailData;
                                 _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
-
+                                arg["eyefundusImage"] = eye_Fundus_Image;
+                                _eventHandler.Notify(_eventHandler.UpdateQIInfo, arg);
                             }
                             updatingThumbnails = false;
                         }

@@ -25,7 +25,9 @@ using NLog.Targets;
 using NLog;
 using Cloud_Models.Models;
 using Common;
+using Common.Enums;
 using Newtonsoft.Json;
+using GainLevels = INTUSOFT.Imaging.GainLevels;
 
 namespace INTUSOFT.Desktop.Forms
 {

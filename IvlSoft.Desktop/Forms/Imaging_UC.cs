@@ -21,6 +21,9 @@ using System.Runtime.InteropServices;
 using Common;
 using System.Windows.Forms.Integration;
 using INTUSOFT.Data.Repository;
+using Intusoft.WPF.UserControls;
+using Common.Enums;
+using INTUSOFT.Data.NewDbModel;
 
 namespace INTUSOFT.Desktop.Forms
 {
@@ -81,7 +84,7 @@ namespace INTUSOFT.Desktop.Forms
         string PowerOffLabelText;
         ElementHost infoIcon_p;
         InformationIconUCL informationIcon ;
-
+        InfoVM infoVM;// = new InfoVM();
         public static Imaging_UC GetInstance()
         {
             if (_imaging_UC == null)
@@ -104,7 +107,7 @@ namespace INTUSOFT.Desktop.Forms
             eventHandler.Register(eventHandler.DisplayImage, new NotificationHandler(DisplayImageFromCamera));
             eventHandler.Register(eventHandler.DisplayCapturedImage, new NotificationHandler(DisplayCapturedImage));
             eventHandler.Register(eventHandler.UpdateOverlay, new NotificationHandler(updateOverlay));
-
+            eventHandler.Register(eventHandler.UpdateQIInfo, new NotificationHandler(UpdateQIInfoEvent));
             //status_ts.Visible = false;
             liveImagingControl = new LiveImageControls_UC();
             viewImagingControl = new ViewImageControls_UC();
@@ -245,42 +248,70 @@ namespace INTUSOFT.Desktop.Forms
             QIFailedText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIFailed_Text", IVLVariables.LangResourceCultureInfo);
             #endregion
 
-
-            
             //elementHost.Dock = DockStyle.Bottom;
             //reportListView.Parent = this.reportGridView_p;
             //this.display_pbx.Visible = false;
             //elementHost.Parent = display_pbx;
+             infoVM = new InfoVM();
+
+            infoIcon_p = new ElementHost();
+            informationIcon = new InformationIconUCL();
+            infoIcon_p.Child = informationIcon;
+            informationIcon.InfoVM = infoVM;
+            infoIcon_p.Size = new Size(135, 150);
+
         }
         bool isFFAImage = false;
         private void DisplayImageFromCamera(string s, Args arg)
         {
-
+            display_pbx.Controls.Clear();
             display_pbx.Image = arg["rawImage"] as Bitmap;
-            this.display_pbx.Controls.Clear();
+            display_pbx.Refresh();
             
-            infoIcon_p = new ElementHost();
-            InfoVM infoVM = new InfoVM();
-            infoVM.DrQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_DR_AMD_Status)).ToString("g");
-            infoVM.AMDQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_DR_AMD_Status)).ToString("g");
-            infoVM.GlaucomaQI = ((QIStatus)(NewDataVariables.Active_Obs.qi_Glaucoma_Status)).ToString("g");
-            informationIcon = new InformationIconUCL(infoVM);
-            //infoIcon_p.Dock = DockStyle.Bottom;
+            display_pbx.Controls.Add(infoIcon_p);
+            informationIcon.Background = System.Windows.Media.Brushes.Transparent;
             infoIcon_p.BackColor = Color.Transparent;
-            infoIcon_p.Size = new Size(135, 150);
-            infoIcon_p.Child = informationIcon;
-            this.display_pbx.Controls.Add(infoIcon_p);
+            infoVM.IsVisible = false;
+            SetQIInfo(NewDataVariables.Active_Obs);
+            ////infoIcon_p.Dock = DockStyle.Bottom;
+            //infoIcon_p.BackColor = Color.Transparent;
+            infoIcon_p.Parent = display_pbx;
+             //infoIcon_p.Location = new Point(300, 300);
+            var heightValue = (1.75) * (double)(infoIcon_p.ClientSize.Height);
+            var value = (int)Math.Round(heightValue, MidpointRounding.AwayFromZero);
+            if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 180, display_pbx.ClientSize.Height - 251);
+            else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                infoIcon_p.Location =  new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
 
-            // infoIcon_p.Location = new Point(300, 300);
-            var heightValue = ( 1.75) * (double)(infoIcon_p.ClientSize.Height);
-          var value = (int) Math.Round(heightValue, MidpointRounding.AwayFromZero);
-                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140,display_pbx.ClientSize.Height - 201);
+
+            else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
+
+
+
             //elementHost.Location = new Point(this.Width - 10, this.Height);
-            Console.WriteLine(infoIcon_p.Location);
+            //Console.WriteLine(infoIcon_p.Location);
             Console.WriteLine(display_pbx.ClientSize);
         }
 
+        private void SetQIInfo(eye_fundus_image eyefundusImage)
+        {
+                infoVM.ImgName = eyefundusImage.value;
+                infoVM.DrQI = ((QIStatus)(eyefundusImage.qi_DR_AMD_Status)).ToString("g");
+                infoVM.AMDQI = ((QIStatus)(eyefundusImage.qi_DR_AMD_Status)).ToString("g");
+                infoVM.GlaucomaQI = ((QIStatus)(eyefundusImage.qi_Glaucoma_Status)).ToString("g");
+           
+        }
+        private void UpdateQIInfoEvent(string s , Args arg)
+        {
+            var eyeFundusImage = (eye_fundus_image)arg["eyefundusImage"];
+            if (infoVM.ImgName.Equals(eyeFundusImage.value))
+            {
+                SetQIInfo(eyeFundusImage);
 
+            }
+        }
         /// <summary>
         /// To display the captured image after capturing
         /// </summary>
@@ -675,7 +706,7 @@ namespace INTUSOFT.Desktop.Forms
 
                }
                 if (!IVLVariables.isCommandLineAppLaunch)
-                    viewImagingControl.showExisitingReports();
+                     viewImagingControl.showExisitingReports();
                 maskOverlay_Pbx.Visible = false;
                //if (this.Controls.Contains(maskOverlay_pbx))
                //    this.Controls.Remove(maskOverlay_pbx);
@@ -868,6 +899,12 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.ivl_Camera.camPropsHelper.RightBitmap = new Bitmap(pos_pbx.Width, pos_pbx.Height);// Added this to manage the blinking happening in the UI to show the sensor position when the rotary is moved instead of using the panel drawing
 
         }
+
+        private void NoImageSelected_lbl_Click(object sender, EventArgs e)
+        {
+
+        }
+
         PaintEventArgs graphicsE;
         private void Imaging_UC_Paint(object sender, PaintEventArgs e)
         {

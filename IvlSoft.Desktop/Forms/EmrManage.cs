@@ -2108,11 +2108,11 @@ namespace INTUSOFT.Desktop.Forms
                         else if (Screen.PrimaryScreen.Bounds.Width == 1920)
                         {
                             //Below value has been changed by Darshan on 28-10-2015 to solve Defect no 0000644: When no Consultations are present,the "Visit Date" label is coming up as "Visit".
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 200;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 200;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 70;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
 
                         //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 125;
                         // visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 140;

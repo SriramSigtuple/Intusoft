@@ -114,6 +114,7 @@ namespace INTUSOFT.EventHandler
         public string RefreshExistingReport = "RefreshExistingReport";
         public string RefreshThumbnails = "RefreshThumbnails";
         public string ReportGridDoubleClick = "ReportGridDoubleClick";
+        public string UpdateQIInfo = "UpdateQIInfo";
         // Alignment 
         public IVLEventHandler()
         {

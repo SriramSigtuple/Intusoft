@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using INTUSOFT.Data.Repository;
 using INTUSOFT.Data.NewDbModel;
 using Common;
+using Common.Enums;
 
 namespace INTUSOFT.Desktop.Forms
 {

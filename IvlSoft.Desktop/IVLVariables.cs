@@ -9,18 +9,14 @@ using INTUSOFT.Desktop;
 using System.Globalization;
 using System.Resources;
 using Common;
+using Common.Enums;
 using INTUSOFT.Configuration;
 using System.IO;
+using GainLevels = INTUSOFT.Imaging.GainLevels;
 
 namespace INTUSOFT.Desktop
 {
-        public enum GainLevels { Low, Medium, High };
-    public enum PageDisplayed {Login, Emr, Image };
-    public enum CloudReportStatus {Initialized = 1,Uploading,Processing, View, Failed};
-    public enum QIStatus {NotAnalysed = 0, Initialised = 1, Uploading, Processing, Gradable, NonGradable, Failed};
-
-    public enum AnalysisType { QI,Fundus}
-    public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
+       
 
 
     public static class IVLVariables
@@ -48,7 +44,7 @@ namespace INTUSOFT.Desktop
         public static string appDirPathName = string.Empty;
         public static bool isInternetConnected = false;
         public static PageDisplayed pageDisplayed = PageDisplayed.Login;
-        public static ReportListVM ReportListVM;
+        //public static ReportListVM ReportListVM;
 
         public static Settings CurrentSettings
         {

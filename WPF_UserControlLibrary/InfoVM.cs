@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BaseViewModel;
-namespace INTUSOFT.Desktop.Forms
+namespace Intusoft.WPF.UserControls
 {
    public class InfoVM : ViewBaseModel
     {
@@ -93,5 +93,18 @@ namespace INTUSOFT.Desktop.Forms
             IsVisible = !IsVisible;
             
         }
+
+        private string imgName;
+
+        public string ImgName
+        {
+            get { return imgName; }
+            set
+            {
+                imgName = value;
+                OnPropertyChanged();
+            }
+        }
+
     }
 }

@@ -140,6 +140,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\INTUSOFT.ThumbnailModule\bin\$(Configuration)\INTUSOFT.ThumbnailModule.dll</HintPath>
     </Reference>
+    <Reference Include="Intusoft.WPF.UserControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WPF_UserControlLibrary\bin\Debug\Intusoft.WPF.UserControls.dll</HintPath>
+    </Reference>
     <Reference Include="IVLReport">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\IVLReport\bin\$(Configuration)\IVLReport.dll</HintPath>
@@ -252,13 +256,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GradientFormControl.Designer.cs" />
-    <Compile Include="Forms\InformationIconUCL.xaml.cs">
-      <DependentUpon>InformationIconUCL.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\InfoVM.cs" />
-    <Compile Include="Forms\InternetStatusUCL.xaml.cs">
-      <DependentUpon>InternetStatusUCL.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\LiveGainExposureCalculation.cs" />
     <Compile Include="Forms\LiveImageControls45_UC.cs">
       <SubType>UserControl</SubType>
@@ -326,10 +323,6 @@
     <Compile Include="Forms\RegisterUserWindow.designer.cs">
       <DependentUpon>RegisterUserWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ReportListView.xaml.cs">
-      <DependentUpon>ReportListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ReportListVM.cs" />
     <Compile Include="Forms\SettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -348,8 +341,6 @@
     <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Value2StatusColorConvertor.cs" />
-    <Compile Include="InternetChecker.cs" />
     <Compile Include="Themes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -902,20 +893,10 @@
       <Project>{BB6F2057-E3AC-4037-8F58-75BC87DE9A9D}</Project>
       <Name>CameraModule</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Forms\InformationIconUCL.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\InternetStatusUCL.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\ReportListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <ProjectReference Include="..\IVLUploader\IVLUploader.csproj">
+      <Project>{73BC10C5-D322-4088-A186-0CCD99807FF8}</Project>
+      <Name>IVLUploader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.WinFx.targets" />
