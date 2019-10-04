@@ -2819,7 +2819,8 @@ namespace INTUSOFT.Desktop.Forms
             }
 
             reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
-            reportDic.Add("$currentTemplate", @"ReportTemplates\Portrait\DR\Portrait_DR_A4.xml");
+            string[] reportTemplates = new string[] { @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page1.xml", @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page2.xml" };
+            reportDic.Add("$currentTemplate", reportTemplates);
 
             //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
             reportDic["$visitImages"] = actualImageFiles.ToArray();
@@ -2832,7 +2833,7 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
             reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri.ToString());
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
-            reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
+            reportObj.parseXmlData(reportDic["$currentTemplate"] as string[]);
             reportObj.SetTheValuesFormReportData();
             Dictionary<string,object> keyValuePairs=  reportObj.createReport();
             report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
@@ -3315,6 +3316,7 @@ namespace INTUSOFT.Desktop.Forms
                                 arg["thumbnailData"] = thumbnailData;
                                 _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
                                 arg["eyefundusImage"] = eye_Fundus_Image;
+                                if(IVLVariables.pageDisplayed == PageDisplayed.Image)
                                 _eventHandler.Notify(_eventHandler.UpdateQIInfo, arg);
                             }
                             updatingThumbnails = false;

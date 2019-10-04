@@ -80,6 +80,8 @@ namespace INTUSOFT.Desktop.Forms
         #endregion
         public ViewImageControls_UC()
         {
+            ResizeReportGridView();
+
             InitializeComponent();
             scrollToolTip = new ToolTip();
             leftToolTip = new ToolTip();
@@ -229,7 +231,6 @@ namespace INTUSOFT.Desktop.Forms
             //elementHost.Dock = DockStyle.Fill;
             //elementHost.Child = reportListView;
             //IVLVariables.ReportListVM.WindowWidth = 202;
-            ResizeReportGridView();
 
             //reportListView.Parent = this.reportGridView_p;
             //this.reportGridView_p.Controls.Add(elementHost);
@@ -534,6 +535,25 @@ namespace INTUSOFT.Desktop.Forms
                         //IVLVariables.ReportListVM.Reports = new BindingList<report>(reports);
                         //IVLVariables.ReportListVM.Reports = new BindingList<report>(NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit);
                         Intusoft.WPF.UserControls.ReportListVM.GetInstance().Reports = new BindingList<report>(reports);
+
+                        if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 90;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 30;
+
+                        }
+                        else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 62;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 12;
+
+                        }
+                        else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 40;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 10;
+
+                        }
                         reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
 
                         //Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
@@ -634,76 +654,25 @@ namespace INTUSOFT.Desktop.Forms
             //}
         }
 
-        private void SetReportGridViewColumnVisibility()
-        {
-            //for (int i = 0; i < Reports_dgv.Columns.Count; i++)
-            //{
-            //    if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) ||
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) ||
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)) ||// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-            //    {
-            //        Reports_dgv.Columns[i].Visible = true;
-            //    }
-            //    else
-            //        Reports_dgv.Columns[i].Visible = false;
-            //}
-            ResizeReportGridView();
-        }
 
         private void ResizeReportGridView()
         {
-            var reportListVM = Intusoft.WPF.UserControls.ReportListVM.GetInstance();
+            //var reportListVM = Intusoft.WPF.UserControls.ReportListVM.GetInstance();
             try
             {
                 if (Screen.PrimaryScreen.Bounds.Width == 1920)
                 {
-                    ////Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                    //{
-                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 10.5F, GraphicsUnit.Pixel);
-                    //}
-                    reportListVM.Width = 90;
-                    reportListVM.FontSize = 30;
-                    //IVLVariables.ReportListVM.WindowWidth = 400;
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 30;
 
                 }
                 else if (Screen.PrimaryScreen.Bounds.Width == 1366)
                 {
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 30;
-
-                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                    //{
-                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                    //}
-                    reportListVM.Width = 62;
-                    reportListVM.FontSize = 12;
-                    //IVLVariables.ReportListVM.WindowWidth = 202;
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 12;
 
                 }
                 else if (Screen.PrimaryScreen.Bounds.Width == 1280)
                 {
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
-                    //foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                    //{
-                    //    c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                    //}
-                    reportListVM.Width = 40;
-                    reportListVM.FontSize = 10;
-                    //IVLVariables.ReportListVM.WindowWidth = 180;
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 10;
 
                 }
             }
@@ -1578,7 +1547,7 @@ namespace INTUSOFT.Desktop.Forms
                             #region Gets the default template from the report settings and set it to the current template
 
                             if (showExistingDRTemplate)
-                                reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml");
+                                reportDic.Add("$currentTemplate", new string[] { @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml" });
                             else
                             {
                                 string defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
@@ -1586,11 +1555,11 @@ namespace INTUSOFT.Desktop.Forms
                                 int index = reportTemplates.FindIndex(x => x.Name == defaultTemplateFileName);//Gives the index of the changedTemplateFileName from reportTemplates
                                 if (index >= 0)
                                 {
-                                    reportDic.Add("$currentTemplate", reportTemplates[index].FullName);
+                                    reportDic.Add("$currentTemplate",new string[] { reportTemplates[index].FullName });
                                 }
                                 else
                                 {
-                                    reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
+                                    reportDic.Add("$currentTemplate", new string[] { @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml" });
                                 }
                             }
                             
@@ -1599,7 +1568,7 @@ namespace INTUSOFT.Desktop.Forms
                         else
                         {
                             if (showExistingDRTemplate)
-                                reportDic["$currentTemplate"]= @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml";
+                                reportDic["$currentTemplate"]= new string[] { @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml" };
                         }
                         if (reportDic.ContainsKey("$ChangeMaskColour"))//checks if key $ChangeMaskColour is present .By Ashutosh 22-08-2017
                             reportDic["$ChangeMaskColour"] = IVLVariables.CurrentSettings.ReportSettings.ChangeMaskColour.val;// if present then it's value is replaced.By Ashutosh 22-08-2017
@@ -3340,7 +3309,7 @@ namespace INTUSOFT.Desktop.Forms
 
             if (images.Length <= Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._noOfImagesForReport.val))
             {
-                if(IVLVariables.isInternetConnected)
+                if(Intusoft.WPF.UserControls.InternetCheckViewModel.GetInstance().InternetPresent)
                 {
                     List<int> NonGradableImagesStatusList = new List<int>();
                     List<int> QIProgressList = new List<int>();

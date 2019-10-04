@@ -6,11 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
              xmlns:Convertor ="clr-namespace:Intusoft.WPF.UserControls.Convertor"
              mc:Ignorable="d" Width="129.576" Height="148.316" Name="InfoIconView">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseLeftButtonDown">
-            <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="Bool2VisibilityConvertor"/>
         <Convertor:InvertBoolConverter x:Key="InvertBool2VisibilityConvertor"/>
@@ -35,6 +31,14 @@
             <TextBlock 
               Text="i" FontSize="20" FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,5,16,5" HorizontalAlignment="Right" Width="7">
             </TextBlock>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
+                    </i:EventTrigger>
+                <i:EventTrigger EventName="MouseLeave">
+                    <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </Border>
         <!--<WrapPanel Width="80" Background="Green" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor}}" HorizontalAlignment="Left" Margin="1,-1,0,0" Grid.RowSpan="2" />-->
         <WrapPanel Orientation="Vertical" Width="102" Background="WhiteSmoke" Visibility="{Binding IsVisible, Converter={StaticResource Bool2VisibilityConvertor},FallbackValue= Hidden}" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="0,0,0,21" Grid.RowSpan="2">

@@ -235,7 +235,7 @@ namespace IVLReport
             if (reportData.ContainsKey("$allTemplateFiles"))//Checks wheather key $allTemplateFiles is present in reportData or not.
                 reportTemplates = reportData["$allTemplateFiles"] as List<FileInfo>;//Sets the reportTemplates to the value of $allTemplateFiles key.
             if (reportData.ContainsKey("$currentTemplate"))//Checks wheather key $currentTemplate is present in reportData or not.
-                _dataModel.CurrentTemplate = reportData["$currentTemplate"] as string;//Sets the dataModel.CurrentTemplate to the value of $currentTemplate key.
+                _dataModel.CurrentTemplate = reportData["$currentTemplate"] as string[];//Sets the dataModel.CurrentTemplate to the value of $currentTemplate key.
             #endregion
 
             #region variables initialization
@@ -423,12 +423,12 @@ namespace IVLReport
                     NoImagelabelvisible();
                 }
                 LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), _dataModel.ReportData["$CurrentTemplateName"].ToString().ToUpper() + "_" + _dataModel.ReportData["$CurrentTemplateSize"].ToString());
-                for (int i = 0; i < 3; i++)
+                //for (int i = 0; i < 3; i++)
+                foreach (var item in _dataModel.CurrentTemplate)
                 {
                     SetCurrentOrientationAndSize();
                     ChangeTemplate();
                     IntitializeSizeAndOrientaionControls(reportSize);
-
                 }
                 //setToolsStripLabels();
             }
@@ -1012,48 +1012,53 @@ namespace IVLReport
         /// Deserializes the xml file into report control structure type.
         /// </summary>
         /// <param name="xmlFile">file path</param>
-        public void parseXmlData(string xmlFile)
+        public void parseXmlData(string[] xmlFile)
         {
-            if (!File.Exists(xmlFile)) return;
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(xmlFile);
-            _dataModel.CurrentTemplate = xmlFile;
-            XmlNode controlNodes = xmlDoc.FirstChild.ChildNodes[1];
-            if (controlNodes != null)
+            foreach (var item in xmlFile)
             {
-                string ori = xmlDoc.FirstChild.ChildNodes[0].InnerText;
-                LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), ori);
-            }
-            XmlSerializer xmlSer = new XmlSerializer(typeof(List<ReportControlsStructure>));
-            string dpiStr = controlNodes.ChildNodes[0].OuterXml.ToLower();
-            if (dpiStr.Contains("dpi"))
-            {
-                if (dpiStr.Contains("dpi_72"))
+                if (!File.Exists(item)) return;
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(item);
+                //_dataModel.CurrentTemplate = item;
+                XmlNode controlNodes = xmlDoc.FirstChild.ChildNodes[1];
+                if (controlNodes != null)
                 {
-                    LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_72;
+                    string ori = xmlDoc.FirstChild.ChildNodes[0].InnerText;
+                    LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), ori);
+                }
+                XmlSerializer xmlSer = new XmlSerializer(typeof(List<ReportControlsStructure>));
+                string dpiStr = controlNodes.ChildNodes[0].OuterXml.ToLower();
+                if (dpiStr.Contains("dpi"))
+                {
+                    if (dpiStr.Contains("dpi_72"))
+                    {
+                        LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_72;
+                    }
+                    else
+                    {
+                        LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
+
+                    }
+                    controlNodes = xmlDoc.FirstChild.ChildNodes[2];
                 }
                 else
                 {
-                    LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
+                    LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_72;
 
                 }
-                controlNodes = xmlDoc.FirstChild.ChildNodes[2];
-            }
-            else
-            {
-                LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_72;
+
+                foreach (XmlNode item1 in controlNodes.ChildNodes)
+                {
+                    MemoryStream memStearm = new MemoryStream();
+                    StreamWriter writer = new StreamWriter(memStearm);
+                    writer.Write(item1.OuterXml);
+                    writer.Flush();
+                    memStearm.Position = 0;
+                    reportControlStructureList = (List<ReportControlsStructure>)xmlSer.Deserialize(memStearm);
+                }
 
             }
-
-            foreach (XmlNode item in controlNodes.ChildNodes)
-            {
-                MemoryStream memStearm = new MemoryStream();
-                StreamWriter writer = new StreamWriter(memStearm);
-                writer.Write(item.OuterXml);
-                writer.Flush();
-                memStearm.Position = 0;
-                reportControlStructureList = (List<ReportControlsStructure>)xmlSer.Deserialize(memStearm);
-            }
+            
             
         }
 
@@ -1510,90 +1515,94 @@ namespace IVLReport
                 
                 throw;
             }
-            FileInfo finf = new FileInfo(_dataModel.CurrentTemplate);//Gets the file info of the current template.
-            if (index >= 0)// && (finf.Name != changedTemplateFileName || reportControlStructureList == null))//Multiple expression if statement checks for index value , reportControlStructureList is null or not and Filename matches with current template.
+            foreach (var item in _dataModel.CurrentTemplate)
             {
-                p = new Panel();
-                LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), reportTemplateOrientation.ToString().ToUpper() + "_" + reportTemplateSize.ToString());
-                if(!_dataModel.ContainsCmdArgs)
-                    _dataModel.CurrentTemplate = reportTemplates[index].FullName;
-                //this.reportCanvas_pnl.Controls.Clear();
-                SetCurrentOrientationAndSize();
-                parseXmlData(_dataModel.CurrentTemplate);//Reads the current template xml file
-                if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A4)
+                FileInfo finf = new FileInfo(item);//Gets the file info of the current template.
+                if (index >= 0)// && (finf.Name != changedTemplateFileName || reportControlStructureList == null))//Multiple expression if statement checks for index value , reportControlStructureList is null or not and Filename matches with current template.
                 {
-                    //p.Dock = DockStyle.Fill; 
-                     LayoutDetails.Current.PageHeight = Convert.ToInt32(a4Width * 96.0);
-                     LayoutDetails.Current.PageWidth = Convert.ToInt32(a4Height * 96.0);
-                    p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
-                    p.Location = new Point((reportCanvas_pnl.Width * 1/5), reportCanvas_pnl.Location.Y);
-                    //p.BorderStyle = BorderStyle.Fixed3D;
-                    //p.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
-                    //p.BackColor = Color.Black;
-                    HeightScaleFactor = 0.87f;
-                    WidthScaleFactor = 1f;
-                    fontScaleFactor = 0.875f;
+                    p = new Panel();
+                    LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), reportTemplateOrientation.ToString().ToUpper() + "_" + reportTemplateSize.ToString());
+                    if (!_dataModel.ContainsCmdArgs)
+                        _dataModel.CurrentTemplate = new string[] { reportTemplates[index].FullName };
+                    //this.reportCanvas_pnl.Controls.Clear();
+                    SetCurrentOrientationAndSize();
+                    parseXmlData(_dataModel.CurrentTemplate);//Reads the current template xml file
+                    if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A4)
+                    {
+                        //p.Dock = DockStyle.Fill; 
+                        LayoutDetails.Current.PageHeight = Convert.ToInt32(a4Width * 96.0);
+                        LayoutDetails.Current.PageWidth = Convert.ToInt32(a4Height * 96.0);
+                        p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
+                        p.Location = new Point((reportCanvas_pnl.Width * 1 / 5), reportCanvas_pnl.Location.Y);
+                        //p.BorderStyle = BorderStyle.Fixed3D;
+                        //p.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
+                        //p.BackColor = Color.Black;
+                        HeightScaleFactor = 0.87f;
+                        WidthScaleFactor = 1f;
+                        fontScaleFactor = 0.875f;
 
+                    }
+                    else if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A5)
+                    {
+
+                        LayoutDetails.Current.PageHeight = Convert.ToInt32(a5Width * 96.0);
+                        LayoutDetails.Current.PageWidth = Convert.ToInt32(a5Height * 96.0);
+                        p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
+                        //p.Dock = DockStyle.Fill;
+                        p.Location = new Point((reportCanvas_pnl.Width * 1 / 5), reportCanvas_pnl.Location.Y);
+                        //p.BorderStyle = BorderStyle.Fixed3D;
+                        //p.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
+                        //p.BackColor = Color.Black;
+
+                        WidthScaleFactor = 1.20f;
+                        HeightScaleFactor = 1.25f;
+                        fontScaleFactor = 0.95f;
+                    }
+                    else if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.LANDSCAPE_A5)
+                    {
+
+                        LayoutDetails.Current.PageHeight = Convert.ToInt32(a5Height * 96.0);
+                        LayoutDetails.Current.PageWidth = Convert.ToInt32(a5Width * 96.0);
+                        p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
+                        // p.Location = new Point(reportCanvas_pnl.Location.X, reportCanvas_pnl.Location.Y);
+                        p.Location = new Point(LayoutDetails.Current.PageWidth / 5, LayoutDetails.Current.PageHeight / 5);
+                        //p.BorderStyle = BorderStyle.Fixed3D;
+                        //p.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+                        //p.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        LayoutDetails.Current.PageHeight = Convert.ToInt32(a4Height * 96.0);
+                        LayoutDetails.Current.PageWidth = Convert.ToInt32(a4Width * 96.0);
+                        p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
+                        p.Location = new Point(0, 0);
+                        //p.BorderStyle = BorderStyle.Fixed3D;
+                        //p.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+                        //p.BackColor = Color.Black;
+                    }
+
+
+                    foreach (ReportControlsStructure item1 in reportControlStructureList)
+                    {
+                        populateControls(ref item1.reportControlProperty);
+
+                    }
+                    if (LayoutDetails.Current.Dpi == LayoutDetails.DPI.DPI_72)
+                    {
+                        LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
+                        write2Xml(item, reportControlStructureList);
+                    }
+                    // this.p.Scale(new SizeF(WidthScaleFactor, HeightScaleFactor));
+                    writeValuesToTheBindingType();//Writes the values from the report data to the controls in the report canvas and to the correcponding binding type in reportControlStructureList.
+
+                    //this.p.Scale(scaleFactor);
+                    this.reportCanvas_pnl.Controls.Add(p);
+
+                    isUpdateImages = UpdateImages(_dataModel.CurrentImgFiles);//updates images of the image panel in the report canvas and changes the no of row and column for the image panel.
+                    setToolsStripLabels();
                 }
-                else if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A5)
-                {
-
-                     LayoutDetails.Current.PageHeight = Convert.ToInt32(a5Width * 96.0);
-                     LayoutDetails.Current.PageWidth = Convert.ToInt32(a5Height * 96.0);
-                    p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
-                    //p.Dock = DockStyle.Fill;
-                    p.Location = new Point((reportCanvas_pnl.Width * 1/5), reportCanvas_pnl.Location.Y);
-                    //p.BorderStyle = BorderStyle.Fixed3D;
-                    //p.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
-                    //p.BackColor = Color.Black;
-
-                    WidthScaleFactor = 1.20f;
-                    HeightScaleFactor = 1.25f;
-                    fontScaleFactor = 0.95f;
-                }
-                else if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.LANDSCAPE_A5)
-                {
-
-                    LayoutDetails.Current.PageHeight = Convert.ToInt32(a5Height * 96.0);
-                     LayoutDetails.Current.PageWidth = Convert.ToInt32(a5Width * 96.0);
-                    p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
-                   // p.Location = new Point(reportCanvas_pnl.Location.X, reportCanvas_pnl.Location.Y);
-                    p.Location = new Point(LayoutDetails.Current.PageWidth / 5, LayoutDetails.Current.PageHeight/5);
-                    //p.BorderStyle = BorderStyle.Fixed3D;
-                    //p.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-                    //p.BackColor = Color.Black;
-                }
-                else
-                {
-                    LayoutDetails.Current.PageHeight = Convert.ToInt32(a4Height * 96.0);
-                     LayoutDetails.Current.PageWidth = Convert.ToInt32(a4Width * 96.0);
-                    p.Size = new System.Drawing.Size(LayoutDetails.Current.PageWidth, LayoutDetails.Current.PageHeight);
-                    p.Location = new Point(0,0);
-                    //p.BorderStyle = BorderStyle.Fixed3D;
-                    //p.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-                    //p.BackColor = Color.Black;
-                }
-
-
-                foreach (ReportControlsStructure item in reportControlStructureList)
-                {
-                    populateControls(ref item.reportControlProperty);
-
-                }
-                if (LayoutDetails.Current.Dpi == LayoutDetails.DPI.DPI_72)
-                {
-                    LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
-                    write2Xml(_dataModel.CurrentTemplate, reportControlStructureList);
-                }
-                // this.p.Scale(new SizeF(WidthScaleFactor, HeightScaleFactor));
-                 writeValuesToTheBindingType();//Writes the values from the report data to the controls in the report canvas and to the correcponding binding type in reportControlStructureList.
-
-                //this.p.Scale(scaleFactor);
-                this.reportCanvas_pnl.Controls.Add(p);
-                
-                isUpdateImages = UpdateImages(_dataModel.CurrentImgFiles);//updates images of the image panel in the report canvas and changes the no of row and column for the image panel.
-                setToolsStripLabels();
             }
+           
             return isUpdateImages;
         }
         private void write2Xml(string xmlFile, List<ReportControlsStructure> props)

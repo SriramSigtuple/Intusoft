@@ -7,6 +7,24 @@ using System.Windows.Media;
 using Common.Enums;
 namespace Intusoft.WPF.UserControls.Convertor
 {
+    public class FontSizeClass
+    {
+        private static double fontSize;
+
+        public static double FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                if (fontSize != value)
+                {
+                    fontSize = value;
+                }
+
+
+            }
+        }
+    }
     public class DateConvertor :IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

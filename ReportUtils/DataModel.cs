@@ -12,7 +12,7 @@ namespace ReportUtils
     public class DataModel
     {
         private static DataModel dataModel;
-        public string CurrentTemplate = "";
+        public string[] CurrentTemplate;
         public string[] VisitImageFiles;
         public string[,] ImageFileNamesFromTable;
         public string[,] ImageNamesFromTable;

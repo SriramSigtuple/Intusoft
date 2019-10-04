@@ -784,10 +784,14 @@ namespace IVLReport
         /// <param name="dirInf"></param>
         private void AddReportTemplate2Attachment(DirectoryInfo dirInf)
         {
-            string sourceTemplatePath = _dataModel.CurrentTemplate;
-            string destinationTemplatePath = @dirInf.FullName + Path.DirectorySeparatorChar + templateXmlText;
-            if (!File.Exists(destinationTemplatePath) && File.Exists(sourceTemplatePath)) // check if file exists in source path and file doesn't exist in destination
-                File.Copy(sourceTemplatePath, destinationTemplatePath);// copy file from source to destination
+            string[] sourceTemplatePath = _dataModel.CurrentTemplate;
+            foreach (var item in _dataModel.CurrentTemplate)
+            {
+                string destinationTemplatePath = @dirInf.FullName + Path.DirectorySeparatorChar + templateXmlText;
+                if (!File.Exists(destinationTemplatePath) && File.Exists(item)) // check if file exists in source path and file doesn't exist in destination
+                    File.Copy(item, destinationTemplatePath);// copy file from source to destination
+            }
+          
         }
 
 

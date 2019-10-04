@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:convertor="clr-namespace:Intusoft.WPF.UserControls.Convertor"
-             xmlns:local="clr-namespace:Intusoft.WPF.UserControls"
-             mc:Ignorable="d" HorizontalAlignment="Stretch" Width="auto" Height="auto">
+             mc:Ignorable="d" Width="230" Height="34.5">
     <UserControl.Resources>
         <Style x:Key="GridHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -24,6 +23,8 @@
         <convertor:TimeConvertor x:Key="TimeConvertor"/>
         <convertor:CloudStatusConvertor x:Key="CloudStatusConvertor"/>
         <convertor:IndexConverter x:Key="IndexConverter"/>
+        <convertor:FontSizeClass x:Key="FontSizeGetter"/>
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -34,32 +35,16 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <ListView Name="ReportList" SelectionMode="Single" ItemsSource="{Binding Reports, Mode=TwoWay}" ItemContainerStyle="{StaticResource listViewDoubleClick}" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" >
+        <ListView Name="ReportList" SelectionMode="Single" ItemsSource="{Binding Reports, Mode=TwoWay}" ItemContainerStyle="{StaticResource listViewDoubleClick}" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.RowSpan="2" RenderTransformOrigin="0.602,0.368" >
             <ListView.Resources>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                    <Setter Property="FontSize" Value="{Binding FontSize}" />
+                    <Setter Property="FontSize" Value="{Binding Source={StaticResource FontSizeGetter},Path= FontSize}"/>
                     <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Text}"/>
 
                 </Style>
 
             </ListView.Resources>
-            <!--<ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Style.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="30"/>
-                        </Style>
-                    </Style.Resources>
-                </Style>
-            </ListView.ItemContainerStyle>-->
-            <!--ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Name="FileNames_Grid">
-                        <local:ReportView Margin="0,5,0,0"/>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
             <ListView.View>
                 <GridView>
                     <GridViewColumn

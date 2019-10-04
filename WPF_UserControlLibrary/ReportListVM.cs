@@ -62,22 +62,7 @@ namespace Intusoft.WPF.UserControls
                
             }
         }
-        private int fontSize;
-
-        public int FontSize
-        {
-            get { return fontSize; }
-            set
-            {
-                if(fontSize != value)
-                {
-                    fontSize = value;
-                    OnPropertyChanged();
-                }
-               
-
-            }
-        }
+        
 
 
         //public ICommand DoubleClick { get; set; }

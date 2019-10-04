@@ -1653,7 +1653,7 @@ namespace Annotation
 
             _report = new IVLReport.Report(glaucomaToolValues);
             
-            _report.parseXmlData(glaucomaToolValues["$currentTemplate"] as string);
+            _report.parseXmlData(glaucomaToolValues["$currentTemplate"] as string[]);
             _report.SetTheValuesFormReportData();
             CustomFolderBrowser.fileName = "CDR_Report_" + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss") + ".pdf";
             try

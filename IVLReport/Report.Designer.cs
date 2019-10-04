@@ -82,7 +82,6 @@
             this.reportCanvas_pnl.BackColor = System.Drawing.Color.Transparent;
             this.reportCanvas_pnl.Controls.Add(this.statusStrip1);
             this.reportCanvas_pnl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.reportCanvas_pnl.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this.reportCanvas_pnl.Location = new System.Drawing.Point(0, 0);
             this.reportCanvas_pnl.Name = "reportCanvas_pnl";
             this.reportCanvas_pnl.Size = new System.Drawing.Size(941, 742);
