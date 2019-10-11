@@ -825,7 +825,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="state"></param>
         private void InboxCheck(object state)
         {
-            InboxQICheck(new object());
+            //InboxQICheck(new object());
 
             try
             {
@@ -855,8 +855,8 @@ namespace INTUSOFT.Desktop.Forms
                                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
 
                                         CreateCloudReport(responseValue);
-                                        NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = responseValue.LeftAIImpressions;
-                                        NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = responseValue.RightAIImpressions;
+                                        NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = $"{responseValue.LeftAIImpressionsDR},{responseValue.LeftAIImpressionsAMD},{responseValue.LeftAIImpressionsGlaucoma}";
+                                        NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = $"{responseValue.RightAIImpressionsDR},{responseValue.RightAIImpressionsAMD},{responseValue.RightAIImpressionsGlaucoma}";
                                         //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                                         changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
 
@@ -1003,29 +1003,34 @@ namespace INTUSOFT.Desktop.Forms
                                     {
                                         if(responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
                                         {
-                                            if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
+                                            if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("Gradable"))
                                                 NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
+                                            else if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
                                                     NewDataVariables.Obs[indx].qi_DR_AMD_Status =(int) QIStatus.NonGradable;
-
-                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                                {
+                                                    if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                                    else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                                }
+                                               
 
                                             }
                                         else
                                             if(responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
                                         {
-                                            if (responseValue.RightEyeDetails[0].QI_Result.Equals("Gradable"))
+                                            if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("Gradable"))
                                                 NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                            else if (responseValue.RightEyeDetails[0].QI_Result.Equals("NonGradable"))
+                                            else if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
                                                 NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
 
-                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                                {
+                                                    if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                                    else if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                                }
+                                                    
                                             }
 
                                         changedObsList.Add(NewDataVariables.Obs[indx]);
@@ -1867,7 +1872,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 PagePanel_p.Controls.Add(emr);
                  inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                //inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                 inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
                
                 
                // string[] var = new string[] { "akjd" };
@@ -2826,15 +2831,23 @@ namespace INTUSOFT.Desktop.Forms
             reportDic["$visitImages"] = actualImageFiles.ToArray();
             reportDic.Add("$CurrentImageFiles", actualImageFiles.ToArray());
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
-            reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressions);
-            reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
+            reportDic.Add("$RightEyeImpressionDR", $"{inboxAnalysisStatusModel.RightAIImpressionsDR}");
+            reportDic.Add("$RightEyeImpressionAMD", $"{inboxAnalysisStatusModel.RightAIImpressionsAMD}");
+            reportDic.Add("$RightEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.RightAIImpressionsGlaucoma}");
+            reportDic.Add("$LeftEyeImpressionDR", $"{inboxAnalysisStatusModel.LeftAIImpressionsDR}");
+            reportDic.Add("$LeftEyeImpressionAMD", $"{inboxAnalysisStatusModel.LeftAIImpressionsAMD}");
+            reportDic.Add("$LeftEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma}");
             reportDic.Add("$LeftEyeImages",leftEyeImages);
             reportDic.Add("$RightEyeImages",rightEyeImages);
             reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
             reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri.ToString());
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
-            reportObj.parseXmlData(reportDic["$currentTemplate"] as string[]);
-            reportObj.SetTheValuesFormReportData();
+            foreach (var item in reportTemplates)
+            {
+                reportObj.parseXmlData(item);
+                reportObj.SetTheValuesFormReportData();
+            }
+           
             Dictionary<string,object> keyValuePairs=  reportObj.createReport();
             report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
             r.dataJson = (string) keyValuePairs["xml"];

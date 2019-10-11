@@ -85,6 +85,7 @@ namespace IntuUploader.Utilities
                     }
 
                 };
+                var content1 = await httpRequestMessage.Content.ReadAsStringAsync();
                 client.BaseAddress = httpRequestMessage.RequestUri;
                 //reference https://social.msdn.microsoft.com/Forums/en-US/f553e3fb-9007-42e9-8289-9bf0e52c0e07/set-content-type-in-httpclienthttprequestmessage-throws-exception?forum=winappswithcsharp
                     httpRequestMessage.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(model.ContentType);

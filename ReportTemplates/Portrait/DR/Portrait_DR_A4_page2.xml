@@ -117,10 +117,10 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>RightEyeImpression</Binding>
+      <Binding>RightEyeImpressionGlaucoma</Binding>
       <Location>
-        <_X>137</_X>
-        <_Y>463</_Y>
+        <_X>158</_X>
+        <_Y>467</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -134,7 +134,7 @@
       <Text />
       <Name>Label46</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>35</YMarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -152,10 +152,10 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>LeftEyeImpression</Binding>
+      <Binding>LeftEyeImpressionGlaucoma</Binding>
       <Location>
-        <_X>515</_X>
-        <_Y>462</_Y>
+        <_X>546</_X>
+        <_Y>467</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -169,7 +169,7 @@
       <Text />
       <Name>Label48</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>35</YMarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -298,7 +298,7 @@
         <_Y>796</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
+      <Border>false</Border>
       <ImageName>QRCode.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
@@ -644,7 +644,7 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>791</Width>
+        <Width>804</Width>
         <Height>1</Height>
       </Size>
       <Binding>None</Binding>
@@ -682,7 +682,7 @@
         <Width>368</Width>
         <Height>283</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>LeftEyeImages</Binding>
       <Location>
         <_X>409</_X>
         <_Y>171</_Y>
@@ -720,7 +720,7 @@
       <Binding>None</Binding>
       <Location>
         <_X>349</_X>
-        <_Y>119</_Y>
+        <_Y>81</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -752,7 +752,7 @@
         <Width>368</Width>
         <Height>283</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeImages</Binding>
       <Location>
         <_X>20</_X>
         <_Y>171</_Y>
@@ -854,48 +854,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>103</Width>
-        <Height>18</Height>
-      </Size>
-      <Binding>None</Binding>
-      <Location>
-        <_X>429</_X>
-        <_Y>466</_Y>
-      </Location>
-      <MultiLine>false</MultiLine>
-      <Border>false</Border>
-      <Type>Label</Type>
-      <RowsColumns>
-        <Rows>1</Rows>
-        <Columns>1</Columns>
-        <_Rows>1</_Rows>
-        <_Columns>1</_Columns>
-      </RowsColumns>
-      <Text>AI Impression      :</Text>
-      <Name>Label44</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
-      <ImageMedicalName>true</ImageMedicalName>
-      <TextAlign>TopLeft</TextAlign>
-      <NumberOfImages>1</NumberOfImages>
-    </reportControlProperty>
-  </ReportControlsStructure>
-  <ReportControlsStructure>
-    <reportControlProperty>
-      <Font>
-        <FontColor>ControlText</FontColor>
-        <FontFamily>Segoe UI</FontFamily>
-        <FontStyle>Bold</FontStyle>
-        <FontSize>9</FontSize>
-      </Font>
-      <Size>
         <Width>218</Width>
         <Height>15</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>429</_X>
-        <_Y>484</_Y>
+        <_X>495</_X>
+        <_Y>508</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -906,7 +871,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Left Eye Observation and Comments</Text>
       <Name>Label50</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -927,10 +892,10 @@
         <Width>350</Width>
         <Height>41</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>LeftEyeObservationComments</Binding>
       <Location>
-        <_X>429</_X>
-        <_Y>505</_Y>
+        <_X>425</_X>
+        <_Y>534</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>true</Border>
@@ -962,10 +927,10 @@
         <Width>350</Width>
         <Height>41</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeObservationComments</Binding>
       <Location>
         <_X>41</_X>
-        <_Y>505</_Y>
+        <_Y>534</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>true</Border>
@@ -999,8 +964,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>41</_X>
-        <_Y>484</_Y>
+        <_X>99</_X>
+        <_Y>508</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1011,7 +976,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Right Eye Observation and Comments</Text>
       <Name>Label49</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1048,6 +1013,41 @@
       </RowsColumns>
       <Text>AI Impression      :</Text>
       <Name>Label43</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Lato</FontFamily>
+        <FontStyle>Bold</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>216</Width>
+        <Height>18</Height>
+      </Size>
+      <Binding>None</Binding>
+      <Location>
+        <_X>431</_X>
+        <_Y>466</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>AI Impression      :</Text>
+      <Name>Label18</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>

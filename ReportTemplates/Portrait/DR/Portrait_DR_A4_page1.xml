@@ -226,7 +226,7 @@
       <Binding>Doctor</Binding>
       <Location>
         <_X>514</_X>
-        <_Y>180</_Y>
+        <_Y>181</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>true</Border>
@@ -714,9 +714,9 @@
         <Width>350</Width>
         <Height>41</Height>
       </Size>
-      <Binding>RightEyeObservationComments</Binding>
+      <Binding>RightEyeObservationCommentsDR</Binding>
       <Location>
-        <_X>45</_X>
+        <_X>47</_X>
         <_Y>605</_Y>
       </Location>
       <MultiLine>true</MultiLine>
@@ -749,9 +749,9 @@
         <Width>350</Width>
         <Height>41</Height>
       </Size>
-      <Binding>LeftEyeObservationComments</Binding>
+      <Binding>LeftEyeObservationCommentsDR</Binding>
       <Location>
-        <_X>433</_X>
+        <_X>435</_X>
         <_Y>605</_Y>
       </Location>
       <MultiLine>true</MultiLine>
@@ -786,7 +786,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>45</_X>
+        <_X>101</_X>
         <_Y>584</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -798,7 +798,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Right Eye Observation and Comments</Text>
       <Name>Label49</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>-10</YMarginDecrementValue>
@@ -821,7 +821,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>433</_X>
+        <_X>494</_X>
         <_Y>584</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -833,7 +833,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Left Eye Observation and Comments</Text>
       <Name>Label50</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>-10</YMarginDecrementValue>
@@ -1061,7 +1061,7 @@
         <FontSize>8.25</FontSize>
       </Font>
       <Size>
-        <Width>794</Width>
+        <Width>811</Width>
         <Height>1</Height>
       </Size>
       <Binding>None</Binding>
@@ -1096,7 +1096,7 @@
         <FontSize>16</FontSize>
       </Font>
       <Size>
-        <Width>218</Width>
+        <Width>338</Width>
         <Height>29</Height>
       </Size>
       <Binding>RightEyeAnalysisType</Binding>
@@ -1126,17 +1126,17 @@
     <reportControlProperty>
       <Font>
         <FontColor>Red</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Bold</FontStyle>
         <FontSize>16</FontSize>
       </Font>
       <Size>
-        <Width>333</Width>
+        <Width>353</Width>
         <Height>29</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>270</_X>
+        <_X>269</_X>
         <_Y>678</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1148,7 +1148,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Age-Related Macular Degenration</Text>
+      <Text>Age-Related Macular Degeneration</Text>
       <Name>Label68</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1196,7 +1196,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>WindowText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1204,7 +1204,7 @@
         <Width>350</Width>
         <Height>42</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>LeftEyeObservationCommentsAMD</Binding>
       <Location>
         <_X>433</_X>
         <_Y>1052</_Y>
@@ -1231,7 +1231,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>WindowText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1239,7 +1239,7 @@
         <Width>350</Width>
         <Height>42</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeObservationCommentsAMD</Binding>
       <Location>
         <_X>45</_X>
         <_Y>1052</_Y>
@@ -1271,13 +1271,13 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>794</Width>
+        <Width>809</Width>
         <Height>1</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
         <_X>1</_X>
-        <_Y>671</_Y>
+        <_Y>666</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>true</Border>
@@ -1309,7 +1309,7 @@
         <Width>368</Width>
         <Height>283</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeImages</Binding>
       <Location>
         <_X>24</_X>
         <_Y>727</_Y>
@@ -1486,8 +1486,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>433</_X>
-        <_Y>1031</_Y>
+        <_X>494</_X>
+        <_Y>1030</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1498,7 +1498,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Left Eye Observation and Comments</Text>
       <Name>Label69</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>-10</YMarginDecrementValue>
@@ -1521,8 +1521,8 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>45</_X>
-        <_Y>1031</_Y>
+        <_X>101</_X>
+        <_Y>1030</_Y>
       </Location>
       <MultiLine>false</MultiLine>
       <Border>false</Border>
@@ -1533,7 +1533,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Observation and Comments</Text>
+      <Text>Right Eye Observation and Comments</Text>
       <Name>Label70</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>-10</YMarginDecrementValue>
@@ -1546,7 +1546,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1554,7 +1554,7 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeImpressionAMD</Binding>
       <Location>
         <_X>150</_X>
         <_Y>1013</_Y>
@@ -1568,7 +1568,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$RightEyeImpression</Text>
+      <Text />
       <Name>Label75</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1581,7 +1581,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1589,7 +1589,7 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>LeftEyeImpression</Binding>
+      <Binding>LeftEyeImpressionAMD</Binding>
       <Location>
         <_X>541</_X>
         <_Y>1013</_Y>
@@ -1603,7 +1603,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$LeftEyeImpression</Text>
+      <Text />
       <Name>Label76</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1616,7 +1616,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1624,7 +1624,7 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>LeftEyeImpressionDR</Binding>
       <Location>
         <_X>541</_X>
         <_Y>566</_Y>
@@ -1651,7 +1651,7 @@
     <reportControlProperty>
       <Font>
         <FontColor>ControlText</FontColor>
-        <FontFamily>Times New Roman</FontFamily>
+        <FontFamily>Lato</FontFamily>
         <FontStyle>Regular</FontStyle>
         <FontSize>9</FontSize>
       </Font>
@@ -1659,7 +1659,7 @@
         <Width>225</Width>
         <Height>18</Height>
       </Size>
-      <Binding>None</Binding>
+      <Binding>RightEyeImpressionDR</Binding>
       <Location>
         <_X>150</_X>
         <_Y>566</_Y>

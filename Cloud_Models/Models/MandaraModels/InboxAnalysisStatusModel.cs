@@ -16,8 +16,12 @@ namespace Cloud_Models.Models
 
         public string Status;
         public string FailureMessage;
-        public string RightAIImpressions;
-        public string LeftAIImpressions;
+        public string RightAIImpressionsDR;
+        public string RightAIImpressionsAMD;
+        public string RightAIImpressionsGlaucoma;
+        public string LeftAIImpressionsDR;
+        public string LeftAIImpressionsAMD;
+        public string LeftAIImpressionsGlaucoma;
         public HttpStatusCode StatusCode;
         public Uri ReportUri;
         public int visitID;
@@ -28,8 +32,6 @@ namespace Cloud_Models.Models
         {
             RightEyeDetails = new List<ImageAnalysisResultModel>();
             LeftEyeDetails = new List<ImageAnalysisResultModel>();
-            RightAIImpressions = string.Empty;
-            LeftAIImpressions = string.Empty;
         }
 
 

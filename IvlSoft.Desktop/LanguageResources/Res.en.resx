@@ -1979,10 +1979,10 @@
     <value>No Internet connection. Please connect and retry.</value>
   </data>
   <data name="Gradable_Text" xml:space="preserve">
-    <value>Gradable</value>
+    <value>DR Gradable</value>
   </data>
   <data name="NonGradable_Text" xml:space="preserve">
-    <value>Non-Gradable</value>
+    <value>DR Non-Gradable</value>
   </data>
   <data name="QIFailed_Text" xml:space="preserve">
     <value>QI Failed</value>

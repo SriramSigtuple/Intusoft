@@ -1,32 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing.Drawing2D;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.IO;
-using System.Xml.Serialization;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Globalization;
-using System.Windows.Forms;
-using INTUSOFT.Desktop.Properties;
-using INTUSOFT.Data.Enumdetails;
-using INTUSOFT.Data.NewDbModel;
-using INTUSOFT.EventHandler;
-using INTUSOFT.Data.Repository;
-using INTUSOFT.Data.Extension;
-using INTUSOFT.Custom.Controls;
-using Microsoft.Win32;
-using INTUSOFT.Imaging;
-using Common;
+﻿using INTUSOFT.Data.Repository;
 using INTUSOFT.Desktop.Forms;
+using INTUSOFT.EventHandler;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace INTUSOFT.Desktop
 {
@@ -38,12 +17,6 @@ namespace INTUSOFT.Desktop
         public Timer t = new Timer();
         bool isReport;
         int currentIndx = 0;
-        int MRNIndex = 0;
-        int firstNameIndex = 1;
-        int secondNameIndex = 2;
-        int ageIndex = 3;
-        int genderIndex = 4;
-        int selectedVisitIndex = 0;
         System.Diagnostics.Stopwatch stW;
         public delegate void ReportDelegate();
         public event ReportDelegate reportViewEvent;
@@ -52,13 +25,6 @@ namespace INTUSOFT.Desktop
         bool isUpdate = false;
         Logger ExceptionLog = LogManager.GetLogger("ExceptionLog");
 
-        /// <summary>
-        /// Variable to store error message
-        /// </summary>
-        private string errorMessage;
-        /// <summary>
-        /// Member id
-        /// </summary>
         private int memberId;
         public PatientDetails_UC patd;
         CreateModifyPatient_UC createPatientUC;

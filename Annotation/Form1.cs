@@ -1941,7 +1941,7 @@ namespace Annotation
             //reportDic.Add("$reportNameText", annotationDetails["reportNameText"]);
             _report = new IVLReport.Report(reportDic);
             string currentTemplate = reportDic["$currentTemplate"] as string;
-            _report.parseXmlData(reportDic["$currentTemplate"] as string[]);
+            _report.parseXmlData(reportDic["$currentTemplate"] as string);
             _report.SetTheValuesFormReportData();
             try
             {

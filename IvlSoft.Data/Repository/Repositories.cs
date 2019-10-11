@@ -53,7 +53,7 @@ namespace INTUSOFT.Data.Repository
                     using (transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
                     {
                         NHibernateHelper_MySQL.hibernateSession.Save(modelVal);
-                        NHibernateHelper_MySQL.hibernateSession.Flush();
+                        //NHibernateHelper_MySQL.hibernateSession.Flush();
                         transaction.Commit();
                     }
                     NHibernateHelper_MySQL.CloseSession();

@@ -253,14 +253,16 @@ namespace ReportTemplateCreator
                 reportData.Add("$CurrentImageFiles", currentReportImageFiles.ToArray());
                 reportData.Add("$ImageNames", image.ToArray());
                 report = new Report(reportData);
-                report.reportControlStructureList = pDesignerCore.GetControlProperties();
+                if (report.reportControlStructureList == null)
+                    report.reportControlStructureList = new List<ReportControlsStructure>();
+                report.reportControlStructureListArr.Add(pDesignerCore.GetControlProperties());
                  ReportFileName ="report_" + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss") + ".pdf";//it will save the exisiting directory as the path
                  //report.Preview(ReportFileName);
-                 report.pdfGenerator.GenaratePdf(pDesignerCore.GetControlProperties(), ReportFileName);
+                 report.pdfGenerator.GenaratePdf(new List<ReportControlsStructure>[] { pDesignerCore.GetControlProperties() }, ReportFileName);
                  Process p = new Process();
                  p.StartInfo = new ProcessStartInfo(System.IO.Path.Combine(Common.CustomFolderBrowser.filePath,Common.CustomFolderBrowser.fileName));
                  p.Start();
-            }
+            } 
             else
             {
                 if (btnName.Equals("Image Table"))

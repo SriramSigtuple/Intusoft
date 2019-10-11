@@ -155,7 +155,7 @@ namespace IntuUploader.ViewModels
 
                     //this.Dispose();
 
-                    startStopEvent(true);
+                    //startStopEvent(true);
                     this.isBusy = false; ;
 
                 }
@@ -248,7 +248,7 @@ namespace IntuUploader.ViewModels
                             st1.Flush();
                             st1.Close();
                             st1.Dispose();
-                            startStopEvent(true);
+                            //startStopEvent(true);
                             this.isBusy = false; ;
                         }
                         //this.Dispose();
@@ -478,141 +478,27 @@ namespace IntuUploader.ViewModels
 
                     if (AnalysisType == AnalysisType.QI)
                     {
-                        GetQIResult(ref inboxAnalysisStatusModel);
+                        AddQIResult(ref inboxAnalysisStatusModel);
+
                     }
                     else
                     {
 
-                      
-                        JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
-                        ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
-                        List<JToken> products = Login_JObject["message"]["products"].ToList();
-                        string sub_category = string.Empty;
-                        if (AnalysisType == AnalysisType.Fundus)
-                        {
-                            foreach (var item in products)
-                            {
-                                if (item["sub_ctgy"].ToString().ToLower().Contains("fundus"))
-                                {
-                                    ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
-                                    sub_category = (string)item["sub_ctgy"];
-                                }
-                            }
-                            inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
-                              "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id);
-                        }
-
-
-
-                        JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
-                        inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
-
-                        List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
-                        List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
-
-                        int rightImageCnt = (int)((double)right_tokens.Count / 9);
-                        int leftImageCnt = (int)((double)left_tokens.Count / 9);
-
-                        for (int i = 0; i < rightImageCnt; i++)
-                        {
-                            var indx = i * 9;
-                            ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-                            imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
-                            imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
-                            imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
-                            inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
-
-                            if (AnalysisType == AnalysisType.Fundus)
-                            {
-                                if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
-                                {
-
-                                    if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-                                        break;
-                                    }
-                                    else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                    else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                }
-                                else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.RightAIImpressions))
-                                {
-                                    inboxAnalysisStatusModel.RightAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                    inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-                                }
-                            }
-
-                        }
-                        for (int i = 0; i < leftImageCnt; i++)
-                        {
-                            var indx = i * 9;
-
-                            ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-
-                            imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
-                            imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
-                            imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
-                            inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
-
-                            if (AnalysisType == AnalysisType.Fundus)
-                            {
-                                if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
-                                {
-
-                                    if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-                                        break;
-                                    }
-                                    else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                }
-                                else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.LeftAIImpressions))
-                                {
-                                    inboxAnalysisStatusModel.LeftAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                    inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-                                }
-                            }
-
-                        }
+                        GetAnalysisData(ref inboxAnalysisStatusModel);
+                        SetAIImpressions(ref inboxAnalysisStatusModel);
+                    
                     }
-                        
 
                     Write2Inbox(inboxAnalysisStatusModel);
 
-
-                    //this.Dispose();
                 }
-
                 else
                 {
 
                     ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, "Result");
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
 
                 logger.Error(ex);
@@ -622,29 +508,279 @@ namespace IntuUploader.ViewModels
 
         }
 
-        private void GetQIResult(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        private void GetAnalysisData(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
         {
+            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+            ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+            List<JToken> products = Login_JObject["message"]["products"].ToList();
+            string sub_category = string.Empty;
+            if (AnalysisType == AnalysisType.Fundus)
+            {
+                foreach (var item in products)
+                {
+                    if (item["sub_ctgy"].ToString().ToLower().Contains("fundus"))
+                    {
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                        sub_category = (string)item["sub_ctgy"];
+                    }
+                }
+                inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
+                  "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id);
+            }
+
+
+
             JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
+            var temp = jObject["analysisData"];
+            List<JToken> Subsections = new List<JToken>();
+            var cnt = temp.Count();
+            for (int i = 0; i < temp.Count(); i++)
+            {
+                Subsections.Add(temp[i]);
+
+            }
+            List<JToken[]> dataValues = new List<JToken[]>();
+            for (int i = 0; i < Subsections.Count; i++)
+            {
+                var RightJtoken = Subsections[i].Children().Values().Last().First.ToArray().Values().ToList()[3].ToArray(); //Right Array index 0
+                dataValues.Add(RightJtoken);
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any())
+                {
+                    for (int k = 0; k < RightJtoken.Length; k++)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+                var LeftJtoken = Subsections[i].Children().Values().Last().Last.ToArray().Values().ToList()[3].ToArray(); // Left Array index 1
+                dataValues.Add(LeftJtoken);
+
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any())
+                {
+                    for (int j = 0; j < LeftJtoken.Length; j++)
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < dataValues[i].Length; j++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails[j].ImageName = dataValues[0].ToArray()[j].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_DR = dataValues[0].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_AMD = dataValues[2].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_GLaucoma = dataValues[4].ToArray()[j].Values().Last().Last.Value<string>();
+                        //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_DR =
+                        //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_AMD =
+                        //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_Glaucoma =
+
+                    }
+                    else
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].ImageName = dataValues[1].ToArray()[j].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_DR = dataValues[1].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_AMD = dataValues[3].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_GLaucoma = dataValues[5].ToArray()[j].Values().Last().Last.Value<string>();
+                        //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_DR =
+                        //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_AMD =
+                        //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_Glaucoma =
+
+                    }
+                }
+
+            }
+
             inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
-
-            List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
-            List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
-
-            inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel
-            {
-                QI_Result = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty,
-                QI_Result_Glaucoma = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty
-            }
-            ) ;
-            inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel
-            {
-                QI_Result = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty,
-                QI_Result_Glaucoma = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty
-            }
-          );
 
         }
 
+        private void SetAIImpressions(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        {
+            #region Left Eye Impressions
+            if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("PDR")))
+            {
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NPDR")))
+                {
+                    if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NonGradable")))
+                        inboxAnalysisStatusModel.LeftAIImpressionsDR = "Non-Referrable DR";
+                    else
+                        inboxAnalysisStatusModel.LeftAIImpressionsDR = "Non-Gradable";
+
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.LeftAIImpressionsDR = "Referrable DR";
+                }
+            }
+            else
+            {
+                inboxAnalysisStatusModel.LeftAIImpressionsDR = "Referrable DR";
+
+            }
+            if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("PDR")))
+            {
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NPDR")))
+                {
+                    if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NonGradable")))
+                        inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Non-Referrable AMD";
+                    else
+                        inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Non-Gradable";
+
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Referrable AMD";
+                }
+            }
+            else
+            {
+                inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Referrable AMD";
+
+            }
+
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_GLaucoma.Equals("Glaucoma")))
+                {
+                    if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_GLaucoma.Equals("NonGradable")))
+                        inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma = "Non-Referrable Glaucoma";
+                    else
+                        inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma = "Non-Gradable";
+
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma = "Referrable Glaucoma";
+                }
+
+            #endregion
+
+            if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("PDR")))
+            {
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NPDR")))
+                {
+                    if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NonGradable")))
+                        inboxAnalysisStatusModel.RightAIImpressionsDR = "Non-Referrable DR";
+                    else
+                        inboxAnalysisStatusModel.RightAIImpressionsDR = "Non-Gradable";
+
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.RightAIImpressionsDR = "Referrable DR";
+                }
+            }
+            else
+            {
+                inboxAnalysisStatusModel.RightAIImpressionsDR = "Referrable DR";
+
+            }
+            if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("PDR")))
+            {
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NPDR")))
+                {
+                    if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NonGradable")))
+                        inboxAnalysisStatusModel.RightAIImpressionsAMD = "Non-Referrable AMD";
+                    else
+                        inboxAnalysisStatusModel.RightAIImpressionsAMD = "Non-Gradable";
+
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.RightAIImpressionsAMD = "Referrable AMD";
+                }
+            }
+            else
+            {
+                inboxAnalysisStatusModel.RightAIImpressionsAMD = "Referrable AMD";
+
+            }
+
+            if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_GLaucoma.Equals("Glaucoma")))
+            {
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_GLaucoma.Equals("NonGradable")))
+                    inboxAnalysisStatusModel.RightAIImpressionsGlaucoma = "Non-Referrable Glaucoma";
+                else
+                    inboxAnalysisStatusModel.RightAIImpressionsGlaucoma = "Non-Gradable";
+
+            }
+            else
+            {
+                inboxAnalysisStatusModel.RightAIImpressionsGlaucoma = "Referrable Glaucoma ";
+            }
+
+
+
+        }
+        private void AddQIResult(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        {
+            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+            ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+            List<JToken> products = Login_JObject["message"]["products"].ToList();
+            string sub_category = string.Empty;
+
+
+            JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
+            var temp = jObject["analysisData"];
+            List<JToken> Subsections = new List<JToken>();
+            var cnt = temp.Count();
+            for (int i = 0; i < temp.Count(); i++)
+            {
+                Subsections.Add(temp[i]);
+
+            }
+            bool isRight = false;
+            List<JToken[]> dataValues = new List<JToken[]>();
+            for (int i = 0; i < Subsections.Count; i++)
+            {
+                var RightJtoken = Subsections[i].Children().Values().Last().First.ToArray().Values().ToList()[3].ToArray(); //Right Array index 0
+               if(RightJtoken.Any())
+                {
+                    dataValues.Add(RightJtoken);
+                    isRight = true;
+                }
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any())
+                {
+                    for (int k = 0; k < RightJtoken.Length; k++)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+                var LeftJtoken = Subsections[i].Children().Values().Last().Last.ToArray().Values().ToList()[3].ToArray(); // Left Array index 1
+                if(LeftJtoken.Any())
+                dataValues.Add(LeftJtoken);
+
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any())
+                {
+                    for (int j = 0; j < LeftJtoken.Length; j++)
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+            }
+            {
+                if(isRight)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_DR = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_AMD = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_Glaucoma = dataValues[0].ToArray()[0].ToArray().First().ToString();
+
+                    }
+                    else
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_DR = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_AMD = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_Glaucoma = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                    }
+
+            }
+
+            inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
+        }
         /// <summary>
         /// To manage the failure cases of analysis result.
         /// </summary>
@@ -685,7 +821,7 @@ namespace IntuUploader.ViewModels
                     st1.Flush();
                     st1.Close();
                     st1.Dispose();
-                    startStopEvent(true);
+                    //startStopEvent(true);
                     this.isBusy = false; ;
                 }
 
@@ -729,7 +865,7 @@ namespace IntuUploader.ViewModels
                     st1.Flush();
                     st1.Close();
                     st1.Dispose();
-                    startStopEvent(true);
+                    //startStopEvent(true);
                     this.isBusy = false; ;
 
                 }
@@ -800,7 +936,8 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                startStopEvent(true); this.isBusy = false; ;
+                //startStopEvent(true); 
+                this.isBusy = false; ;
 
             }
         }

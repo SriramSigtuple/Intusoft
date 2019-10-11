@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using Svg;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.Serialization;
-using System.Windows.Forms;
-using System.IO;
-using System.Text.RegularExpressions;
-using INTUSOFT.Data.Repository;
-using INTUSOFT.Data.Extension;
-using INTUSOFT.EventHandler;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml;
-using System.Xml.Serialization;
+﻿using Common;
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
-using System.Drawing.Drawing2D;
-using Common;
-using INTUSOFT.Data;
 using INTUSOFT.Custom.Controls;
+using INTUSOFT.EventHandler;
+using Svg;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Annotation
 {
@@ -1653,7 +1644,7 @@ namespace Annotation
 
             _report = new IVLReport.Report(glaucomaToolValues);
             
-            _report.parseXmlData(glaucomaToolValues["$currentTemplate"] as string[]);
+            _report.parseXmlData(glaucomaToolValues["$currentTemplate"] as string);
             _report.SetTheValuesFormReportData();
             CustomFolderBrowser.fileName = "CDR_Report_" + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss") + ".pdf";
             try

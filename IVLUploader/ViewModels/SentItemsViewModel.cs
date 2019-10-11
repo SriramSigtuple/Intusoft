@@ -111,14 +111,19 @@ namespace IntuUploader.ViewModels
             fileIndx = 0;
             if(sentItemsDirFileInfoArr.Any())
             {
-                if (activeFileCloudVM.ActiveFnf != null)
-                if(sentItemsDirFileInfoArr.Where(x=>x.FullName == activeFileCloudVM.ActiveFnf.FullName).ToList().Any())
+                if (activeFileCloudVM.ActiveFnf != null && !activeFileCloudVM.isBusy)
                 {
-                    var indx = sentItemsDirFileInfoArr.ToList().FindIndex(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName);
+                    if (sentItemsDirFileInfoArr.Where(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName).ToList().Any())
+                    {
+                        var indx = sentItemsDirFileInfoArr.ToList().FindIndex(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName);
 
-                    if (indx < sentItemsDirFileInfoArr.Length-1)
-                        fileIndx = indx + 1;
+                        if (indx < sentItemsDirFileInfoArr.Length - 1)
+                            fileIndx = indx + 1;
+                    }
                 }
+               
+                logger.Info($"{analysisType.ToString("g")}  {fileIndx} {sentItemsDirFileInfoArr[fileIndx]}");
+               // if(activeFileCloudVM.ActiveFnf == null || !activeFileCloudVM.isBusy)
                 GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
             }
@@ -211,7 +216,7 @@ namespace IntuUploader.ViewModels
                 if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
                 {
 
-                    StartStopSentItemsTimer(false);
+                    //StartStopSentItemsTimer(false);
                     activeFileCloudVM.isBusy = true;
 
                     StreamReader st = new StreamReader(fileInfo.FullName);

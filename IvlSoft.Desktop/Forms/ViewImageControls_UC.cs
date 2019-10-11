@@ -2635,7 +2635,9 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 1;
-                           // arg["side"] = 1;//has been added to change the side in the thumbnail
+                            thumbnailData.QIStatus = NewDataVariables.Active_Obs.qi_DR_AMD_Status;
+
+                            // arg["side"] = 1;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Left;
 
                         }
@@ -2664,6 +2666,7 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 0;
+                            thumbnailData.QIStatus = NewDataVariables.Active_Obs.qi_DR_AMD_Status;
                            // arg["side"] = 0;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Right;
 

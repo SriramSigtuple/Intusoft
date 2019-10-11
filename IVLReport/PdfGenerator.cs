@@ -34,14 +34,6 @@ namespace IVLReport
     public class PdfGenerator
     {
         double MappingValue;
-        static int A4LanscapeWidth = 842;
-        static int A4LandscapeHeight = 595;
-        static int A4PortraitWidth = 595;
-        static int A4PortraitHeight = 842;
-        static int A5LanscapeWidth = 595;
-        static int A5LandscapeHeight = 419;
-        static int A5PortraitWidth = 419;
-        static int A5PortraitHeight = 595;
         private double a4Width = 11.69;
         private double a4Height = 8.27;
 
@@ -58,7 +50,6 @@ namespace IVLReport
         private PdfFont ArialBoldItalic;
         private PdfFont TimesNormal;
 
-        private PdfTilingPattern WaterMark;
         private PdfDocument Document;
         //private iTextSharp.text.Document Document;
        // private PdfWriter pdfWriter;
@@ -823,7 +814,7 @@ namespace IVLReport
         /// This method is added to generate the report pdf.
         /// </summary>
         /// <param name="FileName"></param>
-        public string GenaratePdf(List<ReportControlsStructure> reportControlStructList, string ReportFileName )
+        public string GenaratePdf( List<ReportControlsStructure>[] reportControlStructList, string ReportFileName)
         {
           string reportFileName = "report_" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + ".pdf";
           string ReportName = reportFileName;
@@ -925,37 +916,41 @@ namespace IVLReport
             MappingValue = Math.Round(MappingValue, MidpointRounding.AwayFromZero);
 
             DefineFontResources();
-            Page = new PdfPage(Document);
-            // Step 4:Add contents to page
-            Contents = new PdfContents(Page);
-
-            foreach (ReportControlsStructure item in reportControlStructList)
+            foreach (var item1 in reportControlStructList)
             {
-                if (item.reportControlProperty.Name.Contains("Label"))
+                Page = new PdfPage(Document);
+                // Step 4:Add contents to page
+                Contents = new PdfContents(Page);
+
+                foreach (ReportControlsStructure item in item1)
                 {
-                    addPdfLabel(item.reportControlProperty);
-                }
-                else
-                    if (item.reportControlProperty.Name.Contains("TextBox"))
+                    if (item.reportControlProperty.Name.Contains("Label"))
+                    {
+                        addPdfLabel(item.reportControlProperty);
+                    }
+                    else
+                        if (item.reportControlProperty.Name.Contains("TextBox"))
                     {
                         addPdfTextBox(item.reportControlProperty);
                     }
                     else
-                        if (item.reportControlProperty.Name.Contains("PictureBox"))
-                        {
-                            AddPDFBitmap(item.reportControlProperty);
-                        }
-                        else
-                            if (item.reportControlProperty.Name.Contains("IVL_ImagePanel"))
-                            {
-                                AddPDFRectangle(item.reportControlProperty);
-                            }
-                            else
-                                if (item.reportControlProperty.Name.Contains("Table"))
-                                {
-                                    AddPDFTable(item.reportControlProperty);
-                                }
+                            if (item.reportControlProperty.Name.Contains("PictureBox"))
+                    {
+                        AddPDFBitmap(item.reportControlProperty);
+                    }
+                    else
+                                if (item.reportControlProperty.Name.Contains("IVL_ImagePanel"))
+                    {
+                        AddPDFRectangle(item.reportControlProperty);
+                    }
+                    else
+                                    if (item.reportControlProperty.Name.Contains("Table"))
+                    {
+                        AddPDFTable(item.reportControlProperty);
+                    }
+                }
             }
+           
             //Document.Close();
             //fs.Close();
             //fs.Dispose();

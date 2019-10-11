@@ -36,6 +36,7 @@ namespace IVLReport
         CustomFolderBrowser customFolderBrowser;//Object of type CustomFolderBrowser.
         Label noImages_lbl;//Object used to display the noimageselected text.
         public List<ReportControlsStructure> reportControlStructureList = null;//List of ReportControlStructure.
+        public List<List<ReportControlsStructure>> reportControlStructureListArr = null;//List of ReportControlStructure.
         EmailWindow emailWindow;//Object name for the EmailWindow.
         DataModel _dataModel;//Object name for the DataModel.
         string[] pageSize;//Saves the page sizes.
@@ -44,6 +45,7 @@ namespace IVLReport
         ReportTemplateOrientationEnum reportTemplateOrientation;//Enum of type ReportTemplateSizeEnum.
         ReportImages _reportImagesForm;//Object of type ReportImages.
         Panel p;// = new Panel();
+
         #endregion
 
         #region constants
@@ -88,6 +90,7 @@ namespace IVLReport
         public Report(Dictionary<string, object> reportData)
         {
             InitializeComponent();
+            reportControlStructureListArr = new List<List<ReportControlsStructure>>();
             if (reportData.ContainsKey("$Color1"))
                 this.Color1 = (Color)reportData["$Color1"];
             if (reportData.ContainsKey("$Color2"))
@@ -770,14 +773,17 @@ namespace IVLReport
             {
                 noImages_lbl.Visible = false;
             }
-            addImgBox();
+            {
+                addImgBox(reportControlStructureList);
+
+            }
             return true;//By Ashutosh 05-09-2018.
         }
 
         /// <summary>
         /// Sets the image panel row and column and images.
         /// </summary>
-        private void addImgBox()
+        private void addImgBox(List<ReportControlsStructure> reportControls)
         {
             switch (LayoutDetails.Current.Orientation)
             {
@@ -799,7 +805,7 @@ namespace IVLReport
                     SegregateImagesWrtSides(imgPanel);
                     if (reportControlStructureList != null)
                     {
-                        foreach (ReportControlsStructure repCtrlStr in reportControlStructureList)
+                        foreach (ReportControlsStructure repCtrlStr in reportControls)
                         {
                             if (imgPanel.Tag != null)
                             {
@@ -831,6 +837,27 @@ namespace IVLReport
             try
             {
                 JsonReportModel existingJsonReportModel = new JavaScriptSerializer().Deserialize<JsonReportModel>(xmlData);
+                try
+                {
+                    
+                    var kVDatas = existingJsonReportModel.reportValues.Where(x => x.Key == "currentTemplate").ToList()[0];
+                    object[] vs = kVDatas.Value as object[];
+                    _dataModel.CurrentTemplate = new string[vs.Length];
+                    var indx = 0;
+                    foreach (var item in vs)
+                    {
+                        _dataModel.CurrentTemplate[indx] = item as string;
+                        indx++;
+                    }
+                }
+                catch (Exception)
+                {
+                    var kVDatas = existingJsonReportModel.reportValues.Where(x => x.Key == "currentTemplate").ToList()[0];
+                    object vs = kVDatas.Value as object;
+                    _dataModel.CurrentTemplate = new string[1];
+                    _dataModel.CurrentTemplate = new string[] {vs as string};
+
+                }
                 _dataModel.CurrentImageNames = new string[existingJsonReportModel.reportDetails.Count];
                 _dataModel.CurrentImgFiles = new string[existingJsonReportModel.reportDetails.Count];
                 for (int i = 0; i < existingJsonReportModel.reportDetails.Count; i++)
@@ -871,8 +898,11 @@ namespace IVLReport
                     }
                     //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
                 }
-                
-                isChangeTemplate = ChangeTemplate();
+                foreach (var item in _dataModel.CurrentTemplate)
+                {
+                    isChangeTemplate = ChangeTemplate(item);
+
+                }
                 if (autoAnalysis_btn.Enabled)
                     autoAnalysis_btn.Enabled = false;
                 //doctor_tbx.Text = existingJsonReportModel.doctor;
@@ -901,7 +931,7 @@ namespace IVLReport
                         {
                             XmlSerializer xmlSer = new XmlSerializer(typeof(ReportXmlProperties));
                             ReportXmlProperties reportXml = xmlSer.Deserialize(xmlReader) as ReportXmlProperties;
-                            readExistingTemplate(reportXml,isCloudReport);
+                            readExistingTemplate(reportXml,isNew);
                         }
                     }
                 }
@@ -909,10 +939,10 @@ namespace IVLReport
             return true;
         }
 
-        private  void CreateQRCodeBM()
+        private  void CreateQRCodeBM(List<ReportControlsStructure> reportControls)
         {
             _dataModel.qrBitmap = new Bitmap(10, 10);
-            List<ReportControlsStructure> tempList = reportControlStructureList.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
+            List<ReportControlsStructure> tempList = reportControls.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
             if (tempList.Any())
             {
                 var QCwriter = new BarcodeWriter();
@@ -956,16 +986,19 @@ namespace IVLReport
         /// </summary>
         public void SetTheValuesFormReportData()
         {
-            foreach (ReportControlsStructure item in reportControlStructureList)
             {
-                if (_dataModel.ReportData.ContainsKey("$" + item.reportControlProperty.Binding.ToString()))
+                foreach (ReportControlsStructure item in reportControlStructureList)
                 {
-                    //if (!string.IsNullOrEmpty(_dataModel.ReportData["$" + item.reportControlProperty.Binding.ToString()] as string))
+                    if (_dataModel.ReportData.ContainsKey("$" + item.reportControlProperty.Binding.ToString()))
                     {
-                        setActualValuesToBindingValues(item.reportControlProperty.Binding.ToString(), _dataModel.ReportData["$" + item.reportControlProperty.Binding.ToString()] as string, item);
+                        //if (!string.IsNullOrEmpty(_dataModel.ReportData["$" + item.reportControlProperty.Binding.ToString()] as string))
+                        {
+                            setActualValuesToBindingValues(item.reportControlProperty.Binding.ToString(), _dataModel.ReportData["$" + item.reportControlProperty.Binding.ToString()] as string, item);
+                        }
                     }
                 }
             }
+            
         }
 
         /// <summary>
@@ -995,30 +1028,40 @@ namespace IVLReport
         /// <param name="value">value assigned to control</param>
         public void setActualValuesToBindingValues(string bindingType, string value)
         {
-            foreach (ReportControlsStructure repCtrlStr in reportControlStructureList)
             {
-                if (repCtrlStr.reportControlProperty.Binding.ToString() == bindingType)
+                foreach (var item in reportControlStructureListArr)
                 {
-                    if (!repCtrlStr.reportControlProperty.Name.Contains("Picture") && !repCtrlStr.reportControlProperty.Binding.ToString().Contains("None"))
-                        repCtrlStr.reportControlProperty.Text = value;
-                    else
-                        repCtrlStr.reportControlProperty.ImageName = value;
-                    break;
+                    foreach (ReportControlsStructure repCtrlStr in item)
+                    {
+
+                        if (repCtrlStr.reportControlProperty.Binding.ToString() == bindingType)
+                        {
+                            if (!repCtrlStr.reportControlProperty.Name.Contains("Picture") && !repCtrlStr.reportControlProperty.Binding.ToString().Contains("None"))
+                                repCtrlStr.reportControlProperty.Text = value;
+                            else
+                                repCtrlStr.reportControlProperty.ImageName = value;
+                            break;
+                        }
+                    }
                 }
+               
             }
+          
         }
 
         /// <summary>
         /// Deserializes the xml file into report control structure type.
         /// </summary>
         /// <param name="xmlFile">file path</param>
-        public void parseXmlData(string[] xmlFile)
+        public void parseXmlData(string xmlFile)
         {
-            foreach (var item in xmlFile)
+            reportControlStructureList = new List<ReportControlsStructure>();
+            var indx = 0;
+            //foreach (var item in xmlFile)
             {
-                if (!File.Exists(item)) return;
+                if (!File.Exists(xmlFile)) return;
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(item);
+                xmlDoc.Load(xmlFile);
                 //_dataModel.CurrentTemplate = item;
                 XmlNode controlNodes = xmlDoc.FirstChild.ChildNodes[1];
                 if (controlNodes != null)
@@ -1057,6 +1100,8 @@ namespace IVLReport
                     reportControlStructureList = (List<ReportControlsStructure>)xmlSer.Deserialize(memStearm);
                 }
 
+                indx++;
+                reportControlStructureListArr.Add(reportControlStructureList);
             }
             
             
@@ -1066,7 +1111,7 @@ namespace IVLReport
         /// to populate the controls from the template xml
         /// </summary>
         /// <param name="IVLProps"></param>
-        private void populateControls(ref ReportControlProperties IVLProps)
+        private void populateControls(ref ReportControlProperties IVLProps,List<ReportControlsStructure> reportControls)
         {
             if (LayoutDetails.Current.Dpi == LayoutDetails.DPI.DPI_72)
             {
@@ -1217,7 +1262,7 @@ namespace IVLReport
 
                         if(IVLProps.Binding.Contains("QRCode"))
                         {
-                            CreateQRCodeBM();
+                            CreateQRCodeBM(reportControls);
                             pbx.Image = _dataModel.qrBitmap;
                         }
 
@@ -1251,7 +1296,7 @@ namespace IVLReport
 
                         imgPanel.Location = new Point(IVLProps.Location._X, IVLProps.Location._Y);
                         imgPanel.Size = IVLProps.Size;
-                        addImgBox();
+                        addImgBox(reportControls);
                         this.p.Controls.Add(imgPanel);
                         break;
                     }
@@ -1385,15 +1430,8 @@ namespace IVLReport
                     //existingJsonReportModel.reportValues.Where(x => x.Key == keyVal).ToList();
                 }
             }
-            //jsonModel.comments = genObs_tbx.Text;//This code has been added to save the general observation in the json report data.
-            //jsonModel.MedHistory = comments_tbx.Text;//This code has been added to save the comments in the json report data.
-            //jsonModel.rightEyeObs = rightEyeObs_tbx.Text;//This code has been added to save the right eye comments in the json report data.
-            //jsonModel.leftEyeObs = leftEyeObs_tbx.Text;//This code has been added to save the  left eye comments in the json report data.
-            //jsonModel.doctor = doctor_tbx.Text;//This code has been added to save the doctor in the json report data.
 
-            string jsonReport = "";
-            var json = JsonConvert.SerializeObject(jsonModel);
-            jsonReport = json.ToString();
+            var jsonReport = JsonConvert.SerializeObject(jsonModel);
             Dictionary<string, object> repoval = new Dictionary<string, object>();
             repoval.Add("xml", jsonReport);
             repoval.Add("dateTime", DateTime.Now);
@@ -1430,10 +1468,11 @@ namespace IVLReport
                             if (_dataModel.CurrentImgFiles.Length == 4)//Check the number of images selected is equal to 4.
                                 reportTemplateOrientation = ReportTemplateOrientationEnum.Portrait;
                     }
-                if(!_dataModel.ContainsCmdArgs)
-                    ChangeTemplate();
+                //if(!_dataModel.ContainsCmdArgs)
+                //    ChangeTemplate();
             }
-           ReportFileName = pdfGenerator.GenaratePdf(reportControlStructureList, ReportFileName);
+
+           ReportFileName = pdfGenerator.GenaratePdf(reportControlStructureListArr.ToArray(), ReportFileName);
             pdfGenerator.AnnotationComments = new Dictionary<string, string>();
         //pdfGenerator.GenaratePdf(reportControlStructureList, ReportFileName);
         this.Cursor = Cursors.Default;
@@ -1495,7 +1534,7 @@ namespace IVLReport
         /// <summary>
         /// Changes the current template when the size or orientation has been changed.
         /// </summary>
-        private bool ChangeTemplate()
+        private bool ChangeTemplate( string templateName = null)
         {
             //p.Controls.Clear();
             string changedTemplateFileName = "";//Local variable used to save the file name based on size and orientation
@@ -1515,18 +1554,19 @@ namespace IVLReport
                 
                 throw;
             }
-            foreach (var item in _dataModel.CurrentTemplate)
             {
-                FileInfo finf = new FileInfo(item);//Gets the file info of the current template.
+                if (string.IsNullOrEmpty(templateName))
+                    templateName = reportTemplates[index].FullName;
+                FileInfo finf = new FileInfo(templateName);//Gets the file info of the current template.
                 if (index >= 0)// && (finf.Name != changedTemplateFileName || reportControlStructureList == null))//Multiple expression if statement checks for index value , reportControlStructureList is null or not and Filename matches with current template.
                 {
                     p = new Panel();
                     LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), reportTemplateOrientation.ToString().ToUpper() + "_" + reportTemplateSize.ToString());
-                    if (!_dataModel.ContainsCmdArgs)
+                    if (!_dataModel.ContainsCmdArgs && _dataModel.CurrentTemplate== null)
                         _dataModel.CurrentTemplate = new string[] { reportTemplates[index].FullName };
                     //this.reportCanvas_pnl.Controls.Clear();
                     SetCurrentOrientationAndSize();
-                    parseXmlData(_dataModel.CurrentTemplate);//Reads the current template xml file
+                    parseXmlData(templateName);//Reads the current template xml file
                     if (LayoutDetails.Current.Orientation == LayoutDetails.PageOrientation.PORTRAIT_A4)
                     {
                         //p.Dock = DockStyle.Fill; 
@@ -1581,19 +1621,21 @@ namespace IVLReport
                         //p.BackColor = Color.Black;
                     }
 
-
-                    foreach (ReportControlsStructure item1 in reportControlStructureList)
                     {
-                        populateControls(ref item1.reportControlProperty);
+                        foreach (ReportControlsStructure item1 in reportControlStructureList)
+                        {
+                            populateControls(ref item1.reportControlProperty, reportControlStructureList);
 
+                        }
+                        if (LayoutDetails.Current.Dpi == LayoutDetails.DPI.DPI_72)
+                        {
+                            LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
+                            write2Xml(templateName, reportControlStructureList);
+                        }
+                        // this.p.Scale(new SizeF(WidthScaleFactor, HeightScaleFactor));
+                        writeValuesToTheBindingType();//Writes the values from the report data to the controls in the report canvas and to the correcponding binding type in reportControlStructureList.
                     }
-                    if (LayoutDetails.Current.Dpi == LayoutDetails.DPI.DPI_72)
-                    {
-                        LayoutDetails.Current.Dpi = LayoutDetails.DPI.DPI_96;
-                        write2Xml(item, reportControlStructureList);
-                    }
-                    // this.p.Scale(new SizeF(WidthScaleFactor, HeightScaleFactor));
-                    writeValuesToTheBindingType();//Writes the values from the report data to the controls in the report canvas and to the correcponding binding type in reportControlStructureList.
+                  
 
                     //this.p.Scale(scaleFactor);
                     this.reportCanvas_pnl.Controls.Add(p);

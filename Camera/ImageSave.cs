@@ -17,9 +17,6 @@ using Emgu.Util;
 using System.Xml.Serialization;
 using System.Xml;
 using Emgu.CV;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using Newtonsoft.Json;
 
 namespace INTUSOFT.Imaging
