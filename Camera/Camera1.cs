@@ -710,8 +710,16 @@ namespace INTUSOFT.Imaging
             {
                 if (AnalogVal < exposureLUT.Length)
                 {
+                    if (IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
+                        SetExposure((uint)exposureLUT[AnalogVal]);
+                    else
+                    {
+                        uint val = 0;
+                        GetExposure(ref val);
+                        if(IVLCamVariables._Settings.CameraSettings.CaptureExposure != val)
+                            SetExposure(IVLCamVariables._Settings.CameraSettings.CaptureExposure);
 
-                    SetExposure((uint)exposureLUT[AnalogVal]);
+                    }
                     SetGain((ushort)gainLUT[AnalogVal]);
                 }
             }

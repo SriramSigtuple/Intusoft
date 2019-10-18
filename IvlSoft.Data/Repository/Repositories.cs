@@ -56,7 +56,7 @@ namespace INTUSOFT.Data.Repository
                         //NHibernateHelper_MySQL.hibernateSession.Flush();
                         transaction.Commit();
                     }
-                    NHibernateHelper_MySQL.CloseSession();
+                    //NHibernateHelper_MySQL.CloseSession();
 
                     return true;
                 }
@@ -83,7 +83,7 @@ namespace INTUSOFT.Data.Repository
                         NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                         transaction.Commit();
                     }
-                    NHibernateHelper_MySQL.CloseSession();
+                    //NHibernateHelper_MySQL.CloseSession();
                     return true;
                 }
                 catch (Exception ex)
@@ -101,7 +101,7 @@ namespace INTUSOFT.Data.Repository
             NHibernateHelper_MySQL.OpenSession();
           // T t = NHibernateHelper_MySQL.hibernateSession.Load<T>(id);
             T t = NHibernateHelper_MySQL.hibernateSession.Get<T>(id);
-            NHibernateHelper_MySQL.CloseSession();
+            //NHibernateHelper_MySQL.CloseSession();
             return t;
         }
 
@@ -117,7 +117,7 @@ namespace INTUSOFT.Data.Repository
                 {
                     _genericObject[i] = GetRealEntity<T>(_genericObject[i]);
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return _genericObject;
             }
@@ -129,7 +129,7 @@ namespace INTUSOFT.Data.Repository
             {
                 NHibernateHelper_MySQL.OpenSession();
                 T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return value;
             }
@@ -149,7 +149,7 @@ namespace INTUSOFT.Data.Repository
                 //    T obj = _genericObject[i];
                 //    _genericObject[i] = _genericObject[i];
                 //}
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return _genericObject;
             }
@@ -166,7 +166,7 @@ namespace INTUSOFT.Data.Repository
                     NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                     transaction.Commit();
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
             }
 
@@ -186,7 +186,7 @@ namespace INTUSOFT.Data.Repository
                         //return _genericObject;
                     }
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
             return _genericObject;
 
@@ -207,7 +207,7 @@ namespace INTUSOFT.Data.Repository
                             //returnVal = Convert.ToInt32( queryVal.ToString());
                         }
                     }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return returnVal;
             }

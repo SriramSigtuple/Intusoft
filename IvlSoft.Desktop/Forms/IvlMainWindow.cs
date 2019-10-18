@@ -252,7 +252,6 @@ namespace INTUSOFT.Desktop.Forms
                     NHibernateHelper_MySQL.WarningText = IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo);
                     NHibernateHelper_MySQL.WarningHeader = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo);
                     NewDataVariables._Repo = Repository.GetInstance();
-                    databaseTimer = new System.Threading.Timer(CheckDatabaseConnectivity,null,0,databaseTimerIntervel);
                 }
                 else
                 {
@@ -1456,6 +1455,8 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="state"></param>
         private void CheckDatabaseConnectivity(object state)
         {
+            databaseTimer.Change(-1, -1);// = new System.Threading.Timer(CheckDatabaseConnectivity,null,0,Timeout.Infinite);
+
             if (dataBaseServerConnection.GetMysqlServiceStatus())
             {
                 if (dataBaseServerConnection.GetDataBaseConnectionStatus())
@@ -1484,6 +1485,7 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK);
                     INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating = true;
+
                     Application.Exit();
                 }
             }
@@ -1494,9 +1496,11 @@ namespace INTUSOFT.Desktop.Forms
                     MysqlServiceConnection_lbl.Image = serviceNotAvaiable;
                     MysqlServiceConnection_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("MysqlServiceNotAvailableToolTip_Text", IVLVariables.LangResourceCultureInfo);
                 }
+
                 CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("OneOfTheServicesNotRunning_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("SaveAs_Warning_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK);
                 Application.Exit();
             }
+            databaseTimer.Change(0, databaseTimerIntervel); 
         }
 
 
@@ -1644,6 +1648,8 @@ namespace INTUSOFT.Desktop.Forms
                 else
                 {
                     isComponentInitialized = true;
+                    databaseTimer = new System.Threading.Timer(CheckDatabaseConnectivity, null, 0, databaseTimerIntervel);
+
                     //CheckDatabaseConnectivity();
                     dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
                     //databaseTimer.Start();
@@ -1871,8 +1877,7 @@ namespace INTUSOFT.Desktop.Forms
             try
             {
                 PagePanel_p.Controls.Add(emr);
-                 inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                 inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+                
                
                 
                // string[] var = new string[] { "akjd" };
@@ -1886,7 +1891,8 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
             emr.Show();
-
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
             #region this has to be implemented later when login screen has been added
             //loginScreen.Dock = DockStyle.Fill;
@@ -2717,7 +2723,7 @@ namespace INTUSOFT.Desktop.Forms
                     serverTimer.Stop();
                     serverTimer.Enabled = false;
                 }
-                if(!IVLVariables.isCommandLineAppLaunch && !IVLVariables.isCommandLineArgsPresent)
+                if (!IVLVariables.isCommandLineAppLaunch && !IVLVariables.isCommandLineArgsPresent && databaseTimer != null)
                         databaseTimer.Change(-1,-1);
 
                 //INTUSOFT.Configuration.ConfigVariables.SetCurrentSettings();
@@ -2992,6 +2998,7 @@ namespace INTUSOFT.Desktop.Forms
 
             //IVLVariables._ivlConfig.Mode = ImagingMode.Posterior_Prime;
             //IVLVariables.GetCurrentSettings();
+            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
 
             if (Convert.ToBoolean(arg["isImaging"]))//This if statement has been added by darshan to check to which screen to navigate. 
             {
@@ -3014,13 +3021,12 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.CurrentCaptureGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.CaptureCurrentGainLevel.val);
             }
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
-            //_eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
+            _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
 
 
 
 
             PagePanel_p.Controls.Add(imaging_UC);
-            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
 
             this.Refresh();
             this.Focus();

@@ -253,7 +253,7 @@ namespace INTUSOFT.Desktop.Forms
             //this.display_pbx.Visible = false;
             //elementHost.Parent = display_pbx;
              infoVM = new InfoVM();
-
+            infoVM.ImgName = string.Empty;
             infoIcon_p = new ElementHost();
             informationIcon = new InformationIconUCL();
             infoIcon_p.Child = informationIcon;
@@ -655,6 +655,7 @@ namespace INTUSOFT.Desktop.Forms
            }
            if (!ImagingViewControls_p.Contains(liveImagingControl))
            {
+                display_pbx.Controls.Clear();
                 updateOverlay("", new Args());
                 ImagingViewControls_p.Controls.Add(liveImagingControl);
                 liveImagingControl.Refresh();

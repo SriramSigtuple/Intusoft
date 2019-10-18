@@ -520,6 +520,7 @@ namespace INTUSOFT.Imaging
                    IVLCamVariables._Settings.CameraSettings.LiveGainHigh = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainHigh.val);
                    IVLCamVariables._Settings.CameraSettings.LiveGainMed = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainMedium.val);
                    IVLCamVariables._Settings.CameraSettings.LiveGainLow = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._LiveGainLow.val);
+                    IVLCamVariables._Settings.CameraSettings.CaptureExposure = Convert.ToUInt16(ConfigVariables.CurrentSettings.CameraSettings._Exposure.val);
                     #endregion
 
 
