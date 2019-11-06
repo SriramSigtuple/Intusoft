@@ -142,7 +142,7 @@
     </Reference>
     <Reference Include="Intusoft.WPF.UserControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WPF_UserControlLibrary\bin\Debug\Intusoft.WPF.UserControls.dll</HintPath>
+      <HintPath>..\WPF_UserControlLibrary\bin\$(Configuration)\Intusoft.WPF.UserControls.dll</HintPath>
     </Reference>
     <Reference Include="IVLReport">
       <SpecificVersion>False</SpecificVersion>

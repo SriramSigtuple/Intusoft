@@ -435,17 +435,8 @@ namespace INTUSOFT.Data.Repository
         /// <param name="config"></param>
         private static void BuildSchema(NHibernate.Cfg.Configuration config)
         {
-            try
-            {
-            
+
         }
-            }
-            catch (Exception ex)
-            {
-
-                ExceptionLogWriter.WriteLog(ex, Exception_Log);
-
-            }
 
 
         #endregion
