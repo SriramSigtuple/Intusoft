@@ -55,15 +55,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntuSoftUSBController", "In
 		{349EE8FA-7D25-4909-AAF5-FF3FADE72187} = {349EE8FA-7D25-4909-AAF5-FF3FADE72187}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVLTemplateCreator", "IVLTemplateCreator\IVLTemplateCreator.csproj", "{B6CAE810-5404-4810-9B03-8C55BD8BF4CA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{957DD705-84E3-4544-A179-FB5C71B83400} = {957DD705-84E3-4544-A179-FB5C71B83400}
-		{3DE3745A-657A-4E8F-A2D7-E845D3EC8F97} = {3DE3745A-657A-4E8F-A2D7-E845D3EC8F97}
-		{C882485D-F105-4ABA-9FF9-19B74F0631C1} = {C882485D-F105-4ABA-9FF9-19B74F0631C1}
-		{E977D16F-39B2-417F-9AC9-8462CDD78697} = {E977D16F-39B2-417F-9AC9-8462CDD78697}
-		{9F2AA37F-CC63-4C5A-A6E1-5A755FF5CDFD} = {9F2AA37F-CC63-4C5A-A6E1-5A755FF5CDFD}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlaucomaToolMeasurements", "GlaucomaToolMeasurements\GlaucomaToolMeasurements.vcxproj", "{CE11A797-DD7D-4E31-B083-21BCD3049DE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblySoftware", "WindowsFormsApplication1\AssemblySoftware.csproj", "{8507C69F-E7BD-4945-92C5-FBD79E3501A5}"
@@ -91,11 +82,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IvlSoft.Data", "IvlSoft.Dat
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveModeProcessing", "LiveModeProcessing\LiveModeProcessing.vcxproj", "{3802E3E2-679F-4878-A370-4CF2F9E8DC15}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1C37BEBE-CB9A-4870-8C31-DA74768834CC}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbPorting", "DbPortingProject\DbPorting.csproj", "{7D807B6E-9D25-40D4-98C4-E64C6972DF76}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -153,8 +139,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraApiTest", "CameraApiT
 	ProjectSection(ProjectDependencies) = postProject
 		{BB6F2057-E3AC-4037-8F58-75BC87DE9A9D} = {BB6F2057-E3AC-4037-8F58-75BC87DE9A9D}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{ACEE43FB-53CC-48E0-9F6C-BA78026E0FAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdobeCheckOSVersionInfo", "AdobeCheckOSVersionInfo\AdobeCheckOSVersionInfo.csproj", "{61F870C2-9389-497A-B9F4-4965F2A8992D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -233,10 +217,6 @@ Global
 		{988FE87A-EDFE-4C26-B8C3-C55E27708AD0}.Debug|Any CPU.Build.0 = Debug|x64
 		{988FE87A-EDFE-4C26-B8C3-C55E27708AD0}.Release|Any CPU.ActiveCfg = Release|x64
 		{988FE87A-EDFE-4C26-B8C3-C55E27708AD0}.Release|Any CPU.Build.0 = Release|x64
-		{B6CAE810-5404-4810-9B03-8C55BD8BF4CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6CAE810-5404-4810-9B03-8C55BD8BF4CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6CAE810-5404-4810-9B03-8C55BD8BF4CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6CAE810-5404-4810-9B03-8C55BD8BF4CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE11A797-DD7D-4E31-B083-21BCD3049DE3}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{CE11A797-DD7D-4E31-B083-21BCD3049DE3}.Debug|Any CPU.Build.0 = Debug|x64
 		{CE11A797-DD7D-4E31-B083-21BCD3049DE3}.Release|Any CPU.ActiveCfg = Release|x64
@@ -309,8 +289,6 @@ Global
 		{B0429905-FF01-4A25-9C68-F17544F823A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0429905-FF01-4A25-9C68-F17544F823A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0429905-FF01-4A25-9C68-F17544F823A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACEE43FB-53CC-48E0-9F6C-BA78026E0FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACEE43FB-53CC-48E0-9F6C-BA78026E0FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61F870C2-9389-497A-B9F4-4965F2A8992D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61F870C2-9389-497A-B9F4-4965F2A8992D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61F870C2-9389-497A-B9F4-4965F2A8992D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -354,9 +332,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{ACEE43FB-53CC-48E0-9F6C-BA78026E0FAC} = {1C37BEBE-CB9A-4870-8C31-DA74768834CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC6FA9FE-1394-4D31-8D08-247A41528BBD}
