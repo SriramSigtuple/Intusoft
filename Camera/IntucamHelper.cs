@@ -448,8 +448,8 @@ namespace INTUSOFT.Imaging
                         byte strobeValue = Convert.ToByte(capExposureTempVar);
                         if (IVLCamVariables.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLCamVariables.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
                             strobeValue = 100;
-                        else if (IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
-                            strobeValue = 100;
+                        //else if (IVLCamVariables._Settings.CameraSettings.CameraModel == CameraModel.D)
+                        //    strobeValue = 50;
 
                         IVLCamVariables.BoardHelper.SetStrobeWidth(strobeValue);
                     }

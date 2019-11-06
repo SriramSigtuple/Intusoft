@@ -223,7 +223,7 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 97.0297F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 2.970297F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 183F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 184F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel4.Controls.Add(this.ResetSearch_linklbl, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -242,7 +242,7 @@
             this.ResetSearch_linklbl.LinkColor = System.Drawing.Color.Aqua;
             this.ResetSearch_linklbl.Location = new System.Drawing.Point(3, 0);
             this.ResetSearch_linklbl.Name = "ResetSearch_linklbl";
-            this.ResetSearch_linklbl.Size = new System.Drawing.Size(164, 28);
+            this.ResetSearch_linklbl.Size = new System.Drawing.Size(163, 28);
             this.ResetSearch_linklbl.TabIndex = 1;
             this.ResetSearch_linklbl.TabStop = true;
             this.ResetSearch_linklbl.Text = "linkLabel1";
