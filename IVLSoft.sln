@@ -189,6 +189,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignSurfaceExt", "DesignS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignSurfaceManagerExt", "DesignSurfaceManagerExt\DesignSurfaceManagerExt.csproj", "{2EBA814A-C9D9-4AE1-934B-0E5ACFFD247E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_UserControlLibrary", "WPF_UserControlLibrary\WPF_UserControlLibrary.csproj", "{EC598344-1250-401C-804F-609C138FCA68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -345,6 +347,10 @@ Global
 		{2EBA814A-C9D9-4AE1-934B-0E5ACFFD247E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EBA814A-C9D9-4AE1-934B-0E5ACFFD247E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EBA814A-C9D9-4AE1-934B-0E5ACFFD247E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC598344-1250-401C-804F-609C138FCA68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC598344-1250-401C-804F-609C138FCA68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC598344-1250-401C-804F-609C138FCA68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC598344-1250-401C-804F-609C138FCA68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
