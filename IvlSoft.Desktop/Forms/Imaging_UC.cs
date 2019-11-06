@@ -37,6 +37,8 @@ namespace INTUSOFT.Desktop.Forms
         private DelegateSetLiveOrView m_DelegateSetLiveOrView;
         delegate void DelegateSetView();
         private DelegateSetView m_DelegateSetView;
+        delegate void DelegateDisplayImage(Args arg);
+        private DelegateDisplayImage DelegateDisplay;
         int RBwidth;
         int RBheight;
         int LBwidth;
@@ -115,6 +117,7 @@ namespace INTUSOFT.Desktop.Forms
             viewImagingControl.Dock = DockStyle.Fill;
             m_DelegateSetLiveOrView = new DelegateSetLiveOrView(this.SetLiveRViewMode);
             m_DelegateSetView = new DelegateSetView(this.setViewScreen);
+            DelegateDisplay = new DelegateDisplayImage(this.InvokeDisplayMethod);
             IVLVariables.ivl_Camera.camPropsHelper.resetBitmapRight = new Bitmap(negativeDiaptor_pbx.ClientSize.Width, negativeDiaptor_pbx.ClientSize.Height);
             IVLVariables.ivl_Camera.camPropsHelper.negativearrowSymbol = new Bitmap(negativeDiaptor_pbx.ClientSize.Width, negativeDiaptor_pbx.ClientSize.Height);
             IVLVariables.ivl_Camera.camPropsHelper.positivearrowSymbol = new Bitmap(negativeDiaptor_pbx.ClientSize.Width, negativeDiaptor_pbx.ClientSize.Height);
@@ -260,39 +263,54 @@ namespace INTUSOFT.Desktop.Forms
             informationIcon.InfoVM = infoVM;
             infoIcon_p.Size = new Size(135, 150);
 
+
         }
         bool isFFAImage = false;
         private void DisplayImageFromCamera(string s, Args arg)
         {
-            display_pbx.Controls.Clear();
-            display_pbx.Image = arg["rawImage"] as Bitmap;
-            display_pbx.Refresh();
-            
-            display_pbx.Controls.Add(infoIcon_p);
-            informationIcon.Background = System.Windows.Media.Brushes.Transparent;
-            infoIcon_p.BackColor = Color.Transparent;
-            infoVM.IsVisible = false;
-            SetQIInfo(NewDataVariables.Active_Obs);
-            ////infoIcon_p.Dock = DockStyle.Bottom;
-            //infoIcon_p.BackColor = Color.Transparent;
-            infoIcon_p.Parent = display_pbx;
-             //infoIcon_p.Location = new Point(300, 300);
-            var heightValue = (1.75) * (double)(infoIcon_p.ClientSize.Height);
-            var value = (int)Math.Round(heightValue, MidpointRounding.AwayFromZero);
-            if (Screen.PrimaryScreen.Bounds.Width == 1920)
-                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 180, display_pbx.ClientSize.Height - 251);
-            else if (Screen.PrimaryScreen.Bounds.Width == 1366)
-                infoIcon_p.Location =  new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
+            if (this.InvokeRequired)
+                this.Invoke(DelegateDisplay, arg);
+            else
+                InvokeDisplayMethod(arg);
+        }
+        private void InvokeDisplayMethod( Args arg)
+        {
+                display_pbx.Controls.Clear();
+                display_pbx.Image = arg["rawImage"] as Bitmap;
+                display_pbx.Refresh();
+
+                display_pbx.Controls.Add(infoIcon_p);
+
+                informationIcon.Background = System.Windows.Media.Brushes.Transparent;
+                infoIcon_p.BackColor = Color.Transparent;
+                infoVM.IsVisible = false;
+                SetQIInfo(NewDataVariables.Active_Obs);
+                ////infoIcon_p.Dock = DockStyle.Bottom;
+                //infoIcon_p.BackColor = Color.Transparent;
+                infoIcon_p.Parent = display_pbx;
+                //infoIcon_p.Location = new Point(300, 300);
+                var heightValue = (1.75) * (double)(infoIcon_p.ClientSize.Height);
+                var value = (int)Math.Round(heightValue, MidpointRounding.AwayFromZero);
+                if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 180, display_pbx.ClientSize.Height - 251);
+                else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
 
 
-            else if (Screen.PrimaryScreen.Bounds.Width == 1280)
-                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
+                else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
 
 
 
-            //elementHost.Location = new Point(this.Width - 10, this.Height);
-            //Console.WriteLine(infoIcon_p.Location);
-            Console.WriteLine(display_pbx.ClientSize);
+                //elementHost.Location = new Point(this.Width - 10, this.Height);
+                //Console.WriteLine(infoIcon_p.Location);
+                Console.WriteLine(display_pbx.ClientSize);
+
+        }
+
+        private void Invoke(Func<object> p)
+        {
+            throw new NotImplementedException();
         }
 
         private void SetQIInfo(eye_fundus_image eyefundusImage)

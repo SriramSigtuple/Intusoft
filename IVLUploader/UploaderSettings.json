@@ -1,5 +1,5 @@
 {
-  "OutboxTimerInterval": 30.0,
-  "SentItemsTimerInterval": 30.0,
+  "OutboxTimerInterval": 10.0,
+  "SentItemsTimerInterval": 10.0,
   "InternetCheckTimerInterval": 10.0
 }

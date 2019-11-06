@@ -1,25 +1,13 @@
-﻿using System;
+﻿using Common;
+using INTUSOFT.Data.NewDbModel;
+using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Linq;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using Common;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
-using NHibernate.Engine;
-using NHibernate.Proxy;
-using Newtonsoft.Json.Converters;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using INTUSOFT.Data.NewDbModel;
-using NHibernate.Linq;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace INTUSOFT.Data.Repository
 {
@@ -53,7 +41,7 @@ namespace INTUSOFT.Data.Repository
                     using (transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
                     {
                         NHibernateHelper_MySQL.hibernateSession.Save(modelVal);
-                        //NHibernateHelper_MySQL.hibernateSession.Flush();
+                        NHibernateHelper_MySQL.hibernateSession.Flush();
                         transaction.Commit();
                     }
                     //NHibernateHelper_MySQL.CloseSession();

@@ -1878,6 +1878,7 @@ namespace INTUSOFT.Desktop.Forms
                     OriginalBm = new Bitmap(10, 10);
                     modifyingBm = new Bitmap(10, 10);
                     arg["rawImage"] = OriginalBm;
+                    IVLVariables.pageDisplayed
                     eventHandler.Notify(eventHandler.DisplayImage, arg);
                     if (IVLVariables.isZoomEnabled)
                         eventHandler.Notify(eventHandler.EnableZoomMagnification, new Args());

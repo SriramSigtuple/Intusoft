@@ -11,6 +11,8 @@ namespace Common
 {
     public static class ExceptionLogWriter
     {
+        public  delegate void  ExceptionOccured();
+        public static event ExceptionOccured _exceptionOccuredEvent;
         
         /// <summary>
         /// It will write the exception to the log and close the application
@@ -24,6 +26,8 @@ namespace Common
             string exceptionStr =  ex.ConvertException2String(exceptionMessage);
             logger.Info(exceptionStr);
             CustomMessageBox.Show(exceptionStr,"Exception");
+            if (_exceptionOccuredEvent != null)
+                _exceptionOccuredEvent();
             Environment.Exit(0);
            
         }

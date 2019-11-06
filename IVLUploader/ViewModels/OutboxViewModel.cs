@@ -220,7 +220,7 @@ namespace IntuUploader.ViewModels
                 if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
                 {
                     activeFileCloudVM.isBusy = true;
-                    StartStopSentItemsTimer(false);
+                    //StartStopSentItemsTimer(false);
 
                     StreamReader st = new StreamReader(fileInfo.FullName);
                     var json = st.ReadToEnd();
