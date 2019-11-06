@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BaseViewModel">
-      <HintPath>..\BaseViewModel\bin\Release\BaseViewModel.dll</HintPath>
+      <HintPath>..\BaseViewModel\bin\$(Configuration)\BaseViewModel.dll</HintPath>
     </Reference>
     <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

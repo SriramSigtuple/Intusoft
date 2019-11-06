@@ -35,6 +35,16 @@ namespace INTUSOFT.Desktop.Forms
     public partial class IvlMainWindow : BaseGradientForm
     {
         #region variables and constants
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         static Logger exceptionLog = LogManager.GetLogger("ExceptionLog");
         Login_UCL loginScreen;
         //UI_Camera cameraUI;
@@ -238,11 +248,12 @@ namespace INTUSOFT.Desktop.Forms
             #region below block of code has been added to read the db name , user name and password for db connection string
            
             var data = new Dictionary<string, string>();
+            var runtimePath = @"SQLs\Intusoft-runtime.properties";
             if (!IVLVariables.isCommandLineArgsPresent)
             {
-                if (File.Exists("Intusoft-runtime.properties"))
+                if (File.Exists(runtimePath))
                 {
-                    foreach (var row in File.ReadAllLines("Intusoft-runtime.properties"))
+                    foreach (var row in File.ReadAllLines(runtimePath))
                         data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
                     NHibernateHelper_MySQL.dbName = data["connection.DBname"];
                     NHibernateHelper_MySQL.userName = data["connection.username"];
@@ -253,6 +264,20 @@ namespace INTUSOFT.Desktop.Forms
                     NHibernateHelper_MySQL.WarningText = IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo);
                     NHibernateHelper_MySQL.WarningHeader = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo);
                     NewDataVariables._Repo = Repository.GetInstance();
+                    Process process = new Process();
+                    if (File.Exists(@"CreateOrAlterDB.exe"))
+                    {
+                        process.StartInfo = new ProcessStartInfo(@"CreateOrAlterDB.exe");
+                        process.Start();
+
+                    }
+                    while(!process.HasExited)
+                    {
+                        ;
+                    }
+
+                    //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
+                    
                 }
                 else
                 {
@@ -563,6 +588,9 @@ namespace INTUSOFT.Desktop.Forms
             {
                 process.StartInfo = new ProcessStartInfo(@"Uploader\IntuUploader.exe");
                 process.Start();
+
+                //// Hide
+                //ShowWindow(pro, SW_HIDE);
 
             }
         }
@@ -1627,7 +1655,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="state"></param>
         private void CheckDatabaseConnectivity(object state)
         {
-            databaseTimer.Change(-1, -1);// = new System.Threading.Timer(CheckDatabaseConnectivity,null,0,Timeout.Infinite);
+
 
             if (dataBaseServerConnection.GetMysqlServiceStatus())
             {
@@ -2050,10 +2078,10 @@ namespace INTUSOFT.Desktop.Forms
         private void SetPanels()
         {
             this.Cursor = Cursors.WaitCursor;
-            while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
-            {
+            //while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
+            //{
 
-            }
+            //}
             this.Cursor = Cursors.Default;
             PagePanel_p.Controls.Clear();
             emr.Dock = DockStyle.Fill;

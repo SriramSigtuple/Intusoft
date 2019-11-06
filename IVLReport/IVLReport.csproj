@@ -71,9 +71,6 @@
     <Reference Include="INTUSOFT.ThumbnailModule">
       <HintPath>..\INTUSOFT.ThumbnailModule\bin\$(Configuration)\INTUSOFT.ThumbnailModule.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp">
-      <HintPath>F:\Downloads\itextsharp-all-5.5.10\itextsharp-src-core\bin\Debug_woDrawing\itextsharp.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>

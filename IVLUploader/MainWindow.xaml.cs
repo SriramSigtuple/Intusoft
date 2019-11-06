@@ -12,6 +12,7 @@ namespace IntuUploader
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowState = WindowState.Minimized;
             this.Loaded += MainWindow_Loaded;
           
         }

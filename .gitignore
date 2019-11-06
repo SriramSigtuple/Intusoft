@@ -486,5 +486,12 @@ IVLConfiguration/bin/
 /ImageListView/ImageListView.cs.bak
 /IVLUploaderTestProject/bin/
 /IVLUploaderTestProject/obj/
-/WPF_UserControlLibrary/bin/
+/CreateOrAlterDB/bin/Debug/
+/CreateOrAlterDB/obj
+/DesignSurfaceExt/bin/
+/DesignSurfaceExt/obj/
+/DesignSurfaceManagerExt/bin/
+/DesignSurfaceManagerExt/obj/
+/pDesigner/bin/
+/pDesigner/obj/
 /WPF_UserControlLibrary/obj/

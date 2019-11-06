@@ -37,36 +37,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DesignSurfaceExt2">
-      <HintPath>..\DesignSurfaceExt\DesignSurfaceExt\bin\$(Configuration)\DesignSurfaceExt2.dll</HintPath>
+      <HintPath>$(SolutionDir)DesignSurfaceExt\bin\$(Configuration)\DesignSurfaceExt2.dll</HintPath>
     </Reference>
     <Reference Include="DesignSurfaceManagerExt">
-      <HintPath>..\DesignSurfaceManagerExt\DesignSurfaceManagerExt\bin\$(Configuration)\DesignSurfaceManagerExt.dll</HintPath>
+      <HintPath>$(SolutionDir)DesignSurfaceManagerExt\bin\$(Configuration)\DesignSurfaceManagerExt.dll</HintPath>
     </Reference>
     <Reference Include="ImageListView">
-      <HintPath>..\ImageListView\bin\$(Configuration)\ImageListView.dll</HintPath>
+      <HintPath>$(SolutionDir)ImageListView\bin\$(Configuration)\ImageListView.dll</HintPath>
     </Reference>
     <Reference Include="INTUSOFT.Data">
-      <HintPath>..\IvlSoft.Data\bin\$(Configuration)\INTUSOFT.Data.dll</HintPath>
+      <HintPath>$(SolutionDir)IvlSoft.Data\bin\$(Configuration)\INTUSOFT.Data.dll</HintPath>
     </Reference>
     <Reference Include="IVLReport">
-      <HintPath>..\IVLReport\bin\$(Configuration)\IVLReport.dll</HintPath>
+      <HintPath>$(SolutionDir)IVLReport\bin\$(Configuration)\IVLReport.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.6.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\NLog.4.6.7\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="pDesigner">
-      <HintPath>..\pDesigner\pDesigner\bin\$(Configuration)\pDesigner.dll</HintPath>
+      <HintPath>$(SolutionDir)pDesigner\bin\$(Configuration)\pDesigner.dll</HintPath>
     </Reference>
     <Reference Include="PdfFileWriter">
-      <HintPath>..\PdfFileWriter_src\PdfFileWriter\PdfFileWriter\bin\$(Configuration)\PdfFileWriter.dll</HintPath>
+      <HintPath>$(SolutionDir)PdfFileWriter_src\PdfFileWriter\PdfFileWriter\bin\$(Configuration)\PdfFileWriter.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="ReportUtils">
-      <HintPath>..\ReportUtils\bin\$(Configuration)\ReportUtils.dll</HintPath>
+      <HintPath>$(SolutionDir)ReportUtils\bin\$(Configuration)\ReportUtils.dll</HintPath>
     </Reference>
     <Reference Include="RulerControl">
-      <HintPath>..\RulerControl\bin\$(Configuration)\RulerControl.dll</HintPath>
+      <HintPath>$(SolutionDir)RulerControl\bin\$(Configuration)\RulerControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

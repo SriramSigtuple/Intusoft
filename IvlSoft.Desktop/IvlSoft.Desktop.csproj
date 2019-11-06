@@ -482,9 +482,6 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Intusoft-runtime.properties">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="BatchScripts\mysqlServiceStart.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -862,22 +859,10 @@
     <Content Include="ImageResources\ToolsResources\CDR.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQLs\Alter_Intsoft_MRS.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQLs\Change_person_atrribute_valueSize.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQLs\Grant_All_Previleges.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Test1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\i-info.png" />
-    <Content Include="SQLs\create_Intsoft_MRS.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="ImageResources\LogoImageResources\logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -915,7 +900,10 @@ copy "$(SolutionDir)\DesignSurfaceManagerExt\DesignSurfaceManagerExt\bin\$(Confi
 copy "$(SolutionDir)\RulerControl\bin\$(Configuration)\RulerControl.dll" "$(TargetDir)"
 copy "$(SolutionDir)\ToolBoxLib\bin\$(Configuration)\ToolBoxLib.dll"  "$(TargetDir)"
 copy "$(SolutionDir)\ImageListView\bin\$(Configuration)\ImageListView.dll" "$(TargetDir)"
-copy "$(ProjectDir)Resources\Nlog.config" "$(TargetDir)"</PostBuildEvent>
+copy "$(ProjectDir)Resources\Nlog.config" "$(TargetDir)"
+xcopy "$(SolutionDir)SQLs\*.*" "$(TargetDir)SQLs" /Y /I /E
+xcopy /s/y "$(SolutionDir)CreateOrAlterDB\bin\$(Configuration)\CreateOrAlterDB.exe" "$(TargetDir)" 
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>xcopy "$(SolutionDir)ReportTemplates\*.*" "$(TargetDir)ReportTemplates" /Y /I /E</PreBuildEvent>
