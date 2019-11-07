@@ -22,7 +22,7 @@ namespace INTUSOFT.Desktop
         public string sqlServiceText = "57";
         public int prerquisitesCount = 9;
 
-        public string SoftwareReleaseDate = "";
+        public string SoftwareReleaseDate = DateTime.Now.ToString("dd-MMM-yyyy");
 
         public Constants()
         {

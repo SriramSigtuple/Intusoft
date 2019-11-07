@@ -31,7 +31,7 @@ namespace INTUSOFT.Desktop.Forms
     {
         bool isMagnifier = false;
         IVLEventHandler eventHandler;
-       public LiveImageControls_UC liveImagingControl;
+        public LiveImageControls_UC liveImagingControl;
         ViewImageControls_UC viewImagingControl;
         delegate void DelegateSetLiveOrView(string imageFilename, Args arg);
         private DelegateSetLiveOrView m_DelegateSetLiveOrView;
@@ -266,6 +266,11 @@ namespace INTUSOFT.Desktop.Forms
 
         }
         bool isFFAImage = false;
+
+        public bool GetGridPopulatingStatus()
+        {
+            return viewImagingControl.isGridPopulating;
+        }
         private void DisplayImageFromCamera(string s, Args arg)
         {
             if (this.InvokeRequired)
@@ -277,7 +282,6 @@ namespace INTUSOFT.Desktop.Forms
         {
                 display_pbx.Controls.Clear();
                 display_pbx.Image = arg["rawImage"] as Bitmap;
-                display_pbx.Refresh();
 
                 display_pbx.Controls.Add(infoIcon_p);
 
@@ -931,12 +935,6 @@ namespace INTUSOFT.Desktop.Forms
 
         }
 
-        private void display_pbx_Paint(object sender, PaintEventArgs e)
-        {
-            int x = 0;
-
-            
-        }
 
         private void overlay_pbx_Click(object sender, EventArgs e)
         {

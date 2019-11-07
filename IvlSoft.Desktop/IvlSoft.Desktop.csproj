@@ -882,6 +882,10 @@
       <Project>{73BC10C5-D322-4088-A186-0CCD99807FF8}</Project>
       <Name>IVLUploader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPF_UserControlLibrary\WPF_UserControlLibrary.csproj">
+      <Project>{EC598344-1250-401C-804F-609C138FCA68}</Project>
+      <Name>WPF_UserControlLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.WinFx.targets" />

@@ -21,6 +21,8 @@ namespace IntuUploader.ViewModels
 
         public FileInfo ActiveFnf = null;
 
+        public delegate void DelegatePendingFileCreation(AnalysisType analysisType);
+        public event DelegatePendingFileCreation CreatePendingFilesEvent; 
         CloudModel activeCloudModel;
         LoginViewModel activeLoginViewModel;
         CreateAnalysisViewModel activeCreateAnalysisViewModel;
@@ -32,7 +34,22 @@ namespace IntuUploader.ViewModels
         public delegate void  StartStopTimer(bool isStart);
         public event StartStopTimer startStopEvent;
 
-        public bool isBusy = false;
+        private bool _IsBusy;
+
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+            set {
+                _IsBusy = value; 
+                if(!_IsBusy)
+                {
+                    if(CreatePendingFilesEvent != null)
+                    CreatePendingFilesEvent(analysisType);
+                }
+
+            }
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -108,7 +125,7 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                this.isBusy = false; 
+                this.IsBusy = false; 
                 //this.Dispose();
             }
                
@@ -156,7 +173,7 @@ namespace IntuUploader.ViewModels
                     //this.Dispose();
 
                     //startStopEvent(true);
-                    this.isBusy = false; ;
+                    this.IsBusy = false; ;
 
                 }
                 else
@@ -249,7 +266,7 @@ namespace IntuUploader.ViewModels
                             st1.Close();
                             st1.Dispose();
                             //startStopEvent(true);
-                            this.isBusy = false; ;
+                            this.IsBusy = false; ;
                         }
                         //this.Dispose();
                     }
@@ -259,7 +276,7 @@ namespace IntuUploader.ViewModels
                     ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Status");
                     logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                     ////this.Dispose();
-                    //this.isBusy = false;;
+                    //this.IsBusy = false;;
                 }
             }
             catch (Exception ex)
@@ -822,7 +839,7 @@ namespace IntuUploader.ViewModels
                     st1.Close();
                     st1.Dispose();
                     //startStopEvent(true);
-                    this.isBusy = false; ;
+                    this.IsBusy = false; ;
                 }
 
                 
@@ -866,7 +883,7 @@ namespace IntuUploader.ViewModels
                     st1.Close();
                     st1.Dispose();
                     //startStopEvent(true);
-                    this.isBusy = false; ;
+                    this.IsBusy = false; ;
 
                 }
 
@@ -937,7 +954,7 @@ namespace IntuUploader.ViewModels
                 st.Close();
                 st.Dispose();
                 //startStopEvent(true); 
-                this.isBusy = false; ;
+                this.IsBusy = false; ;
 
             }
         }

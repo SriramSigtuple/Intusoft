@@ -2011,4 +2011,10 @@
   <data name="InternetDisconnected_Text" xml:space="preserve">
     <value>Internet Disconnected</value>
   </data>
+  <data name="Firmware_Text" xml:space="preserve">
+    <value>F/W</value>
+  </data>
+  <data name="Software_Text" xml:space="preserve">
+    <value>S/W</value>
+  </data>
 </root>

@@ -504,7 +504,7 @@ namespace INTUSOFT.Desktop.Forms
             showExisitingReports();
         }
 
-        bool isGridPopulating = false;
+       public bool isGridPopulating = false;
         /// <summary>
         /// The below code has been added to show the exisiting reports.
         /// </summary>
@@ -554,72 +554,30 @@ namespace INTUSOFT.Desktop.Forms
                             Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 10;
 
                         }
-                        reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
+                        try
+                        {
+                            reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
 
-                        //Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
-                        //BindingSource bindingSource = new BindingSource();
-                        //bindingSource.DataSource = ;
-                        //if (NewDataVariables.Reports.Any())
-                        //{
-                        //    //Reports_dgv.DataSource = NewDataVariables.Reports.ToDataTable();
+                        }
+                        catch (Exception ex1)
+                        {
 
-                        //    for (int i = 0; i < NewDataVariables.Reports.Count; i++)
-                        //    {
-                        //        //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
-                        //        CloudAnalysisReport c =  NewDataVariables.Reports[i].cloudReport;
-                        //        //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
-                        //        if (c != null)
-                        //        {
-                        //            //if (cloudAnalysisReports.Any())
-                        //            //{
-                        //            //    if (cloudAnalysisReports.Where(x => x.cloudAnalysisReportId == c.cloudAnalysisReportId).ToList().Any())
-                        //            //        c = cloudAnalysisReports.Where(x => x.cloudAnalysisReportId == c.cloudAnalysisReportId).ToList()[0];
-                        //            //}
-                        //            CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g") + " " + c.failureMessage;
-                        //        }
-                        //        //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
-                        //        if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
-                        //        {
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
-                        //        }
-                        //        else
-                        //        {
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
-                        //        }
-                        //    }
-                            
-                        //    //reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
-                        //}
+                           // throw;
+                        }
+
+                      
                         isGridPopulating = false;
 
                     }
                     else
                         isGridPopulating = false;
-                    try
-                    {
-                        //Reports_dgv.Refresh();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                    }
 
                 }
             }
-            catch (IndexOutOfRangeException ex)
-            {
-                isGridPopulating = false;
-                //Reports_dgv = new DataGridView();
-                showExisitingReports();
-                //Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
-            }
             catch (Exception ex)
             {
+                isGridPopulating = false;
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 

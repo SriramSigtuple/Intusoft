@@ -1046,6 +1046,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             catch (Exception ex)
             {
+                isInboxCloudReportsBusy = false;
                 Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
             }
@@ -1264,6 +1265,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             catch (Exception ex)
             {
+                isQIUpdating = false;
                 Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
             }
@@ -1352,6 +1354,8 @@ namespace INTUSOFT.Desktop.Forms
                             if (File.Exists(pendingFile))
                             {
                                 File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
+                                if (File.Exists(doneFile))
+                                    File.Delete(doneFile);
                                 File.Move(pendingFile, doneFile);
                             }
                         }
@@ -1394,6 +1398,8 @@ namespace INTUSOFT.Desktop.Forms
                         if (File.Exists(pendingFile))
                         {
                             File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+                            if (File.Exists(doneFile))
+                            File.Delete(doneFile);
                             File.Move(pendingFile, doneFile);
                         }
                     if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id ==item.eye_fundus_image_id))
@@ -1457,7 +1463,6 @@ namespace INTUSOFT.Desktop.Forms
                         }
                     }
                     arg["isImaging"] = false;
-                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
                     _eventHandler.Notify(_eventHandler.LoadImageFromFileViewingScreen, arg);
 
                 }
@@ -2915,13 +2920,13 @@ namespace INTUSOFT.Desktop.Forms
         private void IvlMainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-
             e.Cancel = IVLVariables.ivl_Camera.IsCapturing;// added to avoid closing of application when capture of the image is in progress by sriram
             if (IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
                 return;// added to avoid closing of application when capture of the image is in progress by sriram
             if (!IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
             {
                 IVLVariables.ApplicationClosing = true;
+              
                 UpdateCloudReport2DB();
                 UpdateQIAnalysis2DB();
 
@@ -3237,12 +3242,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
             _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
+            PagePanel_p.Controls.Add(imaging_UC);
+
             _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
 
 
 
 
-            PagePanel_p.Controls.Add(imaging_UC);
+          
 
             this.Refresh();
             this.Focus();
@@ -3662,11 +3669,11 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                     System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                    string version = fvi.FileVersion;
+                    string version = fvi.ProductName;
                     string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
                     //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
-                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + con.SoftwareReleaseDate;
-                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Information_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
+                    string message = Environment.NewLine + IVLVariables.LangResourceManager.GetString("Software_Text", IVLVariables.LangResourceCultureInfo) + " : " + version +" (" + con.SoftwareReleaseDate +")"+ Environment.NewLine + IVLVariables.LangResourceManager.GetString("Firmware_Text" , IVLVariables.LangResourceCultureInfo) + " : "+ firmwareVer ;
+                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
                 }
             }
             else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 

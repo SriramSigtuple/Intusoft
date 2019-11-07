@@ -43,6 +43,8 @@
             this.newAnnotation_btn = new System.Windows.Forms.ToolStripButton();
             this.glaucomaTool_btn = new System.Windows.Forms.ToolStripButton();
             this.reportGridView_p = new System.Windows.Forms.Panel();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.reportListView1 = new Intusoft.WPF.UserControls.ReportListView();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.contrast_lbl = new System.Windows.Forms.Label();
@@ -100,8 +102,6 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.reportListView1 = new Intusoft.WPF.UserControls.ReportListView();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -317,6 +317,16 @@
             this.reportGridView_p.Name = "reportGridView_p";
             this.reportGridView_p.Size = new System.Drawing.Size(275, 98);
             this.reportGridView_p.TabIndex = 1002;
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Location = new System.Drawing.Point(0, 0);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(275, 98);
+            this.elementHost1.TabIndex = 0;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.reportListView1;
             // 
             // tableLayoutPanel8
             // 
@@ -1002,16 +1012,6 @@
             this.toolStripContainer1.Size = new System.Drawing.Size(287, 775);
             this.toolStripContainer1.TabIndex = 1001;
             this.toolStripContainer1.Text = "toolStripContainer1";
-            // 
-            // elementHost1
-            // 
-            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.elementHost1.Location = new System.Drawing.Point(0, 0);
-            this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(275, 98);
-            this.elementHost1.TabIndex = 0;
-            this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.reportListView1;
             // 
             // ViewImageControls_UC
             // 

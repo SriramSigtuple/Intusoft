@@ -363,7 +363,6 @@
             this.display_pbx.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.display_pbx.TabIndex = 2;
             this.display_pbx.TabStop = false;
-            this.display_pbx.Paint += new System.Windows.Forms.PaintEventHandler(this.display_pbx_Paint);
             this.display_pbx.MouseDown += new System.Windows.Forms.MouseEventHandler(this.display_pbx_MouseDown);
             this.display_pbx.MouseMove += new System.Windows.Forms.MouseEventHandler(this.display_pbx_MouseMove);
             // 
