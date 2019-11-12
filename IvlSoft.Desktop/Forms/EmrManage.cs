@@ -1958,6 +1958,7 @@ namespace INTUSOFT.Desktop.Forms
                         if ((int)arg["CurrentIndx"] == 0 && row == 0)
                         {
                             PatientDetails_panel.Visible = false;
+                            ResetSearch();
                         }
                     }
                     patGridView_dgv.Focus();
