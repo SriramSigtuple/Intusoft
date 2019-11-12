@@ -54,7 +54,7 @@
                                          Converter={StaticResource IndexConverter}}" />
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Date" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource DateConvertor}}"/>
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Time" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource TimeConvertor}}" />
-                    <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Status" Width="{Binding Width}" DisplayMemberBinding="{Binding cloudReport.cloudAnalysisReportStatus,Converter={StaticResource ResourceKey= CloudStatusConvertor}}" />
+                    <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Status" Width="{Binding Width}" DisplayMemberBinding="{Binding cloudReport,Converter={StaticResource ResourceKey= CloudStatusConvertor}}" />
                 </GridView>
             </ListView.View>
         </ListView>

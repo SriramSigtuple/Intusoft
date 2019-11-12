@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Common.Enums;
+using INTUSOFT.Data.NewDbModel;
 namespace Intusoft.WPF.UserControls.Convertor
 {
     public class FontSizeClass
@@ -66,9 +67,9 @@ namespace Intusoft.WPF.UserControls.Convertor
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-          
-            return Enum.GetName(typeof(CloudReportStatus),(int)value);
-
+            var cloudReport = (CloudAnalysisReport)value;
+            var failureMessage = string.IsNullOrEmpty(cloudReport.failureMessage) ? "" : cloudReport.failureMessage;
+            return Enum.GetName(typeof(CloudReportStatus),(int)cloudReport.cloudAnalysisReportStatus) + failureMessage ;
 
         }
 
