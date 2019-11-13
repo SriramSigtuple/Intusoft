@@ -857,11 +857,65 @@ namespace INTUSOFT.Desktop.Forms
         
         private void ThumbnailUI1__ThumbnailCountChangedDelegate(int count) => noOfImagesSelected_lbl.Text = count.ToString() + IVLVariables.LangResourceManager.GetString("ImagesSelected_Text", IVLVariables.LangResourceCultureInfo);
 
+
+
+        private void UpdateResponse2ReportList(int indx, FileInfo fileInfo, List<CloudAnalysisReport> changedCloudAnalysisReports)
+        {
+            StreamReader st = new StreamReader(fileInfo.FullName);
+            var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+            st.Close();
+            st.Dispose();
+
+            if (responseValue.Status == "success")
+            {
+                //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
+                {
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
+
+                    CreateCloudReport(responseValue);
+                    NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = $"{responseValue.LeftAIImpressionsDR},{responseValue.LeftAIImpressionsAMD},{responseValue.LeftAIImpressionsGlaucoma}";
+                    NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = $"{responseValue.RightAIImpressionsDR},{responseValue.RightAIImpressionsAMD},{responseValue.RightAIImpressionsGlaucoma}";
+                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                        pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    else
+                    {
+                        var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                        pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                    }
+
+                }
+
+            }
+            else if (responseValue.Status == "failure")
+            {
+                //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
+                {
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
+                    NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
+                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                        pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    else
+                    {
+                        var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                        pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                    }
+
+                }
+
+            }
+        }
+
+
+
         /// <summary>
         /// To check the files in inbox directory and move it to read directory
         /// </summary>
         /// <param name="state"></param>
-        private void InboxCheck(object state)
+        private void InboxAnalysisCheck(object state)
         {
             //InboxQICheck(new object());
 
@@ -884,52 +938,7 @@ namespace INTUSOFT.Desktop.Forms
                                 var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
                                 if (File.Exists(pendingFile))
                                 {
-                                    StreamReader st = new StreamReader(fileInfo.FullName);
-                                    var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                                    st.Close();
-                                    st.Dispose();
-
-                                    if (responseValue.Status == "success")
-                                    {
-                                        //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
-                                        {
-                                            NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
-
-                                            CreateCloudReport(responseValue);
-                                            NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = $"{responseValue.LeftAIImpressionsDR},{responseValue.LeftAIImpressionsAMD},{responseValue.LeftAIImpressionsGlaucoma}";
-                                            NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = $"{responseValue.RightAIImpressionsDR},{responseValue.RightAIImpressionsAMD},{responseValue.RightAIImpressionsGlaucoma}";
-                                            //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                            changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-                                            if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
-                                                pendingCloudAnalysisReports.Add( NewDataVariables.CloudAnalysisReports[indx]);
-                                            else
-                                            {
-                                                var indx1 = pendingCloudAnalysisReports.FindIndex(x=>x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
-                                                pendingCloudAnalysisReports[ indx1].cloudAnalysisReportStatus =  NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
-                                            }
-
-                                        }
-
-                                    }
-                                    else if (responseValue.Status == "failure")
-                                    {
-                                        //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
-                                        {
-                                            NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
-                                            NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
-                                            //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                            changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-                                            if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
-                                                pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-                                            else
-                                            {
-                                                var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
-                                                pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
-                                            }
-
-                                        }
-
-                                    }
+                                    UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
                                 }
 
 
@@ -945,6 +954,22 @@ namespace INTUSOFT.Desktop.Forms
 
 
                     }
+                    #endregion
+
+
+                    #region Read Responses
+
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus <= 3)
+                        {
+                            UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
+                        }
+
+                    }
+
                     #endregion
 
                     #region Outbox Response
@@ -1053,6 +1078,89 @@ namespace INTUSOFT.Desktop.Forms
 
 
         }
+
+
+        private void UpdateResponse2PendingList(int indx, FileInfo fileInfo, List<eye_fundus_image> changedObsList)
+        {
+            StreamReader st = new StreamReader(fileInfo.FullName);
+            var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+            st.Close();
+            st.Dispose();
+
+            if (responseValue.Status == "success")
+            {
+                //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
+                {
+                    if (responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
+                    {
+                        if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("Gradable"))
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
+                        else if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
+                        {
+                            if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                            else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                        }
+
+
+                    }
+                    else
+                        if (responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
+                    {
+                        if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("Gradable"))
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
+                        else if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
+                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
+
+                        {
+                            if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
+                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                            else if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
+                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                        }
+
+                    }
+
+                    changedObsList.Add(NewDataVariables.Obs[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                    else
+                    {
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
+                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                    }
+
+
+                    //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
+
+                }
+
+            }
+            else if (responseValue.Status == "failure")
+            {
+                //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
+                {
+                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
+                    changedObsList.Add(NewDataVariables.Obs[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                    else
+                    {
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
+                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                    }
+                    //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
+                }
+
+            }
+        }
+
+
+
         bool isQIUpdating = false;
         private void InboxQICheck(object state)
         {
@@ -1074,84 +1182,14 @@ namespace INTUSOFT.Desktop.Forms
                             try
                             {
                                 var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
+                                var doneFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done";
+                                var actualFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0];
+
                                 if (File.Exists(pendingFile))
                                 {
-                                    StreamReader st = new StreamReader(fileInfo.FullName);
-                                    var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                                    st.Close();
-                                    st.Dispose();
-
-                                    if (responseValue.Status == "success")
-                                    {
-                                        //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
-                                        {
-                                            if (responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
-                                            {
-                                                if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
-                                                {
-                                                    if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                    else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
-                                                }
-
-
-                                            }
-                                            else
-                                                if (responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
-                                            {
-                                                if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
-
-                                                {
-                                                    if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                    else if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                        NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
-                                                }
-
-                                            }
-
-                                            changedObsList.Add(NewDataVariables.Obs[indx]);
-                                            if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                                                pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
-                                            else
-                                            {
-                                                var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                                                pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                                                pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
-                                            }
-
-
-                                            //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
-
-                                        }
-
-                                    }
-                                    else if (responseValue.Status == "failure")
-                                    {
-                                        //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
-                                        {
-                                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
-                                            changedObsList.Add(NewDataVariables.Obs[indx]);
-                                            if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                                                pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
-                                            else
-                                            {
-                                                var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                                                pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                                                pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
-                                            }
-                                            //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
-                                        }
-
-                                    }
+                                    UpdateResponse2PendingList(indx, fileInfo, changedObsList);
                                 }
+                                
 
 
                             }
@@ -1167,6 +1205,24 @@ namespace INTUSOFT.Desktop.Forms
 
                     }
                     #endregion
+
+
+                    #region Read Responses
+
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        if (NewDataVariables.Obs[indx].qi_DR_AMD_Status <= 3)
+                        {
+                                UpdateResponse2PendingList(indx, fileInfo, changedObsList);
+                        }
+
+                    }
+                    
+
+                    #endregion
+
 
                     #region Outbox Response
                     fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI)).GetFiles("*.json");
@@ -2108,7 +2164,7 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
             emr.Show();
-            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
             inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
             #region this has to be implemented later when login screen has been added
@@ -3327,7 +3383,7 @@ namespace INTUSOFT.Desktop.Forms
         {
 
             EmrManage_btn_Click(null, null);
-            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0,(int)( serverTimer.Interval / 2));
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0,(int)( serverTimer.Interval / 2));
 
         }
 
