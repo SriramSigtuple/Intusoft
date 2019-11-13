@@ -69,7 +69,7 @@ namespace Intusoft.WPF.UserControls.Convertor
         {
             var cloudReport = (CloudAnalysisReport)value;
             var failureMessage = string.IsNullOrEmpty(cloudReport.failureMessage) ? "" : cloudReport.failureMessage;
-            return Enum.GetName(typeof(CloudReportStatus),(int)cloudReport.cloudAnalysisReportStatus) + failureMessage ;
+            return Enum.GetName(typeof(CloudReportStatus),(int)cloudReport.cloudAnalysisReportStatus) + " " + failureMessage ;
 
         }
 

@@ -311,7 +311,7 @@ namespace IntuUploader.ViewModels
                     }
                     else
                     {
-                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login","Wrong Data");
+                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login","Wrong Installation ID");
                         //this.Dispose();
                     }
 
@@ -319,7 +319,8 @@ namespace IntuUploader.ViewModels
                 }
                 else
                 {
-                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Data");
+
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Credentials");
 
                 }
             }
@@ -807,7 +808,8 @@ namespace IntuUploader.ViewModels
         private void ManageFailureResponse(Response_CookieModel response, string stage,string failureMessage = null)
         {
             logger.Info("Iam Stage {0} Status Code {1}",stage, response.StatusCode);
-
+            var failureObj = JObject.Parse(response.responseBody);
+            failureMessage = (string)failureObj["message"];
             if (response.StatusCode == 0)
             {
                 logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
@@ -895,12 +897,8 @@ namespace IntuUploader.ViewModels
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                 inboxAnalysisStatusModel.Status = "failure" ;
                 inboxAnalysisStatusModel.StatusCode = response.StatusCode;
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
+                inboxAnalysisStatusModel.FailureMessage = failureMessage;
 
-                else
-                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
                 Write2Inbox(inboxAnalysisStatusModel);
 
 
