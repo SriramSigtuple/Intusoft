@@ -1463,7 +1463,8 @@ namespace INTUSOFT.Desktop.Forms
                         }
                     }
                     arg["isImaging"] = false;
-                    _eventHandler.Notify(_eventHandler.LoadImageFromFileViewingScreen, arg);
+                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);// if in live go to view screen
+                    _eventHandler.Notify(_eventHandler.LoadImageFromFileViewingScreen, arg);// show the image 
 
                 }
             }
@@ -3241,16 +3242,9 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.CurrentCaptureGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.CaptureCurrentGainLevel.val);
             }
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
+            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
             _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
             PagePanel_p.Controls.Add(imaging_UC);
-
-            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
-
-
-
-
-          
-
             this.Refresh();
             this.Focus();
         }

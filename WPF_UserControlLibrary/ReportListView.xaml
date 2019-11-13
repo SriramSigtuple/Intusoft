@@ -47,11 +47,7 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn
-          Header="SL"
-          DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                         AncestorType={x:Type ListViewItem}}, 
-                                         Converter={StaticResource IndexConverter}}" />
+                    <GridViewColumn Header="SL" DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConverter}}" Width="{Binding Width}" />
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Date" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource DateConvertor}}"/>
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Time" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource TimeConvertor}}" />
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Status" Width="{Binding Width}" DisplayMemberBinding="{Binding cloudReport,Converter={StaticResource ResourceKey= CloudStatusConvertor}}" />
