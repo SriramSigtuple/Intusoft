@@ -963,10 +963,14 @@ namespace INTUSOFT.Desktop.Forms
                     foreach (var fileInfo in fileInfos)
                     {
                         int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
-                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus <= 3)
+                        if(indx >= 0)
                         {
-                            UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
+                            if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus <= 3)
+                            {
+                                UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
+                            }
                         }
+                       
 
                     }
 
@@ -1213,9 +1217,13 @@ namespace INTUSOFT.Desktop.Forms
                     foreach (var fileInfo in fileInfos)
                     {
                         int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
-                        if (NewDataVariables.Obs[indx].qi_DR_AMD_Status <= 3)
+                        if (indx >= 0)
                         {
+
+                            if (NewDataVariables.Obs[indx].qi_DR_AMD_Status <= 3)
+                            {
                                 UpdateResponse2PendingList(indx, fileInfo, changedObsList);
+                            }
                         }
 
                     }
@@ -3298,9 +3306,11 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.CurrentCaptureGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.CaptureCurrentGainLevel.val);
             }
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
-            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
             _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
-            PagePanel_p.Controls.Add(imaging_UC);
+             PagePanel_p.Controls.Add(imaging_UC);
+            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
+            if (Convert.ToBoolean(arg["isImaging"]))
+                _eventHandler.Notify(_eventHandler.Navigate2LiveScreen, arg);
             this.Refresh();
             this.Focus();
         }

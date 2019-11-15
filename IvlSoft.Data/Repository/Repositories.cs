@@ -4627,7 +4627,7 @@ namespace INTUSOFT.Data.Repository
                     //_attribute = _Repo.GetByCategory<person_attribute>("person", _Active_Patient).ToList<person_attribute>();
                     Attribute = p.attributes.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
                     //_identifier = _Repo.GetByCategory<patient_identifier>("patient", _Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
-                    Identifier = p.identifiers.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
+                    Active_PatientIdentifier = p.identifiers.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList().FirstOrDefault();
 
                     //PatientDiagnosis = _Repo.GetByCategory<PatientDiagnosis>("patient", _Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList<PatientDiagnosis>();
                     PatientDiagnosis = p.diagnosis.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:convertor="clr-namespace:Intusoft.WPF.UserControls.Convertor"
-             mc:Ignorable="d" Width="230" Height="34.5">
+             mc:Ignorable="d" Width="139.5" Height="34.5">
     <UserControl.Resources>
         <Style x:Key="GridHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -47,7 +47,7 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="SL" DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConverter}}" Width="{Binding Width}" />
+                    <GridViewColumn Header="SL" DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConverter}}" Width="20" />
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Date" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource DateConvertor}}"/>
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Time" Width="{Binding Width}" DisplayMemberBinding="{Binding createdDate , Converter={StaticResource TimeConvertor}}" />
                     <GridViewColumn HeaderContainerStyle="{StaticResource GridHeaderStyle}" Header="Status" Width="{Binding Width}" DisplayMemberBinding="{Binding cloudReport,Converter={StaticResource ResourceKey= CloudStatusConvertor}}" />

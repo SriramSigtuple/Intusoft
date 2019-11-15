@@ -2489,6 +2489,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 NewDataVariables.CloudAnalysisReports = NewDataVariables._Repo.GetAll<CloudAnalysisReport>().ToList();
                 NewDataVariables.Obs = NewDataVariables._Repo.GetAll<eye_fundus_image>().ToList();
+                NewDataVariables.Identifier = NewDataVariables._Repo.GetAll<patient_identifier>().ToList();
 
                 pageRows = Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._NoOfPatientsToBeSelected.val);//Assigns no of patients to be displayed
                 //PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));
