@@ -1223,7 +1223,7 @@ namespace INTUSOFT.Desktop.Forms
                     //List<int> side = new List<int>();
                     //List<int> id = new List<int>();
                     List<ThumbnailModule.ThumbnailData> thumbnailList = new List<ThumbnailModule.ThumbnailData>();
-                    foreach (var item in NewDataVariables.Obs)
+                    foreach (var item in NewDataVariables.Visit_Obs)
                     {
                         ThumbnailModule.ThumbnailData tData = new ThumbnailModule.ThumbnailData();
                         if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
@@ -1231,22 +1231,16 @@ namespace INTUSOFT.Desktop.Forms
                         else
                             tData.fileName = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + item.value;
                         //urls.Add(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + item.value);
-                        int xV = 0;
-                        if (NewDataVariables.Obs.IndexOf(item) == NewDataVariables.Obs.Count - 1)
-                        {
-                            xV = 0;
-                        }
                         tData.id = item.observationId;
-                       eye_fundus_image _eyeFundusImage = NewDataVariables.Obs.Find(x => x.observationId == tData.id);
                         //List<eye_fundus_image> eyeFundusList = NewDataVariables.EyeFundusImage.Where(x=>x.eyeFundusImageId == tData.id).ToList() ;
                         // eye_fundus_image _eyeFundusImage = eyeFundusList[0];
-                     tData.side =   _eyeFundusImage.eyeSide.Equals('L')? 1 : 0;
+                        tData.side = item.eyeSide.Equals('L')? 1 : 0;
                         //if (_eyeFundusImage.eyeSide == 'L')
                         //    tData.side = 1;
                         //else
                         //    tData.side = 0;
-                        tData.isAnnotated = _eyeFundusImage.annotationsAvailable;
-                        tData.isCDR = _eyeFundusImage.cdrAnnotationAvailable;
+                        tData.isAnnotated = item.annotationsAvailable;
+                        tData.isCDR = item.cdrAnnotationAvailable;
                         thumbnailList.Add(tData);
                         //id.Add(item.observationId);
                     }
@@ -1305,7 +1299,7 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         _eventHandler.Notify(_eventHandler.ShowThumbnails, arg);
 
-                        if (NewDataVariables.Obs.Count > 0)
+                        if (NewDataVariables.Visit_Obs.Count > 0)
                         {
                             arg["ThumbnailData"] = thumbnailList[thumbnailList.Count - 1];
                            //arg["idval"] = IVLVariables.ActiveImageID = NewDataVariables.EyeFundusImage[NewDataVariables.EyeFundusImage.Count -1].eyeFundusImageId;
@@ -1318,11 +1312,11 @@ namespace INTUSOFT.Desktop.Forms
                         //    _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
                         if (!isImaging)
                         {
-                            if (NewDataVariables.Obs.Count == 0)
+                            if (NewDataVariables.Visit_Obs.Count == 0)
                                 return;
                         }
                         _eventHandler.Notify(_eventHandler.SetActivePatDetails, arg);
-                        arg["imageCount"] = NewDataVariables.Obs.Count;
+                        arg["imageCount"] = NewDataVariables.Visit_Obs.Count;
                         _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
                     }
                     //else
@@ -2488,7 +2482,7 @@ namespace INTUSOFT.Desktop.Forms
         {
             {
                 NewDataVariables.CloudAnalysisReports = NewDataVariables._Repo.GetAll<CloudAnalysisReport>().ToList();
-                NewDataVariables.Obs = NewDataVariables._Repo.GetAll<eye_fundus_image>().ToList();
+                NewDataVariables.Eye_Fundus_Images = NewDataVariables._Repo.GetAll<eye_fundus_image>().ToList();
                 NewDataVariables.Identifier = NewDataVariables._Repo.GetAll<patient_identifier>().ToList();
 
                 pageRows = Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._NoOfPatientsToBeSelected.val);//Assigns no of patients to be displayed

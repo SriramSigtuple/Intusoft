@@ -586,7 +586,8 @@ namespace INTUSOFT.Desktop.Forms
                             eyeFundusImage.qiFileName =  Push2QI(eyeFundusImage);
                             NewIVLDataMethods.UpdatePatient();
                             NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
-                            NewDataVariables.Obs.Add(eyeFundusImage);
+                            NewDataVariables.Visit_Obs.Add(eyeFundusImage);
+                            NewDataVariables.Eye_Fundus_Images.Add(eyeFundusImage);
                             tdata.id = eyeFundusImage.observationId;
                             // arg["id"] = newObs.observationId;
                             //foreach (var item in NewDataVariables.Visits)

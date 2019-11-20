@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using INTUSOFT.Configuration.AdvanceSettings;
+using System;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
-using INTUSOFT.Configuration.AdvanceSettings;
 namespace INTUSOFT.Configuration
 {
-   public class IVLConfig
+    public class IVLConfig
        {
        private static IVLConfig _ivlConfig; 
        public ImagingMode Mode;
@@ -287,7 +283,7 @@ namespace INTUSOFT.Configuration
            Settings.CameraSettings._EnableVerticalFlip.val = "false";
            Settings.CameraSettings._exposureIndex.val = "63";
            Settings.CameraSettings._LiveDigitalGain.val = "23";
-
+           Settings.CameraSettings._EnableHorizontalFlip.val = "true";
 
            Settings.ImageStorageSettings._IsRawSave.val = "true";
            Settings.ImageStorageSettings._IsRawImageSave.val = "true";

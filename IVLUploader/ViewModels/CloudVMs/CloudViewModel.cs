@@ -590,8 +590,9 @@ namespace IntuUploader.ViewModels
                     {
                         inboxAnalysisStatusModel.RightEyeDetails[j].ImageName = dataValues[0].ToArray()[j].ToArray().First().ToString();
                         inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_DR = dataValues[0].ToArray()[j].Values().Last().Last.Value<string>();
-                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_AMD = dataValues[2].ToArray()[j].Values().Last().Last.Value<string>();
-                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_GLaucoma = dataValues[4].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_GLaucoma = dataValues[2].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.RightEyeDetails[j].Analysis_Result_AMD = dataValues[4].ToArray()[j].Values().Last().Last.Value<string>();
+
                         //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_DR =
                         //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_AMD =
                         //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_Glaucoma =
@@ -601,8 +602,8 @@ namespace IntuUploader.ViewModels
                     {
                         inboxAnalysisStatusModel.LeftEyeDetails[j].ImageName = dataValues[1].ToArray()[j].ToArray().First().ToString();
                         inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_DR = dataValues[1].ToArray()[j].Values().Last().Last.Value<string>();
-                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_AMD = dataValues[3].ToArray()[j].Values().Last().Last.Value<string>();
-                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_GLaucoma = dataValues[5].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_GLaucoma = dataValues[3].ToArray()[j].Values().Last().Last.Value<string>();
+                        inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_AMD = dataValues[5].ToArray()[j].Values().Last().Last.Value<string>();
                         //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_DR =
                         //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_AMD =
                         //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_Glaucoma =
@@ -639,20 +640,12 @@ namespace IntuUploader.ViewModels
                 inboxAnalysisStatusModel.LeftAIImpressionsDR = "Referrable DR";
 
             }
-            if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("PDR")))
+            if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.ToLower().Equals("amd")))
             {
-                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NPDR")))
-                {
                     if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NonGradable")))
                         inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Non-Referrable AMD";
                     else
                         inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Non-Gradable";
-
-                }
-                else
-                {
-                    inboxAnalysisStatusModel.LeftAIImpressionsAMD = "Referrable AMD";
-                }
             }
             else
             {
@@ -695,20 +688,13 @@ namespace IntuUploader.ViewModels
                 inboxAnalysisStatusModel.RightAIImpressionsDR = "Referrable DR";
 
             }
-            if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("PDR")))
+            if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.ToLower().Equals("amd")))
             {
-                if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NPDR")))
-                {
                     if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_AMD.Equals("NonGradable")))
                         inboxAnalysisStatusModel.RightAIImpressionsAMD = "Non-Referrable AMD";
                     else
                         inboxAnalysisStatusModel.RightAIImpressionsAMD = "Non-Gradable";
 
-                }
-                else
-                {
-                    inboxAnalysisStatusModel.RightAIImpressionsAMD = "Referrable AMD";
-                }
             }
             else
             {

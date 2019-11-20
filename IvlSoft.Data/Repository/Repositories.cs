@@ -4544,11 +4544,12 @@ namespace INTUSOFT.Data.Repository
 
         private static List<eye_fundus_image> _obs;
 
-        public static List<eye_fundus_image> Obs
+        public static List<eye_fundus_image> Visit_Obs
         {
             get { return _obs; }
             set { _obs = value; }
         }
+
         private static List<visit> _visits;
 
         public static List<visit> Visits
@@ -4682,7 +4683,7 @@ namespace INTUSOFT.Data.Repository
             {
                 _visit = value;
                 //Obs = _Repo.GetByCategory<obs>("visit", Active_Visit).ToList();
-                Obs = _visit.observations.Where(x => x.voided == false).OrderBy(x => x.createdDate).ToList();
+                Visit_Obs = _visit.observations.Where(x => x.voided == false).OrderBy(x => x.createdDate).ToList();
                 Reports = _Repo.GetAll<report>().Where(x => x.visit.visitId == _visit.visitId).ToList();
                 Reports = _visit.reports.Where(x => x.voided == false).OrderByDescending(x => x.createdDate).ToList();
                 
@@ -4769,6 +4770,7 @@ namespace INTUSOFT.Data.Repository
         }
 
         public static List<CloudAnalysisReport> CloudAnalysisReports { get => cloudAnalysisReports; set => cloudAnalysisReports = value; }
+        public static List<eye_fundus_image> Eye_Fundus_Images { get; set; }
 
         private static List<CloudAnalysisReport> cloudAnalysisReports;
     }

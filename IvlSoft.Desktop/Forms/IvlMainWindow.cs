@@ -1095,46 +1095,46 @@ namespace INTUSOFT.Desktop.Forms
             {
                 //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
                 {
-                    if (responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
+                    if (responseValue.LeftEyeDetails.Any() && NewDataVariables.Eye_Fundus_Images[indx].eyeSide == 'L')
                     {
                         if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("Gradable"))
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
                         else if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
                         {
                             if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
                             else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
                         }
 
 
                     }
                     else
-                        if (responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
+                        if (responseValue.RightEyeDetails.Any() && NewDataVariables.Eye_Fundus_Images[indx].eyeSide == 'R')
                     {
                         if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("Gradable"))
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
                         else if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
 
                         {
                             if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
                             else if (responseValue.RightEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
                         }
 
                     }
 
-                    changedObsList.Add(NewDataVariables.Obs[indx]);
-                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                        pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                    changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
                     else
                     {
-                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status;
+                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status;
                     }
 
 
@@ -1147,15 +1147,15 @@ namespace INTUSOFT.Desktop.Forms
             {
                 //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
                 {
-                    NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
-                    changedObsList.Add(NewDataVariables.Obs[indx]);
-                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                        pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                    NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
+                    changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
                     else
                     {
-                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status;
+                        pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status;
                     }
                     //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
                 }
@@ -1180,7 +1180,7 @@ namespace INTUSOFT.Desktop.Forms
                     #region Inbox Response
                     foreach (var fileInfo in fileInfos)
                     {
-                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
                         if (indx >= 0)
                         {
                             try
@@ -1216,11 +1216,11 @@ namespace INTUSOFT.Desktop.Forms
                     fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI)).GetFiles("*.json");
                     foreach (var fileInfo in fileInfos)
                     {
-                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
                         if (indx >= 0)
                         {
 
-                            if (NewDataVariables.Obs[indx].qi_DR_AMD_Status <= 3)
+                            if (NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status <= 3)
                             {
                                 UpdateResponse2PendingList(indx, fileInfo, changedObsList);
                             }
@@ -1237,21 +1237,21 @@ namespace INTUSOFT.Desktop.Forms
 
                     foreach (var fileInfo in fileInfos)
                     {
-                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
                         if (indx >= 0)
                         {
 
                             // if(NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Initialised)
                             {
-                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Initialised;
-                                changedObsList.Add(NewDataVariables.Obs[indx]);
-                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                                    pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Initialised;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                    pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
                                 else
                                 {
-                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                                    pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                                    pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status;
+                                    pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status;
                                 }
                             }
 
@@ -1265,22 +1265,22 @@ namespace INTUSOFT.Desktop.Forms
                     fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI)).GetFiles("*.json");
                     foreach (var fileInfo in fileInfos)
                     {
-                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
 
                         if (indx >= 0)
                         {
                             // if( NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Uploading)
                             {
-                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Uploading;
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Uploading;
-                                changedObsList.Add(NewDataVariables.Obs[indx]);
-                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                                    pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Uploading;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.Uploading;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                    pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
                                 else
                                 {
-                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                                    pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                                    pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status;
+                                    pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status;
                                 }
                             }
 
@@ -1293,22 +1293,22 @@ namespace INTUSOFT.Desktop.Forms
                     fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI)).GetFiles("*.json");
                     foreach (var fileInfo in fileInfos)
                     {
-                        int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
                         if (indx >= 0)
                         {
                             // if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Processing)
                             {
-                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Processing;
-                                NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Processing;
-                                changedObsList.Add(NewDataVariables.Obs[indx]);
-                                 if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id))
-                                                pending_eye_fundus_images.Add(NewDataVariables.Obs[indx]);
-                                            else
-                                            {
-                                                var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Obs[indx].eye_fundus_image_id);
-                                                pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Obs[indx].qi_DR_AMD_Status;
-                                                pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Obs[indx].qi_Glaucoma_Status;
-                                            }
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Processing;
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.Processing;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                 if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                     pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                else
+                                {
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_DR_AMD_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status;
+                                    pending_eye_fundus_images[indx1].qi_Glaucoma_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status;
+                                }
                             }
                         }
 
@@ -2357,7 +2357,7 @@ namespace INTUSOFT.Desktop.Forms
                 _eventHandler.Notify(_eventHandler.EnableDisableEmrButton, arg);
             }
 
-            if (NewDataVariables.Active_Obs == null || NewDataVariables.Obs.Count == 0)//if the active observation is null.
+            if (NewDataVariables.Active_Obs == null || NewDataVariables.Visit_Obs.Count == 0)//if the active observation is null.
             {
                 imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
                 this.thumbnailUI1.NoImages_Selected();//to select the no images selected label.
@@ -3348,19 +3348,19 @@ namespace INTUSOFT.Desktop.Forms
                     //NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voidedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voided = true;
-                    eye_fundus_image ImageToDelete = NewDataVariables.Obs.Find(x => x.value == new FileInfo(item).Name);
+                    eye_fundus_image ImageToDelete = NewDataVariables.Visit_Obs.Find(x => x.value == new FileInfo(item).Name);
                     ImageToDelete.lastModifiedDate = DateTime.Now;
                     ImageToDelete.voidedDate = DateTime.Now;
                     ImageToDelete.voided = true;
-                    NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(item).Name)] = ImageToDelete;
+                    NewDataVariables.Visit_Obs[NewDataVariables.Visit_Obs.FindIndex(x => x.value == new FileInfo(item).Name)] = ImageToDelete;
                     //NewIVLDataMethods.RemoveImage();
                 }
                 Patient pat = NewDataVariables.Patients.Find(x => x.personId == NewDataVariables.Active_Patient);
-                pat.visits.ToList()[pat.visits.ToList().FindIndex(x => x.visitId == NewDataVariables.Active_Visit.visitId)].observations = new HashSet<eye_fundus_image>(NewDataVariables.Obs);
+                pat.visits.ToList()[pat.visits.ToList().FindIndex(x => x.visitId == NewDataVariables.Active_Visit.visitId)].observations = new HashSet<eye_fundus_image>(NewDataVariables.Visit_Obs);
                 NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x => x.personId == NewDataVariables.Active_Patient)] = pat;
                 updatePatient();
                 NewDataVariables.Visits.Reverse();
-                NewDataVariables.Obs = pat.visits.ToList().Where(x => x.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].observations.ToList();
+               // NewDataVariables.Obs = pat.visits.ToList().Where(x => x.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].observations.ToList();
                 //List<obs> obs = NewDataVariables._Repo.GetByCategory<obs>("visit", NewDataVariables.Active_Visit).ToList();
                 // NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.ToList()[NewDataVariables.Active_Visit.visitId].observations.Where(y => y.observationId == NewDataVariables.Active_Obs.observationId).ToList()[0] = NewDataVariables.Active_Obs;
             }
@@ -3594,9 +3594,9 @@ namespace INTUSOFT.Desktop.Forms
             {
                 //if (!updatingThumbnails)
                 {
-                    if(NewDataVariables.Obs != null  && NewDataVariables.Active_Visit != null)
+                    if(NewDataVariables.Visit_Obs != null  && NewDataVariables.Active_Visit != null)
                     {
-                        List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
+                        List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Visit_Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
                         updatingThumbnails = true;
                         ChangedThumbnails.Reverse();
                         foreach (var eye_Fundus_Image in ChangedThumbnails)

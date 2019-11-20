@@ -1275,23 +1275,23 @@ namespace INTUSOFT.Desktop.Forms
                         #region Report From Application
                         if (!IVLVariables.isCommandLineArgsPresent)
                         {
-                            NewDataVariables.Obs = NewDataVariables.Obs.Where(x => x.voided == false).ToList();
-                            imageFileNames = new string[NewDataVariables.Obs.Count];
+                            NewDataVariables.Visit_Obs = NewDataVariables.Visit_Obs.Where(x => x.voided == false).ToList();
+                            imageFileNames = new string[NewDataVariables.Visit_Obs.Count];
 
-                            imgids = new int[NewDataVariables.Obs.Count];
-                            imgsides = new int[NewDataVariables.Obs.Count];
-                            imgannotated = new bool[NewDataVariables.Obs.Count];
-                            isCDR = new bool[NewDataVariables.Obs.Count];
-                            maskDetailsOfImages = new string[NewDataVariables.Obs.Count];//object maskDetailsOfImages created of type string (which holds Elements present in list Obs). By Ashutosh 22-08-2017
-                            cameraDetailsOfImages = new string[NewDataVariables.Obs.Count];//object maskDetailsOfImages created of type stringcameraSetting.By Ashutosh 31-08-2017.
-                            for (int i = 0; i < NewDataVariables.Obs.Count; i++)
+                            imgids = new int[NewDataVariables.Visit_Obs.Count];
+                            imgsides = new int[NewDataVariables.Visit_Obs.Count];
+                            imgannotated = new bool[NewDataVariables.Visit_Obs.Count];
+                            isCDR = new bool[NewDataVariables.Visit_Obs.Count];
+                            maskDetailsOfImages = new string[NewDataVariables.Visit_Obs.Count];//object maskDetailsOfImages created of type string (which holds Elements present in list Obs). By Ashutosh 22-08-2017
+                            cameraDetailsOfImages = new string[NewDataVariables.Visit_Obs.Count];//object maskDetailsOfImages created of type stringcameraSetting.By Ashutosh 31-08-2017.
+                            for (int i = 0; i < NewDataVariables.Visit_Obs.Count; i++)
                             {
                                 if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
-                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Obs[i].value;
+                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Visit_Obs[i].value;
                                 else
-                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Obs[i].value;
-                                imgids[i] = NewDataVariables.Obs[i].observationId;
-                                eye_fundus_image eyefi = NewDataVariables._Repo.GetById<eye_fundus_image>(NewDataVariables.Obs[i].observationId);
+                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Visit_Obs[i].value;
+                                imgids[i] = NewDataVariables.Visit_Obs[i].observationId;
+                                eye_fundus_image eyefi = NewDataVariables._Repo.GetById<eye_fundus_image>(NewDataVariables.Visit_Obs[i].observationId);
                                 if (eyefi.eyeSide == 'L')
                                     imgsides[i] = 1;
                                 else if (eyefi.eyeSide == 'R')
@@ -1783,7 +1783,7 @@ namespace INTUSOFT.Desktop.Forms
                     else
                     {
 
-                        NewDataVariables.Active_Obs = NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(thumbnailData.fileName).Name)];
+                        NewDataVariables.Active_Obs = NewDataVariables.Visit_Obs[NewDataVariables.Visit_Obs.FindIndex(x => x.value == new FileInfo(thumbnailData.fileName).Name)];
                         if (NewDataVariables.Active_Obs.eyeSide == 'L')
                             thumbnailData.side = 1;
                         else
