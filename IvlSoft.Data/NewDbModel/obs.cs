@@ -53,7 +53,8 @@ namespace INTUSOFT.Data.NewDbModel
             string checkSum,
             int QI_Dr_AMD_Status,
             int QI_Glaucoma_Status,
-            string QIFileName
+            string QIFileName,
+            string failure_msg
                  )
         {
             return new obs
@@ -81,8 +82,8 @@ namespace INTUSOFT.Data.NewDbModel
                 checkSum = checkSum,
                 qi_DR_AMD_Status = QI_Dr_AMD_Status,
                 qi_Glaucoma_Status = QI_Glaucoma_Status,
-                qiFileName = QIFileName
-
+                qiFileName = QIFileName,
+                failure_msg = failure_msg
                 //uuid=UUID
             };
         }
@@ -131,6 +132,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual string comments { get; set; }
         public virtual string qiFileName { get; set; }
+        public virtual string failure_msg { get; set; }
         
         public virtual string checkSum { get; set; }
         //public virtual string uuid { get; set; }

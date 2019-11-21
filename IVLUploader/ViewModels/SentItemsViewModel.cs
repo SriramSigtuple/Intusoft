@@ -131,7 +131,8 @@ namespace IntuUploader.ViewModels
                 }
                
                 logger.Info($"{analysisType.ToString("g")}  {fileIndx} {sentItemsDirFileInfoArr[fileIndx]}");
-               // if(activeFileCloudVM.ActiveFnf == null || !activeFileCloudVM.IsBusy)
+                // if(activeFileCloudVM.ActiveFnf == null || !activeFileCloudVM.IsBusy)
+                StartStopSentItemsTimer(false);
                 GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
             }
@@ -206,9 +207,13 @@ namespace IntuUploader.ViewModels
 
                             }
                     }
-                   
-                }
-                catch (Exception ex)
+                   else
+                    StartStopSentItemsTimer(true);
+
+
+
+            }
+            catch (Exception ex)
                 {
                     logger.Info(ex);
                     activeFileCloudVM.IsBusy = false;
@@ -227,7 +232,6 @@ namespace IntuUploader.ViewModels
 
                     //StartStopSentItemsTimer(false);
                     activeFileCloudVM.IsBusy = true;
-                    StartStopSentItemsTimer(!activeFileCloudVM.IsBusy);
                     StreamReader st = new StreamReader(fileInfo.FullName);
                     var json = st.ReadToEnd();
                     st.Close();
@@ -243,6 +247,9 @@ namespace IntuUploader.ViewModels
 
                     activeFileCloudVM.StartAnalsysisFlow();
                 }
+                else
+                    StartStopSentItemsTimer(true);
+
             }
             catch (Exception ex)
             {

@@ -1148,6 +1148,8 @@ namespace INTUSOFT.Desktop.Forms
                 //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
                 {
                     NewDataVariables.Eye_Fundus_Images[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
+                    NewDataVariables.Eye_Fundus_Images[indx].qi_Glaucoma_Status = (int)QIStatus.Failed;
+                    NewDataVariables.Eye_Fundus_Images[indx].failure_msg = responseValue.FailureMessage;
                     changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
                     if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
                         pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
@@ -3592,17 +3594,11 @@ namespace INTUSOFT.Desktop.Forms
         {
             if (!IVLVariables.isCommandLineAppLaunch)
             {
-                //if (!updatingThumbnails)
-                {
                     if(NewDataVariables.Visit_Obs != null  && NewDataVariables.Active_Visit != null)
                     {
-                        List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Visit_Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
                         updatingThumbnails = true;
-                        ChangedThumbnails.Reverse();
-                        foreach (var eye_Fundus_Image in ChangedThumbnails)
+                        foreach (var eye_Fundus_Image in NewDataVariables.Visit_Obs)
                         {
-                            //if (eye_Fundus_Image.visit.Equals(NewDataVariables.Active_Visit))
-                            {
                                 Args arg = new Args();
                                 ThumbnailData thumbnailData = new ThumbnailData
                                 {
@@ -3612,21 +3608,21 @@ namespace INTUSOFT.Desktop.Forms
                                     fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
                                     side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
                                     isAnnotated = eye_Fundus_Image.annotationsAvailable,
-                                    isCDR = eye_Fundus_Image.cdrAnnotationAvailable
+                                    isCDR = eye_Fundus_Image.cdrAnnotationAvailable,
+                                    failure_msg = eye_Fundus_Image.failure_msg
                                 };
                                 arg["ImgLoc"] = thumbnailData.fileName;
                                 arg["thumbnailData"] = thumbnailData;
-                                _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
+                                this.thumbnailUI1.UpdateQIStatus(thumbnailData);
                                 arg["eyefundusImage"] = eye_Fundus_Image;
                                 if(IVLVariables.pageDisplayed == PageDisplayed.Image)
                                 _eventHandler.Notify(_eventHandler.UpdateQIInfo, arg);
-                            }
-                            updatingThumbnails = false;
                         }
+                        updatingThumbnails = false;
+
                     }
-                  
-                  
-                }
+
+
 
             }
         }

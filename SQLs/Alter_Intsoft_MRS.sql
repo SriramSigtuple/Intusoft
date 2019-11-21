@@ -313,3 +313,23 @@ DELIMITER ;
 CALL ChangeQIStatus2QI_DR_Glaucoma_Status();
 COMMIT;
 
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
+drop procedure if exists add_qi_failure_msg_Col;
+CREATE PROCEDURE add_qi_failure_msg_Col() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'failure_msg';
+IF colName is null THEN 
+    ALTER TABLE  observation ADD failure_msg LONGTEXT;
+END IF; 
+
+END$$
+DELIMITER ;
+CALL add_qi_failure_msg_Col();
+COMMIT;

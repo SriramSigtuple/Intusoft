@@ -230,7 +230,8 @@ namespace IntuUploader.ViewModels
                     else if ((string)analysisStatus_JObject["status"] == "failure")
                     {
 
-                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result");
+                        var failure_message = analysisStatus_JObject["failure_reason"].ToString();
+                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result", failure_message);
                         //this.Dispose();
                         ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
                         ActiveCloudModel.GetAnalysisResultModel.CompletedStatus = true;
@@ -795,6 +796,7 @@ namespace IntuUploader.ViewModels
         {
             logger.Info("Iam Stage {0} Status Code {1}",stage, response.StatusCode);
             var failureObj = JObject.Parse(response.responseBody);
+            if(string.IsNullOrEmpty(failureMessage))
             failureMessage = (string)failureObj["message"];
             if (response.StatusCode == 0)
             {

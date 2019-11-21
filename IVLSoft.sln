@@ -175,6 +175,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignSurfaceManagerExt", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_UserControlLibrary", "WPF_UserControlLibrary\WPF_UserControlLibrary.csproj", "{EC598344-1250-401C-804F-609C138FCA68}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CB20FD8-E120-4327-824A-30A8545AEF2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLs", "SQLs", "{613AC757-00B5-4861-A450-8F94A4D36470}"
+	ProjectSection(SolutionItems) = preProject
+		SQLs\Alter_Intsoft_MRS.sql = SQLs\Alter_Intsoft_MRS.sql
+		SQLs\Change_person_atrribute_valueSize.sql = SQLs\Change_person_atrribute_valueSize.sql
+		SQLs\create_Intsoft_MRS.sql = SQLs\create_Intsoft_MRS.sql
+		SQLs\Grant_All_Previleges.sql = SQLs\Grant_All_Previleges.sql
+		SQLs\Intusoft-runtime.properties = SQLs\Intusoft-runtime.properties
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +343,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{613AC757-00B5-4861-A450-8F94A4D36470} = {9CB20FD8-E120-4327-824A-30A8545AEF2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC6FA9FE-1394-4D31-8D08-247A41528BBD}

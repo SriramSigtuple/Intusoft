@@ -328,6 +328,7 @@ CREATE TABLE `observation` (
   `last_sent_date` datetime DEFAULT NULL,
   `check_sum` LONGTEXT  NULL,
   `qi_filename` LONGTEXT  NULL,
+  `failure_msg` LONGTEXT  NULL,
   `qi_dr_amd_status` tinyint(1) NOT NULL DEFAULT '0',
   `qi_glaucoma_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`observation_id`),
