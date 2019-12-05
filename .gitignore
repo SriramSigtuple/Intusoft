@@ -486,3 +486,8 @@ IVLConfiguration/bin/
 /ImageListView/ImageListView.cs.bak
 /IVLUploaderTestProject/bin/
 /IVLUploaderTestProject/obj/
+/.vscode/
+/CreateOrAlterDB/bin/
+/CreateOrAlterDB/obj/
+/WPF_UserControlLibrary/bin/
+/WPF_UserControlLibrary/obj/

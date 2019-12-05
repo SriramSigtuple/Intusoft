@@ -1832,7 +1832,6 @@ namespace AssemblySoftware
                     System.Diagnostics.Process.Start(Path.GetDirectoryName(SaveDirectoryPath));
 
                 //  ofd.InitialDirectory = SaveDirectoryPath;
-                string fileName = "";
             }
             catch (Exception ex)
             {
@@ -2024,9 +2023,9 @@ namespace AssemblySoftware
         }
         private void applyAGain()
         {
-            int[] rgb = new int[3];
-            int temp = 0;
-            int tint = 0;
+            // int[] rgb = new int[3];
+            // int temp = 0;
+            // int tint = 0;
             //ivl_camera.SetRGB(rgb, out temp, out tint);
 
         }
@@ -2274,7 +2273,6 @@ namespace AssemblySoftware
                 FileInfo finf = new FileInfo(fileName);
                 FileInfo[] finfArr = finf.Directory.GetFiles("*.png").OrderBy(x => x.CreationTime).ToArray();
                 // Capture cap = new Capture(fileName);
-                int count = 0;
                 afList = new List<AssistedFocus>();
                 // while ((bgrImg = cap.QueryFrame()) != null)
                 List<int> focusValues = new List<int>();
@@ -4498,7 +4496,6 @@ namespace AssemblySoftware
 
                 colorBm = new Bitmap(3072, 2048, PixelFormat.Format24bppRgb);
                 ushort[] tempVal = new ushort[rawBytes.Length / 2]; // Array.Convert(src, b => (UInt16)b);
-                int sum = 0;
                 Buffer.BlockCopy(rawBytes, 0, tempVal, 0, rawBytes.Length);
                 GCHandle pinnedArray1 = GCHandle.Alloc(tempVal, GCHandleType.Pinned);
                 IntPtr pointer1 = pinnedArray1.AddrOfPinnedObject();

@@ -423,13 +423,10 @@ namespace IVLReport
                     NoImagelabelvisible();
                 }
                 LayoutDetails.Current.Orientation = (LayoutDetails.PageOrientation)Enum.Parse(typeof(LayoutDetails.PageOrientation), _dataModel.ReportData["$CurrentTemplateName"].ToString().ToUpper() + "_" + _dataModel.ReportData["$CurrentTemplateSize"].ToString());
-                for (int i = 0; i < 3; i++)
-                {
                     SetCurrentOrientationAndSize();
                     ChangeTemplate();
                     IntitializeSizeAndOrientaionControls(reportSize);
 
-                }
                 //setToolsStripLabels();
             }
             reportDefaultCursor();
@@ -1589,6 +1586,8 @@ namespace IVLReport
                  writeValuesToTheBindingType();//Writes the values from the report data to the controls in the report canvas and to the correcponding binding type in reportControlStructureList.
 
                 //this.p.Scale(scaleFactor);
+                if (this.reportCanvas_pnl.Controls.Count > 0)
+                    this.reportCanvas_pnl.Controls.Clear();
                 this.reportCanvas_pnl.Controls.Add(p);
                 
                 isUpdateImages = UpdateImages(_dataModel.CurrentImgFiles);//updates images of the image panel in the report canvas and changes the no of row and column for the image panel.

@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Enums;
 using Common.ValidatorDatas;
 using INTUSOFT.Configuration;
 using INTUSOFT.Custom.Controls;
@@ -27,12 +28,23 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-
+using GainLevels = INTUSOFT.Imaging.GainLevels;
+using Intusoft.WPF.UserControls;
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class IvlMainWindow : BaseGradientForm
     {
         #region variables and constants
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         static Logger exceptionLog = LogManager.GetLogger("ExceptionLog");
         Login_UCL loginScreen;
         //UI_Camera cameraUI;
@@ -43,16 +55,18 @@ namespace INTUSOFT.Desktop.Forms
         IVLEventHandler _eventHandler;
         PatDetails_UC ActivePatUI;
         DataBaseServiceAndConnection dataBaseServerConnection;
-
-        delegate void DelegateUpdateCloudValues(List<CloudAnalysisReport> models);
+        List<CloudAnalysisReport> pendingCloudAnalysisReports;
+        List<eye_fundus_image> pending_eye_fundus_images;
+        delegate void DelegateUpdateCloudValues();
         private DelegateUpdateCloudValues m_DelegateUpdateCloudValues;
 
-        delegate void DelegateUpdateObsValues(List<eye_fundus_image> models);
+        delegate void DelegateUpdateObsValues();
         private DelegateUpdateObsValues delegateUpdateObsValues;
 
         System.Diagnostics.Stopwatch stW;
         Process p;
         SplashScreen splashScreen;
+        ElementHost elementHost;
         Imaging_UC imaging_UC;
         System.Timers.Timer serverTimer;// old system.timer 
         System.Threading.Timer databaseTimer;
@@ -126,7 +140,7 @@ namespace INTUSOFT.Desktop.Forms
         public IvlMainWindow()
         {
             IVLVariables.GradientColorValues = new Desktop.GradientColor();
-
+            ExceptionLogWriter._exceptionOccuredEvent += ExceptionLogWriter__exceptionOccuredEvent;
             #region Read or write the prerequisite json file
             try
             {
@@ -230,15 +244,16 @@ namespace INTUSOFT.Desktop.Forms
             dataBaseServerConnection = new DataBaseServiceAndConnection(mysqlServiceName + con.sqlServiceText);
             IVLVariables.CurrentSettings.CameraSettings._LiveDigitalGain.min = 0;
             IVLVariables.CurrentSettings.CameraSettings._DigitalGain.min = 0;
-
+            
             #region below block of code has been added to read the db name , user name and password for db connection string
            
             var data = new Dictionary<string, string>();
+            var runtimePath = @"SQLs\Intusoft-runtime.properties";
             if (!IVLVariables.isCommandLineArgsPresent)
             {
-                if (File.Exists("Intusoft-runtime.properties"))
+                if (File.Exists(runtimePath))
                 {
-                    foreach (var row in File.ReadAllLines("Intusoft-runtime.properties"))
+                    foreach (var row in File.ReadAllLines(runtimePath))
                         data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
                     NHibernateHelper_MySQL.dbName = data["connection.DBname"];
                     NHibernateHelper_MySQL.userName = data["connection.username"];
@@ -249,7 +264,20 @@ namespace INTUSOFT.Desktop.Forms
                     NHibernateHelper_MySQL.WarningText = IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo);
                     NHibernateHelper_MySQL.WarningHeader = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo);
                     NewDataVariables._Repo = Repository.GetInstance();
-                    databaseTimer = new System.Threading.Timer(CheckDatabaseConnectivity,null,0,databaseTimerIntervel);
+                    Process process = new Process();
+                    if (File.Exists(@"CreateOrAlterDB.exe"))
+                    {
+                        process.StartInfo = new ProcessStartInfo(@"CreateOrAlterDB.exe");
+                        process.Start();
+
+                    }
+                    while(!process.HasExited)
+                    {
+                        ;
+                    }
+
+                    //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
+                    
                 }
                 else
                 {
@@ -268,18 +296,18 @@ namespace INTUSOFT.Desktop.Forms
             else if (IVLVariables.CurrentSettings.UserSettings._Language.val.ToString().Equals("Spanish") || IVLVariables.CurrentSettings.UserSettings._Language.val.ToString().Equals("es"))
                 selcetedLanguage = "es";
             IVLVariables.LangResourceCultureInfo = CultureInfo.CreateSpecificCulture(selcetedLanguage);
+            InternetCheckViewModel.Settings = IVLVariables.CurrentSettings;
+            InternetCheckViewModel.CultureInfo = IVLVariables.LangResourceCultureInfo;
+            InternetCheckViewModel.ResourceManager = IVLVariables.LangResourceManager;
             serverTimer = new System.Timers.Timer();
             serverTimer.Elapsed += serverTimer_Elapsed;
             serverTimer.Interval = 60000;// Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._CameraPowerTimerInterval.val);
-            IVLVariables.ReportListVM = ReportListVM.GetInstance();
+            //IVLVariables.ReportListVM = ReportListVM.GetInstance();
 
-            InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
+            //InternetStatusUCL internetStatusUCL = new InternetStatusUCL();
 
             InitializeComponent();
-           
-            elementHost1.Dock = DockStyle.Fill;
-            elementHost1.Child = internetStatusUCL;
-            this.InternetCheck_p.Controls.Add(elementHost1);
+
 
             IVLVariables.IVLThemes = Themes.GetInstance();
             IVLVariables.IVLThemes.GetAllThemeNames();
@@ -486,10 +514,9 @@ namespace INTUSOFT.Desktop.Forms
                 imaging_UC = Imaging_UC.GetInstance();
 
             UpdateFontForeColor();
-            m_DelegateUpdateCloudValues = new DelegateUpdateCloudValues(this.UpdateCloudFiles);
+            m_DelegateUpdateCloudValues = new DelegateUpdateCloudValues(this.UpdateCloudReport2DB);
 
-            delegateUpdateObsValues = new DelegateUpdateObsValues(this.UpdateObservationResultsFromCloud);
-
+            delegateUpdateObsValues = new DelegateUpdateObsValues(this.UpdateQIAnalysis2DB);
             #region Create Cloud Directories
             if (!Directory.Exists(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val))
                 Directory.CreateDirectory(IVLVariables.CurrentSettings.CloudSettings.CloudPath.val);
@@ -537,10 +564,20 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
 
             LaunchUploader();
+            pendingCloudAnalysisReports = new List<CloudAnalysisReport>();
+            pending_eye_fundus_images = new List<eye_fundus_image>();
+
+
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
            
             //reportListView.Parent = this.reportGridView_p;
+        }
+
+        private void ExceptionLogWriter__exceptionOccuredEvent()
+        {
+            UpdateCloudReport2DB();
+            UpdateQIAnalysis2DB();
         }
 
         private void LaunchUploader()
@@ -550,6 +587,9 @@ namespace INTUSOFT.Desktop.Forms
             {
                 process.StartInfo = new ProcessStartInfo(@"Uploader\IntuUploader.exe");
                 process.Start();
+
+                //// Hide
+                //ShowWindow(pro, SW_HIDE);
 
             }
         }
@@ -816,321 +856,519 @@ namespace INTUSOFT.Desktop.Forms
         
         private void ThumbnailUI1__ThumbnailCountChangedDelegate(int count) => noOfImagesSelected_lbl.Text = count.ToString() + IVLVariables.LangResourceManager.GetString("ImagesSelected_Text", IVLVariables.LangResourceCultureInfo);
 
+
+
+        private void UpdateResponse2ReportList(int indx, FileInfo fileInfo, List<CloudAnalysisReport> changedCloudAnalysisReports)
+        {
+            StreamReader st = new StreamReader(fileInfo.FullName);
+            var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+            st.Close();
+            st.Dispose();
+
+            if (responseValue.Status == "success")
+            {
+                //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
+                {
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
+
+                    CreateCloudReport(responseValue);
+                    NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = $"{responseValue.LeftAIImpressionsDR},{responseValue.LeftAIImpressionsAMD},{responseValue.LeftAIImpressionsGlaucoma}";
+                    NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = $"{responseValue.RightAIImpressionsDR},{responseValue.RightAIImpressionsAMD},{responseValue.RightAIImpressionsGlaucoma}";
+                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                        pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    else
+                    {
+                        var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                        pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                    }
+
+                }
+
+            }
+            else if (responseValue.Status == "failure")
+            {
+                //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
+                {
+                    NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
+                    NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
+                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                    changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                        pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                    else
+                    {
+                        var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                        pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                    }
+
+                }
+
+            }
+        }
+
+
+
         /// <summary>
         /// To check the files in inbox directory and move it to read directory
         /// </summary>
         /// <param name="state"></param>
-        private void InboxCheck(object state)
+        private void InboxAnalysisCheck(object state)
         {
-            InboxQICheck(new object());
+            //InboxQICheck(new object());
 
             try
             {
-                List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
-                #region Inbox Response
-                foreach (var fileInfo in fileInfos)
+                if(!isInboxCloudReportsBusy)
                 {
-                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
-                    if (indx >= 0)
+                    isInboxCloudReportsBusy = true;
+                    List<CloudAnalysisReport> changedCloudAnalysisReports = new List<CloudAnalysisReport>();
+                    FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
+                    #region Inbox Response
+                    foreach (var fileInfo in fileInfos)
                     {
-
-                        try
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                        if (indx >= 0)
                         {
-                            var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
-                            if (File.Exists(pendingFile))
+
+                            try
                             {
-                                StreamReader st = new StreamReader(fileInfo.FullName);
-                                var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                                st.Close();
-                                st.Dispose();
-
-                                if (responseValue.Status == "success")
+                                var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
+                                if (File.Exists(pendingFile))
                                 {
-                                    //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 4)
-                                    {
-                                        NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 4;
-
-                                        CreateCloudReport(responseValue);
-                                        NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = responseValue.LeftAIImpressions;
-                                        NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = responseValue.RightAIImpressions;
-                                        //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                        changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-
-                                    }
-
+                                    UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
                                 }
-                                else if (responseValue.Status == "failure")
+
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
+                            }
+
+
+                        }
+
+
+                    }
+                    #endregion
+
+
+                    #region Read Responses
+
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                        if(indx >= 0)
+                        {
+                            if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus <= 3)
+                            {
+                                UpdateResponse2ReportList(indx, fileInfo, changedCloudAnalysisReports);
+                            }
+                        }
+                       
+
+                    }
+
+                    #endregion
+
+                    #region Outbox Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)).GetFiles("*.json");
+
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                        if (indx >= 0)
+                        {
+
+                            if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Initialized)
+                            {
+                                NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
+                                changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                                    pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                else
                                 {
-                                    //if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != 5)
-                                    {
-                                        NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
-                                        NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
-                                        //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
-                                        changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-
-
-                                    }
-
+                                    var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                                    pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
                                 }
                             }
-                          
+
 
                         }
-                        catch (Exception ex)
-                        {
-                            Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
-
-                        }
-
 
                     }
 
+                    #endregion
 
-                }
-                #endregion
-
-                #region Outbox Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.Fundus)).GetFiles("*.json");
-
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
-                    if (indx >= 0)
+                    #region Active Directory Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
                     {
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
 
-                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Initialized)
+                        if (indx >= 0)
                         {
-                            NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
-                            changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                            if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Uploading)
+                            {
+
+                                NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Uploading;
+                                changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                                    pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                else
+                                {
+                                    var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                                    pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                                }
+                            }
+
                         }
-
-                           
                     }
-                       
-                }
+                    #endregion
 
-                #endregion
-
-                #region Active Directory Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.Fundus)).GetFiles("*.json");
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
-
-                    if (indx >= 0)
+                    #region Sent items Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.Fundus)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
                     {
-                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Uploading)
+                        int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
+                        if (indx >= 0)
                         {
-
-                        NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Uploading;
-                        changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                            if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Processing)
+                            {
+                                NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
+                                changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
+                                    pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
+                                else
+                                {
+                                    var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId);
+                                    pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus;
+                                }
+                            }
 
                         }
-                           
-                    }
-                }
-                #endregion
 
-                #region Sent items Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir,AnalysisType.Fundus)).GetFiles("*.json");
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.CloudAnalysisReports.FindIndex(x => x.fileName == fileInfo.Name);
-                    if (indx >= 0)
+                    }
+                    #endregion
+                    if (changedCloudAnalysisReports.Any())
+                        UpdateCloudFiles(changedCloudAnalysisReports);
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
+                        {
+                         if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
                     {
-                        if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Processing)
-                        {
-                         NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
-                        changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
-                        }
-                       
+                        Args arg = new Args();
+                        _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
                     }
 
+                }));
+                    
+                   
+                    isInboxCloudReportsBusy = false;
                 }
-                #endregion
-                if(changedCloudAnalysisReports.Any())
-                UpdateCloudFiles(changedCloudAnalysisReports);
-
-                if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
-                {
-                    Args arg = new Args();
-                    _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
-                }
+              
             }
             catch (Exception ex)
             {
+                isInboxCloudReportsBusy = false;
                 Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
             }
 
 
         }
+
+
+        private void UpdateResponse2PendingList(int indx, FileInfo fileInfo, List<eye_fundus_image> changedObsList)
+        {
+            StreamReader st = new StreamReader(fileInfo.FullName);
+            var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
+            st.Close();
+            st.Dispose();
+
+            if (responseValue.Status == "success")
+            {
+                //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
+                {
+                    if (responseValue.LeftEyeDetails.Any() && NewDataVariables.Eye_Fundus_Images[indx].eyeSide == 'L')
+                    {
+                        if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("Gradable"))
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Gradable;
+                        else if (responseValue.LeftEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.NonGradable;
+
+
+                    }
+                    else
+                        if (responseValue.RightEyeDetails.Any() && NewDataVariables.Eye_Fundus_Images[indx].eyeSide == 'R')
+                    {
+                        if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("Gradable"))
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Gradable;
+                        else if (responseValue.RightEyeDetails[0].QI_Result_DR.Equals("NonGradable"))
+                            NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.NonGradable;
+
+
+                    }
+
+                    changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    else
+                    {
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Status;
+                    }
+
+
+                    //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
+
+                }
+
+            }
+            else if (responseValue.Status == "failure")
+            {
+                //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
+                {
+                    NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Failed;
+                    NewDataVariables.Eye_Fundus_Images[indx].failure_msg = responseValue.FailureMessage;
+                    changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                    else
+                    {
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Status;
+                    }
+                    //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
+                }
+
+            }
+        }
+
+
+
         bool isQIUpdating = false;
         private void InboxQICheck(object state)
         {
             try
             {
-                if(!isQIUpdating)
+                if (!isQIUpdating)
                 {
                     isQIUpdating = true;
-               
-                List<eye_fundus_image> changedObsList = new List<eye_fundus_image>();
 
-                FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
-                #region Inbox Response
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
-                    if (indx >= 0)
+                    List<eye_fundus_image> changedObsList = new List<eye_fundus_image>();
+
+                    FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
+                    #region Inbox Response
+                    foreach (var fileInfo in fileInfos)
                     {
-                        try
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        if (indx >= 0)
                         {
-                            var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
-                            if (File.Exists(pendingFile))
+                            try
                             {
-                                StreamReader st = new StreamReader(fileInfo.FullName);
-                                var responseValue = JsonConvert.DeserializeObject<Cloud_Models.Models.InboxAnalysisStatusModel>(st.ReadToEnd());
-                                st.Close();
-                                st.Dispose();
+                                var pendingFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_pending";
+                                var doneFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done";
+                                var actualFile = fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0];
 
-                                if (responseValue.Status == "success")
+                                if (File.Exists(pendingFile))
                                 {
-                                    //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Gradable && NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.NonGradable)
-                                    {
-                                        if(responseValue.LeftEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'L')
-                                        {
-                                            if (responseValue.LeftEyeDetails[0].QI_Result.Equals("Gradable"))
-                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                            else if (responseValue.LeftEyeDetails[0].QI_Result.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_DR_AMD_Status =(int) QIStatus.NonGradable;
-
-                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
-
-                                            }
-                                        else
-                                            if(responseValue.RightEyeDetails.Any() && NewDataVariables.Obs[indx].eyeSide == 'R')
-                                        {
-                                            if (responseValue.RightEyeDetails[0].QI_Result.Equals("Gradable"))
-                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Gradable;
-                                            else if (responseValue.RightEyeDetails[0].QI_Result.Equals("NonGradable"))
-                                                NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.NonGradable;
-
-                                                if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("Gradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Gradable;
-                                                else if (responseValue.LeftEyeDetails[0].QI_Result_Glaucoma.Equals("NonGradable"))
-                                                    NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.NonGradable;
-                                            }
-
-                                        changedObsList.Add(NewDataVariables.Obs[indx]);
-                                        //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
-
-                                    }
-
+                                    UpdateResponse2PendingList(indx, fileInfo, changedObsList);
                                 }
-                                else if (responseValue.Status == "failure")
-                                {
-                                    //if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Failed)
-                                    {
-                                        NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Failed;
-                                        changedObsList.Add(NewDataVariables.Obs[indx]);
-                                        //File.Move(pendingFile, fileInfo.Directory.FullName + Path.DirectorySeparatorChar + fileInfo.Name.Split('.')[0] + "_done");
-                                    }
+                                
 
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
+                            }
+
+
+                        }
+
+
+                    }
+                    #endregion
+
+
+                    #region Read Responses
+
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        if (indx >= 0)
+                        {
+
+                            if (NewDataVariables.Eye_Fundus_Images[indx].qi_Status <= 3)
+                            {
+                                UpdateResponse2PendingList(indx, fileInfo, changedObsList);
+                            }
+                        }
+
+                    }
+                    
+
+                    #endregion
+
+
+                    #region Outbox Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI)).GetFiles("*.json");
+
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        if (indx >= 0)
+                        {
+
+                            // if(NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Initialised)
+                            {
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Initialised;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                    pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                else
+                                {
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Status;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    #endregion
+
+                    #region Active Directory Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
+                    {
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
+
+                        if (indx >= 0)
+                        {
+                            // if( NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Uploading)
+                            {
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Uploading;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                    pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                else
+                                {
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Status;
                                 }
                             }
 
 
                         }
-                        catch (Exception ex)
-                        {
-                            Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
-
-                        }
-
-
                     }
+                    #endregion
 
-
-                }
-                #endregion
-
-                #region Outbox Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI)).GetFiles("*.json");
-
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
-                    if (indx >= 0)
+                    #region Sent items Response
+                    fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI)).GetFiles("*.json");
+                    foreach (var fileInfo in fileInfos)
                     {
-                        
-                       // if(NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Initialised)
+                        int indx = NewDataVariables.Eye_Fundus_Images.FindIndex(x => x.qiFileName == fileInfo.Name);
+                        if (indx >= 0)
                         {
-                              NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Initialised;
-                              changedObsList.Add(NewDataVariables.Obs[indx]);
+                            // if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Processing)
+                            {
+                                NewDataVariables.Eye_Fundus_Images[indx].qi_Status = (int)QIStatus.Processing;
+                                changedObsList.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                 if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id))
+                                     pending_eye_fundus_images.Add(NewDataVariables.Eye_Fundus_Images[indx]);
+                                else
+                                {
+                                    var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == NewDataVariables.Eye_Fundus_Images[indx].eye_fundus_image_id);
+                                    pending_eye_fundus_images[indx1].qi_Status = NewDataVariables.Eye_Fundus_Images[indx].qi_Status;
+                                }
+                            }
                         }
-                      
+
                     }
-
-                }
-
-                #endregion
-
-                #region Active Directory Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.ActiveDir, AnalysisType.QI)).GetFiles("*.json");
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
-
-                    if (indx >= 0)
+                    #endregion
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
                     {
-                      // if( NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Uploading)
-                        {
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Uploading;
-                            NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Uploading;
-                                changedObsList.Add(NewDataVariables.Obs[indx]);
-                        }
-                      
+                        RefreshThumbnails();
+                        }));
+                    //RefreshThumbnails();
 
-                    }
-                }
-                #endregion
-
-                #region Sent items Response
-                fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.SentItemsDir, AnalysisType.QI)).GetFiles("*.json");
-                foreach (var fileInfo in fileInfos)
-                {
-                    int indx = NewDataVariables.Obs.FindIndex(x => x.qiFileName == fileInfo.Name);
-                    if (indx >= 0)
+                    if (changedObsList.Any())
                     {
-                       // if (NewDataVariables.Obs[indx].qiStatus != (int)QIStatus.Processing)
-                        {
-                            NewDataVariables.Obs[indx].qi_DR_AMD_Status = (int)QIStatus.Processing;
-                            NewDataVariables.Obs[indx].qi_Glaucoma_Status = (int)QIStatus.Processing;
-                            changedObsList.Add(NewDataVariables.Obs[indx]);
-                        }
+                        UpdateObservationResultsFromCloud(changedObsList);
                     }
-
-                }
-                #endregion
-                RefreshThumbnails();
-
-                if (changedObsList.Any())
-                {
-                    UpdateObservationResultsFromCloud(changedObsList);
-                }
                     isQIUpdating = false;
                 }
             }
             catch (Exception ex)
             {
+                isQIUpdating = false;
                 Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
             }
         }
+        
+        public void UpdateQIAnalysis2DB()
+        {
+            if(this.InvokeRequired)
+            {
+                this.Invoke(delegateUpdateObsValues);
+            }
+            if(inboxQITimer != null)
+            {
+                inboxQITimer.Change(-1, -1);
+
+                while (isQIUpdating)
+                {
+                    ;
+                }
+                foreach (var item in pending_eye_fundus_images)
+                {
+                    if (NewDataVariables._Repo.Update(item))
+                    {
+                        //pending_eye_fundus_images[pending_eye_fundus_images.FindIndex(x => x.Item1.eye_fundus_image_id == item.Item1.eye_fundus_image_id)].Item2 = true;
+                    }
+                }
+                inboxQITimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+            }
+          
+
+        }
+
+        public  void UpdateCloudReport2DB()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(m_DelegateUpdateCloudValues);
+            }
+            if (inboxTimer != null)
+            {
+                inboxTimer.Change(-1, -1);
+                while (isInboxCloudReportsBusy)
+                {
+                    ;
+                }
+                foreach (var item in pendingCloudAnalysisReports)
+                {
+                    if (NewDataVariables._Repo.Update(item))
+                    {
+                        // pendingCloudAnalysisReports.Remove(item);
+                    }
+                }
+                inboxTimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+            }
+            
+
+        }
+
 
         /// <summary>
         /// To update the ai reports in the database
@@ -1138,17 +1376,17 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="cloudAnalysisReports"></param>
         private void UpdateCloudFiles(List<CloudAnalysisReport> cloudAnalysisReports)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(m_DelegateUpdateCloudValues, cloudAnalysisReports);
-            }
-            else
+            //if (this.InvokeRequired)
+            //{
+            //    this.Invoke(m_DelegateUpdateCloudValues, cloudAnalysisReports);
+            //}
+            //else
             {
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
 
                 foreach (var item in cloudAnalysisReports)
                 {
-                  if( NewDataVariables._Repo.Update<CloudAnalysisReport>(item))
+                  //if( NewDataVariables._Repo.Update<CloudAnalysisReport>(item))
                     {
                         List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.fileName).ToList();
                         if (resultList.Any() && (item.cloudAnalysisReportStatus == (int) CloudReportStatus.View || item.cloudAnalysisReportStatus == (int) CloudReportStatus.Failed))
@@ -1161,31 +1399,40 @@ namespace INTUSOFT.Desktop.Forms
                             if (File.Exists(pendingFile))
                             {
                                 File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.Fundus), resultList[0].Name));
+                                if (File.Exists(doneFile))
+                                    File.Delete(doneFile);
                                 File.Move(pendingFile, doneFile);
                             }
                         }
-                   
+                        if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == item.cloudAnalysisReportId))
+                            pendingCloudAnalysisReports.Add(item);
+                        else
+                        {
+                            var indx1 = pendingCloudAnalysisReports.FindIndex(x => x.cloudAnalysisReportId == item.cloudAnalysisReportId);
+                            pendingCloudAnalysisReports[indx1].cloudAnalysisReportStatus = item.cloudAnalysisReportStatus;
+                        }
+
                     }
                 }
                  
             }
         }
 
+        bool isInboxCloudReportsBusy = false;
         private void UpdateObservationResultsFromCloud(List<eye_fundus_image> eye_Fundus_Images)
         {
-            if(this.InvokeRequired)
-            {
-                this.Invoke(delegateUpdateObsValues, eye_Fundus_Images);
-            }
-
+            //if(this.InvokeRequired)
+            //{
+            //    this.Invoke(delegateUpdateObsValues, eye_Fundus_Images);
+            //}
+           
             foreach (var item in eye_Fundus_Images)
             {
-                if (NewDataVariables._Repo.Update<eye_fundus_image>(item))
-                {
+               // if (NewDataVariables._Repo.Update<eye_fundus_image>(item))
                     FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.QI)).GetFiles("*.json");
 
                     List<FileInfo> resultList = fileInfos.Where(x => x.Name == item.qiFileName).ToList();
-                    var itemQIStatus = item.qi_DR_AMD_Status == (int)QIStatus.Failed || item.qi_DR_AMD_Status == (int)QIStatus.Gradable || item.qi_DR_AMD_Status == (int)QIStatus.NonGradable;
+                    var itemQIStatus = item.qi_Status == (int)QIStatus.Failed || item.qi_Status == (int)QIStatus.Gradable || item.qi_Status == (int)QIStatus.NonGradable;
                     if (resultList.Any() && itemQIStatus)
                     {
                         var pendingFile = resultList[0].Directory.FullName + Path.DirectorySeparatorChar + resultList[0].Name.Split('.')[0] + "_pending";
@@ -1196,12 +1443,22 @@ namespace INTUSOFT.Desktop.Forms
                         if (File.Exists(pendingFile))
                         {
                             File.Move(resultList[0].FullName, Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.ReadDir, AnalysisType.QI), resultList[0].Name));
+                            if (File.Exists(doneFile))
+                            File.Delete(doneFile);
                             File.Move(pendingFile, doneFile);
                         }
+                    if (!pending_eye_fundus_images.Any(x => x.eye_fundus_image_id ==item.eye_fundus_image_id))
+                        pending_eye_fundus_images.Add(item);
+                    else
+                    {
+                        var indx1 = pending_eye_fundus_images.FindIndex(x => x.eye_fundus_image_id == item.eye_fundus_image_id);
+                        pending_eye_fundus_images[indx1].qi_Status = item.qi_Status;
                     }
 
                 }
+
             }
+
         }
 
         /// <summary>
@@ -1250,8 +1507,8 @@ namespace INTUSOFT.Desktop.Forms
                         }
                     }
                     arg["isImaging"] = false;
-                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
-                    _eventHandler.Notify(_eventHandler.LoadImageFromFileViewingScreen, arg);
+                    _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);// if in live go to view screen
+                    _eventHandler.Notify(_eventHandler.LoadImageFromFileViewingScreen, arg);// show the image 
 
                 }
             }
@@ -1327,6 +1584,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
 
             }
+
             #endregion
         }
 
@@ -1447,6 +1705,8 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="state"></param>
         private void CheckDatabaseConnectivity(object state)
         {
+
+
             if (dataBaseServerConnection.GetMysqlServiceStatus())
             {
                 if (dataBaseServerConnection.GetDataBaseConnectionStatus())
@@ -1475,6 +1735,7 @@ namespace INTUSOFT.Desktop.Forms
                     }
                     CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("DatabaseNotConnectedToolTip_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK);
                     INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating = true;
+
                     Application.Exit();
                 }
             }
@@ -1485,9 +1746,11 @@ namespace INTUSOFT.Desktop.Forms
                     MysqlServiceConnection_lbl.Image = serviceNotAvaiable;
                     MysqlServiceConnection_lbl.ToolTipText = IVLVariables.LangResourceManager.GetString("MysqlServiceNotAvailableToolTip_Text", IVLVariables.LangResourceCultureInfo);
                 }
+
                 CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("OneOfTheServicesNotRunning_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("SaveAs_Warning_Header", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK);
                 Application.Exit();
             }
+            databaseTimer.Change(0, databaseTimerIntervel); 
         }
 
 
@@ -1511,150 +1774,163 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="e"></param>
         private void IvlMainWindow_Load(object sender, EventArgs e)
         {
-            //int dayOfTheWeek = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorCaptureSteps.val);
-            //int month = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorPlySteps.val);
-            //List<Patient> pats = NewDataVariables._Repo.GetPageData<Patient>(500, 1).ToList().Where(x=>x.createdDate.Day == dayOfTheWeek && x.createdDate.Month == month ).ToList();
-            //StreamWriter stW = new StreamWriter("Data_"+dayOfTheWeek.ToString()+".csv");
-            //foreach (Patient item in pats)
-            //{
-            //    string str = item.identifiers.ToList()[0].value.ToString()+","+ item.firstName +","+ item.lastName +","+item.gender +","+(DateTime.Now.Year -  item.birthdate.Year).ToString() +",";
-            //    foreach (visit visitItem in item.visits)
-            //    {
-            //        if (visitItem.observations.Where(x=>x.voided == false).ToList().Count > 0)
-            //        {
-            //            if (visitItem.reports.Count > 0)
-            //            {
-            //                report r = visitItem.reports.ToList()[visitItem.reports.Count - 1];
-            //                IVLReport.JsonReportModel dataJson = (IVLReport.JsonReportModel)JsonConvert.DeserializeObject(r.dataJson, typeof(IVLReport.JsonReportModel));
-            //                str += dataJson.reportValues.Where(x=>x.Key == "Comments").ToList()[0].Value.ToString();
-            //            }
-            //        }
-            //    }
-            //    stW.WriteLine(str);
-            // }
-            //stW.Flush();
-            //stW.Close();
-            //stW.Dispose();
-            Process p = new Process();
-            p.StartInfo = new ProcessStartInfo("AdobeCheckOSVersionInfo.exe");
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.UseShellExecute = false;
-            p.Start();
-            p.WaitForExit();
-            string adobeInfoJson = File.ReadAllText("AdobeOsInfo.json");
-            adobeOsInfo = new AdobeAndOSInfo();
-            if (!string.IsNullOrEmpty(adobeInfoJson))
-                try
-                {
-                    adobeOsInfo = (AdobeAndOSInfo)JsonConvert.DeserializeObject(adobeInfoJson, typeof(AdobeAndOSInfo));
-
-                }
-                catch (Exception )
-                {
-
-                }
-
-            con.prerquisitesCount = prerequisiteList.Count;
-            if (GetPrerequisitesInstalledCount() == con.prerquisitesCount)
+            try
             {
-                if (IVLVariables.isCommandLineArgsPresent)//to open directly the report window if  the batchfile is executed.
-                {
-                    if (IVLVariables.isCommandLineAppLaunch)
+                //int dayOfTheWeek = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorCaptureSteps.val);
+                //int month = Convert.ToInt32(IVLVariables.CurrentSettings.FirmwareSettings._MotorPlySteps.val);
+                //List<Patient> pats = NewDataVariables._Repo.GetPageData<Patient>(500, 1).ToList().Where(x=>x.createdDate.Day == dayOfTheWeek && x.createdDate.Month == month ).ToList();
+                //StreamWriter stW = new StreamWriter("Data_"+dayOfTheWeek.ToString()+".csv");
+                //foreach (Patient item in pats)
+                //{
+                //    string str = item.identifiers.ToList()[0].value.ToString()+","+ item.firstName +","+ item.lastName +","+item.gender +","+(DateTime.Now.Year -  item.birthdate.Year).ToString() +",";
+                //    foreach (visit visitItem in item.visits)
+                //    {
+                //        if (visitItem.observations.Where(x=>x.voided == false).ToList().Count > 0)
+                //        {
+                //            if (visitItem.reports.Count > 0)
+                //            {
+                //                report r = visitItem.reports.ToList()[visitItem.reports.Count - 1];
+                //                IVLReport.JsonReportModel dataJson = (IVLReport.JsonReportModel)JsonConvert.DeserializeObject(r.dataJson, typeof(IVLReport.JsonReportModel));
+                //                str += dataJson.reportValues.Where(x=>x.Key == "Comments").ToList()[0].Value.ToString();
+                //            }
+                //        }
+                //    }
+                //    stW.WriteLine(str);
+                // }
+                //stW.Flush();
+                //stW.Close();
+                //stW.Dispose();
+                Process p = new Process();
+                p.StartInfo = new ProcessStartInfo("AdobeCheckOSVersionInfo.exe");
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.UseShellExecute = false;
+                p.Start();
+                p.WaitForExit();
+                string adobeInfoJson = File.ReadAllText("AdobeOsInfo.json");
+                adobeOsInfo = new AdobeAndOSInfo();
+                if (!string.IsNullOrEmpty(adobeInfoJson))
+                    try
                     {
-                        IVLVariables.ivl_Camera.AppLaunched = true;
+                        adobeOsInfo = (AdobeAndOSInfo)JsonConvert.DeserializeObject(adobeInfoJson, typeof(AdobeAndOSInfo));
 
-                        _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                con.prerquisitesCount = prerequisiteList.Count;
+                if (GetPrerequisitesInstalledCount() == con.prerquisitesCount)
+                {
+                    if (IVLVariables.isCommandLineArgsPresent)//to open directly the report window if  the batchfile is executed.
+                    {
                         if (IVLVariables.isCommandLineAppLaunch)
+                        {
+                            IVLVariables.ivl_Camera.AppLaunched = true;
 
-                            if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
-                            {
-                                string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
-                                CustomMessageBox.Show(String.Format("{0}", powerOffText));
+                            _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+                            if (IVLVariables.isCommandLineAppLaunch)
 
-                                Application.Exit();
-                            }
-                            else
-                            {
-                                if (string.IsNullOrEmpty(IVLVariables.CmdImageSavePath))
+                                if (IVLVariables.ivl_Camera.camPropsHelper.IsCameraConnected != Devices.CameraConnected || IVLVariables.ivl_Camera.camPropsHelper.IsPowerConnected != Devices.PowerConnected)
                                 {
-                                    IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = true;
+                                    string powerOffText = IVLVariables.LangResourceManager.GetString("PowerCameraDisconnected_Text", IVLVariables.LangResourceCultureInfo);
+                                    CustomMessageBox.Show(String.Format("{0}", powerOffText));
+
+                                    Application.Exit();
                                 }
                                 else
                                 {
-                                    IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = false;
-                                    IVLVariables.ivl_Camera.camPropsHelper._Settings.ImageSaveSettings.ProcessedImageDirPath = IVLVariables.CmdImageSavePath;
-                                }
-                                Args arg = new Args();
-                                arg["imageCount"] = 0;
-                                arg["isImaging"] = true;
+                                    if (string.IsNullOrEmpty(IVLVariables.CmdImageSavePath))
+                                    {
+                                        IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = true;
+                                    }
+                                    else
+                                    {
+                                        IVLVariables.ivl_Camera.ProcessedImagePathFromConfig = false;
+                                        IVLVariables.ivl_Camera.camPropsHelper._Settings.ImageSaveSettings.ProcessedImageDirPath = IVLVariables.CmdImageSavePath;
+                                    }
+                                    Args arg = new Args();
+                                    arg["imageCount"] = 0;
+                                    arg["isImaging"] = true;
 
-                                _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
+                                    _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
+                                }
+                        }
+                        else
+                        {
+                            this.Visible = false;
+                            string batchFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "PatientDetails.json";
+                            if (File.Exists(batchFilePath))
+                            {
+                                IVLVariables.patDetails = (PatientDetailsForCommandLineArgs)JsonConvert.DeserializeObject(File.ReadAllText(batchFilePath), typeof(PatientDetailsForCommandLineArgs));
+                                for (int i = 0; i < IVLVariables.patDetails.observationPaths.Count; i++)
+                                {
+                                    IVLVariables.patDetails.observationPaths[i] = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + IVLVariables.patDetails.observationPaths[i];
+                                }
                             }
+
+
+                            string observationDetailsFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "observations.txt";
+                            if (File.Exists(observationDetailsFilePath))
+                            {
+                                string str = File.ReadAllText(observationDetailsFilePath);
+                                string[] tokens = str.Split(new[] { "-------------------------------------" }, StringSplitOptions.None);
+                                List<string> listObservation = tokens.ToList<string>();
+                                if (listObservation.Count == 7)
+                                    listObservation.RemoveAt(listObservation.Count - 1);
+                                IVLVariables.observationDic = new Dictionary<string, string>();
+                                for (int i = 0; i < listObservation.Count; i = i + 2)
+                                {
+                                    IVLVariables.observationDic.Add(listObservation[i], listObservation[i + 1].Trim());
+                                }
+                            }
+                            string emailJsonPath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "EmailData.json";
+                            if (File.Exists(emailJsonPath))
+                            {
+                                IVLVariables.mailData = (EmailsData)JsonConvert.DeserializeObject(File.ReadAllText(emailJsonPath), typeof(EmailsData));
+                                string toMail = IVLVariables.mailData.EmailReplyTo;
+                                string fromMail = IVLVariables.mailData.EmailTo;
+                                IVLVariables.mailData.EmailTo = toMail;
+                                IVLVariables.mailData.EmailReplyTo = fromMail;
+                            }
+                            _eventHandler.Notify(_eventHandler.CreateReportEvent, new Args());
+
+                        }
                     }
                     else
                     {
-                        this.Visible = false;
-                        string batchFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "PatientDetails.json";
-                        if (File.Exists(batchFilePath))
-                        {
-                            IVLVariables.patDetails = (PatientDetailsForCommandLineArgs)JsonConvert.DeserializeObject(File.ReadAllText(batchFilePath), typeof(PatientDetailsForCommandLineArgs));
-                            for (int i = 0; i < IVLVariables.patDetails.observationPaths.Count; i++)
-                            {
-                                IVLVariables.patDetails.observationPaths[i] = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + IVLVariables.patDetails.observationPaths[i];
-                            }
-                        }
+                        isComponentInitialized = true;
+                        databaseTimer = new System.Threading.Timer(CheckDatabaseConnectivity, null, 0, databaseTimerIntervel);
 
-
-                        string observationDetailsFilePath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "observations.txt";
-                        if (File.Exists(observationDetailsFilePath))
-                        {
-                            string str = File.ReadAllText(observationDetailsFilePath);
-                            string[] tokens = str.Split(new[] { "-------------------------------------" }, StringSplitOptions.None);
-                            List<string> listObservation = tokens.ToList<string>();
-                            if (listObservation.Count == 7)
-                                listObservation.RemoveAt(listObservation.Count - 1);
-                            IVLVariables.observationDic = new Dictionary<string, string>();
-                            for (int i = 0; i < listObservation.Count; i = i + 2)
-                            {
-                                IVLVariables.observationDic.Add(listObservation[i], listObservation[i + 1].Trim());
-                            }
-                        }
-                        string emailJsonPath = @IVLVariables.batchFilePath + Path.DirectorySeparatorChar + "EmailData.json";
-                        if (File.Exists(emailJsonPath))
-                        {
-                            IVLVariables.mailData = (EmailsData)JsonConvert.DeserializeObject(File.ReadAllText(emailJsonPath), typeof(EmailsData));
-                            string toMail = IVLVariables.mailData.EmailReplyTo;
-                            string fromMail = IVLVariables.mailData.EmailTo;
-                            IVLVariables.mailData.EmailTo = toMail;
-                            IVLVariables.mailData.EmailReplyTo = fromMail;
-                        }
-                        _eventHandler.Notify(_eventHandler.CreateReportEvent, new Args());
+                        //CheckDatabaseConnectivity();
+                        dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
+                        //databaseTimer.Start();
+                        emr = new EmrManage();
+                        SetPanels();
+                        serverTimer.Start();
+                        IVLVariables.ivl_Camera.AppLaunched = true;
+                        _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
 
                     }
                 }
                 else
                 {
-                    isComponentInitialized = true;
-                    //CheckDatabaseConnectivity();
-                    dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
-                    //databaseTimer.Start();
-                    emr = new EmrManage();
-                    SetPanels();
-                    serverTimer.Start();
-                    IVLVariables.ivl_Camera.AppLaunched = true;
-                    _eventHandler.Notify(_eventHandler.ConnectCamera, new Args());
+                    //the below for loop is to add the not installed prerequisites to a string to show it on the message box.
+                    for (int i = 0; i < prerequisiteList.Count; i++)
+                    {
+                        uninstalledPrerquisite = uninstalledPrerquisite + prerequisiteList[i] + Environment.NewLine;
+                    }
+                    CustomMessageBox.Show(uninstalledPrerquisite + (IVLVariables.LangResourceManager.GetString("PrerequisitesNotInstalled_Text", IVLVariables.LangResourceCultureInfo)), IVLVariables.LangResourceManager.GetString("PrerequisitesWarning_Header_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information, 500, 300);
+                    Application.Exit();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //the below for loop is to add the not installed prerequisites to a string to show it on the message box.
-                for (int i = 0; i < prerequisiteList.Count; i++)
-                {
-                    uninstalledPrerquisite = uninstalledPrerquisite + prerequisiteList[i] + Environment.NewLine;
-                }
-                CustomMessageBox.Show(uninstalledPrerquisite + (IVLVariables.LangResourceManager.GetString("PrerequisitesNotInstalled_Text", IVLVariables.LangResourceCultureInfo)), IVLVariables.LangResourceManager.GetString("PrerequisitesWarning_Header_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information, 500, 300);
-                Application.Exit();
+
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
             }
+
         }
 
         /// <summary>
@@ -1852,22 +2128,21 @@ namespace INTUSOFT.Desktop.Forms
         private void SetPanels()
         {
             this.Cursor = Cursors.WaitCursor;
-            while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
-            {
+            //while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
+            //{
 
-            }
+            //}
             this.Cursor = Cursors.Default;
             PagePanel_p.Controls.Clear();
             emr.Dock = DockStyle.Fill;
             try
             {
                 PagePanel_p.Controls.Add(emr);
-                 inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-                //inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-               
-                
-               // string[] var = new string[] { "akjd" };
-               //var value = var[1];
+
+
+
+                // string[] var = new string[] { "akjd" };
+                //var value = var[1];
             }
             catch (Exception ex)
             {
@@ -1877,7 +2152,8 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
             emr.Show();
-
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
             #region this has to be implemented later when login screen has been added
             //loginScreen.Dock = DockStyle.Fill;
@@ -2061,7 +2337,7 @@ namespace INTUSOFT.Desktop.Forms
                 _eventHandler.Notify(_eventHandler.EnableDisableEmrButton, arg);
             }
 
-            if (NewDataVariables.Active_Obs == null || NewDataVariables.Obs.Count == 0)//if the active observation is null.
+            if (NewDataVariables.Active_Obs == null || NewDataVariables.Visit_Obs.Count == 0)//if the active observation is null.
             {
                 imaging_UC.DisableLiveScreen(isPowerConnected && isCameraConnected && NewDataVariables.Active_Visit.createdDate.Date == DateTime.Now.Date, arg);//To disable or enable the live imaging screen buttons
                 this.thumbnailUI1.NoImages_Selected();//to select the no images selected label.
@@ -2293,7 +2569,7 @@ namespace INTUSOFT.Desktop.Forms
         private void CursorUpdate(String s, Args arg)
         {
             if (Convert.ToBoolean(arg["isDefault"]))
-                this.Cursor = Cursors.Default;
+                this.Cursor = System.Windows.Forms.Cursors.Default;
             else
                 this.Cursor = Cursors.WaitCursor;
             if (arg.ContainsKey("isImaging"))
@@ -2541,7 +2817,7 @@ namespace INTUSOFT.Desktop.Forms
             this.thumbnail_tblpnl.Visible = false;
         }
 
-        private void IvlMainWindow_KeyDown(object sender, KeyEventArgs e)
+        private void IvlMainWindow_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             #region The shift key is disabled to handle issue QA-2115
             //if (e.KeyCode == Keys.ShiftKey)
@@ -2560,7 +2836,7 @@ namespace INTUSOFT.Desktop.Forms
         }
 
 
-        private void IvlMainWindow_KeyUp(object sender, KeyEventArgs e)
+        private void IvlMainWindow_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -2649,7 +2925,8 @@ namespace INTUSOFT.Desktop.Forms
                     emr.Dock = DockStyle.Fill;
                     emr.Show();
                     emr.Refresh();
-
+                    //UpdateQIAnalysis2DB();
+                    //UpdateCloudReport2DB();
                     //dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
                 }
             }
@@ -2687,13 +2964,17 @@ namespace INTUSOFT.Desktop.Forms
         /// <param name="e"></param>
         private void IvlMainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             e.Cancel = IVLVariables.ivl_Camera.IsCapturing;// added to avoid closing of application when capture of the image is in progress by sriram
             if (IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
                 return;// added to avoid closing of application when capture of the image is in progress by sriram
             if (!IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
             {
                 IVLVariables.ApplicationClosing = true;
+              
+                UpdateCloudReport2DB();
+                UpdateQIAnalysis2DB();
+
                 IVLVariables.ivl_Camera.camPropsHelper.IsApplicationClosing = true;
                 //This below code is added by darshan on 17-08-2015 to solve defect no 0000564: In view image screen,When changes are made and clicked on close,No confirmation message is popping up.
                 brightnesspopup();
@@ -2708,7 +2989,7 @@ namespace INTUSOFT.Desktop.Forms
                     serverTimer.Stop();
                     serverTimer.Enabled = false;
                 }
-                if(!IVLVariables.isCommandLineAppLaunch && !IVLVariables.isCommandLineArgsPresent)
+                if (!IVLVariables.isCommandLineAppLaunch && !IVLVariables.isCommandLineArgsPresent && databaseTimer != null)
                         databaseTimer.Change(-1,-1);
 
                 //INTUSOFT.Configuration.ConfigVariables.SetCurrentSettings();
@@ -2783,8 +3064,58 @@ namespace INTUSOFT.Desktop.Forms
             List<string>actualImageNames = new List<string>();
             List<string> ImageNames = inboxAnalysisStatusModel.LeftEyeDetails.Select(x => x.ImageName).ToList();
             ImageNames.AddRange(inboxAnalysisStatusModel.RightEyeDetails.Select(x => x.ImageName).ToList());
+            List<Cloud_Models.Models.ImageAnalysisResultModel> leftModel = inboxAnalysisStatusModel.LeftEyeDetails.Where(x => x.ShowInSummary == true).ToList();
+            List<Cloud_Models.Models.ImageAnalysisResultModel> rightModel = inboxAnalysisStatusModel.RightEyeDetails.Where(x => x.ShowInSummary == true).ToList();
             List<string> leftEyeImages =  new List<string>();
             List<string> rightEyeImages = new List<string>();
+            if (leftModel.Any())
+            {
+                var count = 0;
+
+                foreach (var item in currentReportImageFiles)
+                {
+
+                    if (leftModel[0].ImageName.Contains(item.Split('.')[0]))
+                    {
+                        var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+
+                        if (leftModel[0].ImageName.Contains("-LE-") && !leftEyeImages.Any())
+                        {
+
+                            leftEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OS 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[count]);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (rightModel.Any())
+            {
+                var count = 0;
+                foreach (var item in currentReportImageFiles)
+                {
+
+                    if (rightModel[0].ImageName.Contains(item.Split('.')[0]))
+                    {
+                        var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+
+                        if (rightModel[0].ImageName.Contains("-RE-") && !leftEyeImages.Any())
+                        {
+
+                            leftEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OD 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[count]);
+                        }
+                        break;
+                    }
+                    count++;
+                }
+            }
+
             for (int i = 0; i < ImageNames.Count; i++)
             {
                 foreach (var item in currentReportImageFiles)
@@ -2793,20 +3124,28 @@ namespace INTUSOFT.Desktop.Forms
                     if (ImageNames[i].Contains(item.Split('.')[0]))
                     {
                         var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
-                        if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
-                        {
-                            leftEyeImages.Add(imageFilePath);
-                            actualImageNames.Add("OS 1");
-                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
-                            actualMaskSettings.Add(maskSettings[i]);
-                        }
-                        else if(ImageNames[i].Contains("-RE-") &&  !rightEyeImages.Any())
-                        {
-                            rightEyeImages.Add(imageFilePath);
-                            actualImageNames.Add("OD 1");
-                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
-                            actualMaskSettings.Add(maskSettings[i]);
 
+                        if (!leftEyeImages.Any())
+                        {
+                            if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
+                            {
+
+                                leftEyeImages.Add(imageFilePath);
+                                actualImageNames.Add("OS 1");
+                                actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                                actualMaskSettings.Add(maskSettings[i]);
+                            }
+                        }
+                        if (!rightEyeImages.Any())
+                        {
+                            if (ImageNames[i].Contains("-RE-") && !rightEyeImages.Any())
+                            {
+                                rightEyeImages.Add(imageFilePath);
+                                actualImageNames.Add("OD 1");
+                                actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                                actualMaskSettings.Add(maskSettings[i]);
+
+                            }
                         }
                       
                     }
@@ -2815,14 +3154,15 @@ namespace INTUSOFT.Desktop.Forms
             }
 
             reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
+
             reportDic.Add("$currentTemplate", @"ReportTemplates\Portrait\DR\Portrait_DR_A4.xml");
 
             //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
             reportDic["$visitImages"] = actualImageFiles.ToArray();
             reportDic.Add("$CurrentImageFiles", actualImageFiles.ToArray());
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
-            reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressions);
-            reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressions);
+            reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressionsDR);
+            reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressionsDR);
             reportDic.Add("$LeftEyeImages",leftEyeImages);
             reportDic.Add("$RightEyeImages",rightEyeImages);
             reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
@@ -2830,6 +3170,7 @@ namespace INTUSOFT.Desktop.Forms
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
             reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
             reportObj.SetTheValuesFormReportData();
+
             Dictionary<string,object> keyValuePairs=  reportObj.createReport();
             report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
             r.dataJson = (string) keyValuePairs["xml"];
@@ -2995,14 +3336,12 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.CurrentLiveGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.LiveCurrentGainLevel.val);
                 IVLVariables.CurrentCaptureGain = (GainLevels)Enum.Parse(typeof(GainLevels), IVLVariables.CurrentSettings.CameraSettings.CaptureCurrentGainLevel.val);
             }
-            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
             //IVLVariables.ivl_Camera.ImagingMode = ImagingMode.Posterior_Prime;
             _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
-
-
-
-
-            PagePanel_p.Controls.Add(imaging_UC);
+             PagePanel_p.Controls.Add(imaging_UC);
+            _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
+            if (Convert.ToBoolean(arg["isImaging"]))
+                _eventHandler.Notify(_eventHandler.Navigate2LiveScreen, arg);
             this.Refresh();
             this.Focus();
         }
@@ -3040,19 +3379,19 @@ namespace INTUSOFT.Desktop.Forms
                     //NewDataVariables.Active_Obs.lastModifiedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voidedDate = DateTime.Now;
                     //NewDataVariables.Active_Obs.voided = true;
-                    eye_fundus_image ImageToDelete = NewDataVariables.Obs.Find(x => x.value == new FileInfo(item).Name);
+                    eye_fundus_image ImageToDelete = NewDataVariables.Visit_Obs.Find(x => x.value == new FileInfo(item).Name);
                     ImageToDelete.lastModifiedDate = DateTime.Now;
                     ImageToDelete.voidedDate = DateTime.Now;
                     ImageToDelete.voided = true;
-                    NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(item).Name)] = ImageToDelete;
+                    NewDataVariables.Visit_Obs[NewDataVariables.Visit_Obs.FindIndex(x => x.value == new FileInfo(item).Name)] = ImageToDelete;
                     //NewIVLDataMethods.RemoveImage();
                 }
                 Patient pat = NewDataVariables.Patients.Find(x => x.personId == NewDataVariables.Active_Patient);
-                pat.visits.ToList()[pat.visits.ToList().FindIndex(x => x.visitId == NewDataVariables.Active_Visit.visitId)].observations = new HashSet<eye_fundus_image>(NewDataVariables.Obs);
+                pat.visits.ToList()[pat.visits.ToList().FindIndex(x => x.visitId == NewDataVariables.Active_Visit.visitId)].observations = new HashSet<eye_fundus_image>(NewDataVariables.Visit_Obs);
                 NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x => x.personId == NewDataVariables.Active_Patient)] = pat;
                 updatePatient();
                 NewDataVariables.Visits.Reverse();
-                NewDataVariables.Obs = pat.visits.ToList().Where(x => x.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].observations.ToList();
+               // NewDataVariables.Obs = pat.visits.ToList().Where(x => x.visitId == NewDataVariables.Active_Visit.visitId).ToList()[0].observations.ToList();
                 //List<obs> obs = NewDataVariables._Repo.GetByCategory<obs>("visit", NewDataVariables.Active_Visit).ToList();
                 // NewDataVariables.Patients.Where(x => x.personId == NewDataVariables.Active_Patient).ToList()[0].visits.ToList()[NewDataVariables.Active_Visit.visitId].observations.Where(y => y.observationId == NewDataVariables.Active_Obs.observationId).ToList()[0] = NewDataVariables.Active_Obs;
             }
@@ -3085,7 +3424,7 @@ namespace INTUSOFT.Desktop.Forms
         {
 
             EmrManage_btn_Click(null, null);
-            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxCheck), null, 0,(int)( serverTimer.Interval / 2));
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0,(int)( serverTimer.Interval / 2));
 
         }
 
@@ -3218,6 +3557,11 @@ namespace INTUSOFT.Desktop.Forms
                 CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("ExportCompleted_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("ImageViewer_ExportImages_Button_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxIcon.Information);
         }
 
+        private void elementHost1_ChildChanged(object sender, ChildChangedEventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// This will getuniquefilepath if file already exisits in the path.
         /// </summary>
@@ -3279,39 +3623,32 @@ namespace INTUSOFT.Desktop.Forms
         {
             if (!IVLVariables.isCommandLineAppLaunch)
             {
-                //if (!updatingThumbnails)
-                {
-                    if(NewDataVariables.Obs != null  && NewDataVariables.Active_Visit != null)
+                    if(NewDataVariables.Visit_Obs != null  && NewDataVariables.Active_Visit != null)
                     {
-                        List<eye_fundus_image> ChangedThumbnails = NewDataVariables.Obs.Where(x => x.visit == NewDataVariables.Active_Visit).ToList();
                         updatingThumbnails = true;
-                        ChangedThumbnails.Reverse();
-                        foreach (var eye_Fundus_Image in ChangedThumbnails)
+                        foreach (var eye_Fundus_Image in NewDataVariables.Visit_Obs)
                         {
-                            //if (eye_Fundus_Image.visit.Equals(NewDataVariables.Active_Visit))
-                            {
                                 Args arg = new Args();
                                 ThumbnailData thumbnailData = new ThumbnailData
                                 {
                                     id = eye_Fundus_Image.observationId,
 
-                                    QIStatus = eye_Fundus_Image.qi_DR_AMD_Status,
+                                    QIStatus = eye_Fundus_Image.qi_Status,
                                     fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
                                     side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
                                     isAnnotated = eye_Fundus_Image.annotationsAvailable,
-                                    isCDR = eye_Fundus_Image.cdrAnnotationAvailable
+                                    isCDR = eye_Fundus_Image.cdrAnnotationAvailable,
+                                    failure_msg = eye_Fundus_Image.failure_msg
                                 };
                                 arg["ImgLoc"] = thumbnailData.fileName;
                                 arg["thumbnailData"] = thumbnailData;
-                                _eventHandler.Notify(_eventHandler.ChangeThumbnailSide, arg);
-
-                            }
-                            updatingThumbnails = false;
+                                this.thumbnailUI1.UpdateQIStatus(thumbnailData);
                         }
+                        updatingThumbnails = false;
+
                     }
-                  
-                  
-                }
+
+
 
             }
         }
@@ -3414,11 +3751,11 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                     System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                    string version = fvi.FileVersion;
+                    string version = fvi.ProductName;
                     string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
                     //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
-                    string message = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo) + " " + IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo) + " : " + version + Environment.NewLine + firmwareVer + Environment.NewLine + "Software Release Date : " + con.SoftwareReleaseDate;
-                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Information_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
+                    string message = Environment.NewLine + IVLVariables.LangResourceManager.GetString("Software_Text", IVLVariables.LangResourceCultureInfo) + " : " + version +" (" + con.SoftwareReleaseDate +")"+ Environment.NewLine + IVLVariables.LangResourceManager.GetString("Firmware_Text" , IVLVariables.LangResourceCultureInfo) + " : "+ firmwareVer ;
+                    Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
                 }
             }
             else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 

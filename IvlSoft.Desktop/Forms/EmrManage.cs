@@ -168,6 +168,8 @@ namespace INTUSOFT.Desktop.Forms
             UpdateGridView();
             UpdateControlsForCurrentResolution();
             toolStripPaging.Renderer = new FormToolStripRenderer();
+           
+
             //this.Refresh();
         }
         /// <summary>
@@ -1221,7 +1223,7 @@ namespace INTUSOFT.Desktop.Forms
                     //List<int> side = new List<int>();
                     //List<int> id = new List<int>();
                     List<ThumbnailModule.ThumbnailData> thumbnailList = new List<ThumbnailModule.ThumbnailData>();
-                    foreach (var item in NewDataVariables.Obs)
+                    foreach (var item in NewDataVariables.Visit_Obs)
                     {
                         ThumbnailModule.ThumbnailData tData = new ThumbnailModule.ThumbnailData();
                         if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
@@ -1229,22 +1231,16 @@ namespace INTUSOFT.Desktop.Forms
                         else
                             tData.fileName = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + item.value;
                         //urls.Add(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + item.value);
-                        int xV = 0;
-                        if (NewDataVariables.Obs.IndexOf(item) == NewDataVariables.Obs.Count - 1)
-                        {
-                            xV = 0;
-                        }
                         tData.id = item.observationId;
-                       eye_fundus_image _eyeFundusImage = NewDataVariables.Obs.Find(x => x.observationId == tData.id);
                         //List<eye_fundus_image> eyeFundusList = NewDataVariables.EyeFundusImage.Where(x=>x.eyeFundusImageId == tData.id).ToList() ;
                         // eye_fundus_image _eyeFundusImage = eyeFundusList[0];
-                     tData.side =   _eyeFundusImage.eyeSide.Equals('L')? 1 : 0;
+                        tData.side = item.eyeSide.Equals('L')? 1 : 0;
                         //if (_eyeFundusImage.eyeSide == 'L')
                         //    tData.side = 1;
                         //else
                         //    tData.side = 0;
-                        tData.isAnnotated = _eyeFundusImage.annotationsAvailable;
-                        tData.isCDR = _eyeFundusImage.cdrAnnotationAvailable;
+                        tData.isAnnotated = item.annotationsAvailable;
+                        tData.isCDR = item.cdrAnnotationAvailable;
                         thumbnailList.Add(tData);
                         //id.Add(item.observationId);
                     }
@@ -1303,7 +1299,7 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         _eventHandler.Notify(_eventHandler.ShowThumbnails, arg);
 
-                        if (NewDataVariables.Obs.Count > 0)
+                        if (NewDataVariables.Visit_Obs.Count > 0)
                         {
                             arg["ThumbnailData"] = thumbnailList[thumbnailList.Count - 1];
                            //arg["idval"] = IVLVariables.ActiveImageID = NewDataVariables.EyeFundusImage[NewDataVariables.EyeFundusImage.Count -1].eyeFundusImageId;
@@ -1316,11 +1312,11 @@ namespace INTUSOFT.Desktop.Forms
                         //    _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
                         if (!isImaging)
                         {
-                            if (NewDataVariables.Obs.Count == 0)
+                            if (NewDataVariables.Visit_Obs.Count == 0)
                                 return;
                         }
                         _eventHandler.Notify(_eventHandler.SetActivePatDetails, arg);
-                        arg["imageCount"] = NewDataVariables.Obs.Count;
+                        arg["imageCount"] = NewDataVariables.Visit_Obs.Count;
                         _eventHandler.Notify(_eventHandler.Navigate2ViewImageScreen, arg);
                     }
                     //else
@@ -1956,6 +1952,7 @@ namespace INTUSOFT.Desktop.Forms
                         if ((int)arg["CurrentIndx"] == 0 && row == 0)
                         {
                             PatientDetails_panel.Visible = false;
+                            ResetSearch();
                         }
                     }
                     patGridView_dgv.Focus();
@@ -2108,11 +2105,11 @@ namespace INTUSOFT.Desktop.Forms
                         else if (Screen.PrimaryScreen.Bounds.Width == 1920)
                         {
                             //Below value has been changed by Darshan on 28-10-2015 to solve Defect no 0000644: When no Consultations are present,the "Visit Date" label is coming up as "Visit".
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 200;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 200;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 162;
-                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 70;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("Visit_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Images_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_Reports_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
+                            visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("No_of_AIReports_Text", IVLVariables.LangResourceCultureInfo)].Width = 150;
 
                         //visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("DeleteVisits_Button_Text", IVLVariables.LangResourceCultureInfo)].Width = 125;
                         // visitsView_dgv.Columns[IVLVariables.LangResourceManager.GetString("VisitsAddImages_ColName", IVLVariables.LangResourceCultureInfo)].Width = 140;
@@ -2485,6 +2482,9 @@ namespace INTUSOFT.Desktop.Forms
         {
             {
                 NewDataVariables.CloudAnalysisReports = NewDataVariables._Repo.GetAll<CloudAnalysisReport>().ToList();
+                NewDataVariables.Eye_Fundus_Images = NewDataVariables._Repo.GetAll<eye_fundus_image>().ToList();
+                NewDataVariables.Identifier = NewDataVariables._Repo.GetAll<patient_identifier>().ToList();
+
                 pageRows = Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._NoOfPatientsToBeSelected.val);//Assigns no of patients to be displayed
                 //PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));
                 PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables._Repo.GetPatientCount() * 1.0 / pageRows));//Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));

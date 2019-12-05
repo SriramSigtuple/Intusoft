@@ -73,6 +73,7 @@
     <Compile Include="CustomMessageBox.Designer.cs">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enums.cs" />
     <Compile Include="ExceptionLog.cs" />
     <Compile Include="ExceptionLogWriting.cs" />
     <Compile Include="LogClass.cs" />

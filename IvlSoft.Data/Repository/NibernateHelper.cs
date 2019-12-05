@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity;
-using System.Data;
-using MySql.Data;
-using MySql.Data.MySqlClient;
+﻿using Common;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using System.Management;
-using System.Diagnostics;
-using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 using INTUSOFT.Data.NewDbModel;
-using Microsoft.Win32;
+using MySql.Data.MySqlClient;
+using NHibernate;
+using NLog;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using Common;
+using System.Linq;
 
 namespace INTUSOFT.Data.Repository
 {
@@ -23,12 +16,13 @@ namespace INTUSOFT.Data.Repository
     {
         #region Variables
 
-        
+        private static readonly Logger Exception_Log = LogManager.GetLogger("ExceptionLog");
+
         public static string dbPath = string.Empty;
         public static string userName = "";
         public static string password = "";
         public static string serverPath = "localhost";
-        public static string connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+        public static string connectionString = string.Empty;// "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
         //public static string connectionString = "Server=localhost;Database=intusoftmrs;User ID=root;Password=toor;CharSet=latin1";
         public static string WarningText = "";
         public static string WarningHeader = "";
@@ -40,7 +34,6 @@ namespace INTUSOFT.Data.Repository
         private static string grantPrivileges = @"SQLs\Grant_All_Previleges.sql";
         private static string change_size_person_attribute_value = @"SQLs\Change_person_atrribute_valueSize.sql";
         private static string observationAttributeTable = "obs_attribute";
-        private static string dbConnectionString = "Server=localhost;Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
         public static string oldDbName = "IntuNewModel1";
         public static ISession hibernateSession;
         public static string batchFileName = @"BatchScripts\InsertReportTypes.bat";
@@ -56,8 +49,17 @@ namespace INTUSOFT.Data.Repository
 
         public static void CloseSession()
         {
-            SessionFactory.Close();
-            SessionFactory = null;
+            //try
+            //{
+
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
+            //SessionFactory.Close();
+            //SessionFactory = null;
         }
 
         #region Public Methods
@@ -123,15 +125,25 @@ namespace INTUSOFT.Data.Repository
         /// </summary>
         public static void OpenSession()
         {
-            if (hibernateSession == null)
-                hibernateSession =  SessionFactory.OpenSession();
-            else
-                if (!hibernateSession.IsOpen)
+            try
             {
-                hibernateSession= SessionFactory.OpenSession();
+                if (hibernateSession == null)
+                    hibernateSession = SessionFactory.OpenSession();
+                else
+               if (!hibernateSession.IsOpen)
+                {
+                    hibernateSession = SessionFactory.OpenSession();
+                }
             }
-          //else
-          //      hibernateSession = SessionFactory.GetCurrentSession();
+            catch (Exception ex)
+            {
+
+                ExceptionLogWriter.WriteLog(ex, Exception_Log);
+
+            }
+
+            //else
+            //      hibernateSession = SessionFactory.GetCurrentSession();
 
             //if (!CurrentSessionContext.HasBind(GetSessionFactory()))
             //    CurrentSessionContext.Bind(GetSessionFactory().OpenSession());
@@ -218,20 +230,29 @@ namespace INTUSOFT.Data.Repository
         /// <param name="fileName"></param>
         public static void ExecuteSqlScriptFromFile(string fileName)
         {
-            MySqlConnection connection;
-            connection = new MySqlConnection(connectionString);
-            connection.Open();
-            if (File.Exists(fileName))
+            try
             {
-                FileInfo file = new FileInfo(fileName);
-                string script = file.OpenText().ReadToEnd();
-                script = script.Replace("dbName", dbName);//This code will replace the database name in the Intusoft-runtime.properties file to the dbname in create_Inntusoft_MRS.sql file.
-                MySqlScript mysqlscript = new MySqlScript(connection, script);
-                 mysqlscript.Execute();
-                connection.Close();
+                MySqlConnection connection;
+                connection = new MySqlConnection(connectionString);
+                connection.Open();
+                if (File.Exists(fileName))
+                {
+                    FileInfo file = new FileInfo(fileName);
+                    string script = file.OpenText().ReadToEnd();
+                    script = script.Replace("dbName", dbName);//This code will replace the database name in the Intusoft-runtime.properties file to the dbname in create_Inntusoft_MRS.sql file.
+                    MySqlScript mysqlscript = new MySqlScript(connection, script);
+                    mysqlscript.Execute();
+                    connection.Close();
+                }
+            
             }
-            if (connectionString != dbConnectionString)
-                connectionString = dbConnectionString;
+            catch (Exception ex)
+            {
+
+                ExceptionLogWriter.WriteLog(ex, Exception_Log);
+
+            }
+
         }
 
 
@@ -257,16 +278,60 @@ namespace INTUSOFT.Data.Repository
                 }
                 connection.Close();
                 if (dbs.Contains(dbName.ToLower()))
+                {
+                    connectionString = "Server=" + serverPath + ";Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
                     return true;
+                }
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                DbExists(dbName);//Run till connection is established.
+                ExceptionLogWriter.WriteLog(ex, Exception_Log);
+
+                //DbExists(dbName);//Run till connection is established.
                 return false;
             }
         }
+
+
+        public static void CreateOrAlterDB()
+        {
+            //if (!isDatabaseCreating)
+            {
+                //old implmentation with severpath hard coded to localhost
+                // connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                var runtimePath = @"SQLs\Intusoft-runtime.properties";
+                var data = new Dictionary<string, string>();
+                if (File.Exists(runtimePath))
+                {
+                    foreach (var row in File.ReadAllLines(runtimePath))
+                        data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+                    dbName = data["connection.DBname"];
+                    userName = data["connection.username"];
+                    password = data["connection.password"];
+                    serverPath = data["serverPath"];
+                }
+                connectionString = "Server=" + serverPath + ";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                //if (DbExists(oldDbName) && !DbExists(dbName))
+                //    ExecuteCommand("gyk");
+                if (!DbExists(dbName))// to check whether the db exists if not create a db using sql from the file
+                    ExecuteSqlScriptFromFile(createDB);
+                else
+                {
+                    // if (!ColumnExists(eyeFundusImageTableName, maskSettingsColumnName))// if the db exists and the table of observation attribute doen't exists alter db to table observation attribute table.
+                    ExecuteSqlScriptFromFile(alterDB);
+                    //if (NoOfRowsOfaTable(reportTypeColumnName) < 3)
+                    //{
+                    //    ExecuteBatchFile(batchFileName);
+                    //}
+                }
+                ExecuteSqlScriptFromFile(grantPrivileges);
+                isDatabaseCreating = true;
+
+            }
+        }
+
 
         #region Commented Codes by Kishore on 30 Aug 2019, since thes code are not used.
 
@@ -320,6 +385,7 @@ namespace INTUSOFT.Data.Repository
 
             get
             {
+                try
                 {
                     if (_sessionFactory == null)
                     {
@@ -327,10 +393,10 @@ namespace INTUSOFT.Data.Repository
                         {
                             //serverPath = "192.168.0.146";
                             //dbName = "intunewmodel";
-                            dbConnectionString = "Server=" + serverPath + ";Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                            connectionString = "Server=" + serverPath + ";Database = " + dbName + "; User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
                             _sessionFactory = Fluently.Configure().Database(MySQLConfiguration.Standard
                                                            .ConnectionString(
-                                                               dbConnectionString)
+                                                               connectionString)
                                              )
                                              .Mappings(m =>
                                                        m.HbmMappings
@@ -347,8 +413,15 @@ namespace INTUSOFT.Data.Repository
                         //    int i = x;
                         //}
                     }
-                    return _sessionFactory;
                 }
+                catch (Exception ex)
+                {
+
+                    ExceptionLogWriter.WriteLog(ex, Exception_Log);
+
+                }
+
+                return _sessionFactory;
             }
             set
             {
@@ -362,39 +435,9 @@ namespace INTUSOFT.Data.Repository
         /// <param name="config"></param>
         private static void BuildSchema(NHibernate.Cfg.Configuration config)
         {
-            if (!isDatabaseCreating)
-            {
-                //old implmentation with severpath hard coded to localhost
-                // connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-                var data = new Dictionary<string, string>();
-                if (File.Exists("Intusoft-runtime.properties"))
-                {
-                    foreach (var row in File.ReadAllLines("Intusoft-runtime.properties"))
-                        data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
-                    dbName = data["connection.DBname"];
-                    userName = data["connection.username"];
-                    password = data["connection.password"];
-                    serverPath = data["serverPath"];
-                }
-                connectionString = "Server=" + serverPath + ";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-                //if (DbExists(oldDbName) && !DbExists(dbName))
-                //    ExecuteCommand("gyk");
-                if (!DbExists(dbName))// to check whether the db exists if not create a db using sql from the file
-                    ExecuteSqlScriptFromFile(createDB);
-                else
-                {
-                    // if (!ColumnExists(eyeFundusImageTableName, maskSettingsColumnName))// if the db exists and the table of observation attribute doen't exists alter db to table observation attribute table.
-                    ExecuteSqlScriptFromFile(alterDB);
-                    //if (NoOfRowsOfaTable(reportTypeColumnName) < 3)
-                    //{
-                    //    ExecuteBatchFile(batchFileName);
-                    //}
-                }
-                ExecuteSqlScriptFromFile(grantPrivileges);
-                isDatabaseCreating = true;
 
-            }
         }
+
 
         #endregion
     }

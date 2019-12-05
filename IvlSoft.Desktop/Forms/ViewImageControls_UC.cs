@@ -1,6 +1,7 @@
 ﻿using Annotation;
 using Cloud_Models.Models;
 using Common;
+using Common.Enums;
 using Common.ValidatorDatas;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -79,6 +80,8 @@ namespace INTUSOFT.Desktop.Forms
         #endregion
         public ViewImageControls_UC()
         {
+            ResizeReportGridView();
+
             InitializeComponent();
             scrollToolTip = new ToolTip();
             leftToolTip = new ToolTip();
@@ -223,12 +226,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             // Reports_dgv.Enabled = !IVLVariables.isCommandLineAppLaunch;
             // file_lbl.Enabled = !IVLVariables.isCommandLineAppLaunch;
-            ReportListView reportListView = new ReportListView();
-            ElementHost elementHost = new ElementHost();
-            elementHost.Dock = DockStyle.Fill;
-            elementHost.Child = reportListView;
+            //ReportListView reportListView = new ReportListView();
+            //ElementHost elementHost = new ElementHost();
+            //elementHost.Dock = DockStyle.Fill;
+            //elementHost.Child = reportListView;
+            //IVLVariables.ReportListVM.WindowWidth = 202;
+
             //reportListView.Parent = this.reportGridView_p;
-            this.reportGridView_p.Controls.Add(elementHost);
+            //this.reportGridView_p.Controls.Add(elementHost);
             
         }
 
@@ -499,7 +504,7 @@ namespace INTUSOFT.Desktop.Forms
             showExisitingReports();
         }
 
-        bool isGridPopulating = false;
+       public bool isGridPopulating = false;
         /// <summary>
         /// The below code has been added to show the exisiting reports.
         /// </summary>
@@ -524,78 +529,55 @@ namespace INTUSOFT.Desktop.Forms
                                 item.cloudReport = NewDataVariables.CloudAnalysisReports.Where(x => x.Report.reportId == item.reportId).ToList()[0];
                             }
                         }
-
                         //NewDataVariables.Reports = NewDataVariables.Reports.OrderBy(x => x.createdDate).ToList();
                         //NewDataVariables.Reports.Reverse();
                         List<report> reports = NewDataVariables.Reports.OrderByDescending(x => x.createdDate).ToList();                    //reports.Reverse();
-                        IVLVariables.ReportListVM.Reports = new BindingList<report>(reports);
+                        //IVLVariables.ReportListVM.Reports = new BindingList<report>(reports);
                         //IVLVariables.ReportListVM.Reports = new BindingList<report>(NewDataVariables._Repo.GetByCategory<report>("visit", NewDataVariables.Active_Visit);
-                        reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
+                        Intusoft.WPF.UserControls.ReportListVM.GetInstance().Reports = new BindingList<report>(reports);
 
-                        //Reports_dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
-                        //BindingSource bindingSource = new BindingSource();
-                        //bindingSource.DataSource = ;
-                        //if (NewDataVariables.Reports.Any())
-                        //{
-                        //    //Reports_dgv.DataSource = NewDataVariables.Reports.ToDataTable();
+                        if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 90;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 30;
 
-                        //    for (int i = 0; i < NewDataVariables.Reports.Count; i++)
-                        //    {
-                        //        //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Value = i + 1;
-                        //        CloudAnalysisReport c =  NewDataVariables.Reports[i].cloudReport;
-                        //        //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("dd-MMM-yyyy");
-                        //        if (c != null)
-                        //        {
-                        //            //if (cloudAnalysisReports.Any())
-                        //            //{
-                        //            //    if (cloudAnalysisReports.Where(x => x.cloudAnalysisReportId == c.cloudAnalysisReportId).ToList().Any())
-                        //            //        c = cloudAnalysisReports.Where(x => x.cloudAnalysisReportId == c.cloudAnalysisReportId).ToList()[0];
-                        //            //}
-                        //            CloudReportStatus cloudReportStatus = (CloudReportStatus)c.cloudAnalysisReportStatus;
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Value = (cloudReportStatus).ToString("g") + " " + c.failureMessage;
-                        //        }
-                        //        //This code has been added by Darshan on 13-08-2015 7:00 PM to solve Defect no 0000553: Time settings are not reflecting correctly.
-                        //        if (Convert.ToBoolean(IVLVariables.CurrentSettings.UserSettings._Is24clock.val))
-                        //        {
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString(" HH:mm ");
-                        //        }
-                        //        else
-                        //        {
-                        //            //Reports_dgv.Rows[i].Cells[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Value = NewDataVariables.Reports[i].createdDate.ToString("hh:mm tt");
-                        //        }
-                        //    }
-                            
-                        //    //reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + Reports_dgv.RowCount + ")";
-                        //}
+                        }
+                        else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 62;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 12;
+
+                        }
+                        else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                        {
+                            Intusoft.WPF.UserControls.ReportListVM.GetInstance().Width = 40;
+                            Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 10;
+
+                        }
+                        try
+                        {
+                            reportsCreated_lbl.Text = IVLVariables.LangResourceManager.GetString("ImageViewer_ReportsCreated_Label_Text", IVLVariables.LangResourceCultureInfo) + " (" + NewDataVariables.Reports.Count + ")";
+
+                        }
+                        catch (Exception ex1)
+                        {
+
+                           // throw;
+                        }
+
+                      
                         isGridPopulating = false;
 
                     }
                     else
                         isGridPopulating = false;
-                    try
-                    {
-                        //Reports_dgv.Refresh();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                    }
 
                 }
             }
-            catch (IndexOutOfRangeException ex)
-            {
-                isGridPopulating = false;
-                //Reports_dgv = new DataGridView();
-                showExisitingReports();
-                //Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
-            }
             catch (Exception ex)
             {
+                isGridPopulating = false;
                 Common.ExceptionLogWriter.WriteLog(ex, ExceptionLog);
-                //                ExceptionLog.Debug(IVLVariables.ExceptionLog.ConvertException2String(ex));
             }
         }
 
@@ -630,65 +612,27 @@ namespace INTUSOFT.Desktop.Forms
             //}
         }
 
-        private void SetReportGridViewColumnVisibility()
-        {
-            //for (int i = 0; i < Reports_dgv.Columns.Count; i++)
-            //{
-            //    if (Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)) ||
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)) ||
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)) ||// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-            //        Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)))// || Reports_dgv.Columns[i].Name.Equals(IVLVariables.LangResourceManager.GetString("Report_View_Text", IVLVariables.LangResourceCultureInfo)))
-            //    {
-            //        Reports_dgv.Columns[i].Visible = true;
-            //    }
-            //    else
-            //        Reports_dgv.Columns[i].Visible = false;
-            //}
-            ResizeReportGridView();
-        }
 
         private void ResizeReportGridView()
         {
+            //var reportListVM = Intusoft.WPF.UserControls.ReportListVM.GetInstance();
             try
             {
-                //if (Screen.PrimaryScreen.Bounds.Width == 1920)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 62;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 77;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 127;
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 10.5F, GraphicsUnit.Pixel);
-                //    }
-                //}
-                //else if (Screen.PrimaryScreen.Bounds.Width == 1366)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
+                if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                {
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 30;
 
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 60;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 30;
+                }
+                else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                {
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 12;
 
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                //    }
-                //}
-                //else if (Screen.PrimaryScreen.Bounds.Width == 1280)
-                //{
-                //    //Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString( "Report_View_Text",IVLVariables.LangResourceCultureInfo)].Width = 50;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Date_Text", IVLVariables.LangResourceCultureInfo)].Width = 61;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Time_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("CloudReportStatus_Text", IVLVariables.LangResourceCultureInfo)].Width = 57;
-                //    Reports_dgv.Columns[IVLVariables.LangResourceManager.GetString("Report_Slno_Text", IVLVariables.LangResourceCultureInfo)].Width = 58;
-                //    foreach (DataGridViewColumn c in Reports_dgv.Columns)
-                //    {
-                //        c.DefaultCellStyle.Font = new Font("Tahoma", 9.0F, GraphicsUnit.Pixel);
-                //    }
-                //}
+                }
+                else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                {
+                    Intusoft.WPF.UserControls.Convertor.FontSizeClass.FontSize = 10;
+
+                }
             }
             catch (Exception ex)
             {
@@ -1331,23 +1275,23 @@ namespace INTUSOFT.Desktop.Forms
                         #region Report From Application
                         if (!IVLVariables.isCommandLineArgsPresent)
                         {
-                            NewDataVariables.Obs = NewDataVariables.Obs.Where(x => x.voided == false).ToList();
-                            imageFileNames = new string[NewDataVariables.Obs.Count];
+                            NewDataVariables.Visit_Obs = NewDataVariables.Visit_Obs.Where(x => x.voided == false).ToList();
+                            imageFileNames = new string[NewDataVariables.Visit_Obs.Count];
 
-                            imgids = new int[NewDataVariables.Obs.Count];
-                            imgsides = new int[NewDataVariables.Obs.Count];
-                            imgannotated = new bool[NewDataVariables.Obs.Count];
-                            isCDR = new bool[NewDataVariables.Obs.Count];
-                            maskDetailsOfImages = new string[NewDataVariables.Obs.Count];//object maskDetailsOfImages created of type string (which holds Elements present in list Obs). By Ashutosh 22-08-2017
-                            cameraDetailsOfImages = new string[NewDataVariables.Obs.Count];//object maskDetailsOfImages created of type stringcameraSetting.By Ashutosh 31-08-2017.
-                            for (int i = 0; i < NewDataVariables.Obs.Count; i++)
+                            imgids = new int[NewDataVariables.Visit_Obs.Count];
+                            imgsides = new int[NewDataVariables.Visit_Obs.Count];
+                            imgannotated = new bool[NewDataVariables.Visit_Obs.Count];
+                            isCDR = new bool[NewDataVariables.Visit_Obs.Count];
+                            maskDetailsOfImages = new string[NewDataVariables.Visit_Obs.Count];//object maskDetailsOfImages created of type string (which holds Elements present in list Obs). By Ashutosh 22-08-2017
+                            cameraDetailsOfImages = new string[NewDataVariables.Visit_Obs.Count];//object maskDetailsOfImages created of type stringcameraSetting.By Ashutosh 31-08-2017.
+                            for (int i = 0; i < NewDataVariables.Visit_Obs.Count; i++)
                             {
                                 if (Convert.ToBoolean(IVLVariables.CurrentSettings.ImageStorageSettings.IsMrnFolder.val))
-                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Obs[i].value;
+                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Active_PatientIdentifier.value + Path.DirectorySeparatorChar + NewDataVariables.Active_Visit.createdDate.Date.ToString("dd_MM_yyyy") + Path.DirectorySeparatorChar + NewDataVariables.Visit_Obs[i].value;
                                 else
-                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Obs[i].value;
-                                imgids[i] = NewDataVariables.Obs[i].observationId;
-                                eye_fundus_image eyefi = NewDataVariables._Repo.GetById<eye_fundus_image>(NewDataVariables.Obs[i].observationId);
+                                    imageFileNames[i] = IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val.ToString() + Path.DirectorySeparatorChar + NewDataVariables.Visit_Obs[i].value;
+                                imgids[i] = NewDataVariables.Visit_Obs[i].observationId;
+                                eye_fundus_image eyefi = NewDataVariables._Repo.GetById<eye_fundus_image>(NewDataVariables.Visit_Obs[i].observationId);
                                 if (eyefi.eyeSide == 'L')
                                     imgsides[i] = 1;
                                 else if (eyefi.eyeSide == 'R')
@@ -1561,7 +1505,7 @@ namespace INTUSOFT.Desktop.Forms
                             #region Gets the default template from the report settings and set it to the current template
 
                             if (showExistingDRTemplate)
-                                reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml");
+                                reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml" );
                             else
                             {
                                 string defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
@@ -1569,11 +1513,11 @@ namespace INTUSOFT.Desktop.Forms
                                 int index = reportTemplates.FindIndex(x => x.Name == defaultTemplateFileName);//Gives the index of the changedTemplateFileName from reportTemplates
                                 if (index >= 0)
                                 {
-                                    reportDic.Add("$currentTemplate", reportTemplates[index].FullName);
+                                    reportDic.Add("$currentTemplate",reportTemplates[index].FullName );
                                 }
                                 else
                                 {
-                                    reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
+                                    reportDic.Add("$currentTemplate",  @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml" );
                                 }
                             }
                             
@@ -1582,7 +1526,7 @@ namespace INTUSOFT.Desktop.Forms
                         else
                         {
                             if (showExistingDRTemplate)
-                                reportDic["$currentTemplate"]= @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml";
+                                reportDic["$currentTemplate"]=  @"ReportTemplates\Landscape\DR\Portrait_DR_A4.xml" ;
                         }
                         if (reportDic.ContainsKey("$ChangeMaskColour"))//checks if key $ChangeMaskColour is present .By Ashutosh 22-08-2017
                             reportDic["$ChangeMaskColour"] = IVLVariables.CurrentSettings.ReportSettings.ChangeMaskColour.val;// if present then it's value is replaced.By Ashutosh 22-08-2017
@@ -1839,7 +1783,7 @@ namespace INTUSOFT.Desktop.Forms
                     else
                     {
 
-                        NewDataVariables.Active_Obs = NewDataVariables.Obs[NewDataVariables.Obs.FindIndex(x => x.value == new FileInfo(thumbnailData.fileName).Name)];
+                        NewDataVariables.Active_Obs = NewDataVariables.Visit_Obs[NewDataVariables.Visit_Obs.FindIndex(x => x.value == new FileInfo(thumbnailData.fileName).Name)];
                         if (NewDataVariables.Active_Obs.eyeSide == 'L')
                             thumbnailData.side = 1;
                         else
@@ -1892,6 +1836,7 @@ namespace INTUSOFT.Desktop.Forms
                     OriginalBm = new Bitmap(10, 10);
                     modifyingBm = new Bitmap(10, 10);
                     arg["rawImage"] = OriginalBm;
+                   // IVLVariables.pageDisplayed
                     eventHandler.Notify(eventHandler.DisplayImage, arg);
                     if (IVLVariables.isZoomEnabled)
                         eventHandler.Notify(eventHandler.EnableZoomMagnification, new Args());
@@ -2649,7 +2594,9 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 1;
-                           // arg["side"] = 1;//has been added to change the side in the thumbnail
+                            thumbnailData.QIStatus = NewDataVariables.Active_Obs.qi_Status;
+
+                            // arg["side"] = 1;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Left;
 
                         }
@@ -2678,6 +2625,7 @@ namespace INTUSOFT.Desktop.Forms
                                 NewIVLDataMethods.UpdatePatient();
                             }
                             thumbnailData.side = 0;
+                            thumbnailData.QIStatus = NewDataVariables.Active_Obs.qi_Status;
                            // arg["side"] = 0;//has been added to change the side in the thumbnail
                             //IVLVariables.ivl_Camera.camPropsHelper.LeftRightPos = LeftRightPosition.Right;
 
@@ -3323,7 +3271,7 @@ namespace INTUSOFT.Desktop.Forms
 
             if (images.Length <= Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._noOfImagesForReport.val))
             {
-                if(IVLVariables.isInternetConnected)
+                if(Intusoft.WPF.UserControls.InternetCheckViewModel.GetInstance().InternetPresent)
                 {
                     List<int> NonGradableImagesStatusList = new List<int>();
                     List<int> QIProgressList = new List<int>();
@@ -3332,12 +3280,12 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
                         eye_fundus_image eye = NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.NonGradable)
-                            NonGradableImagesStatusList.Add(eye.qi_DR_AMD_Status);
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Failed)
-                            QIFailedList.Add(eye.qi_DR_AMD_Status);
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Initialised || eye.qi_DR_AMD_Status == (int)QIStatus.Uploading || eye.qi_DR_AMD_Status == (int)QIStatus.Processing)
-                            QIProgressList.Add(eye.qi_DR_AMD_Status);
+                        if (eye.qi_Status == (int)QIStatus.NonGradable)
+                            NonGradableImagesStatusList.Add(eye.qi_Status);
+                        if (eye.qi_Status == (int)QIStatus.Failed)
+                            QIFailedList.Add(eye.qi_Status);
+                        if (eye.qi_Status == (int)QIStatus.Initialised || eye.qi_Status == (int)QIStatus.Uploading || eye.qi_Status == (int)QIStatus.Processing)
+                            QIProgressList.Add(eye.qi_Status);
                     }
 
                     if (QIProgressList.Any()) // Selected Images contain QI Progess  
@@ -4106,6 +4054,7 @@ namespace INTUSOFT.Desktop.Forms
 
             leftToolTip.SetToolTip(leftSide_btn, IVLVariables.LangResourceManager.GetString("OS_Tool_Tip_Text", IVLVariables.LangResourceCultureInfo));
         }
+
 
         private void rightSide_btn_MouseHover(object sender, EventArgs e)
         {

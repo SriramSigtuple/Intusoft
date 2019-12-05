@@ -13,6 +13,7 @@ namespace INTUSOFT.ThumbnailModule
     {
         private int qiStatus;
         private string name;
+        private string failure_msg;
 
         public ImageLabelVM()
         {
@@ -37,7 +38,14 @@ namespace INTUSOFT.ThumbnailModule
         }
 
 
-        public ICommand ClickCommand { get; set; }
 
+        public ICommand ClickCommand { get; set; }
+        public string Failure_msg 
+        { get => failure_msg;
+            set
+            {
+                failure_msg = value; OnPropertyChanged("Failure_msg");
+            }
+        }
     }
 }

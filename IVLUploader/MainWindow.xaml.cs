@@ -12,6 +12,7 @@ namespace IntuUploader
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowState = WindowState.Minimized;
             this.Loaded += MainWindow_Loaded;
           
         }
@@ -38,16 +39,16 @@ namespace IntuUploader
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         { 
-            if(_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
-                ||_currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.isBusy 
-                ||_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
-                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy)
+            if(_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+                ||_currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy 
+                ||_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
             {
                 MessageBox.Show("Uploads are in progress ", "Warning", MessageBoxButton.OK);
-                while (_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
-                || _currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.isBusy
-                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy
-                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.isBusy)
+                while (_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+                || _currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
                 {
                     this.Cursor = Cursors.Wait;
                 }

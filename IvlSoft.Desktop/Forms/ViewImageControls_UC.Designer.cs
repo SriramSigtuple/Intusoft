@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewImageControls_UC));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.leftSide_btn = new INTUSOFT.Custom.Controls.FormButtons();
+            this.rightSide_btn = new INTUSOFT.Custom.Controls.FormButtons();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -41,11 +43,14 @@
             this.newAnnotation_btn = new System.Windows.Forms.ToolStripButton();
             this.glaucomaTool_btn = new System.Windows.Forms.ToolStripButton();
             this.reportGridView_p = new System.Windows.Forms.Panel();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.reportListView1 = new Intusoft.WPF.UserControls.ReportListView();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.contrast_lbl = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.removePostProcessing_btn = new INTUSOFT.Custom.Controls.FormButtons();
             this.postProcessing_lbl = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.brightness_lbl = new System.Windows.Forms.Label();
@@ -70,6 +75,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.Zoomin_pbx = new System.Windows.Forms.PictureBox();
             this.ZoomOut_pbx = new System.Windows.Forms.PictureBox();
+            this.enableZoom_btn = new INTUSOFT.Custom.Controls.FormButtons();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.save_btn = new System.Windows.Forms.ToolStripButton();
@@ -96,16 +102,13 @@
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.leftSide_btn = new INTUSOFT.Custom.Controls.FormButtons();
-            this.rightSide_btn = new INTUSOFT.Custom.Controls.FormButtons();
-            this.removePostProcessing_btn = new INTUSOFT.Custom.Controls.FormButtons();
-            this.enableZoom_btn = new INTUSOFT.Custom.Controls.FormButtons();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel3.SuspendLayout();
             this.toolStrip3.SuspendLayout();
+            this.reportGridView_p.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -172,6 +175,36 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(281, 33);
             this.tableLayoutPanel7.TabIndex = 8;
+            // 
+            // leftSide_btn
+            // 
+            this.leftSide_btn.BackColor = System.Drawing.Color.Khaki;
+            this.leftSide_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.leftSide_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.leftSide_btn.ForeColor = System.Drawing.Color.Black;
+            this.leftSide_btn.Location = new System.Drawing.Point(3, 3);
+            this.leftSide_btn.Name = "leftSide_btn";
+            this.leftSide_btn.Size = new System.Drawing.Size(106, 27);
+            this.leftSide_btn.TabIndex = 8;
+            this.leftSide_btn.Text = "OS";
+            this.leftSide_btn.UseVisualStyleBackColor = false;
+            this.leftSide_btn.Click += new System.EventHandler(this.leftSide_btn_Click);
+            this.leftSide_btn.MouseHover += new System.EventHandler(this.leftSide_btn_MouseHover);
+            // 
+            // rightSide_btn
+            // 
+            this.rightSide_btn.BackColor = System.Drawing.Color.Khaki;
+            this.rightSide_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rightSide_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rightSide_btn.ForeColor = System.Drawing.Color.Black;
+            this.rightSide_btn.Location = new System.Drawing.Point(171, 3);
+            this.rightSide_btn.Name = "rightSide_btn";
+            this.rightSide_btn.Size = new System.Drawing.Size(107, 27);
+            this.rightSide_btn.TabIndex = 9;
+            this.rightSide_btn.Text = "OD";
+            this.rightSide_btn.UseVisualStyleBackColor = false;
+            this.rightSide_btn.Click += new System.EventHandler(this.rightSide_btn_Click);
+            this.rightSide_btn.MouseHover += new System.EventHandler(this.rightSide_btn_MouseHover);
             // 
             // panel2
             // 
@@ -278,11 +311,22 @@
             // 
             // reportGridView_p
             // 
+            this.reportGridView_p.Controls.Add(this.elementHost1);
             this.reportGridView_p.Dock = System.Windows.Forms.DockStyle.Fill;
             this.reportGridView_p.Location = new System.Drawing.Point(3, 30);
             this.reportGridView_p.Name = "reportGridView_p";
             this.reportGridView_p.Size = new System.Drawing.Size(275, 98);
             this.reportGridView_p.TabIndex = 1002;
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Location = new System.Drawing.Point(0, 0);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(275, 98);
+            this.elementHost1.TabIndex = 0;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.reportListView1;
             // 
             // tableLayoutPanel8
             // 
@@ -358,6 +402,20 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(275, 34);
             this.tableLayoutPanel6.TabIndex = 0;
+            // 
+            // removePostProcessing_btn
+            // 
+            this.removePostProcessing_btn.BackColor = System.Drawing.Color.Khaki;
+            this.removePostProcessing_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.removePostProcessing_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.removePostProcessing_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.removePostProcessing_btn.Location = new System.Drawing.Point(140, 3);
+            this.removePostProcessing_btn.Name = "removePostProcessing_btn";
+            this.removePostProcessing_btn.Size = new System.Drawing.Size(132, 28);
+            this.removePostProcessing_btn.TabIndex = 20;
+            this.removePostProcessing_btn.Text = "Remove Post Processing";
+            this.removePostProcessing_btn.UseVisualStyleBackColor = false;
+            this.removePostProcessing_btn.Click += new System.EventHandler(this.removePostProcessing_btn_Click);
             // 
             // postProcessing_lbl
             // 
@@ -683,6 +741,20 @@
             this.ZoomOut_pbx.TabIndex = 1;
             this.ZoomOut_pbx.TabStop = false;
             // 
+            // enableZoom_btn
+            // 
+            this.enableZoom_btn.BackColor = System.Drawing.Color.Khaki;
+            this.enableZoom_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.enableZoom_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enableZoom_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.enableZoom_btn.Location = new System.Drawing.Point(58, 3);
+            this.enableZoom_btn.Name = "enableZoom_btn";
+            this.enableZoom_btn.Size = new System.Drawing.Size(159, 32);
+            this.enableZoom_btn.TabIndex = 16;
+            this.enableZoom_btn.Text = "button1";
+            this.enableZoom_btn.UseVisualStyleBackColor = false;
+            this.enableZoom_btn.Click += new System.EventHandler(this.enableZoom_btn_Click);
+            // 
             // toolStrip2
             // 
             this.toolStrip2.BackColor = System.Drawing.Color.Transparent;
@@ -941,64 +1013,6 @@
             this.toolStripContainer1.TabIndex = 1001;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
-            // leftSide_btn
-            // 
-            this.leftSide_btn.BackColor = System.Drawing.Color.Khaki;
-            this.leftSide_btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.leftSide_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.leftSide_btn.ForeColor = System.Drawing.Color.Black;
-            this.leftSide_btn.Location = new System.Drawing.Point(3, 3);
-            this.leftSide_btn.Name = "leftSide_btn";
-            this.leftSide_btn.Size = new System.Drawing.Size(106, 27);
-            this.leftSide_btn.TabIndex = 8;
-            this.leftSide_btn.Text = "OS";
-            this.leftSide_btn.UseVisualStyleBackColor = false;
-            this.leftSide_btn.Click += new System.EventHandler(this.leftSide_btn_Click);
-            this.leftSide_btn.MouseHover += new System.EventHandler(this.leftSide_btn_MouseHover);
-            // 
-            // rightSide_btn
-            // 
-            this.rightSide_btn.BackColor = System.Drawing.Color.Khaki;
-            this.rightSide_btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rightSide_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rightSide_btn.ForeColor = System.Drawing.Color.Black;
-            this.rightSide_btn.Location = new System.Drawing.Point(171, 3);
-            this.rightSide_btn.Name = "rightSide_btn";
-            this.rightSide_btn.Size = new System.Drawing.Size(107, 27);
-            this.rightSide_btn.TabIndex = 9;
-            this.rightSide_btn.Text = "OD";
-            this.rightSide_btn.UseVisualStyleBackColor = false;
-            this.rightSide_btn.Click += new System.EventHandler(this.rightSide_btn_Click);
-            this.rightSide_btn.MouseHover += new System.EventHandler(this.rightSide_btn_MouseHover);
-            // 
-            // removePostProcessing_btn
-            // 
-            this.removePostProcessing_btn.BackColor = System.Drawing.Color.Khaki;
-            this.removePostProcessing_btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removePostProcessing_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removePostProcessing_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.removePostProcessing_btn.Location = new System.Drawing.Point(140, 3);
-            this.removePostProcessing_btn.Name = "removePostProcessing_btn";
-            this.removePostProcessing_btn.Size = new System.Drawing.Size(132, 28);
-            this.removePostProcessing_btn.TabIndex = 20;
-            this.removePostProcessing_btn.Text = "Remove Post Processing";
-            this.removePostProcessing_btn.UseVisualStyleBackColor = false;
-            this.removePostProcessing_btn.Click += new System.EventHandler(this.removePostProcessing_btn_Click);
-            // 
-            // enableZoom_btn
-            // 
-            this.enableZoom_btn.BackColor = System.Drawing.Color.Khaki;
-            this.enableZoom_btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.enableZoom_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enableZoom_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.enableZoom_btn.Location = new System.Drawing.Point(58, 3);
-            this.enableZoom_btn.Name = "enableZoom_btn";
-            this.enableZoom_btn.Size = new System.Drawing.Size(159, 32);
-            this.enableZoom_btn.TabIndex = 16;
-            this.enableZoom_btn.Text = "button1";
-            this.enableZoom_btn.UseVisualStyleBackColor = false;
-            this.enableZoom_btn.Click += new System.EventHandler(this.enableZoom_btn_Click);
-            // 
             // ViewImageControls_UC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1018,6 +1032,7 @@
             this.panel3.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            this.reportGridView_p.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.panel9.ResumeLayout(false);
@@ -1141,7 +1156,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label postProcessing_lbl;
         private System.Windows.Forms.Label file_lbl;
-        private ReportListView ReportListView;
+        //private ReportListView ReportListView;
         private System.Windows.Forms.Panel reportGridView_p;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private Intusoft.WPF.UserControls.ReportListView reportListView1;
     }
 }

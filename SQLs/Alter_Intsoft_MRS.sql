@@ -182,6 +182,26 @@ COMMIT;
 START TRANSACTION;
 USE `dbName`;
 DELIMITER $$
+drop procedure if exists add_qi_status_Obs;
+CREATE PROCEDURE add_qi_status_Obs() 
+BEGIN
+DECLARE colName TEXT;
+SELECT column_name INTO colName
+FROM information_schema.columns 
+WHERE table_schema = 'dbName'
+    AND table_name = 'observation'
+AND column_name = 'qi_status';
+IF colName is null THEN 
+    ALTER TABLE  observation ADD qi_status INT(1) NOT NULL  DEFAULT 0;
+END IF; 
+END$$
+DELIMITER ;
+CALL add_qi_status_Obs();
+COMMIT;
+
+START TRANSACTION;
+USE `dbName`;
+DELIMITER $$
 drop procedure if exists add_failureMsg_cloud_report_Col;
 CREATE PROCEDURE add_failureMsg_cloud_report_Col() 
 BEGIN
@@ -224,85 +244,20 @@ COMMIT;
 START TRANSACTION;
 USE `dbName`;
 DELIMITER $$
-drop procedure if exists add_qi_status_Col;
-CREATE PROCEDURE add_qi_status_Col() 
+drop procedure if exists add_qi_failure_msg_Col;
+CREATE PROCEDURE add_qi_failure_msg_Col() 
 BEGIN
 DECLARE colName TEXT;
 SELECT column_name INTO colName
 FROM information_schema.columns 
 WHERE table_schema = 'dbName'
     AND table_name = 'observation'
-AND column_name = 'qi_status';
+AND column_name = 'failure_msg';
 IF colName is null THEN 
-    ALTER TABLE  observation ADD qi_status INT(1) NOT NULL  DEFAULT 0;
+    ALTER TABLE  observation ADD failure_msg LONGTEXT;
 END IF; 
 
 END$$
 DELIMITER ;
-CALL add_qi_status_Col();
+CALL add_qi_failure_msg_Col();
 COMMIT;
-
-START TRANSACTION;
-USE `dbName`;
-DELIMITER $$
-drop procedure if exists add_qi_glaucoma_status_Col;
-CREATE PROCEDURE add_qi_glaucoma_status_Col() 
-BEGIN
-DECLARE colName TEXT;
-SELECT column_name INTO colName
-FROM information_schema.columns 
-WHERE table_schema = 'dbName'
-    AND table_name = 'observation'
-AND column_name = 'qi_glaucoma_status';
-IF colName is null THEN 
-    ALTER TABLE  observation ADD qi_glaucoma_status INT(1) NOT NULL  DEFAULT 0;
-END IF; 
-
-END$$
-DELIMITER ;
-CALL add_qi_glaucoma_status_Col();
-COMMIT;
-
-START TRANSACTION;
-USE `dbName`;
-DELIMITER $$
-drop procedure if exists add_qi_filename_Col;
-CREATE PROCEDURE add_qi_filename_Col() 
-BEGIN
-DECLARE colName TEXT;
-SELECT column_name INTO colName
-FROM information_schema.columns 
-WHERE table_schema = 'dbName'
-    AND table_name = 'observation'
-AND column_name = 'qi_filename';
-IF colName is null THEN 
-    ALTER TABLE  observation ADD qi_filename LONGTEXT;
-END IF; 
-
-END$$
-DELIMITER ;
-CALL add_qi_filename_Col();
-COMMIT;
-
-START TRANSACTION;
-USE `dbName`;
-DELIMITER $$
-drop procedure if exists ChangeQIStatus2QI_DR_Glaucoma_Status;
-
-CREATE PROCEDURE ChangeQIStatus2QI_DR_Glaucoma_Status() 
-BEGIN
-DECLARE colName TEXT;
-SELECT column_name INTO colName
-FROM information_schema.columns 
-WHERE table_schema = 'dbName'
-    AND table_name = 'observation'
-AND column_name = 'qi_status';
-
-IF colName is not null THEN 
-   ALTER TABLE observation change COLUMN qi_status qi_dr_amd_status bigint(20) not null;
-END IF; 
-END$$
-DELIMITER ;
-CALL ChangeQIStatus2QI_DR_Glaucoma_Status();
-COMMIT;
-

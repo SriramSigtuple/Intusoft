@@ -12,7 +12,7 @@ namespace INTUSOFT.Desktop
         public string flashProgrammerVersion = "Renesas Electronics Corporation (HmseUsb) RenesasUSB";
         public string mysqlVersion = "MySQL Server 5.7";
         public string servicePackVersion = "Service Pack 1";
-        public string cameraVersionText = "(07/26/2017 1.0.0.9432)";
+        public string cameraVersionText = "(10/16/2019 1.0.0.15729)";
         public string vcredistributable2015 = "Microsoft Visual C++ 2015 Redistributable";
         public string vcredistributable2013 = "Microsoft Visual C++ 2013 Redistributable";
         public string cameraDriverVersion = @"Windows Driver Package - Hangzhou ToupTek Photonics Co., ";
@@ -22,7 +22,7 @@ namespace INTUSOFT.Desktop
         public string sqlServiceText = "57";
         public int prerquisitesCount = 9;
 
-        public string SoftwareReleaseDate = "";
+        public string SoftwareReleaseDate = DateTime.Now.ToString("dd-MMM-yyyy");
 
         public Constants()
         {

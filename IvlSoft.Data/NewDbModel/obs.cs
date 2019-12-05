@@ -51,9 +51,9 @@ namespace INTUSOFT.Data.NewDbModel
             string voidedReason,
             string UUID,
             string checkSum,
-            int QI_Dr_AMD_Status,
-            int QI_Glaucoma_Status,
-            string QIFileName
+            int QI_Dr_Status,
+            string QIFileName,
+            string failure_msg
                  )
         {
             return new obs
@@ -79,10 +79,9 @@ namespace INTUSOFT.Data.NewDbModel
                 voidedBy = VoidedBy,
                 voidedReason = voidedReason,
                 checkSum = checkSum,
-                qi_DR_AMD_Status = QI_Dr_AMD_Status,
-                qi_Glaucoma_Status = QI_Glaucoma_Status,
-                qiFileName = QIFileName
-
+                qi_Status = QI_Dr_Status,
+                qiFileName = QIFileName,
+                failure_msg = failure_msg
                 //uuid=UUID
             };
         }
@@ -94,8 +93,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual int observationId { get; set; }
 
-        public virtual int qi_DR_AMD_Status { get; set; }
-        public virtual int qi_Glaucoma_Status { get; set; }
+        public virtual int qi_Status { get; set; }
 
         public virtual Patient patient { get; set; }
 
@@ -131,6 +129,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual string comments { get; set; }
         public virtual string qiFileName { get; set; }
+        public virtual string failure_msg { get; set; }
         
         public virtual string checkSum { get; set; }
         //public virtual string uuid { get; set; }

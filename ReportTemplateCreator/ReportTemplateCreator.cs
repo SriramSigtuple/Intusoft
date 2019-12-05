@@ -24,7 +24,7 @@ using System.Windows.Markup;
 using DesignSurfaceExt;
 using DesignSurfaceManagerExtension;
 using pDesigner;
-using PdfFileWriter;
+
 namespace ReportTemplateCreator
 {
     public partial class ReportTemplateCreatorWindow : Form

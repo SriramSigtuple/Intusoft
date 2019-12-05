@@ -35,7 +35,7 @@ namespace INTUSOFT.ThumbnailModule.Con
                         returnString = "Non-Gradable";
                         break;
                     case 6:
-                        returnString = "Failed";
+                         returnString = string.IsNullOrEmpty(value.ToString()) ? "Failed" : value.ToString();
                         break;
                     default:
                         returnString = "Not Analysed";

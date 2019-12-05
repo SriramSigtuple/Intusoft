@@ -17,6 +17,7 @@ namespace INTUSOFT.ThumbnailModule
             this.IsAnnotated = isannotated;
             this.isCDR = isCDR;
             this.qiStatus = qiStatus;
+            this.thumbnailData = new ThumbnailData { failure_msg = string.Empty, fileName = imageFilename, id = id, isAnnotated = isannotated, isCDR = isCDR, QIStatus = qiStatus, side = side };
         }
         public ThumbnailControllerEventArgs(ThumbnailData thumbnailData,int index)
         {

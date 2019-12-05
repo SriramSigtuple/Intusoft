@@ -1,31 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using INTUSOFT.Data.Repository;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Runtime.InteropServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using INTUSOFT.EventHandler;
-using CameraModule;
-using System.IO;
+﻿using Cloud_Models.Models;
+using Common.Enums;
 using INTUSOFT.Custom.Controls;
-using System.Threading;
-using INTUSOFT.Imaging;
-using INTUSOFT.Desktop.Properties;
-using INTUSOFT.Data.Repository;
 using INTUSOFT.Data.NewDbModel;
-using NLog.Config;
-using NLog.Targets;
-using NLog;
-using Cloud_Models.Models;
-using Common;
+using INTUSOFT.Data.Repository;
+using INTUSOFT.EventHandler;
+using INTUSOFT.Imaging;
 using Newtonsoft.Json;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
+using GainLevels = INTUSOFT.Imaging.GainLevels;
 
 namespace INTUSOFT.Desktop.Forms
 {
@@ -596,7 +586,8 @@ namespace INTUSOFT.Desktop.Forms
                             eyeFundusImage.qiFileName =  Push2QI(eyeFundusImage);
                             NewIVLDataMethods.UpdatePatient();
                             NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
-                            NewDataVariables.Obs.Add(eyeFundusImage);
+                            NewDataVariables.Visit_Obs.Add(eyeFundusImage);
+                            NewDataVariables.Eye_Fundus_Images.Add(eyeFundusImage);
                             tdata.id = eyeFundusImage.observationId;
                             // arg["id"] = newObs.observationId;
                             //foreach (var item in NewDataVariables.Visits)
@@ -719,7 +710,7 @@ namespace INTUSOFT.Desktop.Forms
         {
             CloudModel cloudModel =  GetQIModel(eye_Fundus);
             var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
-            var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI), DateTime.Now.ToString("yyyymmddHHMMssfff") + ".json");
+            var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir, AnalysisType.QI), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
             File.WriteAllText(outboxFilePath, cloudModelJson);
             return new FileInfo(outboxFilePath).Name;
             // car = NewDataVariables._Repo.GetById<obs>(cloudModel.ImageID);

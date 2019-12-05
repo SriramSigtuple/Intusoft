@@ -21,6 +21,8 @@ namespace IntuUploader.ViewModels
 
         public FileInfo ActiveFnf = null;
 
+        public delegate void DelegatePendingFileCreation(AnalysisType analysisType);
+        public event DelegatePendingFileCreation CreatePendingFilesEvent; 
         CloudModel activeCloudModel;
         LoginViewModel activeLoginViewModel;
         CreateAnalysisViewModel activeCreateAnalysisViewModel;
@@ -32,7 +34,22 @@ namespace IntuUploader.ViewModels
         public delegate void  StartStopTimer(bool isStart);
         public event StartStopTimer startStopEvent;
 
-        public bool isBusy = false;
+        private bool _IsBusy;
+
+        public bool IsBusy
+        {
+            get { return _IsBusy; }
+            set {
+                _IsBusy = value; 
+                if(!_IsBusy)
+                {
+                    if(CreatePendingFilesEvent != null)
+                    CreatePendingFilesEvent(analysisType);
+                }
+
+            }
+        }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -108,7 +125,7 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                this.isBusy = false; 
+                this.IsBusy = false; 
                 //this.Dispose();
             }
                
@@ -155,8 +172,8 @@ namespace IntuUploader.ViewModels
 
                     //this.Dispose();
 
-                    startStopEvent(true);
-                    this.isBusy = false; ;
+                    //startStopEvent(true);
+                    this.IsBusy = false; ;
 
                 }
                 else
@@ -213,7 +230,8 @@ namespace IntuUploader.ViewModels
                     else if ((string)analysisStatus_JObject["status"] == "failure")
                     {
 
-                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result");
+                        var failure_message = analysisStatus_JObject["failure_reason"].ToString();
+                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result", failure_message);
                         //this.Dispose();
                         ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
                         ActiveCloudModel.GetAnalysisResultModel.CompletedStatus = true;
@@ -248,8 +266,8 @@ namespace IntuUploader.ViewModels
                             st1.Flush();
                             st1.Close();
                             st1.Dispose();
-                            startStopEvent(true);
-                            this.isBusy = false; ;
+                            //startStopEvent(true);
+                            this.IsBusy = false; ;
                         }
                         //this.Dispose();
                     }
@@ -259,7 +277,7 @@ namespace IntuUploader.ViewModels
                     ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Status");
                     logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
                     ////this.Dispose();
-                    //this.isBusy = false;;
+                    //this.IsBusy = false;;
                 }
             }
             catch (Exception ex)
@@ -294,7 +312,7 @@ namespace IntuUploader.ViewModels
                     }
                     else
                     {
-                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login","Wrong Data");
+                        ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login","Wrong Installation ID");
                         //this.Dispose();
                     }
 
@@ -302,7 +320,8 @@ namespace IntuUploader.ViewModels
                 }
                 else
                 {
-                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Data");
+
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Credentials");
 
                 }
             }
@@ -335,7 +354,9 @@ namespace IntuUploader.ViewModels
                 List<JToken> products = Login_JObject["message"]["products"].ToList();
                 foreach (var item in products)
                 {
-                    if (item.ToString().Contains(AnalysisType.ToString("g")))
+                    if (item["sub_ctgy"].ToString().ToLower().Contains(AnalysisType.ToString("g").ToLower()))
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                    else if ((item["ctgy"].ToString().ToLower().Contains(AnalysisType.ToString("g").ToLower())))
                         ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
 
                 }
@@ -476,141 +497,27 @@ namespace IntuUploader.ViewModels
 
                     if (AnalysisType == AnalysisType.QI)
                     {
-                        GetQIResult(ref inboxAnalysisStatusModel);
+                        AddQIResult(ref inboxAnalysisStatusModel);
+
                     }
                     else
                     {
 
-                      
-                        JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
-                        ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
-                        List<JToken> products = Login_JObject["message"]["products"].ToList();
-                        string sub_category = string.Empty;
-                        if (AnalysisType == AnalysisType.Fundus)
-                        {
-                            foreach (var item in products)
-                            {
-                                if (item.ToString().Contains("Fundus"))
-                                {
-                                    ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
-                                    sub_category = (string)item["sub_ctgy"];
-                                }
-                            }
-                            inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
-                              "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id);
-                        }
-
-
-
-                        JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
-                        inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
-
-                        List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
-                        List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
-
-                        int rightImageCnt = (int)((double)right_tokens.Count / 9);
-                        int leftImageCnt = (int)((double)left_tokens.Count / 9);
-
-                        for (int i = 0; i < rightImageCnt; i++)
-                        {
-                            var indx = i * 9;
-                            ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-                            imageAnalysisResultModel.ImageName = (string)right_tokens[indx];
-                            imageAnalysisResultModel.Analysis_Result = (string)right_tokens[indx + 7];
-                            imageAnalysisResultModel.QI_Result = (string)right_tokens[indx + 6];
-                            inboxAnalysisStatusModel.RightEyeDetails.Add(imageAnalysisResultModel);
-
-                            if (AnalysisType == AnalysisType.Fundus)
-                            {
-                                if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
-                                {
-
-                                    if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-                                        break;
-                                    }
-                                    else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                    else if (!inboxAnalysisStatusModel.RightAIImpressions.Contains("Referrable DR"))
-                                    {
-                                        inboxAnalysisStatusModel.RightAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                }
-                                else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.RightAIImpressions))
-                                {
-                                    inboxAnalysisStatusModel.RightAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                    inboxAnalysisStatusModel.RightEyeDetails[0] = imageAnalysisResultModel;
-                                }
-                            }
-
-                        }
-                        for (int i = 0; i < leftImageCnt; i++)
-                        {
-                            var indx = i * 9;
-
-                            ImageAnalysisResultModel imageAnalysisResultModel = new ImageAnalysisResultModel();
-
-                            imageAnalysisResultModel.ImageName = (string)left_tokens[indx];
-                            imageAnalysisResultModel.Analysis_Result = (string)left_tokens[indx + 7];
-                            imageAnalysisResultModel.QI_Result = (string)left_tokens[indx + 6];
-                            inboxAnalysisStatusModel.LeftEyeDetails.Add(imageAnalysisResultModel);
-
-                            if (AnalysisType == AnalysisType.Fundus)
-                            {
-                                if (imageAnalysisResultModel.QI_Result.Equals("Gradable"))
-                                {
-
-                                    if (imageAnalysisResultModel.Analysis_Result.Equals("PDR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-                                        break;
-                                    }
-                                    else if (imageAnalysisResultModel.Analysis_Result.Equals("NPDR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Referrable DR";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                    else if (!inboxAnalysisStatusModel.LeftAIImpressions.Contains("Referrable DR"))
-                                    {
-                                        inboxAnalysisStatusModel.LeftAIImpressions = "Non-Referrable DR";// inboxAnalysisStatusModel.LeftEyeDetails[0].Analysis_Result;
-                                        inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-
-                                    }
-                                }
-                                else if (String.IsNullOrEmpty(inboxAnalysisStatusModel.LeftAIImpressions))
-                                {
-                                    inboxAnalysisStatusModel.LeftAIImpressions = "Non-Gradable";// inboxAnalysisStatusModel.RightEyeDetails[0].Analysis_Result;
-                                    inboxAnalysisStatusModel.LeftEyeDetails[0] = imageAnalysisResultModel;
-                                }
-                            }
-
-                        }
+                        GetAnalysisData(ref inboxAnalysisStatusModel);
+                        SetAIImpressions(ref inboxAnalysisStatusModel);
+                    
                     }
-                        
 
                     Write2Inbox(inboxAnalysisStatusModel);
 
-
-                    //this.Dispose();
                 }
-
                 else
                 {
 
                     ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, "Result");
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
 
                 logger.Error(ex);
@@ -620,27 +527,228 @@ namespace IntuUploader.ViewModels
 
         }
 
-        private void GetQIResult(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        private void GetAnalysisData(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
         {
+            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+            ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+            List<JToken> products = Login_JObject["message"]["products"].ToList();
+            string sub_category = string.Empty;
+            if (AnalysisType == AnalysisType.Fundus)
+            {
+                foreach (var item in products)
+                {
+                    if (item["sub_ctgy"].ToString().ToLower().Contains("fundus"))
+                    {
+                        ActiveCloudModel.CreateAnalysisModel.product_id = (string)item["product_id"];
+                        sub_category = (string)item["sub_ctgy"];
+                    }
+                }
+                inboxAnalysisStatusModel.ReportUri = new System.Uri(ActiveCloudModel.GetAnalysisResultModel.URL_Model.API_URL.Replace("api", "ui") + "report/" + sub_category +
+                  "/" + ActiveCloudModel.CreateAnalysisModel.product_id + "/" + ActiveCloudModel.CreateAnalysisModel.sample_id + "/" + ActiveCloudModel.InitiateAnalysisModel.id);
+            }
+
+
+
             JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
+            var temp = jObject["analysisData"];
+            List<JToken> Subsections = new List<JToken>();
+            var cnt = temp.Count();
+            for (int i = 0; i < temp.Count(); i++)
+                Subsections.Add(temp[i]);
+
+            List<JToken[]> dataValues = new List<JToken[]>();
+            for (int i = 0; i < Subsections.Count; i++)
+            {
+                var RightJtoken = Subsections[i].Children().Values().Last().First.ToArray().Values().ToList()[3].ToArray(); //Right Array index 0
+
+                //dataValues.Add(RightJtoken);
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any())
+                {
+                    for (int k = 0; k < RightJtoken.Length; k++)
+                    {
+                            ImageAnalysisResultModel rightImageAnalysisResultModel = new ImageAnalysisResultModel();
+                        var testValue = RightJtoken[k].ToArray()[0].ToString();
+                            rightImageAnalysisResultModel.ImageName = testValue;
+                            rightImageAnalysisResultModel.Analysis_Result_DR = RightJtoken[k].ToArray().Last().Children().ToList()[0].First.ToString();
+                            rightImageAnalysisResultModel.ShowInSummary = Convert.ToBoolean(RightJtoken[k].ToList()[5].Children().Values().ToList()[0].ToString());
+                            inboxAnalysisStatusModel.RightEyeDetails.Add(rightImageAnalysisResultModel);
+                    }
+                }
+
+                var LeftJtoken = Subsections[i].Children().Values().Last().Last.ToArray().Values().ToList()[3].ToArray(); // Left Array index 1
+                //dataValues.Add(LeftJtoken);
+
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any())
+                {
+                    for (int j = 0; j < LeftJtoken.Length; j++)
+                    {
+                            ImageAnalysisResultModel leftImageAnalysisResultModel = new ImageAnalysisResultModel();
+                            leftImageAnalysisResultModel.ImageName = LeftJtoken[j].ToArray()[0].ToString();
+                            leftImageAnalysisResultModel.Analysis_Result_DR = LeftJtoken[j].ToArray().Last().Children().ToList()[0].First.ToString();
+                            leftImageAnalysisResultModel.ShowInSummary = Convert.ToBoolean(LeftJtoken[j].ToList()[5].Children().Values().ToList()[0].ToString());
+                            inboxAnalysisStatusModel.LeftEyeDetails.Add(leftImageAnalysisResultModel);
+                            
+                    }
+                  
+                }
+
+            }
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    for (int j = 0; j < dataValues[i].Length; j++)
+            //    {
+            //        if (i % 2 == 0)
+            //        {
+                       
+
+            //            //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_DR =
+            //            //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_AMD =
+            //            //inboxAnalysisStatusModel.RightEyeDetails[j].QI_Result_Glaucoma =
+
+            //        }
+            //        else
+            //        {
+            //            inboxAnalysisStatusModel.LeftEyeDetails[j].ImageName = dataValues[1].ToArray()[j].ToArray().First().ToString();
+            //            inboxAnalysisStatusModel.LeftEyeDetails[j].Analysis_Result_DR = dataValues[1].ToArray()[j].Values().Last().Last.Value<string>();
+            //            //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_DR =
+            //            //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_AMD =
+            //            //inboxAnalysisStatusModel.LeftEyeDetails[j].QI_Result_Glaucoma =
+
+            //        }
+            //    }
+
+            //}
+
             inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
-
-            List<JToken> right_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[0].Values().ToList()[3].ToList().Values().ToList();
-            List<JToken> left_tokens = jObject.Values().ToList()[0].Values().ToList()[5].Values().ToList()[1].Values().ToList()[3].ToList().Values().ToList();
-
-            inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel
-            {
-                QI_Result = right_tokens.Any() ? right_tokens[0].ToString(): string.Empty
-            }
-            ) ;
-            inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel
-            {
-                QI_Result = left_tokens.Any() ? left_tokens[0].ToString() : string.Empty
-            }
-          );
 
         }
 
+        private void SetAIImpressions(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        {
+            #region Left Eye Impressions
+            if(inboxAnalysisStatusModel.LeftEyeDetails.Any())
+            {
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("PDR")))
+                {
+                    if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NPDR")))
+                    {
+                        if (!inboxAnalysisStatusModel.LeftEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NonGradable")))
+                            inboxAnalysisStatusModel.LeftAIImpressionsDR = "Non-Referrable DR";
+                        else
+                            inboxAnalysisStatusModel.LeftAIImpressionsDR = "Non-Gradable";
+
+                    }
+                    else
+                    {
+                        inboxAnalysisStatusModel.LeftAIImpressionsDR = "Referrable DR";
+                    }
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.LeftAIImpressionsDR = "Referrable DR";
+
+                }
+            }
+            
+          
+
+            #endregion
+            if(inboxAnalysisStatusModel.RightEyeDetails.Any())
+            {
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("PDR")))
+                {
+                    if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NPDR")))
+                    {
+                        if (!inboxAnalysisStatusModel.RightEyeDetails.Any(x => x.Analysis_Result_DR.Equals("NonGradable")))
+                            inboxAnalysisStatusModel.RightAIImpressionsDR = "Non-Referrable DR";
+                        else
+                            inboxAnalysisStatusModel.RightAIImpressionsDR = "Non-Gradable";
+
+                    }
+                    else
+                    {
+                        inboxAnalysisStatusModel.RightAIImpressionsDR = "Referrable DR";
+                    }
+                }
+                else
+                {
+                    inboxAnalysisStatusModel.RightAIImpressionsDR = "Referrable DR";
+
+                }
+            }
+           
+           
+
+
+
+        }
+        private void AddQIResult(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        {
+            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+            ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
+            List<JToken> products = Login_JObject["message"]["products"].ToList();
+            string sub_category = string.Empty;
+
+
+            JObject jObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.responseBody);
+            var temp = jObject["analysisData"];
+            List<JToken> Subsections = new List<JToken>();
+            var cnt = temp.Count();
+            for (int i = 0; i < temp.Count(); i++)
+            {
+                Subsections.Add(temp[i]);
+
+            }
+            bool isRight = false;
+            List<JToken[]> dataValues = new List<JToken[]>();
+            for (int i = 0; i < Subsections.Count; i++)
+            {
+                var RightJtoken = Subsections[i].Children().Values().Last().First.ToArray().Values().ToList()[3].ToArray(); //Right Array index 0
+               if(RightJtoken.Any())
+                {
+                    dataValues.Add(RightJtoken);
+                    isRight = true;
+                }
+                if (!inboxAnalysisStatusModel.RightEyeDetails.Any())
+                {
+                    for (int k = 0; k < RightJtoken.Length; k++)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+                var LeftJtoken = Subsections[i].Children().Values().Last().Last.ToArray().Values().ToList()[3].ToArray(); // Left Array index 1
+                if(LeftJtoken.Any())
+                dataValues.Add(LeftJtoken);
+
+                if (!inboxAnalysisStatusModel.LeftEyeDetails.Any())
+                {
+                    for (int j = 0; j < LeftJtoken.Length; j++)
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails.Add(new ImageAnalysisResultModel());
+                    }
+                }
+
+            }
+            {
+                if(isRight)
+                    {
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_DR = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_AMD = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.RightEyeDetails[0].QI_Result_Glaucoma = dataValues[0].ToArray()[0].ToArray().First().ToString();
+
+                    }
+                    else
+                    {
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_DR = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_AMD = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                        inboxAnalysisStatusModel.LeftEyeDetails[0].QI_Result_Glaucoma = dataValues[0].ToArray()[0].ToArray().First().ToString();
+                    }
+
+            }
+
+            inboxAnalysisStatusModel.Status = ActiveCloudModel.GetAnalysisModel.analysis_status;
+        }
         /// <summary>
         /// To manage the failure cases of analysis result.
         /// </summary>
@@ -650,7 +758,9 @@ namespace IntuUploader.ViewModels
         private void ManageFailureResponse(Response_CookieModel response, string stage,string failureMessage = null)
         {
             logger.Info("Iam Stage {0} Status Code {1}",stage, response.StatusCode);
-
+            var failureObj = JObject.Parse(response.responseBody);
+            if(string.IsNullOrEmpty(failureMessage))
+            failureMessage = (string)failureObj["message"];
             if (response.StatusCode == 0)
             {
                 logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
@@ -681,8 +791,8 @@ namespace IntuUploader.ViewModels
                     st1.Flush();
                     st1.Close();
                     st1.Dispose();
-                    startStopEvent(true);
-                    this.isBusy = false; ;
+                    //startStopEvent(true);
+                    this.IsBusy = false; ;
                 }
 
                 
@@ -725,8 +835,8 @@ namespace IntuUploader.ViewModels
                     st1.Flush();
                     st1.Close();
                     st1.Dispose();
-                    startStopEvent(true);
-                    this.isBusy = false; ;
+                    //startStopEvent(true);
+                    this.IsBusy = false; ;
 
                 }
 
@@ -738,12 +848,8 @@ namespace IntuUploader.ViewModels
                 InboxAnalysisStatusModel inboxAnalysisStatusModel = new InboxAnalysisStatusModel();
                 inboxAnalysisStatusModel.Status = "failure" ;
                 inboxAnalysisStatusModel.StatusCode = response.StatusCode;
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
+                inboxAnalysisStatusModel.FailureMessage = failureMessage;
 
-                else
-                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                    inboxAnalysisStatusModel.FailureMessage = failureMessage;
                 Write2Inbox(inboxAnalysisStatusModel);
 
 
@@ -796,7 +902,8 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                startStopEvent(true); this.isBusy = false; ;
+                //startStopEvent(true); 
+                this.IsBusy = false; ;
 
             }
         }

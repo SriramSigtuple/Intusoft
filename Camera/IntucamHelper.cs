@@ -398,6 +398,7 @@ namespace INTUSOFT.Imaging
                             }
                             int[] expGainArr = camPropsHelper.GetExposureGainFromTable(IVLCamVariables._Settings.CameraSettings.CaptureGainIndex);
                             IVLCamVariables._Settings.CameraSettings.CaptureGain = (ushort)expGainArr[1];
+                            if(IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
                             IVLCamVariables._Settings.CameraSettings.CaptureExposure = (uint)expGainArr[0];
 
                             logArg["TimeStamp"] = DateTime.Now;
@@ -447,6 +448,8 @@ namespace INTUSOFT.Imaging
                         byte strobeValue = Convert.ToByte(capExposureTempVar);
                         if (IVLCamVariables.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLCamVariables.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
                             strobeValue = 100;
+                        //else if (IVLCamVariables._Settings.CameraSettings.CameraModel == CameraModel.D)
+                        //    strobeValue = 50;
 
                         IVLCamVariables.BoardHelper.SetStrobeWidth(strobeValue);
                     }
@@ -1367,7 +1370,7 @@ namespace INTUSOFT.Imaging
                     {
                         if (CameraName.Contains("E3CMOS06300"))
                         {
-                            ivl_Camera.SetExposure(100000);
+                            ivl_Camera.SetExposure(IVLCamVariables._Settings.CameraSettings.CaptureExposure);
                         }
                     }
                     else
@@ -1706,7 +1709,9 @@ namespace INTUSOFT.Imaging
                     {
                         if (IVLCamVariables._Settings.BoardSettings.EnablePCU_IntensityControl)
                             IVLCamVariables.BoardHelper.Read_LED_SupplyValues();
+                        
                         UpdateExposureGainFromTable(IVLCamVariables._Settings.CameraSettings.LiveGainIndex, false);
+                           
 
                     }
                     else if (IVLCamVariables.ImagingMode == ImagingMode.Posterior_45)

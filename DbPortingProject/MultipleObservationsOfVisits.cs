@@ -276,9 +276,9 @@ namespace DBPorting
                         this.LoadDataGridView(d, visitsView_dgv);
                         //SetVisitColumnVisibilty();
 
-                        NewDataVariables.Obs = NewDataVariables._Repo.GetByCategory<eye_fundus_image>("person_id", NewDataVariables.Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
+                        NewDataVariables.Visit_Obs = NewDataVariables._Repo.GetByCategory<eye_fundus_image>("person_id", NewDataVariables.Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
                         //NewDataVariables.Obs.Reverse();
-                        d = NewDataVariables.Obs.ToDataTable();
+                        d = NewDataVariables.Visit_Obs.ToDataTable();
                         SetObsData(d);
                         this.LoadDataGridView(d, Obs_dgv);
                         //SetObsColumnVisibilty();
@@ -433,7 +433,7 @@ namespace DBPorting
                 d.Columns.Add(visitCol);
                 for (int i = 0; i < d.Rows.Count; i++)
                 {
-                    visit v = (visit)(NewDataVariables.Obs[i].visit);
+                    visit v = (visit)(NewDataVariables.Visit_Obs[i].visit);
                     d.Rows[i]["VisitId"] = v.visitId;
                 }
                 d.Columns["VisitId"].SetOrdinal(3);
@@ -442,7 +442,7 @@ namespace DBPorting
                 d.Columns.Add(c);
                 for (int i = 0; i < d.Rows.Count; i++)
                 {
-                    Person p = (Person)(NewDataVariables.Obs[i].patient);
+                    Person p = (Person)(NewDataVariables.Visit_Obs[i].patient);
                     d.Rows[i]["PersonId"] = p.personId;
                 }
                 d.Columns["PersonId"].SetOrdinal(2);
@@ -604,7 +604,7 @@ namespace DBPorting
                     if (Obs_dgv.SelectedRows.Count > 0)
                     {
                         int id = Convert.ToInt32(Obs_dgv.SelectedRows[0].Cells["observationId"].Value.ToString());
-                        NewDataVariables.Active_Obs = NewDataVariables.Obs.Find(x => x.observationId == id);
+                        NewDataVariables.Active_Obs = NewDataVariables.Visit_Obs.Find(x => x.observationId == id);
                         //NewPatient NewPatient_Db = NewDataVariables.Patients.Find(x => x.personId == id);
                     }
                 }

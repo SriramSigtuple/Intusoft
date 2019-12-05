@@ -65,7 +65,7 @@ namespace INTUSOFT.Imaging
         public int imageIndx = 0;
         int width = 0, height = 0;
         static bool isDevicePresent = false;
-        static Vendor1.Instance[] arr;
+        static Vendor1.DeviceV2[] arr;
         public int xLocRoi = 270;
         public int yLocRoi = 0;
         private bool disposed;
@@ -99,7 +99,7 @@ namespace INTUSOFT.Imaging
            
             if (IVLCamVariables.CurrentCameraVendor == CameraVendors.Vendor1)// if the current camera is vendor1
             {
-                arr = Vendor1.Enum();
+                arr = Vendor1.EnumV2();
                 if (arr.Length <= 0)
                 {
                     isDevicePresent = false;
@@ -226,7 +226,7 @@ namespace INTUSOFT.Imaging
                 {
                     IVLCamVariables.DisplayName = string.Empty;
 
-                    arr = Vendor1.Enum();
+                    arr = Vendor1.EnumV2();
 
                     if (arr.Length > 0)
                     {
@@ -355,7 +355,7 @@ namespace INTUSOFT.Imaging
                 logArg["TimeStamp"] = DateTime.Now;
                 logArg["Msg"] = string.Format("Start Live Status = {0}  ", ret);
                 //logArg["callstack"] = Environment.StackTrace;
-                str = string.Format("Time = {0},Start Live Status = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), ret);
+                str = string.Format("Time = {0},Start Live Status = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), ret);
                 if (IVLCamVariables.isCapturing)
                 {
                     capture_log.Add(logArg);
@@ -414,7 +414,7 @@ namespace INTUSOFT.Imaging
                 logArg["TimeStamp"] = DateTime.Now;
                 logArg["Msg"] = string.Format("Stop Live ,Return Live = {0}  ", ret);
                 //logArg["callstack"] = Environment.StackTrace;
-                string str = string.Format("Time = {0},Stop Live ,Return Live = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), ret);
+                string str = string.Format("Time = {0},Stop Live ,Return Live = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), ret);
                 if (IVLCamVariables.isCapturing)
                     //captureLog.Info(logText);
                     capture_log.Add(logArg);
@@ -639,7 +639,7 @@ namespace INTUSOFT.Imaging
             bool ret = false;
             try
             {
-                arr = Vendor1.Enum();
+                arr = Vendor1.EnumV2();
                 if (arr.Length > 0)
                 {
 
@@ -647,9 +647,9 @@ namespace INTUSOFT.Imaging
                     //    _vendor1 = new Vendor1();
                     string str = "";
                     //bool ret = myCamera.Open("@" + arr[0].id);// For RGB mode
-                    //isOpenCamera = ret = Vendor1.Open(arr[0].id);//Temperature tint mode for white balance
-                    _vendor1 = Vendor1.Open(arr[0].id);//Temperature tint mode for white balance
-                    if (isOpenCamera = ret = (_vendor1 != null))
+                     _vendor1 =  Vendor1.Open(arr[0].id);//Temperature tint mode for white balance
+                  
+                    isOpenCamera = ret = (_vendor1!=null);
                     if (ret)
                     {
                         str = string.Format("open Camera {0}  ", ret );
@@ -710,8 +710,16 @@ namespace INTUSOFT.Imaging
             {
                 if (AnalogVal < exposureLUT.Length)
                 {
+                    if (IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
+                        SetExposure((uint)exposureLUT[AnalogVal]);
+                    else
+                    {
+                        uint val = 0;
+                        GetExposure(ref val);
+                        if(IVLCamVariables._Settings.CameraSettings.CaptureExposure != val)
+                            SetExposure(IVLCamVariables._Settings.CameraSettings.CaptureExposure);
 
-                    SetExposure((uint)exposureLUT[AnalogVal]);
+                    }
                     SetGain((ushort)gainLUT[AnalogVal]);
                 }
             }
@@ -889,7 +897,7 @@ namespace INTUSOFT.Imaging
                                 logArg["TimeStamp"] = DateTime.Now;
                                 logArg["Msg"] = "Event Error ";
                                 //logArg["callstack"] = Environment.StackTrace;
-                                str = string.Format("Time = {0},Event Error  ", DateTime.Now.ToString("HH-mm-ss-fff"));
+                                str = string.Format("Time = {0},Event Error  ", DateTime.Now.ToString("HH-mm-ss-ffff"));
                                 if (IVLCamVariables.isCapturing)
                                     //IVLCamVariables.logClass.CaptureLogList.Add(str);
                                     capture_log.Add(logArg);
@@ -922,7 +930,7 @@ namespace INTUSOFT.Imaging
                                 }
                                 if (IVLCamVariables.isCapturing)
                                     CaptureFrameDateTime.Add(FrameDateTime[FrameDateTime.Count - 1]);
-                                String frameDetails = string.Format("Frame Recieved, {0}, and Time Diff, {1} ,frame Time = ,{2}", (FrameDateTime.Count - 1), timeDiff, FrameDateTime[FrameDateTime.Count - 1].ToString("HH-mm-ss-fff"));
+                                String frameDetails = string.Format("Frame Recieved, {0}, and Time Diff, {1} ,frame Time = ,{2}", (FrameDateTime.Count - 1), timeDiff, FrameDateTime[FrameDateTime.Count - 1].ToString("HH-mm-ss-ffff"));
                                 
                                 //if (IVLCamVariables.IsFlashOnDone)
                                 //{
@@ -1244,14 +1252,14 @@ namespace INTUSOFT.Imaging
                                 logArg["Msg"] = string.Format("Capture List = {0}  ", (CaptureImageList.Count));
                                 //logArg["callstack"] = Environment.StackTrace;
                                 capture_log.Add(logArg);
-                                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0}, {1}", DateTime.Now.ToString("HH-mm-ss-fff"), str));
+                                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0}, {1}", DateTime.Now.ToString("HH-mm-ss-ffff"), str));
                                 //IVLCamVariables.CameraLogList.Add(logArg);
-                                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0}, {1}", DateTime.Now.ToString("HH-mm-ss-fff"), str));
+                                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0}, {1}", DateTime.Now.ToString("HH-mm-ss-ffff"), str));
 
 
                                 if (CaptureImageList.Count < IVLCamVariables._Settings.CameraSettings.SaveFramesCnt)
                                 {
-                                    //if (IVLCamVariables.IsFlashOffDone)
+                                    if (IVLCamVariables.IsFlashOffDone)
                                     {
 
                                         if (IVLCamVariables.CaptureImageIndx == -1 && CaptureImageList.Count > 1)
@@ -1314,7 +1322,7 @@ namespace INTUSOFT.Imaging
             capture_log.Add(logArg);
             //IVLCamVariables.logClass.CaptureLogList.Add();
              //IVLCamVariables.CameraLogList.Add(logArg);
-            //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Capture Failure = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), IVLCamVariables.captureFailureCode));
+            //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Capture Failure = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), IVLCamVariables.captureFailureCode));
            // IVLCamVariables.intucamHelper.CompleteCaptureSequence();
             IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.SaveFrames2Disk, new Args());
         }
@@ -1448,9 +1456,9 @@ namespace INTUSOFT.Imaging
                 logArg["Msg"] = "Check IR started ";
                 //logArg["callstack"] = Environment.StackTrace;
                 capture_log.Add(logArg);
-                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-fff")));
+                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-ffff")));
                  //IVLCamVariables.CameraLogList.Add(logArg);
-                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-fff")));
+                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-ffff")));
 
 
                 Image<Bgr, byte> inp = new Image<Bgr, byte>(bm);
@@ -1470,7 +1478,7 @@ namespace INTUSOFT.Imaging
                     capture_log.Add(logArg1);
                     //IVLCamVariables.logClass.CaptureLogList.Add();
                      //IVLCamVariables.CameraLogList.Add(logArg);
-                    //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR done {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), threshVal));
+                    //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR done {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), threshVal));
 
 
                 }
@@ -1494,9 +1502,9 @@ namespace INTUSOFT.Imaging
                 logArg["Msg"] = "Check IR started   ";
                 //logArg["callstack"] = Environment.StackTrace;
                 capture_log.Add(logArg);
-                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-fff")));
+                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-ffff")));
                  //IVLCamVariables.CameraLogList.Add(logArg);
-                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-fff")));
+                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Check IR started  ", DateTime.Now.ToString("HH-mm-ss-ffff")));
 
                 List<double> avg = new List<double>();
                 List<Bgr> bgrAvg = new List<Bgr>();
@@ -1522,7 +1530,7 @@ namespace INTUSOFT.Imaging
                 logArg1["Msg"] = "Capture Index By frame Detection = " + IVLCamVariables.CaptureImageIndx;
                 //logArg["callstack"] = Environment.StackTrace;
                 capture_log.Add(logArg1);
-              str = string.Format("Time = {0},Capture Index By frame Detection = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), IVLCamVariables.CaptureImageIndx );
+              str = string.Format("Time = {0},Capture Index By frame Detection = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), IVLCamVariables.CaptureImageIndx );
                //IVLCamVariables.logClass.CaptureLogList.Add(str);
                //IVLCamVariables.CameraLogList.Add(logArg);
               //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(str);
@@ -1629,7 +1637,7 @@ namespace INTUSOFT.Imaging
                     //captureLog.Info("Frame " + (RawImageList.Count - 1).ToString() + " , Frame Time Diff = " + t.Milliseconds.ToString() + "  ," + " Frame Category =  " + str);
                     //IVLCamVariables.logClass.CaptureLogList.Add();
                      //IVLCamVariables.CameraLogList.Add(logArg);
-                    //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0}, Frame = {1}, Frame Time Diff = {2}, Frame Category = {3}  ", DateTime.Now.ToString("HH-mm-ss-fff"), (RawImageList.Count - 1).ToString(), t.Milliseconds.ToString(), str));
+                    //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0}, Frame = {1}, Frame Time Diff = {2}, Frame Category = {3}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), (RawImageList.Count - 1).ToString(), t.Milliseconds.ToString(), str));
 
                     //IVLCamVariables.CaptureLog.Add(IVLCamVariables.FrameCaptureLog[IVLCamVariables.FrameCaptureLog.Count - 1]);
                 }
@@ -1696,9 +1704,9 @@ namespace INTUSOFT.Imaging
                 logArg["Msg"] = "Capture Index = " + IVLCamVariables.CaptureImageIndx;
                 //logArg["callstack"] = Environment.StackTrace;
                 capture_log.Add(logArg);
-                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Capture Index = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), IVLCamVariables.CaptureImageIndx));
+                //IVLCamVariables.logClass.CaptureLogList.Add(string.Format("Time = {0},Capture Index = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), IVLCamVariables.CaptureImageIndx));
                  //IVLCamVariables.CameraLogList.Add(logArg);
-                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Capture Index = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), IVLCamVariables.CaptureImageIndx));
+                //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(string.Format("Time = {0},Capture Index = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), IVLCamVariables.CaptureImageIndx));
 
                 #region Raw Mode
                 if (IVLCamVariables._Settings.CameraSettings.isRawMode)
@@ -1853,7 +1861,7 @@ namespace INTUSOFT.Imaging
                     logArg["Msg"] = "Capture Indx current frame = " + IVLCamVariables.CaptureImageIndx;
                     //logArg["callstack"] = Environment.StackTrace;
                     string str = "";
-                    str = string.Format("Time = {0},Capture Indx current frame = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), IVLCamVariables.CaptureImageIndx );
+                    str = string.Format("Time = {0},Capture Indx current frame = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), IVLCamVariables.CaptureImageIndx );
                     capture_log.Add(logArg);
                  //IVLCamVariables.logClass.CaptureLogList.Add(str);
                      //IVLCamVariables.CameraLogList.Add(logArg);
@@ -2007,7 +2015,7 @@ namespace INTUSOFT.Imaging
                     logArg["TimeStamp"] = DateTime.Now;
                     logArg["Msg"] = "Exposure =  " + val;
                     //logArg["callstack"] = Environment.StackTrace;
-                    str = string.Format("Time = {0},Exposure = {1}  ", DateTime.Now.ToString("HH-mm-ss-fff"), val);
+                    str = string.Format("Time = {0},Exposure = {1}  ", DateTime.Now.ToString("HH-mm-ss-ffff"), val);
                     //IVLCamVariables.CameraLogList.Add(logArg);
                     //IVLCamVariables.logClass. IVLCamVariables.CameraLogList.Add(str);
                     //IVLCamVariables.logClass.CaptureLogList.Add(str);

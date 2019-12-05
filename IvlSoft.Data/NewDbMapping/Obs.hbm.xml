@@ -15,11 +15,11 @@
 	<property name="checkSum" type="String" column="check_sum" length="65535" />
 	<property name="comments" type="String" column="comment" length="255" />
 	<property name="qiFileName" type="String" column="qi_filename" length="255" />
+	<property name="failure_msg" type="String" column="failure_msg" length="255" />
 	
 	<many-to-one name="createdBy" class="users" column="created_by" not-null="true" />
 	<property name="createdDate" type="datetime" column="created_date" not-null="true" length="19" />
-	<property name="qi_DR_AMD_Status" type="int" column="qi_dr_amd_status" length="1" not-null="true" />
-	<property name="qi_Glaucoma_Status" type="int" column="qi_glaucoma_status" length="1" not-null="true" />
+	<property name="qi_Status" type="int" column="qi_status" length="1" not-null="true" />
 	
 	<property name="voided" type="Boolean" column="voided" length="1" not-null="true" />
 	<many-to-one name="voidedBy" class="users" column="voided_by" />

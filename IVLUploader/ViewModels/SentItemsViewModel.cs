@@ -53,7 +53,7 @@ namespace IntuUploader.ViewModels
                 activeFileCloudVM = new CloudViewModel();
                 activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
                 activeFileCloudVM.AnalysisType = AnalysisType;
-
+                activeFileCloudVM.CreatePendingFilesEvent += ActiveFileCloudVM_CreatePendingFilesEvent;
             }
             SentItemsStatusCheckTimer = new System.Threading.Timer(SentItemsStatusCheckTimerCallback, null, -1, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
 
@@ -72,10 +72,18 @@ namespace IntuUploader.ViewModels
                 }
                
             }
+            if(sentItemsDirFileInfoArr.Any())
+            activeFileCloudVM.ActiveFnf = sentItemsDirFileInfoArr.First();
 
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             
 
+        }
+
+        private void ActiveFileCloudVM_CreatePendingFilesEvent(AnalysisType _analysisType)
+        {
+            if(analysisType == _analysisType)
+            CreateMissingPendingFiles();
         }
 
         //private void SentItemsStatusCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -89,11 +97,11 @@ namespace IntuUploader.ViewModels
         ///// <returns></returns>
         //public static SentItemsViewModel GetInstance()
         //{
-            
+
 
         //    if (_sentItemsViewModel == null)
         //        _sentItemsViewModel = new SentItemsViewModel();
-            
+
         //    return _sentItemsViewModel;
         //}
 
@@ -109,16 +117,22 @@ namespace IntuUploader.ViewModels
                 sentItemsDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");
 
             fileIndx = 0;
-            if(sentItemsDirFileInfoArr.Any())
+            if(!activeFileCloudVM.IsBusy && sentItemsDirFileInfoArr.Any())
             {
                 if (activeFileCloudVM.ActiveFnf != null)
-                if(sentItemsDirFileInfoArr.Where(x=>x.FullName == activeFileCloudVM.ActiveFnf.FullName).ToList().Any())
                 {
-                    var indx = sentItemsDirFileInfoArr.ToList().FindIndex(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName);
+                    if (sentItemsDirFileInfoArr.Where(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName).ToList().Any())
+                    {
+                        var indx = sentItemsDirFileInfoArr.ToList().FindIndex(x => x.FullName == activeFileCloudVM.ActiveFnf.FullName);
 
-                    if (indx < sentItemsDirFileInfoArr.Length-1)
-                        fileIndx = indx + 1;
+                        if (indx < sentItemsDirFileInfoArr.Length - 1)
+                            fileIndx = indx + 1;
+                    }
                 }
+               
+                logger.Info($"{analysisType.ToString("g")}  {fileIndx} {sentItemsDirFileInfoArr[fileIndx]}");
+                // if(activeFileCloudVM.ActiveFnf == null || !activeFileCloudVM.IsBusy)
+                StartStopSentItemsTimer(false);
                 GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
             }
@@ -142,7 +156,8 @@ namespace IntuUploader.ViewModels
 
         public void CreateMissingPendingFiles()
         {
-            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(activeDirPath).GetFiles("*.json");
+
+            FileInfo[] activeDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");
             //the below code is to write a pending file if any existing file in active directory has no pending file.
             if (activeDirFileInfoArr.Any())
             {
@@ -154,6 +169,7 @@ namespace IntuUploader.ViewModels
                     st1.Dispose();
                 }
             }
+            StartStopSentItemsTimer(!activeFileCloudVM.IsBusy);
         }
 
         private void RecursiveMethod()
@@ -161,7 +177,7 @@ namespace IntuUploader.ViewModels
             if (fileIndx < sentItemsDirFileInfoArr.Length)
             {
                 
-                if(!activeFileCloudVM.isBusy)
+                if(!activeFileCloudVM.IsBusy)
                 {
                     GetFileFromActiveDir(sentItemsDirFileInfoArr[fileIndx]);
 
@@ -181,7 +197,7 @@ namespace IntuUploader.ViewModels
                 {
                    if( File.Exists(activeDirFileInfo.FullName))
                     {
-                             if (!activeFileCloudVM.isBusy)
+                             if (!activeFileCloudVM.IsBusy)
                             {
                         logger.Info($"file Name ={activeDirFileInfo.Name}");
 
@@ -191,13 +207,16 @@ namespace IntuUploader.ViewModels
 
                             }
                     }
-                   
-                }
-                catch (Exception ex)
+                   else
+                    StartStopSentItemsTimer(true);
+
+
+
+            }
+            catch (Exception ex)
                 {
                     logger.Info(ex);
-                    activeFileCloudVM.isBusy = false;
-                    CreateMissingPendingFiles();
+                    activeFileCloudVM.IsBusy = false;
                 }
 
             
@@ -211,9 +230,8 @@ namespace IntuUploader.ViewModels
                 if (File.Exists(Path.Combine(fileInfo.Directory.FullName, fileInfo.Name.Split('.')[0] + "_pending")))
                 {
 
-                    StartStopSentItemsTimer(false);
-                    activeFileCloudVM.isBusy = true;
-
+                    //StartStopSentItemsTimer(false);
+                    activeFileCloudVM.IsBusy = true;
                     StreamReader st = new StreamReader(fileInfo.FullName);
                     var json = st.ReadToEnd();
                     st.Close();
@@ -223,18 +241,20 @@ namespace IntuUploader.ViewModels
 
                     CloudModel activeFileCloudModel = JsonConvert.DeserializeObject<CloudModel>(json);
 
+                    activeFileCloudVM.ActiveFnf = fileInfo;
 
                     activeFileCloudVM.SetCloudModel(activeFileCloudModel);
 
-                    activeFileCloudVM.ActiveFnf = fileInfo;
                     activeFileCloudVM.StartAnalsysisFlow();
                 }
+                else
+                    StartStopSentItemsTimer(true);
+
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
-                activeFileCloudVM.isBusy = false;
-                CreateMissingPendingFiles();
+                activeFileCloudVM.IsBusy = false;
             }
             
                 

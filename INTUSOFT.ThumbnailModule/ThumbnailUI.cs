@@ -186,7 +186,13 @@ namespace INTUSOFT.ThumbnailModule
                         imgView.ImageSide = thumbnailData.side;
                         imgView.IsAnnotated = thumbnailData.isAnnotated;
                         imgView.IsCDR = thumbnailData.isCDR;
-                        imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                        if(imgView.ImageLabel.QiStatus != thumbnailData.QIStatus)
+                        {
+                            imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                            imgView.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
+
+                        }
+
                         //imgView.QIStatus_P.BackColor = GetQIStatusColor(qiStatus);
                         imgView.ImageLabel.Name = GetImage_Name(imgView.ImageSide, imgView.Index, imgView.IsAnnotated, imgView.IsCDR);
                         //imgView.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
@@ -200,7 +206,23 @@ namespace INTUSOFT.ThumbnailModule
         }
         public void UpdateQIStatus(ThumbnailData thumbnailData)
         {
+            foreach (Control item in thumbnail_FLP.Controls)
+            {
+                if (item is ImageViewer)
+                {
+                    ImageViewer imgView = (ImageViewer)item as ImageViewer;
+                    if (imgView.ImageLocation == thumbnailData.fileName)
+                    {
+                        if (imgView.ImageLabel.QiStatus != thumbnailData.QIStatus)
+                        {
+                            imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                            imgView.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
 
+                        }
+                        imgView.Refresh();
+                    }
+                }
+            }
         }
         private Color GetQIStatusColor(int status)
         {
@@ -211,7 +233,6 @@ namespace INTUSOFT.ThumbnailModule
                 case 3: return Color.Gray;
                 case 4: return Color.Red;
                 default: return Color.Transparent;
-
 
             }
         }
@@ -679,6 +700,8 @@ namespace INTUSOFT.ThumbnailModule
                 imageViewer.ImageLabel.Name = GetImage_Name(imageViewer.ImageSide, imageViewer.Index, imageViewer.IsAnnotated, imageViewer.IsCDR);
 
                 imageViewer.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                imageViewer.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
+
                 //imageViewer.label1.Font = new Font("Tahoma", 10.5F, System.Drawing.FontStyle.Bold);
                 //if (indx == -1)
                 //{
@@ -1191,5 +1214,6 @@ namespace INTUSOFT.ThumbnailModule
         public string Name;
         public bool isModified;
         public int QIStatus;
+        public string failure_msg;
     }
 }

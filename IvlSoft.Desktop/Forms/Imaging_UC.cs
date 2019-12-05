@@ -252,28 +252,15 @@ namespace INTUSOFT.Desktop.Forms
             //elementHost.Parent = display_pbx;
         }
         bool isFFAImage = false;
+
+        public bool GetGridPopulatingStatus()
+        {
+            return viewImagingControl.isGridPopulating;
+        }
         private void DisplayImageFromCamera(string s, Args arg)
         {
 
             display_pbx.Image = arg["rawImage"] as Bitmap;
-            this.display_pbx.Controls.Clear();
-            
-            infoIcon_p = new ElementHost();
-            InfoVM infoVM = new InfoVM();
-            informationIcon = new InformationIconUCL(infoVM);
-            //infoIcon_p.Dock = DockStyle.Bottom;
-            infoIcon_p.BackColor = Color.Transparent;
-            infoIcon_p.Size = new Size(105, 150);
-            infoIcon_p.Child = informationIcon;
-            this.display_pbx.Controls.Add(infoIcon_p);
-
-            // infoIcon_p.Location = new Point(300, 300);
-            var heightValue = ( 1.75) * (double)(infoIcon_p.ClientSize.Height);
-          var value = (int) Math.Round(heightValue, MidpointRounding.AwayFromZero);
-                infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 130,display_pbx.ClientSize.Height - 201);
-            //elementHost.Location = new Point(this.Width - 10, this.Height);
-            Console.WriteLine(infoIcon_p.Location);
-            Console.WriteLine(display_pbx.ClientSize);
         }
 
 

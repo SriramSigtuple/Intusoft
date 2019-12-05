@@ -1,25 +1,13 @@
-﻿using System;
+﻿using Common;
+using INTUSOFT.Data.NewDbModel;
+using NHibernate;
+using NHibernate.Criterion;
+using NHibernate.Linq;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using Common;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
-using NHibernate.Engine;
-using NHibernate.Proxy;
-using Newtonsoft.Json.Converters;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using INTUSOFT.Data.NewDbModel;
-using NHibernate.Linq;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace INTUSOFT.Data.Repository
 {
@@ -56,7 +44,7 @@ namespace INTUSOFT.Data.Repository
                         NHibernateHelper_MySQL.hibernateSession.Flush();
                         transaction.Commit();
                     }
-                    NHibernateHelper_MySQL.CloseSession();
+                    //NHibernateHelper_MySQL.CloseSession();
 
                     return true;
                 }
@@ -83,7 +71,7 @@ namespace INTUSOFT.Data.Repository
                         NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                         transaction.Commit();
                     }
-                    NHibernateHelper_MySQL.CloseSession();
+                    //NHibernateHelper_MySQL.CloseSession();
                     return true;
                 }
                 catch (Exception ex)
@@ -101,7 +89,7 @@ namespace INTUSOFT.Data.Repository
             NHibernateHelper_MySQL.OpenSession();
           // T t = NHibernateHelper_MySQL.hibernateSession.Load<T>(id);
             T t = NHibernateHelper_MySQL.hibernateSession.Get<T>(id);
-            NHibernateHelper_MySQL.CloseSession();
+            //NHibernateHelper_MySQL.CloseSession();
             return t;
         }
 
@@ -117,7 +105,7 @@ namespace INTUSOFT.Data.Repository
                 {
                     _genericObject[i] = GetRealEntity<T>(_genericObject[i]);
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return _genericObject;
             }
@@ -129,7 +117,7 @@ namespace INTUSOFT.Data.Repository
             {
                 NHibernateHelper_MySQL.OpenSession();
                 T value = (T)NHibernateHelper_MySQL.hibernateSession.GetSessionImplementation().PersistenceContext.Unproxy(proxyValue);
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return value;
             }
@@ -149,7 +137,7 @@ namespace INTUSOFT.Data.Repository
                 //    T obj = _genericObject[i];
                 //    _genericObject[i] = _genericObject[i];
                 //}
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return _genericObject;
             }
@@ -166,7 +154,7 @@ namespace INTUSOFT.Data.Repository
                     NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                     transaction.Commit();
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
             }
 
@@ -186,7 +174,7 @@ namespace INTUSOFT.Data.Repository
                         //return _genericObject;
                     }
                 }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
             return _genericObject;
 
@@ -207,7 +195,7 @@ namespace INTUSOFT.Data.Repository
                             //returnVal = Convert.ToInt32( queryVal.ToString());
                         }
                     }
-                NHibernateHelper_MySQL.CloseSession();
+                //NHibernateHelper_MySQL.CloseSession();
 
                 return returnVal;
             }
@@ -4556,11 +4544,12 @@ namespace INTUSOFT.Data.Repository
 
         private static List<eye_fundus_image> _obs;
 
-        public static List<eye_fundus_image> Obs
+        public static List<eye_fundus_image> Visit_Obs
         {
             get { return _obs; }
             set { _obs = value; }
         }
+
         private static List<visit> _visits;
 
         public static List<visit> Visits
@@ -4639,7 +4628,7 @@ namespace INTUSOFT.Data.Repository
                     //_attribute = _Repo.GetByCategory<person_attribute>("person", _Active_Patient).ToList<person_attribute>();
                     Attribute = p.attributes.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
                     //_identifier = _Repo.GetByCategory<patient_identifier>("patient", _Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
-                    Identifier = p.identifiers.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
+                    Active_PatientIdentifier = p.identifiers.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList().FirstOrDefault();
 
                     //PatientDiagnosis = _Repo.GetByCategory<PatientDiagnosis>("patient", _Active_Patient).OrderByDescending(x => x.createdDate < DateTime.Now).ToList<PatientDiagnosis>();
                     PatientDiagnosis = p.diagnosis.Where(x => x.voided == false).OrderByDescending(x => x.createdDate < DateTime.Now).ToList();
@@ -4694,7 +4683,7 @@ namespace INTUSOFT.Data.Repository
             {
                 _visit = value;
                 //Obs = _Repo.GetByCategory<obs>("visit", Active_Visit).ToList();
-                Obs = _visit.observations.Where(x => x.voided == false).OrderBy(x => x.createdDate).ToList();
+                Visit_Obs = _visit.observations.Where(x => x.voided == false).OrderBy(x => x.createdDate).ToList();
                 Reports = _Repo.GetAll<report>().Where(x => x.visit.visitId == _visit.visitId).ToList();
                 Reports = _visit.reports.Where(x => x.voided == false).OrderByDescending(x => x.createdDate).ToList();
                 
@@ -4781,6 +4770,7 @@ namespace INTUSOFT.Data.Repository
         }
 
         public static List<CloudAnalysisReport> CloudAnalysisReports { get => cloudAnalysisReports; set => cloudAnalysisReports = value; }
+        public static List<eye_fundus_image> Eye_Fundus_Images { get; set; }
 
         private static List<CloudAnalysisReport> cloudAnalysisReports;
     }
