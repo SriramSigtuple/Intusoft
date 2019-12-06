@@ -2168,32 +2168,32 @@ namespace INTUSOFT.Desktop.Forms
 
             //}
             //this.Cursor = Cursors.Default;
-            //PagePanel_p.Controls.Clear();
-            //emr.Dock = DockStyle.Fill;
-            //try
-            //{
-            //    PagePanel_p.Controls.Add(emr);
-                
-               
-                
-            //   // string[] var = new string[] { "akjd" };
-            //   //var value = var[1];
-            //}
-            //catch (Exception ex)
-            //{
-            //    Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+            PagePanel_p.Controls.Clear();
+            emr.Dock = DockStyle.Fill;
+            try
+            {
+                PagePanel_p.Controls.Add(emr);
 
-            //}
-            IVLVariables.pageDisplayed = PageDisplayed.Login;
+
+
+                // string[] var = new string[] { "akjd" };
+                //var value = var[1];
+            }
+            catch (Exception ex)
+            {
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+
+            }
+            IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
-            //emr.Show();
+            emr.Show();
             
 
             #region this has to be implemented later when login screen has been added
-            loginScreen.Dock = DockStyle.Fill;
-            PagePanel_p.Controls.Add(loginScreen);
-            //isEmr = true;
-            loginScreen.Show();
+            //loginScreen.Dock = DockStyle.Fill;
+            //PagePanel_p.Controls.Add(loginScreen);
+            ////isEmr = true;
+            //loginScreen.Show();
             //commented to remove login screen at startup of the application by sriram on october 16th 2015
             //loginScreen.Dock = DockStyle.Fill;
             //loginScreen.Show();
