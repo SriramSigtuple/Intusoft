@@ -1532,6 +1532,7 @@ namespace INTUSOFT.Desktop.Forms
                     NewDataVariables.Patients.Add(currentPat);
                     NewIVLDataMethods.AddPatient(currentPat);
                     NewIVLDataMethods.UpdatePatient();
+                    NewDataVariables.Identifier.Add(currentIdentifier);
                     //NewDataVariables.Patients = null;
                     //NewDataVariables.Patients = NewDataVariables._Repo.GetPageData<Patient>(10, 0).ToList();
                     IVLVariables.mrnCnt = mrnCnt;
