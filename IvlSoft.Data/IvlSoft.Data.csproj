@@ -119,6 +119,7 @@
     <Compile Include="Enumdetails\UserImage.cs" />
     <Compile Include="Extension\ListExtension.cs" />
     <Compile Include="HibernateLazyIntitialization.cs" />
+    <Compile Include="IntuSoftRuntimeProperties.cs" />
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="Mapping\AnnotationMap.cs" />
     <Compile Include="Mapping\ImageMap.cs" />

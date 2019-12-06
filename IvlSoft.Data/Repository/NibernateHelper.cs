@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using INTUSOFT.Data.NewDbModel;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using NHibernate;
 using NLog;
 using System;
@@ -44,8 +45,9 @@ namespace INTUSOFT.Data.Repository
         public static bool isDatabaseCreating = false;
 
         public static ISessionFactory _sessionFactory;
+        public static IntuSoftRuntimeProperties IntuSoftRuntimeProperties;
         #endregion
-        
+
 
         public static void CloseSession()
         {
@@ -294,25 +296,43 @@ namespace INTUSOFT.Data.Repository
             }
         }
 
+        public static void EvaluateConnectionString()
+        {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                //var runtimePath = @"C:\Users\Kishore\AppData\Roaming\Intuvision Labs Pvt Ltd\Intusoft-runtime.json";
+                ///var data = new Dictionary<string, string>();
+                if (File.Exists(IntuSoftRuntimeProperties.filePath))
+                {
+                    //foreach (var row in File.ReadAllLines(runtimePath))
+                    //    data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+                    var data = File.ReadAllText(IntuSoftRuntimeProperties.filePath);
+                    IntuSoftRuntimeProperties = (IntuSoftRuntimeProperties)JsonConvert.DeserializeObject(data, typeof(IntuSoftRuntimeProperties));
 
-        public static void CreateOrAlterDB()
+
+                }
+                else
+                {
+                    IntuSoftRuntimeProperties = new IntuSoftRuntimeProperties();
+                    var data = JsonConvert.SerializeObject(IntuSoftRuntimeProperties);
+                    File.WriteAllText(IntuSoftRuntimeProperties.filePath, data);
+                }
+                dbName = IntuSoftRuntimeProperties.dbName;
+                userName = IntuSoftRuntimeProperties.userName;
+                password = IntuSoftRuntimeProperties.password;
+                serverPath = IntuSoftRuntimeProperties.server_path;
+                connectionString = "Server=" + serverPath + ";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+            }
+        }
+
+        public static void CreateOrAlterDB(string runtimePath)
         {
             //if (!isDatabaseCreating)
             {
                 //old implmentation with severpath hard coded to localhost
                 // connectionString = "Server=localhost;User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
-                var runtimePath = @"SQLs\Intusoft-runtime.properties";
-                var data = new Dictionary<string, string>();
-                if (File.Exists(runtimePath))
-                {
-                    foreach (var row in File.ReadAllLines(runtimePath))
-                        data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
-                    dbName = data["connection.DBname"];
-                    userName = data["connection.username"];
-                    password = data["connection.password"];
-                    serverPath = data["serverPath"];
-                }
-                connectionString = "Server=" + serverPath + ";User ID=" + userName + ";Password=" + password + ";CharSet=latin1";
+                IntuSoftRuntimeProperties.filePath = runtimePath;
+                EvaluateConnectionString();
                 //if (DbExists(oldDbName) && !DbExists(dbName))
                 //    ExecuteCommand("gyk");
                 if (!DbExists(dbName))// to check whether the db exists if not create a db using sql from the file
@@ -390,6 +410,7 @@ namespace INTUSOFT.Data.Repository
                     if (_sessionFactory == null)
                     {
                         //try
+                        EvaluateConnectionString();
                         {
                             //serverPath = "192.168.0.146";
                             //dbName = "intunewmodel";

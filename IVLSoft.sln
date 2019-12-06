@@ -183,7 +183,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLs", "SQLs", "{613AC757-0
 		SQLs\Change_person_atrribute_valueSize.sql = SQLs\Change_person_atrribute_valueSize.sql
 		SQLs\create_Intsoft_MRS.sql = SQLs\create_Intsoft_MRS.sql
 		SQLs\Grant_All_Previleges.sql = SQLs\Grant_All_Previleges.sql
-		SQLs\Intusoft-runtime.properties = SQLs\Intusoft-runtime.properties
+		SQLs\Intusoft-runtime.json = SQLs\Intusoft-runtime.json
 	EndProjectSection
 EndProject
 Global

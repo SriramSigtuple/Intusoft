@@ -134,6 +134,7 @@ namespace INTUSOFT.Desktop.Forms
         List<string> prerequisiteList;
         string uninstalledPrerquisite = string.Empty;
         Constants con;
+        IntuSoftRuntimeProperties intuSoftRuntime;
         #endregion
 
 
@@ -247,45 +248,57 @@ namespace INTUSOFT.Desktop.Forms
             
             #region below block of code has been added to read the db name , user name and password for db connection string
            
-            var data = new Dictionary<string, string>();
-            var runtimePath = @"SQLs\Intusoft-runtime.properties";
+            //var data = new Dictionary<string, string>();
+            var runtimePath = IVLVariables.appDirPathName + "Intusoft-runtime.json";
             if (!IVLVariables.isCommandLineArgsPresent)
             {
-                if (File.Exists(runtimePath))
-                {
-                    foreach (var row in File.ReadAllLines(runtimePath))
-                        data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
-                    NHibernateHelper_MySQL.dbName = data["connection.DBname"];
-                    NHibernateHelper_MySQL.userName = data["connection.username"];
-                    NHibernateHelper_MySQL.password = data["connection.password"];
-                    NHibernateHelper_MySQL.serverPath = data["serverPath"];
-                    databaseTimerIntervel = Convert.ToInt32(data["databaseTimerIntervel"]);
-                    dataBasebackupPath = data["databaseBackupPath"];
-                    NHibernateHelper_MySQL.WarningText = IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo);
-                    NHibernateHelper_MySQL.WarningHeader = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo);
-                    NewDataVariables._Repo = Repository.GetInstance();
-                    Process process = new Process();
-                    if (File.Exists(@"CreateOrAlterDB.exe"))
-                    {
-                        process.StartInfo = new ProcessStartInfo(@"CreateOrAlterDB.exe");
-                        process.Start();
+                IntuSoftRuntimeProperties.filePath = runtimePath;
+                //if (File.Exists(runtimePath))
+                //{
+                //    //foreach (var row in File.ReadAllLines(runtimePath))
+                //    //    data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+                //    var data = File.ReadAllText(runtimePath);
+                //    intuSoftRuntime = (IntuSoftRuntimeProperties)JsonConvert.DeserializeObject(data, typeof(IntuSoftRuntimeProperties));
+                //}
+                //if(intuSoftRuntime == null)
+                //{
+                //    intuSoftRuntime = new IntuSoftRuntimeProperties();
+                //    var data = JsonConvert.SerializeObject(intuSoftRuntime);
+                //    File.WriteAllText(runtimePath, data);
+                //}
 
-                    }
-                    while(!process.HasExited)
-                    {
-                        ;
-                    }
-
-                    //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
-                    
-                }
-                else
+                //NHibernateHelper_MySQL.dbName = intuSoftRuntime.dbName;
+                //NHibernateHelper_MySQL.userName = intuSoftRuntime.userName;
+                //NHibernateHelper_MySQL.password = intuSoftRuntime.password;
+                //NHibernateHelper_MySQL.serverPath = intuSoftRuntime.server_path;
+                //databaseTimerIntervel = Convert.ToInt32(intuSoftRuntime.db_interval);
+                //dataBasebackupPath = intuSoftRuntime.db_backup_path;
+                NHibernateHelper_MySQL.WarningText = IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo);
+                NHibernateHelper_MySQL.WarningHeader = IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo);
+                NewDataVariables._Repo = Repository.GetInstance();
+                Process process = new Process();
+                this.Cursor = Cursors.WaitCursor;
+                if (File.Exists(@"CreateOrAlterDB.exe"))
                 {
-                    Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("DB_creation_waring_text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Software_Name", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxIcon.Warning);
+                    process.StartInfo = new ProcessStartInfo(@"CreateOrAlterDB.exe");
+                    process.StartInfo.Arguments = string.Format("{0}", runtimePath);
+                    process.Start();
+                    this.Cursor = Cursors.WaitCursor;
+
                 }
+                while (!process.HasExited)
+                {
+                    ;
+                }
+                MessageBox.Show(process.HasExited.ToString());
+                this.Cursor = Cursors.Default;
+
+                //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
+
+
             }
             #endregion
-          
+
             if (!Directory.Exists(IVLVariables.CurrentSettings.ImageStorageSettings._ExportImagePath.val))
             {
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -2149,39 +2162,38 @@ namespace INTUSOFT.Desktop.Forms
         /// </summary>
         private void SetPanels()
         {
-            this.Cursor = Cursors.WaitCursor;
+            //this.Cursor = Cursors.WaitCursor;
             //while (!INTUSOFT.Data.Repository.NHibernateHelper_MySQL.isDatabaseCreating)
             //{
 
             //}
-            this.Cursor = Cursors.Default;
-            PagePanel_p.Controls.Clear();
-            emr.Dock = DockStyle.Fill;
-            try
-            {
-                PagePanel_p.Controls.Add(emr);
+            //this.Cursor = Cursors.Default;
+            //PagePanel_p.Controls.Clear();
+            //emr.Dock = DockStyle.Fill;
+            //try
+            //{
+            //    PagePanel_p.Controls.Add(emr);
                 
                
                 
-               // string[] var = new string[] { "akjd" };
-               //var value = var[1];
-            }
-            catch (Exception ex)
-            {
-                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+            //   // string[] var = new string[] { "akjd" };
+            //   //var value = var[1];
+            //}
+            //catch (Exception ex)
+            //{
+            //    Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
-            }
-            IVLVariables.pageDisplayed = PageDisplayed.Emr;
+            //}
+            IVLVariables.pageDisplayed = PageDisplayed.Login;
             Image_btn.Enabled = false;
-            emr.Show();
-            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-            inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            //emr.Show();
+            
 
             #region this has to be implemented later when login screen has been added
-            //loginScreen.Dock = DockStyle.Fill;
-            //PagePanel_p.Controls.Add(loginScreen);
-            ////isEmr = true;
-            //loginScreen.Show();
+            loginScreen.Dock = DockStyle.Fill;
+            PagePanel_p.Controls.Add(loginScreen);
+            //isEmr = true;
+            loginScreen.Show();
             //commented to remove login screen at startup of the application by sriram on october 16th 2015
             //loginScreen.Dock = DockStyle.Fill;
             //loginScreen.Show();
@@ -3395,7 +3407,8 @@ namespace INTUSOFT.Desktop.Forms
         {
 
             EmrManage_btn_Click(null, null);
-            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0,(int)( serverTimer.Interval / 2));
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
         }
 
@@ -3713,9 +3726,9 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == Keys.Enter)
             {
-                #region Removed Login functionality for QA- 2099
-                //if (IVLVariables.pageDisplayed == PageDisplayed.Login)
-                //    loginScreen.Login();
+                #region Login functionality for QA- 2099
+                if (IVLVariables.pageDisplayed == PageDisplayed.Login)
+                    loginScreen.Login();
                 #endregion
 
             }

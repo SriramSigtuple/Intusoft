@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace CreateOrAlterDB
 {
@@ -21,11 +22,21 @@ namespace CreateOrAlterDB
         static void Main(string[] args)
         {
             var handle = GetConsoleWindow();
-
+            
             // Hide
             ShowWindow(handle, SW_HIDE);
+            //MessageBox.Show(args[0]);
+            if (args.Length >= 1)
+            {
+                var path = args[0];
+                for (int i = 1; i < args.Length; i++)
+                {
+                    path = path + " " + args[i];
+                }
+                
+                NHibernateHelper_MySQL.CreateOrAlterDB(path);
+            }
 
-            NHibernateHelper_MySQL.CreateOrAlterDB();
         }
     }
 }
