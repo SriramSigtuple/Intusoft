@@ -613,7 +613,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
 
             _Exposure = new IVLControlProperties();
             _Exposure.name = "Exposure";
-            _Exposure.val = "77376";
+            _Exposure.val = "50000";
             _Exposure.type = "int";
             _Exposure.control = "System.Windows.Forms.NumericUpDown";
             _Exposure.text = "Exposure";
@@ -622,7 +622,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
 
             _FlashExposure = new IVLControlProperties();
             _FlashExposure.name = "FlashExposure";
-            _FlashExposure.val = "77376";
+            _FlashExposure.val = "50000";
             _FlashExposure.type = "int";
             _FlashExposure.control = "System.Windows.Forms.NumericUpDown";
             _FlashExposure.text = "Flash Exposure";

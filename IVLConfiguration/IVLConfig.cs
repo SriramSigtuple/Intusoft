@@ -212,7 +212,7 @@ namespace INTUSOFT.Configuration
            #region Firmware Settings for Prime
            Settings.FirmwareSettings._MotorCaptureSteps.val = "10";
            Settings.FirmwareSettings._EnableSingleFrameCapture.val = "true";
-           Settings.FirmwareSettings._FlashBoostValue.val = "75";// for 45 it is 0 
+           Settings.FirmwareSettings._FlashBoostValue.val = "70";// for 45 it is 0 
            Settings.FirmwareSettings._isFlashBoost.val = "true";// for 45 it is false
            Settings.FirmwareSettings._FlashOffsetStart.val = "60";// for 45  it is 65
            Settings.FirmwareSettings._FlashOffsetEnd.val = "30";// for 45 it is 60
@@ -277,8 +277,7 @@ namespace INTUSOFT.Configuration
        public FortyFiveSettings()
        {
            Settings = new Settings();
-           Settings.CameraSettings._CameraModel.val = "C";
-           Settings.CameraSettings._EnableRawMode.val = "true";
+           Settings.CameraSettings._CameraModel.val = "D";
            Settings.CameraSettings._EnableWB.val = "false";
            Settings.CameraSettings._EnableVerticalFlip.val = "false";
            Settings.CameraSettings._exposureIndex.val = "63";
@@ -295,8 +294,8 @@ namespace INTUSOFT.Configuration
            Settings.FirmwareSettings._EnableSingleFrameCapture.val = "true";
            Settings.FirmwareSettings._FlashBoostValue.val = "1";// for 45 it is 0 
            Settings.FirmwareSettings._isFlashBoost.val = "false";// for 45 it is false
-           Settings.FirmwareSettings._FlashOffsetStart.val = "65";// for 45  it is 65
-           Settings.FirmwareSettings._FlashOffsetEnd.val = "60";// for 45 it is 60
+           Settings.FirmwareSettings._FlashOffsetStart.val = "20";// for 45  it is 65
+           Settings.FirmwareSettings._FlashOffsetEnd.val = "17";// for 45 it is 60
            #endregion
 
            #region UI Settings for 45
@@ -319,6 +318,7 @@ namespace INTUSOFT.Configuration
            Settings.PostProcessingSettings.ClaheSettings._ClipValueR.val = "0.5";
            Settings.PostProcessingSettings.ClaheSettings._ClipValueG.val = "0.5";
            Settings.PostProcessingSettings.ClaheSettings._ClipValueB.val = "0.5";
+
        }
 
    }
@@ -348,14 +348,15 @@ namespace INTUSOFT.Configuration
            Settings.CameraSettings._EnableRawMode.val = "true";
            Settings.CameraSettings._DigitalGain.val = "0";
            Settings.CameraSettings._LiveDigitalGain.val = "20";
+           Settings.CameraSettings._EnableHorizontalFlip.val = "true";
 
 
            #region Firmware Settings for 45
            Settings.FirmwareSettings._EnableSingleFrameCapture.val = "true";
            Settings.FirmwareSettings._FlashBoostValue.val = "50";// for 45 it is 0 
-           Settings.FirmwareSettings._isFlashBoost.val = "true";// for 45 it is false
-           Settings.FirmwareSettings._FlashOffsetStart.val = "65";// for 45  it is 65
-           Settings.FirmwareSettings._FlashOffsetEnd.val = "60";// for 45 it is 60
+           Settings.FirmwareSettings._isFlashBoost.val = "false";// for 45 it is false
+           Settings.FirmwareSettings._FlashOffsetStart.val = "20";// for 45  it is 65
+           Settings.FirmwareSettings._FlashOffsetEnd.val = "17";// for 45 it is 60
 
            Settings.FirmwareSettings._MotorCaptureSteps.val = "22";
            Settings.FirmwareSettings.BlueFilterPos.val = "1400";
@@ -420,13 +421,14 @@ namespace INTUSOFT.Configuration
            Settings.CameraSettings._EnableRawMode.val = "true";
            Settings.CameraSettings._DigitalGain.val = "20";
            Settings.CameraSettings._LiveDigitalGain.val = "20";
+           Settings.CameraSettings._EnableHorizontalFlip.val = "true";
 
-           #region Firmware Settings for 45
+            #region Firmware Settings for 45
            Settings.FirmwareSettings._EnableSingleFrameCapture.val = "true";
            Settings.FirmwareSettings._FlashBoostValue.val = "95";// for 45 it is 0 
-           Settings.FirmwareSettings._isFlashBoost.val = "true";// for 45 it is false
-           Settings.FirmwareSettings._FlashOffsetStart.val = "65";// for 45  it is 65
-           Settings.FirmwareSettings._FlashOffsetEnd.val = "60";// for 45 it is 60
+           Settings.FirmwareSettings._isFlashBoost.val = "false";// for 45 it is false
+           Settings.FirmwareSettings._FlashOffsetStart.val = "20";// for 45  it is 65
+           Settings.FirmwareSettings._FlashOffsetEnd.val = "17";// for 45 it is 60
 
            Settings.FirmwareSettings._MotorCaptureSteps.val = "35";//added to set the default value by kishore on 17 august 2017.
 
