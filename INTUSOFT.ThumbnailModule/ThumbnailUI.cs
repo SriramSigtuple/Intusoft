@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 //using INTUSOFT.Desktop.Properties;
+using System.Linq;
 namespace INTUSOFT.ThumbnailModule
 {
     public partial class ThumbnailUI : UserControl
@@ -206,23 +207,35 @@ namespace INTUSOFT.ThumbnailModule
         }
         public void UpdateQIStatus(ThumbnailData thumbnailData)
         {
-            foreach (Control item in thumbnail_FLP.Controls)
-            {
-                if (item is ImageViewer)
-                {
-                    ImageViewer imgView = (ImageViewer)item as ImageViewer;
-                    if (imgView.ImageLocation == thumbnailData.fileName)
-                    {
-                        if (imgView.ImageLabel.QiStatus != thumbnailData.QIStatus)
-                        {
-                            imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
-                            imgView.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
 
-                        }
-                        imgView.Refresh();
-                    }
-                }
+           ImageViewer[] imageViewers = new ImageViewer[thumbnail_FLP.Controls.Count];
+            
+
+            thumbnail_FLP.Controls.CopyTo(imageViewers, 0);
+            List<ImageViewer> imageViewers1 = imageViewers.ToList<ImageViewer>();
+            ImageViewer imageViewer = thumbnail_FLP.Controls[imageViewers1.FindIndex(x => x.ImageLocation == thumbnailData.fileName)] as ImageViewer;
+            if(imageViewer.ImageLabel.QiStatus != thumbnailData.QIStatus)
+            {
+                imageViewer.ImageLabel.QiStatus = thumbnailData.QIStatus;
+                imageViewer.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
             }
+            //foreach (Control item in thumbnail_FLP.Controls)
+            //{
+            //    if (item is ImageViewer)
+            //    {
+            //        ImageViewer imgView = (ImageViewer)item as ImageViewer;
+            //        if (imgView.ImageLocation == thumbnailData.fileName)
+            //        {
+            //            if (imgView.ImageLabel.QiStatus != thumbnailData.QIStatus)
+            //            {
+            //                imgView.ImageLabel.QiStatus = thumbnailData.QIStatus;
+            //                imgView.ImageLabel.Failure_msg = string.IsNullOrEmpty(thumbnailData.failure_msg) ? "" : thumbnailData.failure_msg;
+
+            //            }
+            //            imgView.Refresh();
+            //        }
+            //    }
+            //}
         }
         private Color GetQIStatusColor(int status)
         {

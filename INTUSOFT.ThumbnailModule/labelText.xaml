@@ -30,8 +30,15 @@
         <StackPanel Orientation="Horizontal" >
             <Rectangle Width="21" Fill="{Binding QiStatus, Converter={StaticResource Value2StatusColorConvertor}, UpdateSourceTrigger=PropertyChanged}">
                 <Rectangle.ToolTip>
-                    <ToolTip
-                        Content="{Binding Path=QiStatus,Converter={StaticResource Value2ToolTipTextConvertor},Mode=OneWay}"/>
+                    <ToolTip>
+                            <ToolTip.Content>
+                                <MultiBinding Converter="{StaticResource Value2ToolTipTextConvertor}">
+                                    <Binding  Path="QiStatus"/>
+                                    <Binding Path ="Failure_msg"/>
+                                </MultiBinding>
+                            </ToolTip.Content>
+                    </ToolTip>
+                        <!--Content="{Binding Path=QiStatus,Converter={StaticResource Value2ToolTipTextConvertor},Mode=OneWay}"/>-->
                 </Rectangle.ToolTip>
             </Rectangle>
             

@@ -203,7 +203,8 @@ namespace INTUSOFT.Desktop.Forms
             _eventHandler.Register(_eventHandler.UpdateCaptureRLiveUI, new NotificationHandler(updateCaptureRLiveUI));
             _eventHandler.Register(_eventHandler.GoToViewScreen, new NotificationHandler(GoToViewScreen));
             _eventHandler.Register(_eventHandler.EnableDisableEmrButton, new NotificationHandler(EnableDisableEmrButton));
-
+            _eventHandler.Register(_eventHandler.RefreshThumbnails, new NotificationHandler(RefreshThumbnails));
+            _eventHandler.Register(_eventHandler.StartStopQIAnalysisTimer, new NotificationHandler(StartStopQIAnalysisTimer));
             mShowCameraDelegate = new ShowCameraDelegate(ShowCameraConnection);
             mShowPowerDelegate = new ShowPowerDelegate(ShowPowerConnection);
             CustomMessageBox newMsgBox = new CustomMessageBox();
@@ -1295,6 +1296,7 @@ namespace INTUSOFT.Desktop.Forms
 
                     }
                     #endregion
+                    if(IVLVariables.pageDisplayed == PageDisplayed.Image && !IVLVariables.ivl_Camera.IsCapturing)
                     ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
                     {
                         RefreshThumbnails();
@@ -2238,6 +2240,9 @@ namespace INTUSOFT.Desktop.Forms
                 //brightnesspopup();
                 //if (!IVLVariables.isValueChanged)//to check whether any changes made in the image is saved or discarded.
                 {
+                    //arg["isStart"] = false;
+                    //_eventHandler.Notify(_eventHandler.StartStopQIAnalysisTimer, arg);
+
                     arg["isImaging"] = true;
                     _eventHandler.Notify(_eventHandler.SetImagingScreen, arg);
                     Image_btn.Enabled = false;
@@ -3619,20 +3624,21 @@ namespace INTUSOFT.Desktop.Forms
         }
 
         bool updatingThumbnails = false;
-        private void RefreshThumbnails()
+        private void RefreshThumbnails(string s = "", Args arg = null)
         {
             if (!IVLVariables.isCommandLineAppLaunch)
             {
                     if(NewDataVariables.Visit_Obs != null  && NewDataVariables.Active_Visit != null)
                     {
                         updatingThumbnails = true;
-                        foreach (var eye_Fundus_Image in NewDataVariables.Visit_Obs)
+                    Stopwatch st = new Stopwatch();
+                    st.Start();
+                    foreach (var eye_Fundus_Image in NewDataVariables.Visit_Obs)
                         {
-                                Args arg = new Args();
+                        
                                 ThumbnailData thumbnailData = new ThumbnailData
                                 {
                                     id = eye_Fundus_Image.observationId,
-
                                     QIStatus = eye_Fundus_Image.qi_Status,
                                     fileName = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, eye_Fundus_Image.value),
                                     side = eye_Fundus_Image.eyeSide.Equals('L') ? 1 : 0,
@@ -3640,19 +3646,32 @@ namespace INTUSOFT.Desktop.Forms
                                     isCDR = eye_Fundus_Image.cdrAnnotationAvailable,
                                     failure_msg = eye_Fundus_Image.failure_msg
                                 };
-                                arg["ImgLoc"] = thumbnailData.fileName;
-                                arg["thumbnailData"] = thumbnailData;
                                 this.thumbnailUI1.UpdateQIStatus(thumbnailData);
                         }
                         updatingThumbnails = false;
+                    st.Stop();
+                    Console.WriteLine($"Time for each thumbnail updation = {st.ElapsedMilliseconds}");
 
-                    }
+                }
 
 
 
             }
         }
 
+        private void StartStopQIAnalysisTimer(string s , Args arg)
+        {
+            if((bool)arg["isStart"])
+            {
+                inboxTimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+                inboxQITimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+            }
+            else
+            {
+                inboxTimer.Change(-1, -1);
+                inboxQITimer.Change(-1, -1);
+            }
+        }
         private void HospitalLogo_pbx_Resize(object sender, EventArgs e)
         {
             ResizeToRoundedRectangle(sender, HospitalLogo_pbx.Height / 2);
@@ -3705,10 +3724,24 @@ namespace INTUSOFT.Desktop.Forms
                                     //{
                                     IVLVariables.ivl_Camera.MRNValue = NewDataVariables.Active_PatientIdentifier.value;
                                     IVLVariables.ivl_Camera.VisitDate = NewDataVariables.Active_Visit.createdDate.Date.ToString().Replace('/', '_').Remove(10);
+                                    while(updatingThumbnails)
+                                    {
+                                       Console.WriteLine($"Is Updating Thumbnail = {updatingThumbnails}") ;
+                                    }
+
                                     if (!IVLVariables.ivl_Camera.Trigger_Or_SpacebarPressed(false))
                                     {
                                         thumbnailUI1.isCaptureSequenceInProgress = IVLVariables.isCapturing;
+                                        Args arg = new Args();
+                                        arg["isStart"] = true;
+                                        _eventHandler.Notify(_eventHandler.StartStopQIAnalysisTimer, arg);
                                         this.Cursor = Cursors.Default;
+                                    }
+                                    else
+                                    {
+                                        Args arg = new Args();
+                                        arg["isStart"] = false;
+                                        _eventHandler.Notify(_eventHandler.StartStopQIAnalysisTimer, arg);
                                     }
                                     //}));
                                 }

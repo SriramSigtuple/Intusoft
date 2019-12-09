@@ -627,7 +627,10 @@ namespace INTUSOFT.Desktop.Forms
                        }
                        arg["ThumbnailData"] = tdata;
                        eventHandler.Notify(eventHandler.ThumbnailAdd, arg);
-                   }
+                        arg["isStart"] = true;
+                        eventHandler.Notify(eventHandler.StartStopQIAnalysisTimer, arg);
+                        eventHandler.Notify(eventHandler.RefreshThumbnails, arg);
+                    }
                }
            }
            catch (Exception ex)

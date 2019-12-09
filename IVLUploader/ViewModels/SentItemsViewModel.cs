@@ -112,6 +112,7 @@ namespace IntuUploader.ViewModels
         private void SentItemsStatusCheckTimerCallback(object state)
         {
 
+            CreateMissingPendingFiles();
             logger.Info("SentItems VM Timer, Analysis Type {0}", analysisType.ToString("g"));
 
                 sentItemsDirFileInfoArr = new DirectoryInfo(sentItemsDirPath).GetFiles("*.json");
@@ -161,13 +162,17 @@ namespace IntuUploader.ViewModels
             //the below code is to write a pending file if any existing file in active directory has no pending file.
             if (activeDirFileInfoArr.Any())
             {
-                if (!File.Exists(Path.Combine(sentItemsDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending")))
+                foreach (var item in activeDirFileInfoArr)
                 {
-                    StreamWriter st1 = new StreamWriter(Path.Combine(sentItemsDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
-                    st1.Flush();
-                    st1.Close();
-                    st1.Dispose();
+                    if (!File.Exists(Path.Combine(sentItemsDirPath, item.Name.Split('.')[0] + "_pending")))
+                    {
+                        StreamWriter st1 = new StreamWriter(Path.Combine(sentItemsDirPath, activeDirFileInfoArr[0].Name.Split('.')[0] + "_pending"), false);
+                        st1.Flush();
+                        st1.Close();
+                        st1.Dispose();
+                    }
                 }
+               
             }
             StartStopSentItemsTimer(!activeFileCloudVM.IsBusy);
         }

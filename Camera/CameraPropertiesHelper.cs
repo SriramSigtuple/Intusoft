@@ -531,9 +531,16 @@ namespace INTUSOFT.Imaging
 
 
                     byte strobeValue = 156;
-                   if (IVLCamVariables.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLCamVariables.ImagingMode == Imaging.ImagingMode.Posterior_Prime)
-                       strobeValue = 100;
-                   IVLCamVariables.BoardHelper.SetStrobeWidth(strobeValue);
+                    if (IVLCamVariables.ImagingMode == Imaging.ImagingMode.Anterior_Prime || IVLCamVariables.ImagingMode == Imaging.ImagingMode.Posterior_Prime || cameraPropsHelper.cameraModel == CameraModel.D)
+                    {
+                        double capExposureTempVar = Convert.ToDouble(IVLCamVariables._Settings.CameraSettings.CaptureExposure);
+                        capExposureTempVar = capExposureTempVar / 1000;
+                        strobeValue = Convert.ToByte(capExposureTempVar);
+                    }
+                    else
+                        strobeValue = 156;
+
+                    IVLCamVariables.BoardHelper.SetStrobeWidth(strobeValue);
                     // This is the order of the post processing steps the steps are applied based enable/disable in the config
                     PostProcessingStep[] postProcessingSteps = new PostProcessingStep[] {PostProcessingStep.ShiftImage,PostProcessingStep.HotSpotCorrection,PostProcessingStep.Clahe,
                     PostProcessingStep.UnsharpMask, PostProcessingStep.LUT,PostProcessingStep.ColorCorrection,PostProcessingStep.Gamma, PostProcessingStep.BrightnessContrast, PostProcessingStep.HSVBoost, PostProcessingStep.Mask};

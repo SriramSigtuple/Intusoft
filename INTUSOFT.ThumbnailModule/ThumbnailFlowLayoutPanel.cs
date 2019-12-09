@@ -14,10 +14,17 @@ namespace INTUSOFT.ThumbnailModule
         public event CountChanged _CountChangedEvent;
         public ObservableCollection<int> SelectedThumbnails = new ObservableCollection<int>();
 
+
+        public ObservableCollection<ImageViewer> Thumbnails = new ObservableCollection<ImageViewer>();
+
         public ThumbnailFlowLayoutPanel()
         {
-            
             SelectedThumbnails.CollectionChanged += SelectedThumbnails_CollectionChanged;
+            Thumbnails.CollectionChanged += Thumbnails_CollectionChanged;
+        }
+
+        private void Thumbnails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
         }
 
         private void SelectedThumbnails_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

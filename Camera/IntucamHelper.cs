@@ -398,8 +398,8 @@ namespace INTUSOFT.Imaging
                             }
                             int[] expGainArr = camPropsHelper.GetExposureGainFromTable(IVLCamVariables._Settings.CameraSettings.CaptureGainIndex);
                             IVLCamVariables._Settings.CameraSettings.CaptureGain = (ushort)expGainArr[1];
-                            if(IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
-                            IVLCamVariables._Settings.CameraSettings.CaptureExposure = (uint)expGainArr[0];
+                            if (IVLCamVariables._Settings.CameraSettings.CameraModel != CameraModel.D)
+                                IVLCamVariables._Settings.CameraSettings.CaptureExposure = (uint)expGainArr[0];
 
                             logArg["TimeStamp"] = DateTime.Now;
                             logArg["Msg"] = string.Format("Capture Gain  = {0}  ", IVLCamVariables._Settings.CameraSettings.CaptureGain);
@@ -408,6 +408,7 @@ namespace INTUSOFT.Imaging
                             logArg["TimeStamp"] = DateTime.Now;
                             logArg["Msg"] = string.Format("Capture Exposure  = {0}  ", IVLCamVariables._Settings.CameraSettings.CaptureExposure);
                             capture_log.Add(logArg);
+
 
                         }
                         else if (camPropsHelper.ImagingMode == ImagingMode.Anterior_Prime || camPropsHelper.ImagingMode == ImagingMode.Posterior_Prime)
@@ -418,9 +419,12 @@ namespace INTUSOFT.Imaging
                             camPropsHelper.SetGainValueFromLevel(camPropsHelper.CaptureGainLevel, false);// by sriram to set the capture gain from the config
                             bool retval = ivl_Camera.SetGain((ushort)IVLCamVariables._Settings.CameraSettings.CaptureGain);
 
+
                             logArg["TimeStamp"] = DateTime.Now;
                             logArg["Msg"] = string.Format("Capture Gain  = {0}  ", IVLCamVariables._Settings.CameraSettings.CaptureGain);
                         }
+                        
+
                     }
                     #region Capture Exposure and gain settings if it from assembly software UI
                     else
@@ -660,6 +664,12 @@ namespace INTUSOFT.Imaging
                 if (isCaptureSequence)// if the capture sequence state is true
                 {
                    
+                    if(isFromTrigger)
+                    {
+                        arg["isStart"] = false;
+                        IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.StartStopQIAnalysisTimer, arg);// notify the UI update event
+
+                    }
                     returnVal = StartCapture(isFromTrigger); // start capture with parameter initiation from trigger || (space bar || capture button)
                 }
                 else
