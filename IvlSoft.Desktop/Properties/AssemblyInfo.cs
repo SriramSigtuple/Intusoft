@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Software for operation of IntuCam-45 Fundus Camera")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sigtuple Technologies Pvt. Ltd.")]
-[assembly: AssemblyProduct("4.1.0.alpha7")]
+[assembly: AssemblyProduct("4.1.0.alpha8")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
