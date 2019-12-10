@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INTUSOFT.Data.NewDbModel
 {
-   public class Role
+   public class Role: IBaseModel
     {
         public static Role CreateNewRole()
         {
@@ -33,6 +33,9 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual string description { get; set; }
 
         public virtual string uuid { get; set; }
+        public virtual bool voided { get; set; }
+        public virtual DateTime createdDate { get; set; }
+        public virtual DateTime lastModifiedDate { get; set; }
 
         #endregion
     }

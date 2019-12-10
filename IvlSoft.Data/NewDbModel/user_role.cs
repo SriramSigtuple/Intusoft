@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INTUSOFT.Data.NewDbModel
 {
-  public class user_role
+  public class user_role:IBaseModel
     {
         public static user_role CreateNewrUserRole()
         {
@@ -52,6 +52,9 @@ namespace INTUSOFT.Data.NewDbModel
         public virtual Role role { get; set; }
 
         public virtual users user_id { get; set; }
+        public virtual bool voided { get; set; }
+        public virtual DateTime createdDate { get; set; }
+        public virtual DateTime lastModifiedDate { get; set; }
 
         #endregion
     }

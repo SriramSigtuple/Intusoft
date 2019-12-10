@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="Windows-1252" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
                   assembly="INTUSOFT.Data"
                   namespace="INTUSOFT.Data.NewDbModel">
@@ -32,7 +32,7 @@
   <property name="retiredReason" type="String" column="retired_reason" length="300" />-->
 	<!-- Associations -->
 	<!-- bi-directional many-to-many association to Role -->
-    <set name="roles" table="user_role"  cascade="save-update,merge,evict">
+    <set name="roles" table="user_role"  cascade="save-update,merge,evict" inverse="true" sort="natural">
 		<key>
       <column name="user_id"/>
     </key>

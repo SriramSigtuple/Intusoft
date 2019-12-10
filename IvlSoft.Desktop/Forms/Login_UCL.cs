@@ -79,11 +79,16 @@ namespace INTUSOFT.Desktop.Forms
 
         private bool CheckUserNamePassword()
         {
-            var pw = txtPassword.Text.GetMd5Hash();
-            if (NewDataVariables.Users.Where(x => x.username == txtUsername.Text && x.password == pw).Any())
+            if (!Intusoft.WPF.UserControls.InternetCheckViewModel.GetInstance().InternetPresent)
             {
-                NewDataVariables.Active_User = NewDataVariables.Users.Where(x => x.username == txtUsername.Text).FirstOrDefault();
-                return true;
+                var pw = txtPassword.Text.GetMd5Hash();
+                if (NewDataVariables.Users.Where(x => x.username == txtUsername.Text && x.password == pw).Any())
+                {
+                    NewDataVariables.Active_User = NewDataVariables.Users.Where(x => x.username == txtUsername.Text).FirstOrDefault();
+                    return true;
+                }
+                else
+                    return false;
             }
             else
                 return false;

@@ -4971,6 +4971,12 @@ namespace INTUSOFT.Data.Repository
             NewDataVariables.Users.Reverse();
         }
 
+        public static void AddUserRole(user_role u)
+        {
+            NewDataVariables._Repo.Add<user_role>(u);
+        }
+
+
         public static void RemoveUser()
         {
             UpdateUser();

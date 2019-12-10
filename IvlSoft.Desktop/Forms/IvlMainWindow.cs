@@ -297,7 +297,7 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     ;
                 }
-                MessageBox.Show(process.HasExited.ToString());
+                //MessageBox.Show(process.HasExited.ToString());
                 this.Cursor = Cursors.Default;
 
                 //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
@@ -2176,31 +2176,31 @@ namespace INTUSOFT.Desktop.Forms
             //}
             //this.Cursor = Cursors.Default;
             PagePanel_p.Controls.Clear();
-            emr.Dock = DockStyle.Fill;
-            try
-            {
-                PagePanel_p.Controls.Add(emr);
+            //emr.Dock = DockStyle.Fill;
+            //try
+            //{
+            //    PagePanel_p.Controls.Add(emr);
 
 
 
-                // string[] var = new string[] { "akjd" };
-                //var value = var[1];
-            }
-            catch (Exception ex)
-            {
-                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+            //    // string[] var = new string[] { "akjd" };
+            //    //var value = var[1];
+            //}
+            //catch (Exception ex)
+            //{
+            //    Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
-            }
-            IVLVariables.pageDisplayed = PageDisplayed.Emr;
+            //}
+            IVLVariables.pageDisplayed = PageDisplayed.Login;
             Image_btn.Enabled = false;
-            emr.Show();
-            
+            //emr.Show();
+
 
             #region this has to be implemented later when login screen has been added
-            //loginScreen.Dock = DockStyle.Fill;
-            //PagePanel_p.Controls.Add(loginScreen);
-            ////isEmr = true;
-            //loginScreen.Show();
+            loginScreen.Dock = DockStyle.Fill;
+            PagePanel_p.Controls.Add(loginScreen);
+            //isEmr = true;
+            loginScreen.Show();
             //commented to remove login screen at startup of the application by sriram on october 16th 2015
             //loginScreen.Dock = DockStyle.Fill;
             //loginScreen.Show();
@@ -3676,6 +3676,7 @@ namespace INTUSOFT.Desktop.Forms
         /// <returns></returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            
             if (keyData == Keys.Space)
             {
 
@@ -3754,7 +3755,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN") )
                 {
                     if (p == null)
                     {
@@ -3795,7 +3796,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.C))
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
                 {
                     if (tForm == null)
                     {
@@ -3904,14 +3905,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
             {
-                if (PagePanel_p.Contains(emr))
+                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
                 {
                     settings_window();
                 }
             }
             else if (keyData == (Keys.Control | Keys.Alt | Keys.E))//Ctrl + Alt + e for invoking EEPROM settings UI which is editable
             {
-                if (PagePanel_p.Contains(emr))
+                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
                 {
                     EEPROM.Settings_UCL.IsReadOnly = false;
                     EEPROM_Window eeprom = new EEPROM_Window();
@@ -3920,7 +3921,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.E))// Alt + e for invoking EEPROM settings UI which is read only
             {
-                if (PagePanel_p.Contains(emr))
+                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
                 {
                     EEPROM.Settings_UCL.IsReadOnly = true;
 

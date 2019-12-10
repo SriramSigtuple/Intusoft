@@ -271,7 +271,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="NewDbMapping\CloudAnalysisReport.hbm.xml" />
-    <Content Include="NewDbMapping\UserRole.hbm.xml" />
+    <EmbeddedResource Include="NewDbMapping\UserRole.hbm.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

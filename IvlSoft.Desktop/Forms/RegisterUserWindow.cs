@@ -51,7 +51,7 @@ namespace INTUSOFT.Desktop.Forms
                 userExist_lbl.Text = "Username Exists";
                 userExist_lbl.ForeColor = Color.Red;
                 IsValidUserName = false;
-                CustomMessageBox.Show("User Name Already Exists", "Register New User", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Error);
+                //CustomMessageBox.Show("User Name Already Exists", "Register New User", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Error);
 
             }
             else
@@ -86,14 +86,21 @@ namespace INTUSOFT.Desktop.Forms
             {
                 users user = users.CreateNewUsers();
                 user.userId = 1;
-                users newUser = new users();
+                users newUser = users.CreateNewUsers();
                 newUser.person = new Person();
                 newUser.person.createdBy = user;
                 newUser.createdBy = user;
                 newUser.username = txtUsername.Text;
                 newUser.password = txtPassword.Text.GetMd5Hash();
                 newUser.systemId = "operator" + (NewDataVariables.Users.Count + 1).ToString();
+                var rolesList = NewDataVariables._Repo.GetAll<Role>().ToList();
+                user_role user_Role = new user_role();
+                user_Role.user_id = newUser;
                 NewIVLDataMethods.AddUser(newUser);
+                user_Role.role = rolesList[5];
+                NewIVLDataMethods.AddUserRole(user_Role);
+                newUser.roles.Add(user_Role);
+
                 this.Close();
             }
             else
