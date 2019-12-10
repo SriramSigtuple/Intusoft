@@ -212,13 +212,20 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
             IVLVariables.ExceptionLog = Exception2StringConverter.GetInstance();// display exceptions that are caught. By Ashutosh 11-08-2017.
             Control.CheckForIllegalCrossThreadCalls = false;
+            IVLConfig.fileName = IVLVariables.appDirPathName + ConfigFileName;
+            if (!File.Exists(IVLConfig.fileName))
+            {
+                if (File.Exists(ConfigFileName))
+                    File.Copy(ConfigFileName, IVLConfig.fileName);
+            }
+            IVLVariables._ivlConfig = IVLConfig.getInstance();
             IVLVariables.ivl_Camera = IntucamHelper.GetInstance();
            
             this.MinimumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);//This code has been added to resolve the defect of application resizing when double clicked on the form header.
             //The below 5 lines are added by sriram sir to handle the object reference problem when resolution is set to 1024*768.
             IVLVariables.LangResourceManager = new ResourceManager("INTUSOFT.Desktop.LanguageResources.Res", typeof(IvlMainWindow).Assembly);
-            IVLConfig.fileName = ConfigFileName;
-            IVLVariables._ivlConfig = IVLConfig.getInstance();
+            //IVLConfig.fileName = IVLVariables.appDirPathName + ConfigFileName;
+            //IVLVariables._ivlConfig = IVLConfig.getInstance();
             //IVLVariables.ivl_Camera.ImagingMode = IVLVariables._ivlConfig.Mode = ImagingMode.Posterior_45;
             //IVLVariables.ivl_Camera.camPropsHelper.ImagingMode = (Imaging.ImagingMode)Enum.Parse(typeof(Imaging.ImagingMode), ConfigVariables._ivlConfig.Mode.ToString());
             Configuration.ImagingMode currentMode = ConfigVariables._ivlConfig.Mode;

@@ -310,7 +310,7 @@ namespace INTUSOFT.Imaging
             IVLCamVariables.BoardHelper = IntucamBoardCommHelper.GetInstance();
             IVLCamVariables.isCameraConnected = Devices.OtherDevices;
             IVLCamVariables.isPowerConnected = Devices.OtherDevices;
-            IVLConfig.fileName = ConfigFileName;
+            //IVLConfig.fileName = ConfigFileName;
             ConfigVariables.GetCurrentSettings();
 
             //IVLCamVariables._eventHandler.Register(IVLCamVariables._eventHandler.triggerRecieved, new NotificationHandler(TriggerRecieved));
