@@ -497,3 +497,5 @@ IVLConfiguration/bin/
 /WPF_UserControlLibrary/obj/
 /WPF_UserControlLibrary/bin/
 /CreateOrAlterDB/bin/
+/REST_helper/obj/
+/REST_helper/bin/

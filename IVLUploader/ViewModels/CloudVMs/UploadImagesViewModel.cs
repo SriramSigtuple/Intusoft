@@ -1,6 +1,6 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
-using IntuUploader.Utilities;
+using REST_Helper.Utilities;
 using NLog;
 using System.Collections.Generic;
 using System.Net;
@@ -53,7 +53,7 @@ namespace IntuUploader.ViewModels
 
             UploadModel.URL = UploadModel.URL_Model.GetUrl();
 
-            Response_CookieModel response =  await GlobalVariables.RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
+            Response_CookieModel response =  await RESTClientHelper.RestCall(UploadModel, cookie, keyValuePairs);
 
            
             

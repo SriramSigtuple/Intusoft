@@ -1,5 +1,5 @@
 ﻿using Cloud_Models.Models;
-using IntuUploader.Utilities;
+using REST_Helper.Utilities;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ namespace IntuUploader
 
     public static class GlobalVariables
     {
-        public static RESTClientHelper RESTClientHelper;
-
         public static DirectoryPathModel CloudPaths;
 
         public static Logger eventLog = LogManager.GetLogger("EventLog");

@@ -15,7 +15,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public users()
         {
-            roles = new HashSet<user_role>();
+
         }
 
         public static users CreateUsers(
@@ -29,7 +29,7 @@ namespace INTUSOFT.Data.NewDbModel
             users Creator,
             DateTime dateCreated,
             users changedBy,
-            ISet<user_role> Roles,
+            user_role Roles,
             DateTime dateChanged,
             bool Retired,
             users retiredBy,
@@ -55,7 +55,7 @@ namespace INTUSOFT.Data.NewDbModel
                 retiredReason = retireReason,
                 voided=Retired,
                 retiredBy = retiredBy,
-                roles=Roles,
+                role=Roles,
                 uuid=UUID
             };
         }
@@ -91,7 +91,7 @@ namespace INTUSOFT.Data.NewDbModel
 
         public virtual string retiredReason { get; set; }
 
-        public virtual ISet<user_role> roles { get; set; }
+        public virtual user_role role { get; set; }
 
         public virtual string uuid { get; set; }
 

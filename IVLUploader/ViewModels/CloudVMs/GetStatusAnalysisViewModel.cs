@@ -1,6 +1,6 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
-using IntuUploader.Utilities;
+using REST_Helper.Utilities;
 using NLog;
 using System.Collections.Generic;
 using System.Net;
@@ -37,7 +37,7 @@ namespace IntuUploader.ViewModels
 
             GetAnalysisModel.URL = GetAnalysisModel.URL_Model.GetUrl();
 
-            Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(GetAnalysisModel, cookie, new Dictionary<string, object>());
+            Response_CookieModel jsonToken = await rESTClient.RestCall(GetAnalysisModel, cookie, new Dictionary<string, object>());
             
 
             return jsonToken;

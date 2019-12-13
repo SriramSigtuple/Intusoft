@@ -93,13 +93,15 @@ namespace INTUSOFT.Desktop.Forms
                 newUser.username = txtUsername.Text;
                 newUser.password = txtPassword.Text.GetMd5Hash();
                 newUser.systemId = "operator" + (NewDataVariables.Users.Count + 1).ToString();
+
                 var rolesList = NewDataVariables._Repo.GetAll<Role>().ToList();
                 user_role user_Role = new user_role();
                 user_Role.user_id = newUser;
                 NewIVLDataMethods.AddUser(newUser);
                 user_Role.role = rolesList[5];
+                newUser.role = user_Role;
+                
                 NewIVLDataMethods.AddUserRole(user_Role);
-                newUser.roles.Add(user_Role);
 
                 this.Close();
             }

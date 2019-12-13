@@ -68,6 +68,9 @@
     </Reference>
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="ReachFramework" />
+    <Reference Include="REST_helper">
+      <HintPath>..\REST_helper\bin\Debug\REST_helper.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleLogging.Core, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleLogging.Core.0.5.0\lib\portable-net4+sl4+wp7+win8\SimpleLogging.Core.dll</HintPath>
     </Reference>
@@ -132,8 +135,6 @@
     <Compile Include="LoginHelper.cs" />
     <Compile Include="Commands\ShowSampleWindowCommand.cs" />
     <Compile Include="UploaderSettings.cs" />
-    <Compile Include="Utilities\RESTClientHelper.cs" />
-    <Compile Include="Utilities\URL_ComputeHelper.cs" />
     <Compile Include="ViewModels\CloudVMs\GetAnalysisResultViewModel.cs" />
     <Compile Include="ViewModels\CloudVMs\GetStatusAnalysisViewModel.cs" />
     <Compile Include="ViewModels\CloudVMs\InitiateAnalysisViewModel.cs" />

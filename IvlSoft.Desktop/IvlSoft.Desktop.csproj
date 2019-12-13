@@ -174,6 +174,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\library\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="REST_helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\REST_helper\bin\Debug\REST_helper.dll</HintPath>
+    </Reference>
     <Reference Include="Svg">
       <HintPath>..\library\Svg.dll</HintPath>
     </Reference>

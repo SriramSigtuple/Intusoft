@@ -3755,7 +3755,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN") )
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN") )
                 {
                     if (p == null)
                     {
@@ -3796,7 +3796,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.C))
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
                 {
                     if (tForm == null)
                     {
@@ -3905,14 +3905,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
             {
-                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
                 {
                     settings_window();
                 }
             }
             else if (keyData == (Keys.Control | Keys.Alt | Keys.E))//Ctrl + Alt + e for invoking EEPROM settings UI which is editable
             {
-                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
                 {
                     EEPROM.Settings_UCL.IsReadOnly = false;
                     EEPROM_Window eeprom = new EEPROM_Window();
@@ -3921,7 +3921,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.E))// Alt + e for invoking EEPROM settings UI which is read only
             {
-                if (PagePanel_p.Contains(emr) && (NewDataVariables.Active_User.roles.Where(x => x.user_id == NewDataVariables.Active_User).ToList()[0].role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
                 {
                     EEPROM.Settings_UCL.IsReadOnly = true;
 

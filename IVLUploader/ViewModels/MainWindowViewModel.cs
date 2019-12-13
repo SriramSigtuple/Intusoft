@@ -1,7 +1,7 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
 using IntuUploader.Commands;
-using IntuUploader.Utilities;
+using REST_Helper.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -29,7 +29,6 @@ namespace IntuUploader.ViewModels
         public  MainWindowViewModel()
        {
             logger.Info("Constructor Start");
-            GlobalVariables.RESTClientHelper = RESTClientHelper.GetInstance();
             if(File.Exists("UploaderSettings.json"))
             {
 

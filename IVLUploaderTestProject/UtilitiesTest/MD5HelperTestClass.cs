@@ -1,4 +1,4 @@
-﻿using IntuUploader.Utilities;
+﻿using REST_Helper.Utilities;
 using NUnit.Framework;
 using Common;
 using System.IO;

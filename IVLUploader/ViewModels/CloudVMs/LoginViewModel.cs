@@ -1,6 +1,6 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
-using IntuUploader.Utilities;
+using REST_Helper.Utilities;
 using Newtonsoft.Json;
 using NLog;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace IntuUploader.ViewModels
             LoginModel.Body = JsonConvert.SerializeObject(LoginModel);
             LoginModel.URL = LoginModel.URL_Model.GetUrl();
 
-            Response_CookieModel jsonToken = await GlobalVariables.RESTClientHelper.RestCall(LoginModel,new System.Net.Cookie(),new System.Collections.Generic.Dictionary<string, object>());
+            Response_CookieModel jsonToken = await RESTClientHelper.RestCall(LoginModel,new System.Net.Cookie(),new System.Collections.Generic.Dictionary<string, object>());
             
             return jsonToken;
         }

@@ -4581,13 +4581,13 @@ namespace INTUSOFT.Data.Repository
             set { _annotations = value; }
         }
 
-        //private static List<eye_fundus_image> _eyeFundsImage;
+        private static List<user_role> user_Roles;
 
-        //public static List<eye_fundus_image> EyeFundusImage
-        //{
-        //    get { return _eyeFundsImage; }
-        //    set { _eyeFundsImage = value; }
-        //}
+        public static List<user_role> User_Roles
+        {
+            get { return user_Roles; }
+            set { user_Roles = value; }
+        }
         private static List<users> _Users;
 
         public static List<users> Users
@@ -4974,6 +4974,7 @@ namespace INTUSOFT.Data.Repository
         public static void AddUserRole(user_role u)
         {
             NewDataVariables._Repo.Add<user_role>(u);
+            NewDataVariables.Active_User.role = u;
         }
 
 

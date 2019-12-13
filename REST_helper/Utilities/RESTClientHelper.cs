@@ -1,45 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Cloud_Models.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NLog;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Handlers;
-using Cloud_Models.Models;
 using System.Text;
-using System.Net;
-using System.IO;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Web;
-using NLog;
 
-namespace IntuUploader.Utilities
+namespace REST_Helper.Utilities
 {
     public class RESTClientHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        //private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private static RESTClientHelper clientHelper;
-
-        /// <summary>
-        /// Singleton Implementation for RESTClientHelper
-        /// </summary>
-        /// <returns>returns the singleton instance of RESTClientHelper </returns>
-        public static RESTClientHelper GetInstance()
-
-        {
-            
-
-            if (clientHelper == null)
-                clientHelper = new RESTClientHelper();
-
-            GlobalVariables.eventLog.Info("Get Singleton Instance of Rest Client Helper");
-            
-
-            return clientHelper;
-
-        }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -85,7 +62,6 @@ namespace IntuUploader.Utilities
                     }
 
                 };
-                var content1 = await httpRequestMessage.Content.ReadAsStringAsync();
                 client.BaseAddress = httpRequestMessage.RequestUri;
                 //reference https://social.msdn.microsoft.com/Forums/en-US/f553e3fb-9007-42e9-8289-9bf0e52c0e07/set-content-type-in-httpclienthttprequestmessage-throws-exception?forum=winappswithcsharp
                     httpRequestMessage.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(model.ContentType);
@@ -177,9 +153,9 @@ namespace IntuUploader.Utilities
             //JToken token = (JToken)JsonConvert.DeserializeObject(responseMsg);
             //return token;
 
-            logger.Info(response_cookie.responseBody);
-            logger.Info(response_cookie.Cookie);
-            logger.Info(response_cookie.StatusCode);
+            //logger.Info(response_cookie.responseBody);
+            //logger.Info(response_cookie.Cookie);
+            //logger.Info(response_cookie.StatusCode);
 
             return response_cookie;
         }
@@ -192,7 +168,7 @@ namespace IntuUploader.Utilities
             var convertedDictionary = inputDictionary.ToDictionary(item => item.Key.ToString(), item => item.Value.ToString()); //This converts your dictionary to have the Key and Value of type string.
             
             var dataJson = JsonConvert.SerializeObject(convertedDictionary);
-            logger.Info("Data = " + dataJson);
+            //logger.Info("Data = " + dataJson);
 
             return dataJson;
         }

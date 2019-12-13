@@ -5,17 +5,23 @@ using INTUSOFT.Data.Repository;
 using INTUSOFT.Data.NewDbModel;
 using Common;
 using Common.Enums;
+using Cloud_Models.Models;
+using REST_Helper.Utilities;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class Login_UCL : UserControl
     {
+        private RESTClientHelper RESTClientHelper;
         public Login_UCL()
         {
             InitializeComponent();
             InitializeResourceString();
             this.SetStyle(ControlStyles.Selectable, false);
             this.Load += Login_UCL_Load;
+            RESTClientHelper = new RESTClientHelper();
            
         }
 
@@ -24,7 +30,9 @@ namespace INTUSOFT.Desktop.Forms
             System.Threading.Thread.Sleep(5000);
             NewDataVariables.Users = NewDataVariables._Repo.GetAll<users>().ToList();
             txtUsername.Focus();
-            
+            txtUsername.Text = "test1";
+            txtPassword.Text = "test123";
+            Login();
         }
 
         public delegate void loggedIn(string s, EventArgs e);
@@ -77,7 +85,7 @@ namespace INTUSOFT.Desktop.Forms
         }
 
 
-        private bool CheckUserNamePassword()
+        private async Task<bool> CheckUserNamePassword()
         {
             if (!Intusoft.WPF.UserControls.InternetCheckViewModel.GetInstance().InternetPresent)
             {
@@ -90,6 +98,36 @@ namespace INTUSOFT.Desktop.Forms
                 else
                     return false;
             }
+            else
+            {
+                //var pw = txtPassword.Text.GetMd5Hash();
+                //if (NewDataVariables.Users.Where(x => x.username == txtUsername.Text && x.password == pw).Any())
+                //{
+                //    NewDataVariables.Active_User = NewDataVariables.Users.Where(x => x.username == txtUsername.Text).FirstOrDefault();
+                //    return true;
+                //}
+                //return true;
+                LoginModel loginModel = new LoginModel();
+                loginModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+                loginModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_LOGIN_URL.val;
+
+                loginModel.username = IVLVariables.CurrentSettings.CloudSettings.Username.val;
+                loginModel.password = IVLVariables.CurrentSettings.CloudSettings.Password.val;
+
+                loginModel.device_id = IVLVariables.CurrentSettings.CameraSettings.DeviceID.val;
+
+                loginModel.Body = string.Empty;
+                return await RestCall(loginModel);
+            }
+        }
+
+        private async Task<bool> RestCall(LoginModel loginModel)
+        {
+            loginModel.Body = JsonConvert.SerializeObject(loginModel);
+            loginModel.URL = loginModel.URL_Model.GetUrl();
+            var response = await RESTClientHelper.RestCall(loginModel, new System.Net.Cookie(), new System.Collections.Generic.Dictionary<string, object>());
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return true;
             else
                 return false;
         }
@@ -112,7 +150,7 @@ namespace INTUSOFT.Desktop.Forms
             //    _loggedIn("Logged in", e);
 
             //}
-            if (CheckUserNamePassword())
+            if (CheckUserNamePassword().Result)
             {
                 this.Hide();
                 txtUsername.Clear();

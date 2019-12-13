@@ -32,14 +32,14 @@
   <property name="retiredReason" type="String" column="retired_reason" length="300" />-->
 	<!-- Associations -->
 	<!-- bi-directional many-to-many association to Role -->
-    <set name="roles" table="user_role"  cascade="save-update,merge,evict" inverse="true" sort="natural">
+    <!--<set name="roles" table="user_role"  cascade="save-update,merge,evict" inverse="true" sort="natural">
 		<key>
       <column name="user_id"/>
     </key>
 		<many-to-many class="Role">
       <column name="role_id"/>
     </many-to-many>
-	</set>
+	</set>-->
 
 	<!--<map name="userProperties" table="user_property" lazy="true" cascade="save-update,merge,evict">
 		<key column="user_id" not-null="true"/>

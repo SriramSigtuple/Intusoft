@@ -1,8 +1,7 @@
 ﻿using Cloud_Models.Models;
 using NLog;
-using System.IO;
 
-namespace IntuUploader.Utilities
+namespace REST_Helper.Utilities
 {
     public static class URL_ComputeHelper
     {
