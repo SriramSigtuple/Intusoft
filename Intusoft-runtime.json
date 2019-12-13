@@ -1,8 +1,0 @@
-{
-	"DBname": "intunewmodel",
-	"password": "toor",
-	"username": "root",
-	"databaseBackupPath": "C:\IVLImageRepo\MysqlBackup",
-	"databaseTimerIntervel": "20000",
-	"serverPath": "localhost"
-}

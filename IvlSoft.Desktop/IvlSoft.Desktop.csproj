@@ -911,7 +911,7 @@ copy "$(SolutionDir)\ImageListView\bin\$(Configuration)\ImageListView.dll" "$(Ta
 copy "$(ProjectDir)Resources\Nlog.config" "$(TargetDir)"
 xcopy "$(SolutionDir)SQLs\*.*" "$(TargetDir)SQLs" /Y /I /E
 xcopy /s/y "$(SolutionDir)CreateOrAlterDB\bin\$(Configuration)\CreateOrAlterDB.exe" "$(TargetDir)" 
-copy  "$(SolutionDir)\Intusoft-runtime.json" "$(TargetDir)"</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>xcopy "$(SolutionDir)ReportTemplates\*.*" "$(TargetDir)ReportTemplates" /Y /I /E</PreBuildEvent>
