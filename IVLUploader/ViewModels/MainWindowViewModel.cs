@@ -1,7 +1,6 @@
 ﻿using BaseViewModel;
 using Cloud_Models.Models;
 using IntuUploader.Commands;
-using REST_Helper.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -17,7 +16,7 @@ namespace IntuUploader.ViewModels
 {
     public class MainWindowViewModel:ViewBaseModel
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger exceptionLog = LogManager.GetLogger("ExceptionLogger");
 
         private InternetCheckViewModel internetCheckViewModel;
         private const string serverNotRunning = "Cloud Server is not running";
@@ -28,7 +27,6 @@ namespace IntuUploader.ViewModels
         private HideSampleWindowCommand hideSampleWindowCommand;
         public  MainWindowViewModel()
        {
-            logger.Info("Constructor Start");
             if(File.Exists("UploaderSettings.json"))
             {
 
@@ -41,10 +39,11 @@ namespace IntuUploader.ViewModels
                     GlobalVariables.UploaderSettings = JsonConvert.DeserializeObject<UploaderSettings>(reader);
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                     GlobalVariables.UploaderSettings = new UploaderSettings();
+                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
                     
                 }
 
@@ -67,9 +66,10 @@ namespace IntuUploader.ViewModels
                 {
                     GlobalVariables.CloudPaths = JsonConvert.DeserializeObject<DirectoryPathModel>(reader);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                       GlobalVariables.CloudPaths = new DirectoryPathModel();
+                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
                 }
 
             }
@@ -81,7 +81,6 @@ namespace IntuUploader.ViewModels
 
          
             InternetCheckViewModel = InternetCheckViewModel.GetInstance();
-            logger.Info("Constructor End");
 
 
 

@@ -11,7 +11,7 @@ namespace IntuUploader.ViewModels
     /// </summary>
     public class InternetCheckViewModel : ViewBaseModel
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger exceptionLog = LogManager.GetLogger("ExceptionLogger");
 
         Timer PingDNSTimer;
         Ping myPing;
@@ -54,7 +54,7 @@ namespace IntuUploader.ViewModels
         /// </summary>
         private InternetCheckViewModel()
         {
-            QIUploaderVM = new UploaderVM(AnalysisType.QI);
+            //QIUploaderVM = new UploaderVM(AnalysisType.QI);
             FundusUploaderVM = new UploaderVM(AnalysisType.Fundus);
 
             //OutboxViewModel = OutboxViewModel.GetInstance();
@@ -100,10 +100,11 @@ namespace IntuUploader.ViewModels
                 reply = myPing.Send(host, timeout, buffer, pingOptions);
                 status = reply.Status;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 status = IPStatus.Unknown;
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
             }
             finally
             {
@@ -145,11 +146,15 @@ namespace IntuUploader.ViewModels
             get => internetPresent;
             set
             {
-                internetPresent = value;
-                GlobalVariables.isInternetPresent = value;
-                FundusUploaderVM.StartStopTimer = value;
-                QIUploaderVM.StartStopTimer = value;
-                OnPropertyChanged("InternetPresent");
+                if (internetPresent != value)
+                {
+                    internetPresent = value;
+                    GlobalVariables.isInternetPresent = value;
+                    FundusUploaderVM.StartStopTimer = value;
+                    //QIUploaderVM.StartStopTimer = value;
+                    OnPropertyChanged("InternetPresent");
+                }
+               
             }
         }
         /// <summary>

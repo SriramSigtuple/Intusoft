@@ -17,12 +17,16 @@ namespace IntuUploader.ViewModels
     /// </summary>
     public class CloudViewModel : ViewBaseModel
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger exceptionLog = LogManager.GetLogger("ExceptionLogger");
+        private  Logger logger;// = LogManager.GetLogger("Logger");
 
         public FileInfo ActiveFnf = null;
 
         public delegate void DelegatePendingFileCreation(AnalysisType analysisType);
-        public event DelegatePendingFileCreation CreatePendingFilesEvent; 
+        public event DelegatePendingFileCreation CreatePendingFilesEvent;
+
+        public delegate void DelegateMove_WriteFile(AnalysisType analysisType);
+        public event DelegateMove_WriteFile Write_R_Move_File_Event;
         CloudModel activeCloudModel;
         LoginViewModel activeLoginViewModel;
         CreateAnalysisViewModel activeCreateAnalysisViewModel;
@@ -33,36 +37,41 @@ namespace IntuUploader.ViewModels
         
         public delegate void  StartStopTimer(bool isStart);
         public event StartStopTimer startStopEvent;
+        private bool isMove2NextDir = false;
 
         private bool _IsBusy;
 
         public bool IsBusy
         {
             get { return _IsBusy; }
-            set {
-                _IsBusy = value; 
-                if(!_IsBusy)
+            set
+            {
+                _IsBusy = value;
+                if (!_IsBusy)
                 {
-                    if(CreatePendingFilesEvent != null)
-                    CreatePendingFilesEvent(analysisType);
+                    if (CreatePendingFilesEvent != null)
+                        CreatePendingFilesEvent(this.AnalysisType);
                 }
-
             }
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public CloudViewModel()
+        public CloudViewModel(AnalysisType analysisType)
         {
-            
+            AnalysisType = analysisType;
 
+            if (AnalysisType == AnalysisType.Fundus)
+                logger = LogManager.GetLogger("FundusLogger");
+            else
+                logger = LogManager.GetLogger("QILogger");
         }
 
         public void SetCloudModel(CloudModel cloudModel)
         {
-            
 
+            IsMove2NextDir = false;
             ActiveCloudModel = cloudModel;
             ActiveLoginViewModel = new LoginViewModel(ActiveCloudModel.LoginModel);
             ActiveCreateAnalysisViewModel = new CreateAnalysisViewModel(ActiveCloudModel.CreateAnalysisModel);
@@ -114,18 +123,22 @@ namespace IntuUploader.ViewModels
                 GetAnalysisResult();
             else
                 {
+                    //MoveFile2ProcessedDir();
+                    IsMove2NextDir = true;
+                    //this.IsBusy = false;
 
                 }
             }
             else
             {
                 logger.Info("Internet connection{GlobalVariables.isInternetPresent}");
-                StreamWriter st = new StreamWriter(ActiveFnf.FullName);
-                st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
-                this.IsBusy = false; 
+                //StreamWriter st = new StreamWriter(ActiveFnf.FullName);
+                //st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                //st.Flush();
+                //st.Close();
+                //st.Dispose();
+                //this.IsBusy = false; 
+                IsMove2NextDir = false;
                 //this.Dispose();
             }
                
@@ -144,6 +157,7 @@ namespace IntuUploader.ViewModels
                 logger.Info("Start Analysis Result");
 
                 isValidLoginCookie();
+                ActiveCloudModel.InitiateAnalysisModel.Body = string.Empty;
 
                 ActiveCloudModel.InitiateAnalysisModel.status = "initialised";
                 ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
@@ -155,25 +169,20 @@ namespace IntuUploader.ViewModels
                 {
                     ActiveCloudModel.InitiateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
 
-                    File.Delete(ActiveFnf.FullName);
+                    //File.Delete(ActiveFnf.FullName);
 
-                    StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir,AnalysisType), ActiveFnf.Name));
-                    st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                    st.Flush();
-                    st.Close();
-                    st.Dispose();
-
-                    st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
-                    st.Flush();
-                    st.Close();
-                    st.Dispose();
-
+                    //StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir,AnalysisType), ActiveFnf.Name));
+                    //st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    //st.Flush();
+                    //st.Close();
+                    //st.Dispose();
+                    IsMove2NextDir = true;
                     //File.WriteAllText(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir), ActiveFnf.Name), JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                     //this.Dispose();
 
                     //startStopEvent(true);
-                    this.IsBusy = false; ;
+                   // this.IsBusy = false; ;
 
                 }
                 else
@@ -187,8 +196,10 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Info(ex.StackTrace);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
             }
-            
+
         }
 
 
@@ -202,6 +213,7 @@ namespace IntuUploader.ViewModels
                 logger.Info("Get Analysis Status");
                 isValidLoginCookie();
                 logger.Info("Get Analysis status ");//,ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
+                ActiveCloudModel.GetAnalysisModel.Body = string.Empty;
 
                 ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
                 ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
@@ -242,15 +254,14 @@ namespace IntuUploader.ViewModels
                         StreamWriter st1 = null;
                         try
                         {
-                            if (File.Exists(ActiveFnf.FullName))
-                                File.Delete(ActiveFnf.FullName);
-
-                            st1 = new StreamWriter(ActiveFnf.FullName, false);
-                            st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                            IsMove2NextDir = false;
+                            //st1 = new StreamWriter(ActiveFnf.FullName, false);
+                            //st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                         }
                         catch (Exception ex)
                         {
+                            exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
 
                         }
                         finally
@@ -262,12 +273,8 @@ namespace IntuUploader.ViewModels
                                 st1.Dispose();
 
                             }
-                            st1 = new StreamWriter(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"), false);
-                            st1.Flush();
-                            st1.Close();
-                            st1.Dispose();
                             //startStopEvent(true);
-                            this.IsBusy = false; ;
+                           // this.IsBusy = false; ;
                         }
                         //this.Dispose();
                     }
@@ -284,9 +291,11 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Info(ex.StackTrace);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
             }
-            
-         
+
+
 
         }
 
@@ -299,6 +308,7 @@ namespace IntuUploader.ViewModels
             try
             {
                 logger.Info("Iam Login");
+                ActiveLoginViewModel.LoginModel.Body = string.Empty;
                 ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.StartLogin().Result;
                 logger.Info(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode.ToString() + " "+ ActiveFnf.Name);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, Formatting.Indented));
@@ -329,6 +339,8 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Error(ex);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", ex.Message);
 
             }
@@ -350,6 +362,7 @@ namespace IntuUploader.ViewModels
                 isValidLoginCookie();
                 JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
 
+                ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
                 ActiveCloudModel.CreateAnalysisModel.installation_id = (string)Login_JObject["message"]["installation_id"];
                 List<JToken> products = Login_JObject["message"]["products"].ToList();
                 foreach (var item in products)
@@ -384,6 +397,8 @@ namespace IntuUploader.ViewModels
             catch (Exception ex)
             {
                 logger.Error(ex);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
             }
 
@@ -402,6 +417,8 @@ namespace IntuUploader.ViewModels
                 logger.Info("Upload Analysis");
 
                 Response_CookieModel response = null;
+                ActiveCloudModel.UploadModel.Body = string.Empty;
+
                 ActiveCloudModel.UploadModel.analysis_id =
                 ActiveCloudModel.UploadModel.URL_Model.API_URL_Mid_Point =
                                    ActiveCloudModel.InitiateAnalysisModel.id =
@@ -455,15 +472,18 @@ namespace IntuUploader.ViewModels
                     ManageFailureResponse(response, "Upload");
 
                 }
-                else if (GlobalVariables.isInternetPresent)
+                else 
                 {
                     ActiveCloudModel.UploadModel.CompletedStatus = true;
-                    StartAnalsysisFlow();
+                    IsMove2NextDir = true;
+                   // StartAnalsysisFlow();
                 }
             }
             catch (Exception ex)
             {
                 logger.Error(ex);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
             }
 
@@ -479,7 +499,7 @@ namespace IntuUploader.ViewModels
             {
                 isValidLoginCookie();
                 logger.Info("Get Analysis Result");
-
+                ActiveCloudModel.GetAnalysisResultModel.Body = string.Empty;
                 ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
                 logger.Info("Get Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
@@ -521,6 +541,8 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Error(ex);
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
                 ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, ex.Message);
             }
             
@@ -804,16 +826,17 @@ namespace IntuUploader.ViewModels
                 StreamWriter st1 = null;
                 try
                 {
-                    if (File.Exists(ActiveFnf.FullName))
-                        File.Delete(ActiveFnf.FullName);
-                    
-                    st1 =   new StreamWriter(ActiveFnf.FullName, false);
-                    st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    IsMove2NextDir = false;
+                    //st1 =   new StreamWriter(ActiveFnf.FullName, false);
+                    //st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                 }
                 catch (Exception exp)
                 {
                     logger.Error(exp);
+                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(exp));
+
+
                 }
                 finally
                 {
@@ -824,12 +847,8 @@ namespace IntuUploader.ViewModels
                         st1.Dispose();
 
                     }
-                    st1 = new StreamWriter(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"), false);
-                    st1.Flush();
-                    st1.Close();
-                    st1.Dispose();
                     //startStopEvent(true);
-                    this.IsBusy = false; ;
+                    //this.IsBusy = false; ;
                 }
 
                 
@@ -845,17 +864,16 @@ namespace IntuUploader.ViewModels
                 StreamWriter st1 = null;
                 try
                 {
-                   
-
-                    if (File.Exists(ActiveFnf.FullName))
-                        File.Delete(ActiveFnf.FullName);
-                    st1 = new StreamWriter(ActiveFnf.FullName, false);
-                    st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    IsMove2NextDir = false;
+                    //st1 = new StreamWriter(ActiveFnf.FullName, false);
+                    //st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
 
                 }
                 catch (Exception ex)
                 {
                     logger.Error(ex);
+                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
                 }
 
                 finally
@@ -868,12 +886,8 @@ namespace IntuUploader.ViewModels
                         st1.Dispose();
 
                     }
-                    st1 = new StreamWriter(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"), false);
-                    st1.Flush();
-                    st1.Close();
-                    st1.Dispose();
                     //startStopEvent(true);
-                    this.IsBusy = false; ;
+                   // this.IsBusy = false; ;
 
                 }
 
@@ -911,40 +925,56 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-
-
-                if (File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name)))
-                    File.Delete(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name));
-                st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name), false);
-                st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                st.Flush();
-                st.Close();
-                st.Dispose();
+                IsMove2NextDir = true;
+               // MoveFile2ProcessedDir();
+               
 
                 
 
             }
             catch (Exception ex)
             {
+                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
+
             }
             finally
             {
 
-                if (File.Exists(ActiveFnf.FullName))
-                    File.Delete(ActiveFnf.FullName);
-                if (File.Exists(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending")))
-                    File.Delete(Path.Combine(ActiveFnf.Directory.FullName, ActiveFnf.Name.Split('.')[0] + "_pending"));
+                //if (File.Exists(ActiveFnf.FullName))
+                //    File.Delete(ActiveFnf.FullName);
 
                 st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
                 st.Flush();
                 st.Close();
                 st.Dispose();
                 //startStopEvent(true); 
-                this.IsBusy = false; ;
+                //this.IsBusy = false; ;
 
             }
         }
+        private void MoveFile2ProcessedDir()
+        {
+            try
+            {
+                if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name)))
+                {
 
+                    //StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name), false);
+                    StreamWriter st = new StreamWriter(ActiveFnf.FullName, false);
+                    st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
+                    st.Flush();
+                    st.Close();
+                    st.Dispose();
+                    File.Move(ActiveFnf.FullName, Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
+        }
         private void isValidLoginCookie()
         {
            if( ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
@@ -1010,6 +1040,15 @@ namespace IntuUploader.ViewModels
                 OnPropertyChanged("AnalysisType");
             }
         }
+
+        public bool IsMove2NextDir { get => isMove2NextDir;
+            set { 
+                isMove2NextDir = value;
+                if (Write_R_Move_File_Event != null)
+                    Write_R_Move_File_Event(this.AnalysisType);
+            } 
+        }
+
         public void SetValueMethod(object param)
         {
             //this.FileUploadStatus = 100;

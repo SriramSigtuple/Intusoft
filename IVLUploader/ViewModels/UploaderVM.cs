@@ -44,6 +44,8 @@ namespace IntuUploader.ViewModels
                         SentItemsViewModel.activeFileCloudVM.IsBusy = value;
                         OutboxViewModel.activeFileCloudVM.IsBusy = value;
                     }
+                   
+
                     OnPropertyChanged("StartStopTimer");
                 }
                 
