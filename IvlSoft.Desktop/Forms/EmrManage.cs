@@ -2485,8 +2485,8 @@ namespace INTUSOFT.Desktop.Forms
                 NewDataVariables.Eye_Fundus_Images = NewDataVariables._Repo.GetAll<eye_fundus_image>().ToList();
                 NewDataVariables.Identifier = NewDataVariables._Repo.GetAll<patient_identifier>().ToList();
 
-                NewDataVariables.User_Roles = NewDataVariables._Repo.GetAll<user_role>().ToList();
-                NewDataVariables.Active_User.role = NewDataVariables.User_Roles.Where(x => x.user_id.userId == NewDataVariables.Active_User.userId).ToList().FirstOrDefault();
+                //NewDataVariables.User_Roles = NewDataVariables._Repo.GetAll<user_role>().ToList();
+                //NewDataVariables.Active_User.role = NewDataVariables.User_Roles.Where(x => x.user_id.userId == NewDataVariables.Active_User.userId).ToList().FirstOrDefault();
 
                 pageRows = Convert.ToInt32(IVLVariables.CurrentSettings.UserSettings._NoOfPatientsToBeSelected.val);//Assigns no of patients to be displayed
                 //PagesCount = Convert.ToInt32(Math.Ceiling(NewDataVariables.Patients.Count * 1.0 / pageRows));

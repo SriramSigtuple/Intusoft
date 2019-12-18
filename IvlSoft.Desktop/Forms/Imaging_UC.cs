@@ -219,49 +219,49 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
 
             #region QI status display bitmaps creation
-            gradable_bm = new Bitmap(100, 200);
-            nonGradable_bm = new Bitmap(100, 200);
-            qiProgress_bm = new Bitmap(100, 200);
-            qiFailed_bm = new Bitmap(100, 200);
+            //gradable_bm = new Bitmap(100, 200);
+            //nonGradable_bm = new Bitmap(100, 200);
+            //qiProgress_bm = new Bitmap(100, 200);
+            //qiFailed_bm = new Bitmap(100, 200);
 
-            Graphics qiGraphics = Graphics.FromImage(gradable_bm);
-            qiGraphics.FillRectangle(Brushes.Green, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
-            qiGraphics.Dispose();
-            gradableImg_lbl.Image = gradable_bm;
-            gradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("Gradable_Text", IVLVariables.LangResourceCultureInfo);
+            //Graphics qiGraphics = Graphics.FromImage(gradable_bm);
+            //qiGraphics.FillRectangle(Brushes.Green, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            //qiGraphics.Dispose();
+            //gradableImg_lbl.Image = gradable_bm;
+            //gradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("Gradable_Text", IVLVariables.LangResourceCultureInfo);
 
-             qiGraphics = Graphics.FromImage(nonGradable_bm);
-            qiGraphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
-            qiGraphics.Dispose();
-            nonGradableImg_lbl.Image = nonGradable_bm;
-            nonGradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("NonGradable_Text", IVLVariables.LangResourceCultureInfo);
-
-
-            qiGraphics = Graphics.FromImage(qiProgress_bm);
-            qiGraphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
-            qiGraphics.Dispose();
-            QIProgressImg_lbl.Image = qiProgress_bm;
-            QIProgressText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIProgress_Text", IVLVariables.LangResourceCultureInfo);
+            // qiGraphics = Graphics.FromImage(nonGradable_bm);
+            //qiGraphics.FillRectangle(Brushes.Gray, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            //qiGraphics.Dispose();
+            //nonGradableImg_lbl.Image = nonGradable_bm;
+            //nonGradableText_lbl.Text = IVLVariables.LangResourceManager.GetString("NonGradable_Text", IVLVariables.LangResourceCultureInfo);
 
 
-            qiGraphics = Graphics.FromImage(qiFailed_bm);
-            qiGraphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
-            qiGraphics.Dispose();
-            QIFailedImg_lbl.Image = qiFailed_bm;
-            QIFailedText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIFailed_Text", IVLVariables.LangResourceCultureInfo);
+            //qiGraphics = Graphics.FromImage(qiProgress_bm);
+            //qiGraphics.FillRectangle(Brushes.Yellow, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            //qiGraphics.Dispose();
+            //QIProgressImg_lbl.Image = qiProgress_bm;
+            //QIProgressText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIProgress_Text", IVLVariables.LangResourceCultureInfo);
+
+
+            //qiGraphics = Graphics.FromImage(qiFailed_bm);
+            //qiGraphics.FillRectangle(Brushes.Red, new Rectangle(0, 0, gradable_bm.Width, gradable_bm.Height));
+            //qiGraphics.Dispose();
+            //QIFailedImg_lbl.Image = qiFailed_bm;
+            //QIFailedText_lbl.Text = IVLVariables.LangResourceManager.GetString("QIFailed_Text", IVLVariables.LangResourceCultureInfo);
             #endregion
 
             //elementHost.Dock = DockStyle.Bottom;
             //reportListView.Parent = this.reportGridView_p;
             //this.display_pbx.Visible = false;
             //elementHost.Parent = display_pbx;
-             infoVM = new InfoVM();
-            infoVM.ImgName = string.Empty;
-            infoIcon_p = new ElementHost();
-            informationIcon = new InformationIconUCL();
-            infoIcon_p.Child = informationIcon;
-            informationIcon.InfoVM = infoVM;
-            infoIcon_p.Size = new Size(135, 150);
+            // infoVM = new InfoVM();
+            //infoVM.ImgName = string.Empty;
+            //infoIcon_p = new ElementHost();
+            //informationIcon = new InformationIconUCL();
+            //infoIcon_p.Child = informationIcon;
+            //informationIcon.InfoVM = infoVM;
+            //infoIcon_p.Size = new Size(135, 150);
 
 
         }
@@ -280,35 +280,35 @@ namespace INTUSOFT.Desktop.Forms
         }
         private void InvokeDisplayMethod( Args arg)
         {
-                display_pbx.Controls.Clear();
+                //display_pbx.Controls.Clear();
                 display_pbx.Image = arg["rawImage"] as Bitmap;
 
-                display_pbx.Controls.Add(infoIcon_p);
+                //display_pbx.Controls.Add(infoIcon_p);
 
-                informationIcon.Background = System.Windows.Media.Brushes.Transparent;
-                infoIcon_p.BackColor = Color.Transparent;
-                infoVM.IsVisible = false;
-                SetQIInfo(NewDataVariables.Active_Obs);
-                ////infoIcon_p.Dock = DockStyle.Bottom;
+                //informationIcon.Background = System.Windows.Media.Brushes.Transparent;
                 //infoIcon_p.BackColor = Color.Transparent;
-                infoIcon_p.Parent = display_pbx;
-                //infoIcon_p.Location = new Point(300, 300);
-                var heightValue = (1.75) * (double)(infoIcon_p.ClientSize.Height);
-                var value = (int)Math.Round(heightValue, MidpointRounding.AwayFromZero);
-                if (Screen.PrimaryScreen.Bounds.Width == 1920)
-                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 180, display_pbx.ClientSize.Height - 251);
-                else if (Screen.PrimaryScreen.Bounds.Width == 1366)
-                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
+                //infoVM.IsVisible = false;
+                //SetQIInfo(NewDataVariables.Active_Obs);
+                //////infoIcon_p.Dock = DockStyle.Bottom;
+                ////infoIcon_p.BackColor = Color.Transparent;
+                //infoIcon_p.Parent = display_pbx;
+                ////infoIcon_p.Location = new Point(300, 300);
+                //var heightValue = (1.75) * (double)(infoIcon_p.ClientSize.Height);
+                //var value = (int)Math.Round(heightValue, MidpointRounding.AwayFromZero);
+                //if (Screen.PrimaryScreen.Bounds.Width == 1920)
+                //    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 180, display_pbx.ClientSize.Height - 251);
+                //else if (Screen.PrimaryScreen.Bounds.Width == 1366)
+                //    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
 
 
-                else if (Screen.PrimaryScreen.Bounds.Width == 1280)
-                    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
+                //else if (Screen.PrimaryScreen.Bounds.Width == 1280)
+                //    infoIcon_p.Location = new Point(display_pbx.ClientSize.Width - 140, display_pbx.ClientSize.Height - 201);
 
 
 
-                //elementHost.Location = new Point(this.Width - 10, this.Height);
-                //Console.WriteLine(infoIcon_p.Location);
-                Console.WriteLine(display_pbx.ClientSize);
+                ////elementHost.Location = new Point(this.Width - 10, this.Height);
+                ////Console.WriteLine(infoIcon_p.Location);
+                //Console.WriteLine(display_pbx.ClientSize);
 
         }
 

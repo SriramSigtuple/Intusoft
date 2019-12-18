@@ -14,7 +14,7 @@
             <i:InvokeCommandAction Command="{Binding Path=ClickCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <UserControl.Resources>
         <convertor1:Value2StatusColorConvertor x:Key="Value2StatusColorConvertor"/>
         <convertor1:Value2ToolTipTextConvertor x:Key="Value2ToolTipTextConvertor"/>
@@ -26,9 +26,14 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>-->
     <Grid>
-       
-        <StackPanel Orientation="Horizontal" >
-            <Rectangle Width="21" Fill="{Binding QiStatus, Converter={StaticResource Value2StatusColorConvertor}}">
+
+        <!--<StackPanel Orientation="Horizontal" >-->
+            <!--
+                </Rectangle.ToolTip>
+            </Rectangle>-->
+
+            <TextBlock x:Name="ImageName_lbl" Text="{Binding Name}" FontFamily="Tahoma" FontSize="15" Margin="0,2,0,0" TextAlignment="Center" FontWeight="ExtraBold"  />
+            <!--<Rectangle Width="21" Fill="{Binding QiStatus, Converter={StaticResource Value2StatusColorConvertor}}">
                 <Rectangle.ToolTip>
                     <ToolTip>
                         <ToolTip.Content>
@@ -38,11 +43,11 @@
                             </MultiBinding>
                         </ToolTip.Content>
                     </ToolTip>
-                        <!--Content="{Binding QiStatus,Converter={StaticResource Value2ToolTipTextConvertor}}"/>-->
+                        -->
+            <!--Content="{Binding QiStatus,Converter={StaticResource Value2ToolTipTextConvertor}}"/>-->
+            <!--
                 </Rectangle.ToolTip>
-            </Rectangle>
-            
-            <TextBlock Name="ImageName_lbl" Text="{Binding Name}" FontFamily="Tahoma" FontSize="15" Margin="5,2,0,0" TextAlignment="Center" FontWeight="ExtraBold"  />
-        </StackPanel>
+            </Rectangle>-->
+        <!--</StackPanel>-->
     </Grid>
 </UserControl>

@@ -212,6 +212,7 @@ namespace INTUSOFT.Desktop.Forms
             #endregion
             IVLVariables.ExceptionLog = Exception2StringConverter.GetInstance();// display exceptions that are caught. By Ashutosh 11-08-2017.
             Control.CheckForIllegalCrossThreadCalls = false;
+            #region Config reading from app dir path
             IVLConfig.fileName = IVLVariables.appDirPathName + ConfigFileName;
             if (!File.Exists(IVLConfig.fileName))
             {
@@ -219,6 +220,7 @@ namespace INTUSOFT.Desktop.Forms
                     File.Copy(ConfigFileName, IVLConfig.fileName);
             }
             IVLVariables._ivlConfig = IVLConfig.getInstance();
+            #endregion
             IVLVariables.ivl_Camera = IntucamHelper.GetInstance();
            
             this.MinimumSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);//This code has been added to resolve the defect of application resizing when double clicked on the form header.
@@ -598,7 +600,7 @@ namespace INTUSOFT.Desktop.Forms
         private void ExceptionLogWriter__exceptionOccuredEvent()
         {
             UpdateCloudReport2DB();
-            UpdateQIAnalysis2DB();
+            //UpdateQIAnalysis2DB();
         }
 
         private void LaunchUploader()
@@ -2174,33 +2176,33 @@ namespace INTUSOFT.Desktop.Forms
             //{
 
             //}
-            //this.Cursor = Cursors.Default;
+            this.Cursor = Cursors.Default;
             PagePanel_p.Controls.Clear();
-            //emr.Dock = DockStyle.Fill;
-            //try
-            //{
-            //    PagePanel_p.Controls.Add(emr);
+            emr.Dock = DockStyle.Fill;
+            try
+            {
+                PagePanel_p.Controls.Add(emr);
 
 
 
-            //    // string[] var = new string[] { "akjd" };
-            //    //var value = var[1];
-            //}
-            //catch (Exception ex)
-            //{
-            //    Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
+                // string[] var = new string[] { "akjd" };
+                //var value = var[1];
+            }
+            catch (Exception ex)
+            {
+                Common.ExceptionLogWriter.WriteLog(ex, exceptionLog);
 
-            //}
-            IVLVariables.pageDisplayed = PageDisplayed.Login;
+            }
+            IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
-            //emr.Show();
+            emr.Show();
 
 
             #region this has to be implemented later when login screen has been added
-            loginScreen.Dock = DockStyle.Fill;
-            PagePanel_p.Controls.Add(loginScreen);
-            //isEmr = true;
-            loginScreen.Show();
+            //loginScreen.Dock = DockStyle.Fill;
+            //PagePanel_p.Controls.Add(loginScreen);
+            ////isEmr = true;
+            //loginScreen.Show();
             //commented to remove login screen at startup of the application by sriram on october 16th 2015
             //loginScreen.Dock = DockStyle.Fill;
             //loginScreen.Show();
@@ -3014,7 +3016,7 @@ namespace INTUSOFT.Desktop.Forms
                 IVLVariables.ApplicationClosing = true;
               
                 UpdateCloudReport2DB();
-                UpdateQIAnalysis2DB();
+                //UpdateQIAnalysis2DB();
 
                 IVLVariables.ivl_Camera.camPropsHelper.IsApplicationClosing = true;
                 //This below code is added by darshan on 17-08-2015 to solve defect no 0000564: In view image screen,When changes are made and clicked on close,No confirmation message is popping up.
@@ -3331,7 +3333,9 @@ namespace INTUSOFT.Desktop.Forms
              PagePanel_p.Controls.Add(imaging_UC);
             _eventHandler.Notify(_eventHandler.ThumbnailSelected, arg);
             if (Convert.ToBoolean(arg["isImaging"]))
+            {
                 _eventHandler.Notify(_eventHandler.Navigate2LiveScreen, arg);
+            }
             this.Refresh();
             this.Focus();
         }
@@ -3415,7 +3419,7 @@ namespace INTUSOFT.Desktop.Forms
 
             EmrManage_btn_Click(null, null);
             inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
-            inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
+            //inboxQITimer = new System.Threading.Timer(new TimerCallback(InboxQICheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
         }
 

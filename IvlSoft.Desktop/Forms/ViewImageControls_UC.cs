@@ -3273,51 +3273,56 @@ namespace INTUSOFT.Desktop.Forms
             {
                 if(Intusoft.WPF.UserControls.InternetCheckViewModel.GetInstance().InternetPresent)
                 {
-                    List<int> NonGradableImagesStatusList = new List<int>();
-                    List<int> QIProgressList = new List<int>();
-                    List<int> QIFailedList = new List<int>();
-                    for (int i = 0; i < currentReportImageFiles.Length; i++)
-                    {
-                        FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
-                        eye_fundus_image eye = NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.NonGradable)
-                            NonGradableImagesStatusList.Add(eye.qi_DR_AMD_Status);
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Failed)
-                            QIFailedList.Add(eye.qi_DR_AMD_Status);
-                        if (eye.qi_DR_AMD_Status == (int)QIStatus.Initialised || eye.qi_DR_AMD_Status == (int)QIStatus.Uploading || eye.qi_DR_AMD_Status == (int)QIStatus.Processing)
-                            QIProgressList.Add(eye.qi_DR_AMD_Status);
-                    }
+                    UploadImagesToCloud();
+                    #region QI check before uploading for analysis has been commented.
 
-                    if (QIProgressList.Any()) // Selected Images contain QI Progess  
-                        CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("QIInProgressImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
-                    else if (NonGradableImagesStatusList.Count == currentReportImageFiles.Length)// Selected Images contain only Non gradable Images 
-                    {
-                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("AllNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
-                        if (dialogResult == DialogResult.Yes)
-                            UploadImagesToCloud();
-                    }
-                    else if (NonGradableImagesStatusList.Any() && QIFailedList.Any()) // Selected Images contain both Non gradable and QI Failed 
-                    {
-                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("QIFailedNNongradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
-                        if (dialogResult == DialogResult.Yes)
-                            UploadImagesToCloud();
+                    
+                    //List<int> NonGradableImagesStatusList = new List<int>();
+                    //List<int> QIProgressList = new List<int>();
+                    //List<int> QIFailedList = new List<int>();
+                    //for (int i = 0; i < currentReportImageFiles.Length; i++)
+                    //{
+                    //    FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
+                    //    eye_fundus_image eye = NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
+                    //    if (eye.qi_DR_AMD_Status == (int)QIStatus.NonGradable)
+                    //        NonGradableImagesStatusList.Add(eye.qi_DR_AMD_Status);
+                    //    if (eye.qi_DR_AMD_Status == (int)QIStatus.Failed)
+                    //        QIFailedList.Add(eye.qi_DR_AMD_Status);
+                    //    if (eye.qi_DR_AMD_Status == (int)QIStatus.Initialised || eye.qi_DR_AMD_Status == (int)QIStatus.Uploading || eye.qi_DR_AMD_Status == (int)QIStatus.Processing)
+                    //        QIProgressList.Add(eye.qi_DR_AMD_Status);
+                    //}
 
-                    }
-                    else if (NonGradableImagesStatusList.Any())// Selected Images contain some Non gradable Images
-                    {
-                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("SomeNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
-                        if (dialogResult == DialogResult.Yes)
-                            UploadImagesToCloud();
+                    //if (QIProgressList.Any()) // Selected Images contain QI Progess  
+                    //    CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("QIInProgressImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);
+                    //else if (NonGradableImagesStatusList.Count == currentReportImageFiles.Length)// Selected Images contain only Non gradable Images 
+                    //{
+                    //    DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("AllNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                    //    if (dialogResult == DialogResult.Yes)
+                    //        UploadImagesToCloud();
+                    //}
+                    //else if (NonGradableImagesStatusList.Any() && QIFailedList.Any()) // Selected Images contain both Non gradable and QI Failed 
+                    //{
+                    //    DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("QIFailedNNongradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                    //    if (dialogResult == DialogResult.Yes)
+                    //        UploadImagesToCloud();
 
-                    }
-                    else if (QIFailedList.Any())// Selected Images contain some QI Failed 
-                    {
-                        DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("QIFailedImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
-                        if (dialogResult == DialogResult.Yes)
-                            UploadImagesToCloud();
-                    }
-                    else
-                        UploadImagesToCloud();
+                    //}
+                    //else if (NonGradableImagesStatusList.Any())// Selected Images contain some Non gradable Images
+                    //{
+                    //    DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("SomeNonGradableImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                    //    if (dialogResult == DialogResult.Yes)
+                    //        UploadImagesToCloud();
+
+                    //}
+                    //else if (QIFailedList.Any())// Selected Images contain some QI Failed 
+                    //{
+                    //    DialogResult dialogResult = CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString("QIFailedImagesUpload_Text", IVLVariables.LangResourceCultureInfo), "Upload", CustomMessageBoxButtons.YesNo, CustomMessageBoxIcon.Information);
+                    //    if (dialogResult == DialogResult.Yes)
+                    //        UploadImagesToCloud();
+                    //}
+                    //else
+                    //    UploadImagesToCloud();
+                    #endregion
                 }
                 else
                     CustomMessageBoxPopUp(IVLVariables.LangResourceManager.GetString("No_Internet_Text", IVLVariables.LangResourceCultureInfo), IVLVariables.LangResourceManager.GetString("Internet_Connection_Status_Text", IVLVariables.LangResourceCultureInfo), CustomMessageBoxButtons.OK, CustomMessageBoxIcon.Information);

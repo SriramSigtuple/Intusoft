@@ -583,7 +583,7 @@ namespace INTUSOFT.Desktop.Forms
                            NewDataVariables.Patients[NewDataVariables.Patients.FindIndex(x => x.personId == NewDataVariables.Active_Patient)] = pat;
 
                           
-                            eyeFundusImage.qiFileName =  Push2QI(eyeFundusImage);
+                            //eyeFundusImage.qiFileName =  Push2QI(eyeFundusImage); disabling QI
                             NewIVLDataMethods.UpdatePatient();
                             NewDataVariables.Active_Obs = pat.visits.Where(x => x == NewDataVariables.Active_Visit).ToList()[0].observations.ToList()[0];
                             NewDataVariables.Visit_Obs.Add(eyeFundusImage);
