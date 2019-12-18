@@ -1,4 +1,5 @@
-﻿using INTUSOFT.Configuration.AdvanceSettings;
+﻿using INTUSOFT.Configuration.AdvancedSettings;
+using INTUSOFT.Configuration.AdvanceSettings;
 using System;
 using System.IO;
 using System.Xml;
@@ -111,6 +112,7 @@ namespace INTUSOFT.Configuration
        public ReportSettings ReportSettings;
        public PrinterPPSettings PrinterPPSettings;
        public MotorOffSetSettings MotorOffSetSettings;
+       public DoctorSettings DoctorSettings;
        public Settings()
        {
            UserSettings = new UserSettings();
@@ -127,7 +129,7 @@ namespace INTUSOFT.Configuration
            ReportSettings = new ReportSettings();
            PrinterPPSettings = new PrinterPPSettings();
            MotorOffSetSettings = new AdvanceSettings.MotorOffSetSettings();
-
+           DoctorSettings = new DoctorSettings();
        }
    }
    public class AnteriorSettings

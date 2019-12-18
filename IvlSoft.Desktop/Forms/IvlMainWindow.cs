@@ -30,6 +30,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using GainLevels = INTUSOFT.Imaging.GainLevels;
 using Intusoft.WPF.UserControls;
+using System.Reflection;
+
 namespace INTUSOFT.Desktop.Forms
 {
     public partial class IvlMainWindow : BaseGradientForm
@@ -590,10 +592,15 @@ namespace INTUSOFT.Desktop.Forms
             pendingCloudAnalysisReports = new List<CloudAnalysisReport>();
             pending_eye_fundus_images = new List<eye_fundus_image>();
 
+            var fieldInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
+            for (int i = 0; i < fieldInfos.Length; i++)
+            {
+
+            }
 
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
-           
+
             //reportListView.Parent = this.reportGridView_p;
         }
 
@@ -1424,6 +1431,8 @@ namespace INTUSOFT.Desktop.Forms
             //    this.Invoke(m_DelegateUpdateCloudValues, cloudAnalysisReports);
             //}
             //else
+            
+
             {
                 FileInfo[] fileInfos = new DirectoryInfo(IVLVariables.GetCloudDirPath(DirectoryEnum.InboxDir, AnalysisType.Fundus)).GetFiles("*.json");
 
@@ -3759,7 +3768,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.T))//To open the report template creator 
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN") )
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
                 {
                     if (p == null)
                     {
@@ -3909,14 +3918,14 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
                 {
                     settings_window();
                 }
             }
             else if (keyData == (Keys.Control | Keys.Alt | Keys.E))//Ctrl + Alt + e for invoking EEPROM settings UI which is editable
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
                 {
                     EEPROM.Settings_UCL.IsReadOnly = false;
                     EEPROM_Window eeprom = new EEPROM_Window();
@@ -3925,7 +3934,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.E))// Alt + e for invoking EEPROM settings UI which is read only
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
                 {
                     EEPROM.Settings_UCL.IsReadOnly = true;
 
