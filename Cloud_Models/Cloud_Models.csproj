@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Enums\CloudEnums.cs" />
     <Compile Include="MD5Helper.cs" />
+    <Compile Include="Models\MandaraModels\ApproveModel.cs" />
     <Compile Include="Models\MandaraModels\BaseCloudModel.cs" />
     <Compile Include="Models\MandaraModels\CreateAnalysisModel.cs" />
     <Compile Include="Models\MandaraModels\DirectoryPathModel.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Models\MandaraModels\CloudModel.cs" />
     <Compile Include="Models\MandaraModels\LoginModel.cs" />
     <Compile Include="Models\MandaraModels\LoginResponseModel.cs" />
+    <Compile Include="Models\MandaraModels\NotifyEmailModel.cs" />
     <Compile Include="Models\MandaraModels\UploadModel.cs" />
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\AnalysisFlowResponseModel.cs" />
