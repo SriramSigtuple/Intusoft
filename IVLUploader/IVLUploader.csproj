@@ -135,6 +135,7 @@
     <Compile Include="LoginHelper.cs" />
     <Compile Include="Commands\ShowSampleWindowCommand.cs" />
     <Compile Include="UploaderSettings.cs" />
+    <Compile Include="ViewModels\CloudVMs\AnalysisViewModel.cs" />
     <Compile Include="ViewModels\CloudVMs\GetAnalysisResultViewModel.cs" />
     <Compile Include="ViewModels\CloudVMs\GetStatusAnalysisViewModel.cs" />
     <Compile Include="ViewModels\CloudVMs\InitiateAnalysisViewModel.cs" />

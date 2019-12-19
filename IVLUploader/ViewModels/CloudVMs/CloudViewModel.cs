@@ -28,12 +28,13 @@ namespace IntuUploader.ViewModels
         public delegate void DelegateMove_WriteFile(AnalysisType analysisType);
         public event DelegateMove_WriteFile Write_R_Move_File_Event;
         CloudModel activeCloudModel;
-        LoginViewModel activeLoginViewModel;
-        CreateAnalysisViewModel activeCreateAnalysisViewModel;
-        UploadImagesViewModel activeUploadImagesViewModel;
-        InitiateAnalysisViewModel activeIntiateAnalysisViewModel;
-        GetStatusAnalysisViewModel activeGetStatusAnalysisViewModel;
-        GetAnalysisResultViewModel activeGetAnalysisResultViewModel;
+        AnalysisViewModel activeLoginViewModel;
+        AnalysisViewModel activeCreateAnalysisViewModel;
+        AnalysisViewModel activeUploadImagesViewModel;
+        AnalysisViewModel activeIntiateAnalysisViewModel;
+        AnalysisViewModel activeGetStatusAnalysisViewModel;
+        AnalysisViewModel activeGetAnalysisResultViewModel;
+        
         
         public delegate void  StartStopTimer(bool isStart);
         public event StartStopTimer startStopEvent;
@@ -73,12 +74,12 @@ namespace IntuUploader.ViewModels
 
             IsMove2NextDir = false;
             ActiveCloudModel = cloudModel;
-            ActiveLoginViewModel = new LoginViewModel(ActiveCloudModel.LoginModel);
-            ActiveCreateAnalysisViewModel = new CreateAnalysisViewModel(ActiveCloudModel.CreateAnalysisModel);
-            ActiveUploadImagesViewModel = new UploadImagesViewModel(ActiveCloudModel.UploadModel);
-            ActiveIntiateAnalysisViewModel = new InitiateAnalysisViewModel(ActiveCloudModel.InitiateAnalysisModel);
-            ActiveGetStatusAnalysisViewModel = new GetStatusAnalysisViewModel(ActiveCloudModel.GetAnalysisModel);
-            ActiveGetAnalysisResultViewModel = new GetAnalysisResultViewModel(ActiveCloudModel.GetAnalysisResultModel);
+            ActiveLoginViewModel = new AnalysisViewModel(ActiveCloudModel.LoginModel);
+            ActiveCreateAnalysisViewModel = new AnalysisViewModel(ActiveCloudModel.CreateAnalysisModel);
+            ActiveUploadImagesViewModel = new AnalysisViewModel(ActiveCloudModel.UploadModel);
+            ActiveIntiateAnalysisViewModel = new AnalysisViewModel(ActiveCloudModel.InitiateAnalysisModel);
+            ActiveGetStatusAnalysisViewModel = new AnalysisViewModel(ActiveCloudModel.GetAnalysisModel);
+            ActiveGetAnalysisResultViewModel = new AnalysisViewModel(ActiveCloudModel.GetAnalysisResultModel);
 
             //ActiveCloudModel.AnalysisFlowResponseModel = new AnalysisFlowResponseModel();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
@@ -97,7 +98,7 @@ namespace IntuUploader.ViewModels
                 }
         }
 
-        public LoginViewModel ActiveLoginViewModel { get => activeLoginViewModel;
+        public AnalysisViewModel ActiveLoginViewModel { get => activeLoginViewModel;
             set {
                 activeLoginViewModel = value;
                 OnPropertyChanged("ActiveLoginViewModel");
@@ -161,7 +162,7 @@ namespace IntuUploader.ViewModels
 
                 ActiveCloudModel.InitiateAnalysisModel.status = "initialised";
                 ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
-                ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateAnalysis(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse, Formatting.Indented));
                 logger.Info("Start Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode);
 
@@ -217,7 +218,7 @@ namespace IntuUploader.ViewModels
 
                 ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
                 ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
-                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = await ActiveGetStatusAnalysisViewModel.GetStatus(ActiveCloudModel.LoginCookie);
+                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = await ActiveGetStatusAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie);
 
                 logger.Info("Get Analysis status {0} {1}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode, ActiveFnf.Name);
 
@@ -308,8 +309,7 @@ namespace IntuUploader.ViewModels
             try
             {
                 logger.Info("Iam Login");
-                ActiveLoginViewModel.LoginModel.Body = string.Empty;
-                ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.StartLogin().Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.InitiateRestCall().Result;
                 logger.Info(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode.ToString() + " "+ ActiveFnf.Name);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, Formatting.Indented));
                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.OK)
@@ -374,7 +374,7 @@ namespace IntuUploader.ViewModels
 
                 }
                 ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
-                ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.StartCreateAnalysis(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
                 logger.Info("Create Analysis Result status {0}  {1}", ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode, ActiveFnf.Name);
 
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, Formatting.Indented));
@@ -447,13 +447,13 @@ namespace IntuUploader.ViewModels
 
                     for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
                     {
-                        response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
+                        response = ActiveUploadImagesViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, kvp).Result;
                         logger.Info(response.responseBody);
                         logger.Info(response.StatusCode);
                         logger.Info(response.Cookie);
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
-                            response = ActiveUploadImagesViewModel.StartUpload(ActiveCloudModel.LoginCookie, kvp).Result;
+                            response = ActiveUploadImagesViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, kvp).Result;
                         }
                         else
                         {
@@ -500,7 +500,7 @@ namespace IntuUploader.ViewModels
                 isValidLoginCookie();
                 logger.Info("Get Analysis Result");
                 ActiveCloudModel.GetAnalysisResultModel.Body = string.Empty;
-                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.GetAnalysisResult(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
                 logger.Info("Get Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
@@ -985,14 +985,14 @@ namespace IntuUploader.ViewModels
 
 
         }
-        public CreateAnalysisViewModel ActiveCreateAnalysisViewModel { get => activeCreateAnalysisViewModel;
+        public AnalysisViewModel ActiveCreateAnalysisViewModel { get => activeCreateAnalysisViewModel;
             set {
                 activeCreateAnalysisViewModel = value;
                 OnPropertyChanged("ActiveCreateAnalysisViewModel");
             }
         }
 
-        public UploadImagesViewModel ActiveUploadImagesViewModel
+        public AnalysisViewModel ActiveUploadImagesViewModel
         {
             get => activeUploadImagesViewModel;
             set {
@@ -1001,7 +1001,7 @@ namespace IntuUploader.ViewModels
             }
         }
 
-        public InitiateAnalysisViewModel ActiveIntiateAnalysisViewModel { get => activeIntiateAnalysisViewModel;
+        public AnalysisViewModel ActiveIntiateAnalysisViewModel { get => activeIntiateAnalysisViewModel;
             set
             {
                 activeIntiateAnalysisViewModel = value;
@@ -1009,7 +1009,7 @@ namespace IntuUploader.ViewModels
             }
         }
 
-        public GetStatusAnalysisViewModel ActiveGetStatusAnalysisViewModel
+        public AnalysisViewModel ActiveGetStatusAnalysisViewModel
         {
             get => activeGetStatusAnalysisViewModel;
             set
@@ -1019,7 +1019,7 @@ namespace IntuUploader.ViewModels
             }
         }
 
-        public GetAnalysisResultViewModel ActiveGetAnalysisResultViewModel
+        public AnalysisViewModel ActiveGetAnalysisResultViewModel
         {
             get => activeGetAnalysisResultViewModel;
             set
