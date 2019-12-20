@@ -2223,8 +2223,9 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.pageDisplayed = PageDisplayed.Emr;
             Image_btn.Enabled = false;
             emr.Show();
+            inboxTimer = new System.Threading.Timer(new TimerCallback(InboxAnalysisCheck), null, 0, (int)(Convert.ToDouble(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000));
 
-          
+
 
             #region this has to be implemented later when login screen has been added
             //loginScreen.Dock = DockStyle.Fill;
