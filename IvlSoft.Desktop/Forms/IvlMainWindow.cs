@@ -592,17 +592,22 @@ namespace INTUSOFT.Desktop.Forms
             pendingCloudAnalysisReports = new List<CloudAnalysisReport>();
             pending_eye_fundus_images = new List<eye_fundus_image>();
 
-            var fieldInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
-            for (int i = 0; i < fieldInfos.Length; i++)
-            {
-
-            }
+            SetDefaultDoctorId();
 
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
 
             //reportListView.Parent = this.reportGridView_p;
         }
+
+        private void SetDefaultDoctorId()
+        {
+            var propertyInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
+            var indx = Convert.ToInt32(IVLVariables.CurrentSettings.DoctorSettings.DefaultDoctor.val);
+            var info = propertyInfos[(indx * 3) - 1];
+            IVLVariables.defaultDoctorId = (info.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
+        }
+
 
         private void ExceptionLogWriter__exceptionOccuredEvent()
         {
