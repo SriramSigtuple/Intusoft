@@ -30,6 +30,10 @@ namespace Cloud_Models.Models
 
         public GetAnalysisResultModel GetAnalysisResultModel;
 
+        public ApproveModel DoctorApprovalModel;
+
+        public NotifyEmailModel NotifyEmailModel;
+
         public AnalysisFlowResponseModel AnalysisFlowResponseModel;
         public CloudModel()
         {
@@ -39,6 +43,9 @@ namespace Cloud_Models.Models
             InitiateAnalysisModel = new InitiateAnalysisModel();
             GetAnalysisModel = new GetAnalysisModel();
             GetAnalysisResultModel = new GetAnalysisResultModel();
+            DoctorApprovalModel = new ApproveModel();
+            NotifyEmailModel = new NotifyEmailModel();
+
             AnalysisFlowResponseModel = new AnalysisFlowResponseModel();
         }
     }

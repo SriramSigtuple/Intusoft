@@ -3438,6 +3438,10 @@ namespace INTUSOFT.Desktop.Forms
 
                 cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
+                cloudModel.DoctorApprovalModel.reviewerId = "5a812dcf88c04f50dbbc8940";
+                cloudModel.DoctorApprovalModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+
+
                 var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
                 var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
                 File.WriteAllText(outboxFilePath, cloudModelJson);

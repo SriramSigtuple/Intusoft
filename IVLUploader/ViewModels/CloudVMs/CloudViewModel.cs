@@ -80,7 +80,10 @@ namespace IntuUploader.ViewModels
             ActiveIntiateAnalysisViewModel = new AnalysisViewModel(ActiveCloudModel.InitiateAnalysisModel);
             ActiveGetStatusAnalysisViewModel = new AnalysisViewModel(ActiveCloudModel.GetAnalysisModel);
             ActiveGetAnalysisResultViewModel = new AnalysisViewModel(ActiveCloudModel.GetAnalysisResultModel);
+            ActiveApproveDoctorViewmodel = new AnalysisViewModel(ActiveCloudModel.DoctorApprovalModel);
+            ActiveNotifyEmailViewModel = new AnalysisViewModel(ActiveCloudModel.NotifyEmailModel);
 
+            //ac = new AnalysisViewModel(ActiveCloudModel.DoctorApprovalModel);
             //ActiveCloudModel.AnalysisFlowResponseModel = new AnalysisFlowResponseModel();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
             
@@ -108,21 +111,25 @@ namespace IntuUploader.ViewModels
         public void StartAnalsysisFlow()
         {
             if(GlobalVariables.isInternetPresent)
-            { 
+            {
 
-            if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now )
-                 Login();
-            else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
-                CreateAnalysis();
-            else if (!ActiveCloudModel.UploadModel.CompletedStatus)
-                UploadFiles2Analysis();
-            else if (!ActiveCloudModel.InitiateAnalysisModel.CompletedStatus)
-                StartAnalysis();
-            else if (!ActiveCloudModel.GetAnalysisModel.CompletedStatus)
-                GetAnalysisStatus();
-            else if (!ActiveCloudModel.GetAnalysisResultModel.CompletedStatus)
-                GetAnalysisResult();
-            else
+                if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
+                    Login();
+                else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
+                    CreateAnalysis();
+                else if (!ActiveCloudModel.UploadModel.CompletedStatus)
+                    UploadFiles2Analysis();
+                else if (!ActiveCloudModel.InitiateAnalysisModel.CompletedStatus)
+                    StartAnalysis();
+                else if (!ActiveCloudModel.GetAnalysisModel.CompletedStatus)
+                    GetAnalysisStatus();
+                else if (!ActiveCloudModel.DoctorApprovalModel.CompletedStatus)
+                    GetDoctorApproval();
+                else if (!ActiveCloudModel.NotifyEmailModel.CompletedStatus)
+                    NotifyEmail2Doctor();
+                else if (!ActiveCloudModel.GetAnalysisResultModel.CompletedStatus)
+                    GetAnalysisResult();
+                else
                 {
                     //MoveFile2ProcessedDir();
                     IsMove2NextDir = true;
@@ -162,7 +169,7 @@ namespace IntuUploader.ViewModels
 
                 ActiveCloudModel.InitiateAnalysisModel.status = "initialised";
                 ActiveCloudModel.InitiateAnalysisModel.Body = JsonConvert.SerializeObject(ActiveCloudModel.InitiateAnalysisModel);
-                ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse = ActiveIntiateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie,new Dictionary<string, object>()).Result;
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse, Formatting.Indented));
                 logger.Info("Start Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.InitiateAnalysisResponse.StatusCode);
 
@@ -205,6 +212,50 @@ namespace IntuUploader.ViewModels
 
 
         /// <summary>
+        /// Initiate Doctor Approval
+        /// </summary>
+        private void GetDoctorApproval()
+        {
+            logger.Info("Start Doctor Approval");
+            ActiveCloudModel.DoctorApprovalModel.analysisId = ActiveCloudModel.UploadModel.analysis_id;
+            ActiveCloudModel.AnalysisFlowResponseModel.GetDoctorApprovalResponse = ActiveApproveDoctorViewmodel.InitiateRestCall(ActiveCloudModel.LoginCookie,new Dictionary<string, object>()).Result;
+            logger.Info(ActiveCloudModel.AnalysisFlowResponseModel.GetDoctorApprovalResponse.StatusCode.ToString() + " " + ActiveFnf.Name);
+            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetDoctorApprovalResponse, Formatting.Indented));
+            if(ActiveCloudModel.AnalysisFlowResponseModel.GetDoctorApprovalResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+
+            }
+        }
+
+        private void NotifyEmail2Doctor()
+        {
+            logger.Info("Notify Email to Doctor");
+            JObject Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.responseBody);
+            List<JToken> products = Login_JObject["message"]["products"].ToList();
+            var sub_ctgy = string.Empty;
+            foreach (var item in products)
+            {
+                if (item["sub_ctgy"].ToString().ToLower().Contains(AnalysisType.ToString("g").ToLower()))
+                    sub_ctgy = item["sub_ctgy"].ToString().ToLower();
+            }
+
+            Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
+            
+            ActiveCloudModel.NotifyEmailModel.URL_Model.API_URL_End_Point = $"product={ActiveCloudModel.CreateAnalysisModel.product_id}&puid={Login_JObject["puid"].ToString()}&sample_id={ActiveCloudModel.CreateAnalysisModel.sample_id}&analysisId={ActiveCloudModel.UploadModel.analysis_id}&" +
+                $"recipients={ActiveCloudModel.DoctorApprovalModel.reviewerId}&assign=type&sub_ctgy={sub_ctgy}";
+
+
+            ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse = ActiveNotifyEmailViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie,new Dictionary<string, object>()).Result;
+            logger.Info(ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse.StatusCode.ToString() + " " + ActiveFnf.Name);
+            logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse, Formatting.Indented));
+            if (ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+
+            }
+
+        }
+
+        /// <summary>
         /// To read and update the analysis status.
         /// </summary>
         private async void GetAnalysisStatus()
@@ -218,7 +269,7 @@ namespace IntuUploader.ViewModels
 
                 ActiveCloudModel.GetAnalysisModel.analysis_id = ActiveCloudModel.InitiateAnalysisModel.id;
                 ActiveCloudModel.GetAnalysisModel.URL_Model.API_URL_End_Point = ActiveCloudModel.GetAnalysisModel.analysis_id;
-                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = await ActiveGetStatusAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie);
+                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse = await ActiveGetStatusAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, new Dictionary<string, object>());
 
                 logger.Info("Get Analysis status {0} {1}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.StatusCode, ActiveFnf.Name);
 
@@ -309,7 +360,7 @@ namespace IntuUploader.ViewModels
             try
             {
                 logger.Info("Iam Login");
-                ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.InitiateRestCall().Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse = ActiveLoginViewModel.InitiateRestCall(new System.Net.Cookie(),new Dictionary<string, object>()).Result;
                 logger.Info(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode.ToString() + " "+ ActiveFnf.Name);
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, Formatting.Indented));
                 if (ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.StatusCode == System.Net.HttpStatusCode.OK)
@@ -374,7 +425,7 @@ namespace IntuUploader.ViewModels
 
                 }
                 ActiveCloudModel.CreateAnalysisModel.Body = string.Empty;
-                ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse = ActiveCreateAnalysisViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie,new Dictionary<string, object>()).Result;
                 logger.Info("Create Analysis Result status {0}  {1}", ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode, ActiveFnf.Name);
 
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse, Formatting.Indented));
@@ -500,7 +551,7 @@ namespace IntuUploader.ViewModels
                 isValidLoginCookie();
                 logger.Info("Get Analysis Result");
                 ActiveCloudModel.GetAnalysisResultModel.Body = string.Empty;
-                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie).Result;
+                ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse = ActiveGetAnalysisResultViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie,new Dictionary<string, object>()).Result;
                 logger.Info("Get Analysis Result status {0}", ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse.StatusCode);
 
                 logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisResultResponse, Formatting.Indented));
@@ -1001,6 +1052,19 @@ namespace IntuUploader.ViewModels
             }
         }
 
+        private AnalysisViewModel activeNotifyEmailViewModel;
+
+        public AnalysisViewModel ActiveNotifyEmailViewModel
+        {
+            get { return activeNotifyEmailViewModel; }
+            set
+            {
+                activeNotifyEmailViewModel = value;
+                OnPropertyChanged("ActiveNotifyEmailViewModel");
+            }
+        }
+
+
         public AnalysisViewModel ActiveIntiateAnalysisViewModel { get => activeIntiateAnalysisViewModel;
             set
             {
@@ -1029,6 +1093,22 @@ namespace IntuUploader.ViewModels
 
             }
         }
+
+        private AnalysisViewModel activeApproveDoctorViewmodel;
+
+        public AnalysisViewModel ActiveApproveDoctorViewmodel
+        {
+            get
+            {
+                return activeApproveDoctorViewmodel;
+            }
+            set
+            {
+                activeApproveDoctorViewmodel = value;
+                OnPropertyChanged("ActiveApproveDoctorViewmodel");
+            }
+        }
+
         private AnalysisType analysisType;
 
         public AnalysisType AnalysisType

@@ -5,17 +5,19 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloud_Models.Models.MandaraModels
+namespace Cloud_Models.Models
 {
     public class ApproveModel: BaseCloudModel
     {
-        public string analysis_id = string.Empty;
-        public string reviewer_id = string.Empty;
-        public string reviewer_status = "Pending";
-        public string review_string = "review";
+        public string analysisId = string.Empty;
+        public string reviewerId = string.Empty;
+        public string reviewerStatus = "Pending";
+       
         public ApproveModel()
         {
             MethodType = HttpMethod.Post;
+            URL_Model.API_URL_Start_Point = "analyses";
+            URL_Model.API_URL_End_Point = "review";
         }
     }
 }

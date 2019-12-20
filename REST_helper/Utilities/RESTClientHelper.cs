@@ -39,8 +39,11 @@ namespace REST_Helper.Utilities
                 System.Net.ServicePointManager.Expect100Continue = false;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 CookieContainer cookies = new CookieContainer();
-                if (!string.IsNullOrEmpty(cookie.Value))
-                cookies.Add(cookie);
+                if (cookie != null)
+                {
+                    if (!string.IsNullOrEmpty(cookie.Value))
+                        cookies.Add(cookie);
+                }
                 HttpClientHandler handler = new HttpClientHandler();
                 handler.CookieContainer = cookies;
 
@@ -62,7 +65,16 @@ namespace REST_Helper.Utilities
                     }
 
                 };
-                client.BaseAddress = httpRequestMessage.RequestUri;
+                try
+                {
+                    client.BaseAddress = httpRequestMessage.RequestUri;
+
+                }
+                catch (Exception excp)
+                {
+
+                    throw;
+                }
                 //reference https://social.msdn.microsoft.com/Forums/en-US/f553e3fb-9007-42e9-8289-9bf0e52c0e07/set-content-type-in-httpclienthttprequestmessage-throws-exception?forum=winappswithcsharp
                     httpRequestMessage.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(model.ContentType);
                 if(keyValuePairs.ContainsKey("checksum"))

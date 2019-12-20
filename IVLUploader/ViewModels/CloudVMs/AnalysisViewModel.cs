@@ -38,7 +38,7 @@ namespace IntuUploader.ViewModels
         }
 
 
-        public async Task<Response_CookieModel> InitiateRestCall(Cookie cookie = null, System.Collections.Generic.Dictionary<string, object> dic = null)
+        public async Task<Response_CookieModel> InitiateRestCall(Cookie cookie, System.Collections.Generic.Dictionary<string, object> dic)
         {
             
 
