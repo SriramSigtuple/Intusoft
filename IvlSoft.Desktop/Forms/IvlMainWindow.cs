@@ -2206,6 +2206,7 @@ namespace INTUSOFT.Desktop.Forms
             Image_btn.Enabled = false;
             emr.Show();
 
+          
 
             #region this has to be implemented later when login screen has been added
             //loginScreen.Dock = DockStyle.Fill;
