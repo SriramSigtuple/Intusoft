@@ -115,6 +115,7 @@ namespace INTUSOFT.EventHandler
         public string RefreshThumbnails = "RefreshThumbnails";
         public string ReportGridDoubleClick = "ReportGridDoubleClick";
         public string UpdateQIInfo = "UpdateQIInfo";
+        public string TurnOnOffInboxTimer = "TurnOnOffInboxTimer";
         // Alignment 
         public IVLEventHandler()
         {

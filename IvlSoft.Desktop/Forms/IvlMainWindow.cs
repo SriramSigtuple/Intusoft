@@ -206,6 +206,7 @@ namespace INTUSOFT.Desktop.Forms
             _eventHandler.Register(_eventHandler.UpdateCaptureRLiveUI, new NotificationHandler(updateCaptureRLiveUI));
             _eventHandler.Register(_eventHandler.GoToViewScreen, new NotificationHandler(GoToViewScreen));
             _eventHandler.Register(_eventHandler.EnableDisableEmrButton, new NotificationHandler(EnableDisableEmrButton));
+            _eventHandler.Register(_eventHandler.TurnOnOffInboxTimer, new NotificationHandler(TurnOnOffInboxTimer));
 
             mShowCameraDelegate = new ShowCameraDelegate(ShowCameraConnection);
             mShowPowerDelegate = new ShowPowerDelegate(ShowPowerConnection);
@@ -1756,6 +1757,18 @@ namespace INTUSOFT.Desktop.Forms
             }
 
         }
+
+
+        void TurnOnOffInboxTimer(string enableDisableEmrButton, Args arg)
+        {
+            if ((bool)arg["isTurnOffTimer"])
+                    inboxTimer.Change(-1, -1);
+            else
+                inboxTimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+        }
+
+
+
 
         /// <summary>
         /// To check the mysql server status and database connection status

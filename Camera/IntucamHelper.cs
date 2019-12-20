@@ -1734,6 +1734,8 @@ namespace INTUSOFT.Imaging
                     //}
                 }));
                     returnVal = ivl_Camera.StartLiveMode();
+                    arg["isTurnOffTimer"] = returnVal;
+                    IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.TurnOnOffInboxTimer, arg);
                 }
                 else
                 {
@@ -1744,8 +1746,11 @@ namespace INTUSOFT.Imaging
                     //    IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.EnableDisableEmrButton, arg);
                     //}
                     if (IVLCamVariables._eventHandler.isHandlerPresent(IVLCamVariables._eventHandler.GoToViewScreen))
-
-                    IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.GoToViewScreen, arg);
+                    {
+                        IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.GoToViewScreen, arg);
+                        arg["isTurnOffTimer"] = false;
+                        IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.TurnOnOffInboxTimer, arg);
+                    }
 
                 }
             }
@@ -1835,6 +1840,8 @@ namespace INTUSOFT.Imaging
                         returnVal = ivl_Camera.StopLiveMode();
                         FrameRateTimer.Stop();
                         FrameRateTimer.Enabled = false;
+                        arg["isTurnOffTimer"] = false;
+                        IVLCamVariables._eventHandler.Notify(IVLCamVariables._eventHandler.TurnOnOffInboxTimer, arg);
 
                     }
 
