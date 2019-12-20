@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cloud_Models.Models.MandaraModels
+namespace Cloud_Models.Models
 {
     public class DoctorCommentsModel: BaseCloudModel
     {
