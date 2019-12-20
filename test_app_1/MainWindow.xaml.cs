@@ -25,6 +25,11 @@ namespace test_app_1
         {
             InitializeComponent();
             DoctorListVM doctorListVM = new DoctorListVM();
+            doctorListVM.Doctors.Add("Kishore");
+            doctorListVM.Doctors.Add("Sriram");
+            doctorListVM.Doctors.Add("Hari");
+            doctorListVM.Doctors.Add("Anil");
+            doctorListVM.SelectedDoctor = 2;
             DoctorWindowView doctorWindowView = new DoctorWindowView(doctorListVM);
             var returnVal = doctorWindowView.ShowDialog();
 

@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INTUSOFT.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IVLConfiguration\bin\Debug\INTUSOFT.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Intusoft.WPF.UserControls">
       <HintPath>..\WPF_UserControlLibrary\bin\Debug\Intusoft.WPF.UserControls.dll</HintPath>
     </Reference>

@@ -14,6 +14,7 @@ namespace Intusoft.WPF.UserControls
     {
         public DoctorListVM()
         {
+            Doctors = new BindingList<string>();
             OkCommand = new RelayCommand(okbuttonclick);
             CancelCommand = new RelayCommand(cancel_button_click);
         }
