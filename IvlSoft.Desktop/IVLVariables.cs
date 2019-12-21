@@ -45,6 +45,7 @@ namespace INTUSOFT.Desktop
         public static bool isInternetConnected = false;
         public static PageDisplayed pageDisplayed = PageDisplayed.Login;
         public static string defaultDoctorId ;
+        public static string[] defaultDoctorDetails = new string[3];
         //public static ReportListVM ReportListVM;
 
         public static Settings CurrentSettings

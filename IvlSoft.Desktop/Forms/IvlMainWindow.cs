@@ -606,7 +606,23 @@ namespace INTUSOFT.Desktop.Forms
             var propertyInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
             var indx = Convert.ToInt32(IVLVariables.CurrentSettings.DoctorSettings.DefaultDoctor.val);
             var info = propertyInfos[(indx * 3) - 1];
+            var doctorInfo = propertyInfos[(indx * 3) - 3];
+            var doctorName = (doctorInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
             IVLVariables.defaultDoctorId = (info.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
+            if (!string.IsNullOrEmpty(doctorName))
+            {
+                //
+                    var doctorDetailsArr = (doctorName).Split(';');
+                for (int i = 0; i < doctorDetailsArr.Length; i++)
+                {
+                    if (i < IVLVariables.defaultDoctorDetails.Length)
+                    {
+                        IVLVariables.defaultDoctorDetails[i] = doctorDetailsArr[i];
+                    }
+                    else
+                        break;
+                }
+            }
         }
 
 
