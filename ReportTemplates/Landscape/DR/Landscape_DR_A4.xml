@@ -1172,7 +1172,7 @@
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>768</_X>
+        <_X>803</_X>
         <_Y>667</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -1366,6 +1366,76 @@
       <YMarginDecrementValue>-4</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>280</Width>
+        <Height>16</Height>
+      </Size>
+      <Binding>SpecalistQualification</Binding>
+      <Location>
+        <_X>487</_X>
+        <_Y>692</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$SpecalistQualification</Text>
+      <Name>Label41</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>MiddleLeft</TextAlign>
+      <NumberOfImages>1</NumberOfImages>
+    </reportControlProperty>
+  </ReportControlsStructure>
+  <ReportControlsStructure>
+    <reportControlProperty>
+      <Font>
+        <FontColor>ControlText</FontColor>
+        <FontFamily>Times New Roman</FontFamily>
+        <FontStyle>Regular</FontStyle>
+        <FontSize>9</FontSize>
+      </Font>
+      <Size>
+        <Width>290</Width>
+        <Height>16</Height>
+      </Size>
+      <Binding>SpecalistHospital</Binding>
+      <Location>
+        <_X>803</_X>
+        <_Y>692</_Y>
+      </Location>
+      <MultiLine>false</MultiLine>
+      <Border>false</Border>
+      <Type>Label</Type>
+      <RowsColumns>
+        <Rows>1</Rows>
+        <Columns>1</Columns>
+        <_Rows>1</_Rows>
+        <_Columns>1</_Columns>
+      </RowsColumns>
+      <Text>$SpecalistHospital</Text>
+      <Name>Label42</Name>
+      <MarginDecrementValue>0</MarginDecrementValue>
+      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <ImageMedicalName>true</ImageMedicalName>
+      <TextAlign>MiddleLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
     </reportControlProperty>
   </ReportControlsStructure>
