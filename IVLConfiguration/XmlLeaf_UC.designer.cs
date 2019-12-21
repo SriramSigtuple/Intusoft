@@ -57,9 +57,9 @@
             // panel1
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(209, 0);
+            this.panel1.Location = new System.Drawing.Point(204, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(314, 23);
+            this.panel1.Size = new System.Drawing.Size(485, 23);
             this.panel1.TabIndex = 1;
             // 
             // panel2
@@ -85,7 +85,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "XmlLeaf_UC";
-            this.Size = new System.Drawing.Size(523, 23);
+            this.Size = new System.Drawing.Size(689, 23);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 

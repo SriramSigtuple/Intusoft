@@ -245,7 +245,7 @@ namespace INTUSOFT.Configuration.AdvancedSettings
             Doctor_1_name.type = "string";
             Doctor_1_name.control = "System.Windows.Forms.TextBox";
             Doctor_1_name.text = "Doctor1 Name";
-            Doctor_1_name.length = 20000;
+            Doctor_1_name.length = 200;
 
             Doctor_1_email = new IVLControlProperties();
             Doctor_1_email.name = "doctor_1_email";

@@ -54,11 +54,21 @@ namespace INTUSOFT.Configuration
                         label1.ForeColor = Color.OrangeRed;
                         foreach (char letter in label1.Text)
                         {
+                            
                             if (Char.IsUpper(letter) && output.Length > 0)
                                 output += " " + letter;
                             else
                                 output += letter;
                             label1.Text = output;
+                            
+                        }
+                        if (label1.Text.ToLower().Contains("doctor settings"))
+                        {
+                            label2.Text = "Name Format : Doctor's Name; Qualification 1, Qualification 2,etc; Hospital Name";
+                            label2.Parent = panel1;
+                            label2.Dock = DockStyle.Left;
+                            label2.Font = new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.SansSerif), 8, FontStyle.Bold);
+                            label2.ForeColor = Color.DarkBlue;
                         }
                         break;
                     case 3:
