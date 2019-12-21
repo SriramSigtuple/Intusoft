@@ -3443,10 +3443,19 @@ namespace INTUSOFT.Desktop.Forms
 
                 cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
-                cloudModel.DoctorApprovalModel.reviewerId = "5a812dcf88c04f50dbbc8940";
+                cloudModel.DoctorApprovalModel.reviewerId = IVLVariables.defaultDoctorId;
                 cloudModel.DoctorApprovalModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
+                cloudModel.DoctorApprovalModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+
+                cloudModel.DoctorCommentsModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+
+                cloudModel.GetAnalysisPostDoctorApproval.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
+                cloudModel.GetAnalysisPostDoctorApproval.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val; ;
+
+                cloudModel.NotifyEmailModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
 
+                cloudModel.GetAnalysisPostDoctorApproval.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
                 var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
                 var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
                 File.WriteAllText(outboxFilePath, cloudModelJson);

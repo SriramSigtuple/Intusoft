@@ -3127,7 +3127,98 @@ namespace INTUSOFT.Desktop.Forms
         
             }
         }
-        private void CreateCloudReport(Cloud_Models.Models.InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        //private void CreateCloudReport(Cloud_Models.Models.InboxAnalysisStatusModel inboxAnalysisStatusModel)
+        //{
+        //    Dictionary<string, object> reportDic = new Dictionary<string, object>();
+
+        //    if (reportDic.ContainsKey("$NameOfTheReport"))//checks if key $NameOfTheReport is present .By Ashutosh 17-08-2017
+        //        reportDic["$NameOfTheReport"] = IVLVariables.CurrentSettings.ReportSettings.FundusReportText.val.ToString();// if present then it's value is replaced.By Ashutosh 17-08-2017
+        //    else
+        //        reportDic.Add("$NameOfTheReport", IVLVariables.CurrentSettings.ReportSettings.FundusReportText.val.ToString());// if not present then key and value are added.By Ashutosh 17-08-2017
+
+        //    Patient p = NewDataVariables._Repo.GetById<Patient>(inboxAnalysisStatusModel.patientID);
+        //    patient_identifier patIdentifier = NewDataVariables._Repo.GetByCategory<patient_identifier>("patient", p).ToList()[0];
+        //        //NewDataVariables.Identifier.Find(x => x.patient.personId == p.personId);
+
+        //    reportDic.Add("$Name", p.firstName + " " + p.lastName);
+        //    reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
+        //    reportDic.Add("$MRN", patIdentifier.value);
+        //    reportDic.Add("$Gender", p.gender);
+        //    visit visit = NewDataVariables._Repo.GetById<visit>(inboxAnalysisStatusModel.visitID);
+        //    List<string> currentReportImageFiles =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.value).ToList();
+        //    List<string> maskSettings =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.maskSetting).ToList();
+        //    List<string>actualMaskSettings = new List<string>();
+        //    List<string>actualImageFiles = new List<string>();
+        //    List<string>actualImageNames = new List<string>();
+        //    List<string> ImageNames = inboxAnalysisStatusModel.LeftEyeDetails.Select(x => x.ImageName).ToList();
+        //    ImageNames.AddRange(inboxAnalysisStatusModel.RightEyeDetails.Select(x => x.ImageName).ToList());
+        //    List<string> leftEyeImages =  new List<string>();
+        //    List<string> rightEyeImages = new List<string>();
+        //    for (int i = 0; i < ImageNames.Count; i++)
+        //    {
+        //        foreach (var item in currentReportImageFiles)
+        //        {
+
+        //            if (ImageNames[i].Contains(item.Split('.')[0]))
+        //            {
+        //                var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+        //                if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
+        //                {
+        //                    leftEyeImages.Add(imageFilePath);
+        //                    actualImageNames.Add("OS 1");
+        //                    actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+        //                    actualMaskSettings.Add(maskSettings[i]);
+        //                }
+        //                else if(ImageNames[i].Contains("-RE-") &&  !rightEyeImages.Any())
+        //                {
+        //                    rightEyeImages.Add(imageFilePath);
+        //                    actualImageNames.Add("OD 1");
+        //                    actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+        //                    actualMaskSettings.Add(maskSettings[i]);
+
+        //                }
+                      
+        //            }
+        //        }
+                
+        //    }
+
+        //    reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
+        //    string[] reportTemplates = new string[] { @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page1.xml", @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page2.xml" };
+        //    reportDic.Add("$currentTemplate", reportTemplates);
+
+        //    //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
+        //    reportDic["$visitImages"] = actualImageFiles.ToArray();
+        //    reportDic.Add("$CurrentImageFiles", actualImageFiles.ToArray());
+        //    reportDic.Add("$ImageNames", actualImageNames.ToArray());
+        //    reportDic.Add("$RightEyeImpressionDR", $"{inboxAnalysisStatusModel.RightAIImpressionsDR}");
+        //    reportDic.Add("$RightEyeImpressionAMD", $"{inboxAnalysisStatusModel.RightAIImpressionsAMD}");
+        //    reportDic.Add("$RightEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.RightAIImpressionsGlaucoma}");
+        //    reportDic.Add("$LeftEyeImpressionDR", $"{inboxAnalysisStatusModel.LeftAIImpressionsDR}");
+        //    reportDic.Add("$LeftEyeImpressionAMD", $"{inboxAnalysisStatusModel.LeftAIImpressionsAMD}");
+        //    reportDic.Add("$LeftEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma}");
+        //    reportDic.Add("$LeftEyeImages",leftEyeImages);
+        //    reportDic.Add("$RightEyeImages",rightEyeImages);
+        //    reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
+        //    reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri.ToString());
+        //    IVLReport.Report reportObj = new IVLReport.Report(reportDic);
+        //    foreach (var item in reportTemplates)
+        //    {
+        //        reportObj.parseXmlData(item);
+        //        reportObj.SetTheValuesFormReportData();
+        //    }
+           
+        //    Dictionary<string,object> keyValuePairs=  reportObj.createReport();
+        //    report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
+        //    r.dataJson = (string) keyValuePairs["xml"];
+        //    NewDataVariables._Repo.Update<report>(r);
+
+        //}
+
+
+        // added by sriram on 4th august 2015 in order to manage the problem of minimizing and maximizing of the application not responding properly in order to fix defect 0000361
+
+              private void CreateCloudReport(Cloud_Models.Models.InboxAnalysisStatusModel inboxAnalysisStatusModel)
         {
             Dictionary<string, object> reportDic = new Dictionary<string, object>();
 
@@ -3152,8 +3243,58 @@ namespace INTUSOFT.Desktop.Forms
             List<string>actualImageNames = new List<string>();
             List<string> ImageNames = inboxAnalysisStatusModel.LeftEyeDetails.Select(x => x.ImageName).ToList();
             ImageNames.AddRange(inboxAnalysisStatusModel.RightEyeDetails.Select(x => x.ImageName).ToList());
+            List<Cloud_Models.Models.ImageAnalysisResultModel> leftModel = inboxAnalysisStatusModel.LeftEyeDetails.Where(x => x.ShowInSummary == true).ToList();
+            List<Cloud_Models.Models.ImageAnalysisResultModel> rightModel = inboxAnalysisStatusModel.RightEyeDetails.Where(x => x.ShowInSummary == true).ToList();
             List<string> leftEyeImages =  new List<string>();
             List<string> rightEyeImages = new List<string>();
+            if (leftModel.Any())
+            {
+                var count = 0;
+
+                foreach (var item in currentReportImageFiles)
+                {
+
+                    if (leftModel[0].ImageName.Contains(item.Split('.')[0]))
+                    {
+                        var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+
+                        if (leftModel[0].ImageName.Contains("-LE-") && !leftEyeImages.Any())
+                        {
+
+                            leftEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OS 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[count]);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (rightModel.Any())
+            {
+                var count = 0;
+                foreach (var item in currentReportImageFiles)
+                {
+
+                    if (rightModel[0].ImageName.Contains(item.Split('.')[0]))
+                    {
+                        var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
+
+                        if (rightModel[0].ImageName.Contains("-RE-") && !leftEyeImages.Any())
+                        {
+
+                            leftEyeImages.Add(imageFilePath);
+                            actualImageNames.Add("OD 1");
+                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                            actualMaskSettings.Add(maskSettings[count]);
+                        }
+                        break;
+                    }
+                    count++;
+                }
+            }
+
             for (int i = 0; i < ImageNames.Count; i++)
             {
                 foreach (var item in currentReportImageFiles)
@@ -3162,20 +3303,28 @@ namespace INTUSOFT.Desktop.Forms
                     if (ImageNames[i].Contains(item.Split('.')[0]))
                     {
                         var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
-                        if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
-                        {
-                            leftEyeImages.Add(imageFilePath);
-                            actualImageNames.Add("OS 1");
-                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
-                            actualMaskSettings.Add(maskSettings[i]);
-                        }
-                        else if(ImageNames[i].Contains("-RE-") &&  !rightEyeImages.Any())
-                        {
-                            rightEyeImages.Add(imageFilePath);
-                            actualImageNames.Add("OD 1");
-                            actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
-                            actualMaskSettings.Add(maskSettings[i]);
 
+                        if (!leftEyeImages.Any())
+                        {
+                            if (ImageNames[i].Contains("-LE-") && !leftEyeImages.Any())
+                            {
+
+                                leftEyeImages.Add(imageFilePath);
+                                actualImageNames.Add("OS 1");
+                                actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                                actualMaskSettings.Add(maskSettings[i]);
+                            }
+                        }
+                        if (!rightEyeImages.Any())
+                        {
+                            if (ImageNames[i].Contains("-RE-") && !rightEyeImages.Any())
+                            {
+                                rightEyeImages.Add(imageFilePath);
+                                actualImageNames.Add("OD 1");
+                                actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
+                                actualMaskSettings.Add(maskSettings[i]);
+
+                            }
                         }
                       
                     }
@@ -3184,30 +3333,25 @@ namespace INTUSOFT.Desktop.Forms
             }
 
             reportDic.Add("$MaskSettings", actualMaskSettings.ToArray());
-            string[] reportTemplates = new string[] { @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page1.xml", @"ReportTemplates\Portrait\DR\Portrait_DR_A4_page2.xml" };
-            reportDic.Add("$currentTemplate", reportTemplates);
+
+            reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
 
             //reportDic.Add("$currentTemplate", @"D:\Portrait_A4.xml");
             reportDic["$visitImages"] = actualImageFiles.ToArray();
             reportDic.Add("$CurrentImageFiles", actualImageFiles.ToArray());
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
-            reportDic.Add("$RightEyeImpressionDR", $"{inboxAnalysisStatusModel.RightAIImpressionsDR}");
-            reportDic.Add("$RightEyeImpressionAMD", $"{inboxAnalysisStatusModel.RightAIImpressionsAMD}");
-            reportDic.Add("$RightEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.RightAIImpressionsGlaucoma}");
-            reportDic.Add("$LeftEyeImpressionDR", $"{inboxAnalysisStatusModel.LeftAIImpressionsDR}");
-            reportDic.Add("$LeftEyeImpressionAMD", $"{inboxAnalysisStatusModel.LeftAIImpressionsAMD}");
-            reportDic.Add("$LeftEyeImpressionGlaucoma", $"{inboxAnalysisStatusModel.LeftAIImpressionsGlaucoma}");
+            reportDic.Add("$RightEyeObs", inboxAnalysisStatusModel.RightAIImpressionsDR);
+            reportDic.Add("$LeftEyeObs", inboxAnalysisStatusModel.LeftAIImpressionsDR);
+            //reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressionsDR);
+            //reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressionsDR);
             reportDic.Add("$LeftEyeImages",leftEyeImages);
             reportDic.Add("$RightEyeImages",rightEyeImages);
             reportDic.Add("$ReportURL", inboxAnalysisStatusModel.ReportUri.ToString());
             reportDic.Add("$QRCode", inboxAnalysisStatusModel.ReportUri.ToString());
             IVLReport.Report reportObj = new IVLReport.Report(reportDic);
-            foreach (var item in reportTemplates)
-            {
-                reportObj.parseXmlData(item);
-                reportObj.SetTheValuesFormReportData();
-            }
-           
+            reportObj.parseXmlData(reportDic["$currentTemplate"] as string);
+            reportObj.SetTheValuesFormReportData();
+
             Dictionary<string,object> keyValuePairs=  reportObj.createReport();
             report r = NewDataVariables._Repo.GetById<report>(inboxAnalysisStatusModel.reportID);
             r.dataJson = (string) keyValuePairs["xml"];
@@ -3215,8 +3359,6 @@ namespace INTUSOFT.Desktop.Forms
 
         }
 
-
-        // added by sriram on 4th august 2015 in order to manage the problem of minimizing and maximizing of the application not responding properly in order to fix defect 0000361
         /// <summary>
         /// This event will trigger when application is maximized or minimized.
         /// </summary>

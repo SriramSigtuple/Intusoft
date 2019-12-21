@@ -263,7 +263,7 @@ namespace IntuUploader.ViewModels
                     activeFileCloudVM.ActiveFnf = fileInfo;
 
 
-                    activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalysisFlow();
                     var filePath = string.Empty;
 
                     if (activeFileCloudVM.IsMove2NextDir)
@@ -275,11 +275,12 @@ namespace IntuUploader.ViewModels
 
                     using (StreamWriter st = new StreamWriter(filePath))
                     {
+                        File.Delete(activeFileCloudVM.ActiveFnf.FullName);
+
                         st.Write( JsonConvert.SerializeObject(activeFileCloudVM.ActiveCloudModel, Formatting.Indented));
                         st.Flush();
                         st.Close();
                         st.Dispose();
-                        File.Delete(activeFileCloudVM.ActiveFnf.FullName);
 
                     }
                     activeFileCloudVM.IsBusy = false;

@@ -17,7 +17,7 @@ namespace Cloud_Models.Models
         public string Analysis_Result_DR;
         public string Analysis_Result_AMD;
         public string Analysis_Result_GLaucoma;
-
+        public bool ShowInSummary;
         public ImageAnalysisResultModel()
         {
         }

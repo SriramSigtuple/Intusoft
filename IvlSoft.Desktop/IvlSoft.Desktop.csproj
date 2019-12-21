@@ -345,17 +345,17 @@
     <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Themes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Themes.Designer.cs">
-      <DependentUpon>Themes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ViewImageControls_UC.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ViewImageControls_UC.Designer.cs">
       <DependentUpon>ViewImageControls_UC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Themes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Themes.Designer.cs">
+      <DependentUpon>Themes.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageCaptureSplashScreen.cs">
       <SubType>Form</SubType>
@@ -452,12 +452,12 @@
     <EmbeddedResource Include="Forms\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Themes.resx">
-      <DependentUpon>Themes.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewImageControls_UC.resx">
       <DependentUpon>ViewImageControls_UC.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Themes.resx">
+      <DependentUpon>Themes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageCaptureSplashScreen.resx">
       <DependentUpon>ImageCaptureSplashScreen.cs</DependentUpon>

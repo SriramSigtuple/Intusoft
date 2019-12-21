@@ -94,6 +94,7 @@ namespace IntuUploader.ViewModels
             if (activeFileCloudVM.IsMove2NextDir)
             {
                 filePath = Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), activeFileCloudVM.ActiveFnf.Name);
+                File.Delete(filePath);
             }
             else
                 filePath = activeFileCloudVM.ActiveFnf.FullName;
@@ -104,9 +105,9 @@ namespace IntuUploader.ViewModels
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                File.Delete(activeFileCloudVM.ActiveFnf.FullName);
 
             }
+            activeFileCloudVM.IsBusy = false;
         }
 
         private void ActiveFileCloudVM_CreatePendingFilesEvent(AnalysisType _analysisType)
@@ -280,7 +281,7 @@ namespace IntuUploader.ViewModels
 
 
                     activeFileCloudVM.SetCloudModel(activeFileCloudModel);
-                    activeFileCloudVM.StartAnalsysisFlow();
+                    activeFileCloudVM.StartAnalysisFlow();
                    
                     //activeFileCloudVM.IsBusy = false;
                     //StartStopSentItemsTimer(true);

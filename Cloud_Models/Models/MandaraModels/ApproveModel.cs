@@ -11,7 +11,7 @@ namespace Cloud_Models.Models
     {
         public string analysisId = string.Empty;
         public string reviewerId = string.Empty;
-        public string reviewerStatus = "Pending";
+        public string reviewStatus = "Pending";
        
         public ApproveModel()
         {
