@@ -38,16 +38,28 @@ namespace IntuUploader
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        { 
-            if(_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
-                ||_currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy 
-                ||_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+        {
+            //if(_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+            //    ||_currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy 
+            //    ||_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+            //    || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
+            //{
+            //    MessageBox.Show("Uploads are in progress ", "Warning", MessageBoxButton.OK);
+            //    while (_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+            //    || _currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy
+            //    || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+            //    || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
+            //    {
+            //        this.Cursor = Cursors.Wait;
+            //    }
+            //    this.Cursor = Cursors.Arrow;
+            //    //e.Cancel = true;
+            //}
+            if (_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
                 || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
             {
                 MessageBox.Show("Uploads are in progress ", "Warning", MessageBoxButton.OK);
-                while (_currentVm.InternetCheckViewModel.QIUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
-                || _currentVm.InternetCheckViewModel.QIUploaderVM.OutboxViewModel.activeFileCloudVM.IsBusy
-                || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
+                while (_currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy
                 || _currentVm.InternetCheckViewModel.FundusUploaderVM.SentItemsViewModel.activeFileCloudVM.IsBusy)
                 {
                     this.Cursor = Cursors.Wait;
