@@ -17,9 +17,11 @@ namespace Cloud_Models.Models
         public Response_CookieModel InitiateAnalysisResponse;
         public List<Response_CookieModel> UploadResponseList;
         public Response_CookieModel GetAnalysisStatusResponse;
-        public Response_CookieModel GetAnalysisResultResponse;
         public Response_CookieModel GetDoctorApprovalResponse;
         public Response_CookieModel NotifyEmail2DoctorResponse;
+        public Response_CookieModel GetAnalysisPostDoctorResponse;
+        public Response_CookieModel DoctorCommentsResponse;
+        public Response_CookieModel GetAnalysisResultResponse;
 
         public AnalysisFlowResponseModel()
         {
@@ -31,7 +33,8 @@ namespace Cloud_Models.Models
             UploadResponseList = new List<Response_CookieModel>();
             GetDoctorApprovalResponse = new Response_CookieModel();
             NotifyEmail2DoctorResponse = new Response_CookieModel();
-
+            GetAnalysisPostDoctorResponse = new Response_CookieModel();
+            DoctorCommentsResponse = new Response_CookieModel();
         }
     }
 }
