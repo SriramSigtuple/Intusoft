@@ -64,10 +64,10 @@ namespace INTUSOFT.Configuration
                         }
                         if (label1.Text.ToLower().Contains("doctor settings"))
                         {
-                            label2.Text = "Name Format : Doctor's Name; Qualification 1, Qualification 2,etc; Hospital Name";
+                            label2.Text = "Doctor Name Format : Name; Qualification 1, 2,etc; Hospital Name";
                             label2.Parent = panel1;
                             label2.Dock = DockStyle.Left;
-                            label2.Font = new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.SansSerif), 8, FontStyle.Bold);
+                            label2.Font = new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.SansSerif), 10, FontStyle.Bold);
                             label2.ForeColor = Color.DarkBlue;
                         }
                         break;

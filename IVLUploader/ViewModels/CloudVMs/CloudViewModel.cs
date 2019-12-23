@@ -19,7 +19,7 @@ namespace IntuUploader.ViewModels
     {
         static Logger exceptionLog = LogManager.GetLogger("ExceptionLogger");
         private Logger logger;// = LogManager.GetLogger("Logger");
-
+        public DirectoryEnum nextDirectory;
         public FileInfo ActiveFnf = null;
 
         public delegate void DelegatePendingFileCreation(AnalysisType analysisType);
@@ -256,7 +256,7 @@ namespace IntuUploader.ViewModels
             Login_JObject = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse.responseBody);
 
             ActiveCloudModel.NotifyEmailModel.URL_Model.API_URL_Mid_Point += $"product={ActiveCloudModel.CreateAnalysisModel.product_id}&puid={Login_JObject["puid"].ToString()}&sample_id={ActiveCloudModel.CreateAnalysisModel.sample_id}&analysisId={ActiveCloudModel.UploadModel.analysis_id}&" +
-                $"recipients={ActiveCloudModel.DoctorApprovalModel.reviewerId}&assign=type&sub_ctgy={sub_ctgy}";
+                $"recipients={ActiveCloudModel.DoctorApprovalModel.reviewerId}&type=assign&sub_ctgy={sub_ctgy}";
 
 
             ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse = ActiveNotifyEmailViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, new Dictionary<string, object>()).Result;
@@ -651,6 +651,7 @@ namespace IntuUploader.ViewModels
                 else
                 {
                     ActiveCloudModel.UploadModel.CompletedStatus = true;
+                    nextDirectory = DirectoryEnum.SentItemsDir;
                     IsMove2NextDir = true;
                     // StartAnalsysisFlow();
                 }
@@ -703,7 +704,7 @@ namespace IntuUploader.ViewModels
                         SetAIImpressions(ref inboxAnalysisStatusModel);
 
                     }
-
+                    nextDirectory = DirectoryEnum.ProcessedDir;
                     Write2Inbox(inboxAnalysisStatusModel);
 
                 }
@@ -1177,7 +1178,7 @@ namespace IntuUploader.ViewModels
                 inboxAnalysisStatusModel.Status = "failure";
                 inboxAnalysisStatusModel.StatusCode = response.StatusCode;
                 inboxAnalysisStatusModel.FailureMessage = failureMessage;
-
+                nextDirectory = DirectoryEnum.ProcessedDir;
                 Write2Inbox(inboxAnalysisStatusModel);
 
 

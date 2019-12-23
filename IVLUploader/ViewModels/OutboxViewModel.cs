@@ -47,6 +47,7 @@ namespace IntuUploader.ViewModels
                 activeFileCloudVM.startStopEvent += ActiveFileCloudVM_startStopEvent;
                 activeFileCloudVM.AnalysisType = AnalysisType;
                 activeFileCloudVM.CreatePendingFilesEvent += ActiveFileCloudVM_CreatePendingFilesEvent;
+                activeFileCloudVM.Write_R_Move_File_Event += ActiveFileCloudVM_Write_R_Move_File_Event;
             }
             OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, -1, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
             //OutboxFileChecker.Elapsed += OutboxFileChecker_Elapsed;
@@ -66,6 +67,30 @@ namespace IntuUploader.ViewModels
             
 
 
+        }
+
+        private void ActiveFileCloudVM_Write_R_Move_File_Event(AnalysisType analysisType)
+        {
+            var filePath = string.Empty;
+            File.Delete(activeFileCloudVM.ActiveFnf.FullName);
+            if (activeFileCloudVM.IsMove2NextDir)
+            {
+                filePath = Path.Combine(GlobalMethods.GetDirPath(activeFileCloudVM.nextDirectory, AnalysisType), activeFileCloudVM.ActiveFnf.Name);
+                
+            }
+            else
+                filePath = activeFileCloudVM.ActiveFnf.FullName;
+
+            using (StreamWriter st = new StreamWriter(filePath))
+            {
+
+                st.Write(JsonConvert.SerializeObject(activeFileCloudVM.ActiveCloudModel, Formatting.Indented));
+                st.Flush();
+                st.Close();
+                st.Dispose();
+
+            }
+            activeFileCloudVM.IsBusy = false;
         }
 
         private void ActiveFileCloudVM_CreatePendingFilesEvent(AnalysisType _analysisType)
@@ -264,44 +289,22 @@ namespace IntuUploader.ViewModels
 
 
                     activeFileCloudVM.StartAnalysisFlow();
-                    var filePath = string.Empty;
-
-                    if (activeFileCloudVM.IsMove2NextDir)
-                    {
-                        filePath = Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.SentItemsDir, AnalysisType), activeFileCloudVM.ActiveFnf.Name);
-                    }
-                    else
-                        filePath = activeFileCloudVM.ActiveFnf.FullName;
-
-                    using (StreamWriter st = new StreamWriter(filePath))
-                    {
-                        File.Delete(activeFileCloudVM.ActiveFnf.FullName);
-
-                        st.Write( JsonConvert.SerializeObject(activeFileCloudVM.ActiveCloudModel, Formatting.Indented));
-                        st.Flush();
-                        st.Close();
-                        st.Dispose();
-
-                    }
-                    activeFileCloudVM.IsBusy = false;
-                    StartStopSentItemsTimer(true);
 
                 }
-                else
-                    StartStopSentItemsTimer(true);
-
             }
             catch (Exception ex)
             {
-
                 _logger.Error(ex);
                 exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
-                StartStopSentItemsTimer(true);
-
                 activeFileCloudVM.IsBusy = false;
+
             }
-            
-          
+            finally
+            {
+                StartStopSentItemsTimer(true);
+            }
+
+
         }
 
         private void ActiveFileCloudVM_startStopEvent(bool isStart)
