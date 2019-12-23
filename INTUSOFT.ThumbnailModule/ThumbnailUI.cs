@@ -951,6 +951,30 @@ namespace INTUSOFT.ThumbnailModule
 
 
         }
+
+        private void Select_Thumbnail(ImageViewer sender)
+        {
+            m_ActiveImageViewer = (ImageViewer)sender;
+            if (!isValueChanged)//if the brightness or contrast has been changed in view imaging screen.
+            {
+                m_ActiveImageViewer.IsActive = true;
+                if (!image_names.Contains(m_ActiveImageViewer.ImageLocation))
+                    image_names.Add(m_ActiveImageViewer.ImageLocation);
+                if (!this.thumbnail_FLP.SelectedThumbnails.Contains(m_ActiveImageViewer.Index))
+                {
+                    this.thumbnail_FLP.SelectedThumbnails.Add(m_ActiveImageViewer.Index);
+                }
+                if (!this.thumbnail_FLP.SelectedThumbnailFileNames.Contains(m_ActiveImageViewer.ImageLocation))//checks if SelectedThumbnailFileNames contains ImageLocation, if it doesn't contain , then adds the ImageLocation.By Ashutosh 06-09-2017.
+
+                    this.thumbnail_FLP.SelectedThumbnailFileNames.Add(m_ActiveImageViewer.ImageLocation);
+            }
+            ThumbnailData data = new ThumbnailData();
+            data.fileName = m_ActiveImageViewer.ImageLocation;
+            data.id = m_ActiveImageViewer.ImageID;
+            data.side = m_ActiveImageViewer.ImageSide;
+            data.Name = m_ActiveImageViewer.ImageLabel.Name;
+            displayThumbnailImage(data);
+        }
         private void thumbnailSelection(ImageViewer sender)
         {
             if (this.isControlKeyPressed)// thumbnail selected without  control key 
@@ -1143,6 +1167,25 @@ namespace INTUSOFT.ThumbnailModule
             }
         }
 
+        public void ThumbnailSelectAll()
+        {
+            foreach (Control item in thumbnail_FLP.Controls)
+            {
+                if (item is ImageViewer)
+                {
+                    ImageViewer img = (ImageViewer)item;
+                    if (File.Exists(img.ImageLocation))
+                    {
+                        if (!img.IsActive)
+                        {
+                            verticalSroll(img);
+                            Select_Thumbnail(img);
+                        }
+                            
+                    }
+                }
+            }
+        }
         public void ThumbnailDownArrow()
         {
             int index = 0;

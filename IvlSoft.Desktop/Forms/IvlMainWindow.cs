@@ -4094,6 +4094,15 @@ namespace INTUSOFT.Desktop.Forms
                         thumbnailUI1.ThumbnailDownArrow();
                     }
             }
+            else if (keyData == (Keys.Control | Keys.A))
+            {
+                if (!IVLVariables.ivl_Camera.CameraIsLive)//0000588 defect is fixed by checking for live imaging and thumbnail visibility by sriram on August 20th 2015
+                    if (thumbnail_tblpnl.Visible)
+                    {
+                        thumbnailUI1.isControlKeyPressed = false;
+                        thumbnailUI1.ThumbnailSelectAll();
+                    }
+            }
             else if (keyData == (Keys.Alt | Keys.S))// Alt + s for invoking config settings UI added by sriram on 7th august 2015
             {
                 if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
