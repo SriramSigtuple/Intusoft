@@ -1436,6 +1436,7 @@ namespace INTUSOFT.Desktop.Forms
 
                         // pendingCloudAnalysisReports.Remove(item);
                     }
+                    Thread.Sleep(500);
 
                 }
             }
