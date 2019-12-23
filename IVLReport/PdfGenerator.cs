@@ -184,14 +184,14 @@ namespace IVLReport
                     if (props.MultiLine)
                     {
                         originY = (MappingValue - (double)(props.Location._Y )) / dpi;
-                        originY -= 0.11;
+                        originY -= 0.15;
 
                     }
                     else
                     {
                         double boxHeight = (double)props.Size.Height / 2.0;
                         originY = (MappingValue - ((double)props.Location._Y + boxHeight)) / dpi;
-                        originY -= 0.02;
+                        originY -= 0.03;
 
                     }
 

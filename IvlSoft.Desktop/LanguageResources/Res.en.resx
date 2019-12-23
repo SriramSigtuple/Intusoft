@@ -1961,7 +1961,7 @@
     <value>Analysis</value>
   </data>
   <data name="CloudAnalsysisPendingStatus_Text" xml:space="preserve">
-    <value>Analysis is in progress. Please try again after some time.</value>
+    <value>Report approval in process. Please wait.</value>
   </data>
   <data name="CloudAnalysisFailed_Text" xml:space="preserve">
     <value>Analysis Failed</value>

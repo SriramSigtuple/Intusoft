@@ -1035,7 +1035,7 @@
         <_Y>691</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
+      <Border>false</Border>
       <ImageName />
       <Type>PictureBox</Type>
       <RowsColumns>
@@ -1202,17 +1202,17 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>65</Width>
-        <Height>65</Height>
+        <Width>114</Width>
+        <Height>100</Height>
       </Size>
       <Binding>QRCode</Binding>
       <Location>
-        <_X>58</_X>
-        <_Y>677</_Y>
+        <_X>33</_X>
+        <_Y>678</_Y>
       </Location>
       <MultiLine>false</MultiLine>
-      <Border>true</Border>
-      <ImageName>QRCode.png</ImageName>
+      <Border>false</Border>
+      <ImageName>D:\Projects\Intusoft_Drishti\IvlSoft.Desktop\bin\Debug\qr.png</ImageName>
       <Type>PictureBox</Type>
       <RowsColumns>
         <Rows>1</Rows>
@@ -1222,8 +1222,8 @@
       </RowsColumns>
       <Text>$QRCode</Text>
       <Name>PictureBox4</Name>
-      <MarginDecrementValue>-5</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>5</MarginDecrementValue>
+      <YMarginDecrementValue>10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1290,7 +1290,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Dislaimer:</Text>
+      <Text>Disclaimer:</Text>
       <Name>Label38</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>

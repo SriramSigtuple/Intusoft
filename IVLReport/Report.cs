@@ -941,7 +941,7 @@ namespace IVLReport
 
         private  void CreateQRCodeBM(List<ReportControlsStructure> reportControls)
         {
-            _dataModel.qrBitmap = new Bitmap(10, 10);
+            _dataModel.qrBitmap = new Bitmap(100, 100);
             List<ReportControlsStructure> tempList = reportControls.Where(x => x.reportControlProperty.Binding.Contains("QRCode")).ToList();
             if (tempList.Any())
             {
