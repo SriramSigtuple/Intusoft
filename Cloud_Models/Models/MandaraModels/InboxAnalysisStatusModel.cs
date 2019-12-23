@@ -22,6 +22,7 @@ namespace Cloud_Models.Models
         public string LeftAIImpressionsDR;
         public string LeftAIImpressionsAMD;
         public string LeftAIImpressionsGlaucoma;
+        public string Reject_Message;
         public HttpStatusCode StatusCode;
         public Uri ReportUri;
         public int visitID;

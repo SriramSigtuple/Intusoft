@@ -90,11 +90,12 @@ namespace IntuUploader.ViewModels
         private void ActiveFileCloudVM_Write_R_Move_File_Event(AnalysisType analysisType)
         {
             var filePath = string.Empty;
+            File.Delete(activeFileCloudVM.ActiveFnf.FullName);
 
             if (activeFileCloudVM.IsMove2NextDir)
             {
                 filePath = Path.Combine(GlobalMethods.GetDirPath(activeFileCloudVM.nextDirectory, AnalysisType), activeFileCloudVM.ActiveFnf.Name);
-                File.Delete(filePath);
+                
             }
             else
                 filePath = activeFileCloudVM.ActiveFnf.FullName;

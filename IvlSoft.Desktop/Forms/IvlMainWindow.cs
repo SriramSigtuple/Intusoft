@@ -3342,6 +3342,7 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$ImageNames", actualImageNames.ToArray());
             reportDic.Add("$RightEyeObs", inboxAnalysisStatusModel.RightAIImpressionsDR);
             reportDic.Add("$LeftEyeObs", inboxAnalysisStatusModel.LeftAIImpressionsDR);
+            reportDic.Add("$Comments", inboxAnalysisStatusModel.Reject_Message);
             //reportDic.Add("$RightEyeImpression", inboxAnalysisStatusModel.RightAIImpressionsDR);
             //reportDic.Add("$LeftEyeImpression", inboxAnalysisStatusModel.LeftAIImpressionsDR);
             reportDic.Add("$LeftEyeImages",leftEyeImages);

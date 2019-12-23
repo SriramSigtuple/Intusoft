@@ -36,6 +36,7 @@ namespace IntuUploader.ViewModels
         AnalysisViewModel activeGetAnalysisResultViewModel;
         string RightEyeComments = string.Empty;
         string LeftEyeComments = string.Empty;
+        string RejectComments = string.Empty;
         public delegate void StartStopTimer(bool isStart);
         public event StartStopTimer startStopEvent;
         private bool isMove2NextDir = false;
@@ -290,22 +291,25 @@ namespace IntuUploader.ViewModels
                 JObject doctorComments = JObject.Parse(ActiveCloudModel.AnalysisFlowResponseModel.DoctorCommentsResponse.responseBody);
                 if(doctorComments["message"].HasValues)
                 {
-                  
-                    if (doctorComments["message"]["DR-RE"].Last.HasValues)
-                        RightEyeComments += "DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString();
-                    if (doctorComments["message"]["GLAUCOMA-RE"].Last.HasValues)
-                       RightEyeComments += "Glaucoma - "+ doctorComments["message"]["GLAUCOMA-RE"].Last["description"].ToString();
+                    if (doctorComments["message"].ToString().Contains("REJECT-FUNDUS") && doctorComments["message"]["REJECT-FUNDUS"].Last.HasValues)
+                        RejectComments += doctorComments["message"]["REJECT-FUNDUS"].Last["description"].ToString();
+                    else
+                    {
+                        if (doctorComments["message"]["DR-RE"].Last.HasValues)
+                            RightEyeComments += " DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString();
+                        if (doctorComments["message"]["GLAUCOMA-RE"].Last.HasValues)
+                            RightEyeComments += " Glaucoma - " + doctorComments["message"]["GLAUCOMA-RE"].Last["description"].ToString();
 
-                    if (doctorComments["message"]["AMD-RE"].Last.HasValues)
-                        RightEyeComments += "AMD - " + doctorComments["message"]["AMD-RE"].Last["description"].ToString();
+                        if (doctorComments["message"]["AMD-RE"].Last.HasValues)
+                            RightEyeComments += " AMD - " + doctorComments["message"]["AMD-RE"].Last["description"].ToString();
 
-                    if (doctorComments["message"]["DR-LE"].Last.HasValues)
-                        LeftEyeComments += "DR - " + doctorComments["message"]["DR-LE"].Last["description"].ToString();
-                    if (doctorComments["message"]["GLAUCOMA-LE"].Last.HasValues)
-                        LeftEyeComments += "Glaucoma - " + doctorComments["message"]["GLAUCOMA-LE"].Last["description"].ToString();
-                    if (doctorComments["message"]["AMD-LE"].Last.HasValues)
-                        LeftEyeComments += "AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
-
+                        if (doctorComments["message"]["DR-LE"].Last.HasValues)
+                            LeftEyeComments += " DR - " + doctorComments["message"]["DR-LE"].Last["description"].ToString();
+                        if (doctorComments["message"]["GLAUCOMA-LE"].Last.HasValues)
+                            LeftEyeComments += " Glaucoma - " + doctorComments["message"]["GLAUCOMA-LE"].Last["description"].ToString();
+                        if (doctorComments["message"]["AMD-LE"].Last.HasValues)
+                            LeftEyeComments += " AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
+                    }
 
                 }
                 StartAnalysisFlow();
@@ -1016,8 +1020,9 @@ namespace IntuUploader.ViewModels
             //}
             inboxAnalysisStatusModel.RightAIImpressionsDR = RightEyeComments;
             inboxAnalysisStatusModel.LeftAIImpressionsDR = LeftEyeComments;
+            inboxAnalysisStatusModel.Reject_Message = RejectComments;
 
-
+            
         }
         private void AddQIResult(ref InboxAnalysisStatusModel inboxAnalysisStatusModel)
         {
