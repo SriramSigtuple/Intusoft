@@ -1430,10 +1430,14 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 foreach (var item in pendingCloudAnalysisReports)
                 {
+
                     if (NewDataVariables._Repo.Update(item))
                     {
+
                         // pendingCloudAnalysisReports.Remove(item);
                     }
+                    Thread.Sleep(2000);
+
                 }
                 inboxTimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
             }
