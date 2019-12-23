@@ -1409,7 +1409,7 @@ namespace INTUSOFT.Desktop.Forms
                         //pending_eye_fundus_images[pending_eye_fundus_images.FindIndex(x => x.Item1.eye_fundus_image_id == item.Item1.eye_fundus_image_id)].Item2 = true;
                     }
                 }
-                inboxQITimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
+                Thread.Sleep(500);
             }
           
 
@@ -1436,10 +1436,8 @@ namespace INTUSOFT.Desktop.Forms
 
                         // pendingCloudAnalysisReports.Remove(item);
                     }
-                    Thread.Sleep(2000);
 
                 }
-                inboxTimer.Change(0, Convert.ToInt32(IVLVariables.CurrentSettings.CloudSettings.InboxTimerInterval.val) * 1000);
             }
             
 
