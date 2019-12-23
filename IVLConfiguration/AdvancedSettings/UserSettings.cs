@@ -199,7 +199,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
 
             _noOfImagesForReport = new IVLControlProperties();
             _noOfImagesForReport.name = "noOfImagesForReport";
-            _noOfImagesForReport.val = "16";
+            _noOfImagesForReport.val = "14";
             _noOfImagesForReport.type = "int";
             _noOfImagesForReport.control = "System.Windows.Forms.NumericUpDown";
             _noOfImagesForReport.text = "No Of Images For Report";

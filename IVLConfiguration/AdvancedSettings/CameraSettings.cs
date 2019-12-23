@@ -483,7 +483,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
             DeviceID.val = "";
             DeviceID.control = "System.Windows.Forms.TextBox";
             DeviceID.text = "Device ID";
-            DeviceID.length = 16;
+            DeviceID.length = 64;
             DeviceID.range = "Eg:03-1706-011";
 
             _CameraModel = new IVLControlProperties();
