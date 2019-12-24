@@ -818,9 +818,6 @@
     <Content Include="ImageResources\LogoImageResources\ReportLogo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ImageResources\LogoImageResources\signature.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="ImageResources\LogoImageResources\SigtupleLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

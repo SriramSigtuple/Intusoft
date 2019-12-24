@@ -44,12 +44,12 @@
         <FontSize>16</FontSize>
       </Font>
       <Size>
-        <Width>441</Width>
+        <Width>429</Width>
         <Height>24</Height>
       </Size>
       <Binding>HospitalName</Binding>
       <Location>
-        <_X>329</_X>
+        <_X>360</_X>
         <_Y>73</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -79,12 +79,12 @@
         <FontSize>10</FontSize>
       </Font>
       <Size>
-        <Width>245</Width>
+        <Width>222</Width>
         <Height>19</Height>
       </Size>
       <Binding>Address1</Binding>
       <Location>
-        <_X>423</_X>
+        <_X>465</_X>
         <_Y>104</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -536,12 +536,12 @@
         <FontSize>10</FontSize>
       </Font>
       <Size>
-        <Width>373</Width>
+        <Width>310</Width>
         <Height>20</Height>
       </Size>
       <Binding>Address2</Binding>
       <Location>
-        <_X>385</_X>
+        <_X>420</_X>
         <_Y>124</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -576,7 +576,7 @@
       </Size>
       <Binding>FundusReport</Binding>
       <Location>
-        <_X>432</_X>
+        <_X>505</_X>
         <_Y>148</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -746,12 +746,12 @@
         <FontSize>10</FontSize>
       </Font>
       <Size>
-        <Width>133</Width>
+        <Width>145</Width>
         <Height>19</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>64</_X>
+        <_X>43</_X>
         <_Y>551</_Y>
       </Location>
       <MultiLine>false</MultiLine>
@@ -765,8 +765,8 @@
       </RowsColumns>
       <Text>General Observation:</Text>
       <Name>Label27</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>25</MarginDecrementValue>
+      <YMarginDecrementValue>7</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -1273,12 +1273,12 @@
         <FontSize>9</FontSize>
       </Font>
       <Size>
-        <Width>63</Width>
+        <Width>72</Width>
         <Height>18</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
-        <_X>329</_X>
+        <_X>320</_X>
         <_Y>762</_Y>
       </Location>
       <MultiLine>false</MultiLine>

@@ -1532,13 +1532,9 @@ namespace INTUSOFT.Desktop.Forms
                             reportDic["$ChangeMaskColour"] = IVLVariables.CurrentSettings.ReportSettings.ChangeMaskColour.val;// if present then it's value is replaced.By Ashutosh 22-08-2017
                         else
                             reportDic.Add("$ChangeMaskColour", IVLVariables.CurrentSettings.ReportSettings.ChangeMaskColour.val);// if not present then key and value are added.By Ashutosh 22-08-2017
-                        //reportDic.Add("$Specalist", IVLVariables.CurrentSettings.ReportSettings.ReporterName.val);
-                        //reportDic.Add("$SpecalistQualification", IVLVariables.CurrentSettings.ReportSettings.ReporterQualification.val);
-                        //reportDic.Add("$SpecalistHospital", IVLVariables.CurrentSettings.ReportSettings.ReporterHospital.val);
-
-                        reportDic.Add("$Specalist", IVLVariables.defaultDoctorDetails[0]);
-                        reportDic.Add("$SpecalistQualification", IVLVariables.defaultDoctorDetails[1]);
-                        reportDic.Add("$SpecalistHospital", IVLVariables.defaultDoctorDetails[2]);
+                        reportDic.Add("$Specalist", IVLVariables.CurrentSettings.ReportSettings.ReporterName.val);
+                        reportDic.Add("$SpecalistQualification", IVLVariables.CurrentSettings.ReportSettings.ReporterQualification.val);
+                        reportDic.Add("$SpecalistHospital", IVLVariables.CurrentSettings.ReportSettings.ReporterHospital.val);
 
                         reportDic.Add("$showPrintButton", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowPrintButton.val));
                         reportDic.Add("$showSaveButton", Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.ShowSaveButton.val));
