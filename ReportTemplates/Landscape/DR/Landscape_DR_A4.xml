@@ -61,7 +61,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>SIGTUPLE TECHNOLOGIES PVT LTD</Text>
+      <Text />
       <Name>Label1</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -96,7 +96,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>L-172, Sector 6, HSR Layout</Text>
+      <Text />
       <Name>Label2</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -553,7 +553,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>Bangalore - 560068, email - info@sigtuple.com</Text>
+      <Text />
       <Name>Label16</Name>
       <MarginDecrementValue>-6</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -625,8 +625,8 @@
       </RowsColumns>
       <Text />
       <Name>TextBox4</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>-1</MarginDecrementValue>
+      <YMarginDecrementValue>10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -646,7 +646,7 @@
       </Size>
       <Binding>LeftEyeObs</Binding>
       <Location>
-        <_X>567</_X>
+        <_X>564</_X>
         <_Y>614</_Y>
       </Location>
       <MultiLine>true</MultiLine>
@@ -660,8 +660,8 @@
       </RowsColumns>
       <Text />
       <Name>TextBox5</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>-1</MarginDecrementValue>
+      <YMarginDecrementValue>10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
@@ -800,8 +800,8 @@
       </RowsColumns>
       <Text />
       <Name>TextBox7</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>-1</MarginDecrementValue>
+      <YMarginDecrementValue>10</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>

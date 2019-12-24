@@ -3211,7 +3211,7 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
             reportDic.Add("$MRN", patIdentifier.value);
             reportDic.Add("$Gender", p.gender);
-            reportDic.Add("$Signature", @"ImageResources\LogoImageResources\signature_" + inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorIndex.ToString() + ".jpg");
+            reportDic.Add("$Signature", @"ImageResources\Signature\signature_" + inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorIndex.ToString() + ".jpg");
             reportDic.Add("$Specalist", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorName);
             reportDic.Add("$SpecalistQualification", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorQualifications);
             reportDic.Add("$SpecalistHospital", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.HospitalName);

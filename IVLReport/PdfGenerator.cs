@@ -176,7 +176,6 @@ namespace IVLReport
              
             double fontSize = props.Font.FontSize;
             double widthVal = 0;
-
             if (!string.IsNullOrEmpty(props.Text))
             {
                 if (props.Border)
@@ -196,16 +195,16 @@ namespace IVLReport
                     }
 
                 }
-
-                //widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue/dpi, ref originY, 0, 0, box);
-                widthVal = Contents.DrawText(pdf, props.Font.FontSize, originX - 0.12 + (double)props.MarginDecrementValue/dpi, originY + (double)props.YMarginDecrementValue / dpi,TextJustify.Left,0,color,color,props.Text);
+                //widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue/dpi, ref y, 0, 0, box);
+                widthVal = Contents.DrawText(pdf, props.Font.FontSize, originX - 0.12 + (double)props.MarginDecrementValue / dpi, originY + (double)props.YMarginDecrementValue / dpi, TextJustify.Left, 0, color, color, props.Text);
 
             }
             if (props.Border)
             {
                 //if(originY == -1)
                 originY = (MappingValue - (double)(props.Location._Y + props.Size.Height )) / dpi;
-                Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, originY  + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
+                Contents.DrawRectangle(originX - 0.15 - (double)props.MarginDecrementValue / dpi, originY + (double)props.YMarginDecrementValue / dpi, originWidth, originHeight, p);
+                //Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, y , originWidth, originHeight, p);
                 //Contents.DrawRectangle(originX - 0.12, originY + 0.12, originWidth - 0.13, originHeight - 0.13, p);
             }
             Contents.SaveGraphicsState();
@@ -499,8 +498,95 @@ namespace IVLReport
 
         private void addPdfTextBox(ReportControlProperties props)
         {
-            addPdfLabel(props);
-            return;
+            if (props.MultiLine)
+            {
+                PdfFont pdf = PdfFont.CreatePdfFont(Document, props.Font.FontFamily, props.Font.FontStyle, true);
+                //PdfFont pdf = PdfFont.CreatePdfFont(Document, props.Font.FontFamily, props.Font.FontStyle, true);
+                //PdfFont pdf = PdfFont.CreatePdfFont(Document, props.Font.FontFamily, props.Font.FontStyle, true);
+                //BaseFont f_cn = BaseFont.CreateFont("c:\\windows\\fonts\\calibri.ttf", BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                //PdfContentByte cb = pdfWriter.DirectContent;
+
+                //  iTextSharp.text.pdf.PdfFont pdf = new iTextSharp.text.pdf.PdfFont(BaseFont.TIMES_BOLD,props.Font.FontSize);
+                PaintOp p = PaintOp.CloseStroke;
+
+                Color color = Color.FromName(props.Font.FontColor);
+                if (!color.IsKnownColor)
+                {
+                    color = ColorTranslator.FromHtml("#" + color.Name);
+                }
+
+                //if (props.Text != null)
+                //    props.Text = Regex.Replace(props.Text, @"\r\n?|\n", " ");
+
+                //cb.BeginText();
+                //cb.SetFontAndSize(f_cn, props.Font.FontSize);
+                //cb.SetColorFill(new BaseColor(color.R, color.G, color.B, color.A));
+                ////PageSize.A4
+                //cb.SetTextMatrix(props.Location._X, PageSize.A4.Height - props.Location._Y);
+                //cb.ShowText(props.Text);
+                //cb.EndText();
+
+                //double xMargin = -14.0;
+                //double originX = (double)(props.Location._X + props.MarginDecrementValue);
+                double originX = (double)(props.Location._X) / dpi;
+                double originY = (MappingValue - (double)(props.Location._Y + props.Size.Height)) / dpi;
+
+                double originWidth = (double)props.Size.Width / dpi;
+                double originHeight = (double)props.Size.Height / dpi;
+
+
+                PdfFileWriter.TextBox box = new PdfFileWriter.TextBox(originWidth);
+                box.AddText(pdf, props.Font.FontSize, color, props.Text);
+
+
+                double fontSize = props.Font.FontSize;
+                double widthVal = 0;
+                double y = 0;
+                if (!string.IsNullOrEmpty(props.Text))
+                {
+                    if (props.Border)
+                    {
+                        if (props.MultiLine)
+                        {
+                            originY = (MappingValue - (double)(props.Location._Y)) / dpi;
+                            originY -= 0.15;
+
+                        }
+                        else
+                        {
+                            double boxHeight = (double)props.Size.Height / 2.0;
+                            originY = (MappingValue - ((double)props.Location._Y + boxHeight)) / dpi;
+                            originY -= 0.03;
+
+                        }
+
+                    }
+                    y = originY + (double)props.YMarginDecrementValue / dpi;
+                    widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue / dpi, ref y, 0, 0, box);
+                    //widthVal = Contents.DrawText(pdf, props.Font.FontSize, originX - 0.12 + (double)props.MarginDecrementValue / dpi, originY + (double)props.YMarginDecrementValue / dpi, TextJustify.Left, 0, color, color, props.Text);
+
+                }
+                if (props.Border)
+                {
+                    //if(originY == -1)
+                    originY = (MappingValue - (double)(props.Location._Y + props.Size.Height)) / dpi;
+                    if(string.IsNullOrEmpty(props.Text))
+                        Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, originY  + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
+                    else
+                        Contents.DrawRectangle(originX - 0.15 - (double)props.MarginDecrementValue / dpi, originY , originWidth, originHeight, p);
+                    //Contents.DrawRectangle(originX - 0.12, originY + 0.12, originWidth - 0.13, originHeight - 0.13, p);
+                }
+                Contents.SaveGraphicsState();
+                // change nonstroking (fill) color to purple
+                Contents.SetColorNonStroking(Color.Black);
+                Contents.RestoreGraphicsState();
+            }
+            else
+            {
+                addPdfLabel(props);
+            }
+            //addPdfLabel(props);
+            //return;
             //PdfFont pdf = PdfFont.CreatePdfFont(Document, props.Font.FontFamily, props.Font.FontStyle, true);
             //PaintOp p = PaintOp.CloseStroke;
             //Color color = Color.FromName(props.Font.FontColor);

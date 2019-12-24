@@ -294,20 +294,26 @@ namespace IntuUploader.ViewModels
                     if (doctorComments["message"].ToString().Contains("REJECT-FUNDUS") && doctorComments["message"]["REJECT-FUNDUS"].Last.HasValues)
                         RejectComments += doctorComments["message"]["REJECT-FUNDUS"].Last["description"].ToString();
                     if (doctorComments["message"]["DR-RE"].Last.HasValues)
-                        RightEyeComments += " DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString();
+                        RightEyeComments += " DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString() + ", ";
                     if (doctorComments["message"]["GLAUCOMA-RE"].Last.HasValues)
-                        RightEyeComments += " Glaucoma - " + doctorComments["message"]["GLAUCOMA-RE"].Last["description"].ToString();
-
+                        RightEyeComments += "Glaucoma - " + doctorComments["message"]["GLAUCOMA-RE"].Last["description"].ToString()+ ", ";
                     if (doctorComments["message"]["AMD-RE"].Last.HasValues)
-                        RightEyeComments += " AMD - " + doctorComments["message"]["AMD-RE"].Last["description"].ToString();
+                        RightEyeComments += "AMD - " + doctorComments["message"]["AMD-RE"].Last["description"].ToString();
+                    if (RightEyeComments.EndsWith(","))
+                        RightEyeComments.TrimEnd(',');
 
                     if (doctorComments["message"]["DR-LE"].Last.HasValues)
-                        LeftEyeComments += " DR - " + doctorComments["message"]["DR-LE"].Last["description"].ToString();
+                        LeftEyeComments += " DR - " + doctorComments["message"]["DR-LE"].Last["description"].ToString() + ", ";
                     if (doctorComments["message"]["GLAUCOMA-LE"].Last.HasValues)
-                        LeftEyeComments += " Glaucoma - " + doctorComments["message"]["GLAUCOMA-LE"].Last["description"].ToString();
+                        LeftEyeComments += "Glaucoma - " + doctorComments["message"]["GLAUCOMA-LE"].Last["description"].ToString() + ", ";
                     if (doctorComments["message"]["AMD-LE"].Last.HasValues)
-                        LeftEyeComments += " AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
-
+                        LeftEyeComments += "AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
+                    if (LeftEyeComments.EndsWith(","))
+                        LeftEyeComments.TrimEnd(',');
+                }
+                else
+                {
+                    RejectComments = "No Comment found";
                 }
                 StartAnalysisFlow();
             }
