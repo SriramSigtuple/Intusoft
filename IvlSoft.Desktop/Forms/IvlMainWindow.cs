@@ -1367,10 +1367,7 @@ namespace INTUSOFT.Desktop.Forms
         
         public void UpdateQIAnalysis2DB()
         {
-            if(this.InvokeRequired)
-            {
-                this.Invoke(delegateUpdateObsValues);
-            }
+          
             if(inboxQITimer != null)
             {
                 inboxQITimer.Change(-1, -1);
@@ -1394,13 +1391,8 @@ namespace INTUSOFT.Desktop.Forms
 
         public  void UpdateCloudReport2DB()
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(m_DelegateUpdateCloudValues);
-            }
             if (inboxTimer != null)
             {
-                inboxTimer.Change(-1, -1);
                 while (isInboxCloudReportsBusy)
                 {
                     ;
@@ -3039,8 +3031,12 @@ namespace INTUSOFT.Desktop.Forms
             if (!IVLVariables.ivl_Camera.IsCapturing)// added to avoid closing of application when capture of the image is in progress by sriram
             {
                 IVLVariables.ApplicationClosing = true;
-              
-                UpdateCloudReport2DB();
+
+                if (inboxTimer != null)
+                {
+                    inboxTimer.Change(-1, -1);
+                    UpdateCloudReport2DB();
+                }
                 //UpdateQIAnalysis2DB();
 
                 IVLVariables.ivl_Camera.camPropsHelper.IsApplicationClosing = true;
