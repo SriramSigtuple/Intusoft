@@ -1203,7 +1203,7 @@ namespace IntuUploader.ViewModels
             StreamWriter st = null;
             try
             {
-
+                inboxAnalysisStatusModel.DoctorDetailsForUploadModel = ActiveCloudModel.DoctorDetailsForUploadModel;
                 st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name), false);
                 st.Write(JsonConvert.SerializeObject(inboxAnalysisStatusModel, Formatting.Indented));
                 st.Flush();

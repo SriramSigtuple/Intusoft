@@ -593,7 +593,6 @@ namespace INTUSOFT.Desktop.Forms
             pendingCloudAnalysisReports = new List<CloudAnalysisReport>();
             pending_eye_fundus_images = new List<eye_fundus_image>();
 
-            SetDefaultDoctorId();
 
             //IVLVariables.GradientColorValues.Color1 = this.Color1;
             //IVLVariables.GradientColorValues.Color2 = this.Color2;
@@ -601,29 +600,7 @@ namespace INTUSOFT.Desktop.Forms
             //reportListView.Parent = this.reportGridView_p;
         }
 
-        private void SetDefaultDoctorId()
-        {
-            var propertyInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
-            var indx = Convert.ToInt32(IVLVariables.CurrentSettings.DoctorSettings.DefaultDoctor.val);
-            var info = propertyInfos[(indx * 3) - 1];
-            var doctorInfo = propertyInfos[(indx * 3) - 3];
-            var doctorName = (doctorInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
-            IVLVariables.defaultDoctorId = (info.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
-            if (!string.IsNullOrEmpty(doctorName))
-            {
-                //
-                    var doctorDetailsArr = (doctorName).Split(';');
-                for (int i = 0; i < doctorDetailsArr.Length; i++)
-                {
-                    if (i < IVLVariables.defaultDoctorDetails.Length)
-                    {
-                        IVLVariables.defaultDoctorDetails[i] = doctorDetailsArr[i];
-                    }
-                    else
-                        break;
-                }
-            }
-        }
+       
 
 
         private void ExceptionLogWriter__exceptionOccuredEvent()
@@ -3221,7 +3198,7 @@ namespace INTUSOFT.Desktop.Forms
 
         // added by sriram on 4th august 2015 in order to manage the problem of minimizing and maximizing of the application not responding properly in order to fix defect 0000361
 
-              private void CreateCloudReport(Cloud_Models.Models.InboxAnalysisStatusModel inboxAnalysisStatusModel)
+    private void CreateCloudReport(Cloud_Models.Models.InboxAnalysisStatusModel inboxAnalysisStatusModel)
         {
             Dictionary<string, object> reportDic = new Dictionary<string, object>();
 
@@ -3238,6 +3215,7 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
             reportDic.Add("$MRN", patIdentifier.value);
             reportDic.Add("$Gender", p.gender);
+            //reportDic.Add("$Signature",)
             visit visit = NewDataVariables._Repo.GetById<visit>(inboxAnalysisStatusModel.visitID);
             List<string> currentReportImageFiles =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.value).ToList();
             List<string> maskSettings =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.maskSetting).ToList();

@@ -68,6 +68,7 @@
     <Compile Include="Models\MandaraModels\CreateAnalysisModel.cs" />
     <Compile Include="Models\MandaraModels\DirectoryPathModel.cs" />
     <Compile Include="Models\MandaraModels\DoctorCommentsModel.cs" />
+    <Compile Include="Models\MandaraModels\DoctorDetailsForUploadModel.cs" />
     <Compile Include="Models\MandaraModels\GetAnalysisResultModel.cs" />
     <Compile Include="Models\MandaraModels\GetAnalysisModel.cs" />
     <Compile Include="Models\MandaraModels\ImageAnalysisResultModel.cs" />

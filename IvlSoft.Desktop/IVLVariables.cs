@@ -13,6 +13,8 @@ using Common.Enums;
 using INTUSOFT.Configuration;
 using System.IO;
 using GainLevels = INTUSOFT.Imaging.GainLevels;
+using Cloud_Models.Models;
+using System.Reflection;
 
 namespace INTUSOFT.Desktop
 {
@@ -179,6 +181,41 @@ namespace INTUSOFT.Desktop
                     break;
             }
             return Path.Combine(CurrentSettings.CloudSettings.CloudPath.val, dirName);
+
+        }
+
+
+        public static DoctorDetailsForUploadModel GetDoctorDetails()
+        {
+            var doctorDetails = new DoctorDetailsForUploadModel();
+            var propertyInfos = IVLVariables.CurrentSettings.DoctorSettings.GetType().GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.Instance);
+            var indx =  doctorDetails.DoctorIndex = Convert.ToInt32(IVLVariables.CurrentSettings.DoctorSettings.DefaultDoctor.val);
+            var info = propertyInfos[(indx * 3) - 1];
+            var emailInfo = propertyInfos[(indx * 3) - 2];
+            var doctorInfo = propertyInfos[(indx * 3) - 3];
+            var doctorName = (doctorInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
+            doctorDetails.Email = (emailInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
+
+            if (!string.IsNullOrEmpty(doctorName))
+            {
+                //
+                var doctorDetailsArr = (doctorName).Split(';');
+                for (int i = 0; i < doctorDetailsArr.Length; i++)
+                {
+                    if (i < IVLVariables.defaultDoctorDetails.Length)
+                    {
+                        IVLVariables.defaultDoctorDetails[i] = doctorDetailsArr[i];
+                    }
+                    else
+                        break;
+                }
+                doctorDetails.DoctorName = IVLVariables.defaultDoctorDetails[0];
+                doctorDetails.DoctorQualifications = IVLVariables.defaultDoctorDetails[1];
+                doctorDetails.HospitalName = IVLVariables.defaultDoctorDetails[2];
+            }
+            return doctorDetails;
+            
+
 
         }
     }

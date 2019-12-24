@@ -3379,7 +3379,7 @@ namespace INTUSOFT.Desktop.Forms
                 cloudModel.visitID = NewDataVariables.Active_Visit.visitId;
                 cloudModel.patientID = NewDataVariables.Active_Patient;
                 cloudModel.cloudID = cloudAnalysisReport.cloudAnalysisReportId;
-
+                cloudModel.DoctorDetailsForUploadModel = IVLVariables.GetDoctorDetails();
                 cloudModel.LoginModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
                 cloudModel.LoginModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_LOGIN_URL.val;
 

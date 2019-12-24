@@ -29,10 +29,13 @@ namespace Cloud_Models.Models
         public int patientID;
         public int reportID;
         public int cloudID;
+        public DoctorDetailsForUploadModel DoctorDetailsForUploadModel;
         public InboxAnalysisStatusModel()
         {
             RightEyeDetails = new List<ImageAnalysisResultModel>();
             LeftEyeDetails = new List<ImageAnalysisResultModel>();
+            DoctorDetailsForUploadModel = new DoctorDetailsForUploadModel();
+
         }
 
 

@@ -16,6 +16,9 @@ namespace Cloud_Models.Models
         public int reportID;
         public int cloudID;
         public int ImageID;
+
+        public DoctorDetailsForUploadModel DoctorDetailsForUploadModel;
+
         public Cookie LoginCookie;
 
         public LoginModel LoginModel;
@@ -42,6 +45,8 @@ namespace Cloud_Models.Models
         public AnalysisFlowResponseModel AnalysisFlowResponseModel;
         public CloudModel()
         {
+            DoctorDetailsForUploadModel = new DoctorDetailsForUploadModel();
+
             LoginModel = new LoginModel();
             CreateAnalysisModel = new CreateAnalysisModel();
             UploadModel = new UploadModel();
