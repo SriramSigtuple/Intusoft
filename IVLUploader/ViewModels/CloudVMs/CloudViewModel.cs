@@ -293,8 +293,6 @@ namespace IntuUploader.ViewModels
                 {
                     if (doctorComments["message"].ToString().Contains("REJECT-FUNDUS") && doctorComments["message"]["REJECT-FUNDUS"].Last.HasValues)
                         RejectComments += doctorComments["message"]["REJECT-FUNDUS"].Last["description"].ToString();
-                    else
-                    {
                         if (doctorComments["message"]["DR-RE"].Last.HasValues)
                             RightEyeComments += " DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString();
                         if (doctorComments["message"]["GLAUCOMA-RE"].Last.HasValues)
@@ -309,7 +307,6 @@ namespace IntuUploader.ViewModels
                             LeftEyeComments += " Glaucoma - " + doctorComments["message"]["GLAUCOMA-LE"].Last["description"].ToString();
                         if (doctorComments["message"]["AMD-LE"].Last.HasValues)
                             LeftEyeComments += " AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
-                    }
 
                 }
                 StartAnalysisFlow();
