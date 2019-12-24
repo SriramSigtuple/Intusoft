@@ -196,6 +196,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_app_1", "test_app_1\te
 		{EC598344-1250-401C-804F-609C138FCA68} = {EC598344-1250-401C-804F-609C138FCA68}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyAppData", "CopyAppData\CopyAppData.csproj", "{EF4A1ADC-BDDE-4FC8-BD70-90332751933D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -362,6 +364,10 @@ Global
 		{6EA0CCC8-A8E5-42DF-8489-F4CDB16DDEC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EA0CCC8-A8E5-42DF-8489-F4CDB16DDEC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EA0CCC8-A8E5-42DF-8489-F4CDB16DDEC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4A1ADC-BDDE-4FC8-BD70-90332751933D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4A1ADC-BDDE-4FC8-BD70-90332751933D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4A1ADC-BDDE-4FC8-BD70-90332751933D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4A1ADC-BDDE-4FC8-BD70-90332751933D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

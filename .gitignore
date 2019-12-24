@@ -501,3 +501,5 @@ IVLConfiguration/bin/
 /REST_helper/bin/
 /test_app_1/bin/
 /test_app_1/obj/
+/CopyAppData/bin/
+/CopyAppData/obj/

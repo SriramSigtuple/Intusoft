@@ -911,6 +911,7 @@ copy "$(SolutionDir)\ImageListView\bin\$(Configuration)\ImageListView.dll" "$(Ta
 copy "$(ProjectDir)Resources\Nlog.config" "$(TargetDir)"
 xcopy "$(SolutionDir)SQLs\*.*" "$(TargetDir)SQLs" /Y /I /E
 xcopy /s/y "$(SolutionDir)CreateOrAlterDB\bin\$(Configuration)\CreateOrAlterDB.exe" "$(TargetDir)" 
+xcopy /s/y "$(SolutionDir)CopyAppData\bin\$(Configuration)\CopyAppData.exe" "$(TargetDir)" 
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
