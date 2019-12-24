@@ -3215,7 +3215,10 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
             reportDic.Add("$MRN", patIdentifier.value);
             reportDic.Add("$Gender", p.gender);
-            //reportDic.Add("$Signature",)
+            reportDic.Add("$Signature", @"ImageResources\LogoImageResources\signature_" + inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorIndex.ToString() + ".jpg");
+            reportDic.Add("$Specalist", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorName);
+            reportDic.Add("$SpecalistQualification", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorQualifications);
+            reportDic.Add("$SpecalistHospital", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.HospitalName);
             visit visit = NewDataVariables._Repo.GetById<visit>(inboxAnalysisStatusModel.visitID);
             List<string> currentReportImageFiles =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.value).ToList();
             List<string> maskSettings =   NewDataVariables._Repo.GetByCategory<eye_fundus_image>("visit", visit).ToList().Select(x=>x.maskSetting).ToList();
