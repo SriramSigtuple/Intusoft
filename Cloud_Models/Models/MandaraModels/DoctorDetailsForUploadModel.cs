@@ -11,14 +11,14 @@ namespace Cloud_Models.Models
   public class DoctorDetailsForUploadModel
     {
         public int DoctorIndex;
-        public int DoctorID;
+        public string DoctorID;
         public string DoctorName;
         public string DoctorQualifications;
         public string HospitalName;
         public string Email;
         public DoctorDetailsForUploadModel()
         {
-            DoctorID = 0;
+            DoctorID = string.Empty;
             DoctorName = string.Empty;
             DoctorQualifications = string.Empty;
             HospitalName = string.Empty;

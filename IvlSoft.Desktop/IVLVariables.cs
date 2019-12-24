@@ -193,6 +193,7 @@ namespace INTUSOFT.Desktop
             var info = propertyInfos[(indx * 3) - 1];
             var emailInfo = propertyInfos[(indx * 3) - 2];
             var doctorInfo = propertyInfos[(indx * 3) - 3];
+            doctorDetails.DoctorID = (info.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
             var doctorName = (doctorInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
             doctorDetails.Email = (emailInfo.GetValue(IVLVariables.CurrentSettings.DoctorSettings) as IVLControlProperties).val;
 

@@ -3439,7 +3439,7 @@ namespace INTUSOFT.Desktop.Forms
 
                 cloudModel.GetAnalysisResultModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
-                cloudModel.DoctorApprovalModel.reviewerId = IVLVariables.defaultDoctorId;
+                cloudModel.DoctorApprovalModel.reviewerId = cloudModel.DoctorDetailsForUploadModel.DoctorID;
                 cloudModel.DoctorApprovalModel.URL_Model.API_URL_Start_Point = IVLVariables.CurrentSettings.CloudSettings.API_ANALYSES.val;
                 cloudModel.DoctorApprovalModel.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
 
