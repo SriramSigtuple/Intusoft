@@ -164,7 +164,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
         {
             _HeaderText = new IVLControlProperties();
             _HeaderText.name = "HeaderText";
-            _HeaderText.val = "";
+            _HeaderText.val = "Sigtuple Technologies Pvt Ltd.";
             _HeaderText.type = "string";
             _HeaderText.control = "System.Windows.Forms.TextBox";
             _HeaderText.text = "Header Text";

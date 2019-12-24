@@ -31,7 +31,7 @@ namespace CopyAppData
             Console.WriteLine($"Destination Directory ={destDirectoryInfo.FullName}");
             if (!destDirectoryInfo.Exists)
                 destDirectoryInfo.Create();
-            FileInfo[] fileInfos = srcDirectoryInfo.GetFiles("*.*");
+            FileInfo[] fileInfos = srcDirectoryInfo.GetFiles();
             if(fileInfos.Any())
             {
                 FileInfo[] destfileInfos = destDirectoryInfo.GetFiles();

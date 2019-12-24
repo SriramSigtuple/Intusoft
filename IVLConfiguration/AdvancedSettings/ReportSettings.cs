@@ -257,7 +257,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
 
             Address1 = new IVLControlProperties();
             Address1.name = "Address1";
-            Address1.val = " ";
+            Address1.val = " L-172, Sector - 6, HSR Layout";
             Address1.type = "string";
             Address1.control = "System.Windows.Forms.TextBox";
             Address1.text = "Address1";
@@ -265,7 +265,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
 
             Address2 = new IVLControlProperties();
             Address2.name = "Address2";
-            Address2.val = " ";
+            Address2.val = " Bangalore - 560102, Email - info@sigtuple.com";
             Address2.type = "string";
             Address2.control = "System.Windows.Forms.TextBox";
             Address2.text = "Address2";
