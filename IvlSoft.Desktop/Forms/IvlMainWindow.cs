@@ -3261,10 +3261,10 @@ namespace INTUSOFT.Desktop.Forms
                     {
                         var imageFilePath = Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item);
 
-                        if (rightModel[0].ImageName.Contains("-RE-") && !leftEyeImages.Any())
+                        if (rightModel[0].ImageName.Contains("-RE-") && !rightEyeImages.Any())
                         {
 
-                            leftEyeImages.Add(imageFilePath);
+                            rightEyeImages.Add(imageFilePath);
                             actualImageNames.Add("OD 1");
                             actualImageFiles.Add(Path.Combine(IVLVariables.CurrentSettings.ImageStorageSettings._LocalProcessedImagePath.val, item));
                             actualMaskSettings.Add(maskSettings[count]);
