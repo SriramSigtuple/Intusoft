@@ -1086,15 +1086,16 @@ namespace INTUSOFT.Desktop.Forms
                     if (changedCloudAnalysisReports.Any())
                         UpdateCloudFiles(changedCloudAnalysisReports);
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(f=>
                         {
-                         if (!imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
+                         if (IVLVariables.pageDisplayed == PageDisplayed.Image && !imaging_UC.isLiveScreen)// && this.WindowState == FormWindowState.Minimized)
                     {
                         Args arg = new Args();
                         _eventHandler.Notify(_eventHandler.RefreshExistingReport, arg);
                     }
 
-                }));
+                }
+                    //));
                     
                    
                     isInboxCloudReportsBusy = false;
