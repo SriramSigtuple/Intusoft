@@ -81,7 +81,7 @@ namespace REST_Helper.Utilities
                 client.DefaultRequestHeaders.Add("checksum", keyValuePairs["checksum"].ToString());
                 // Setting of Content Type to application/json or multipart/form-data
                 httpRequestMessage.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(model.ContentType);
-
+                Stream stream = null;
                 if (model.BodyMessageType != "raw")
                 {
                     form = new MultipartFormDataContent();
@@ -101,7 +101,7 @@ namespace REST_Helper.Utilities
                         {
 
                             FileInfo finf = (FileInfo)item.Value;
-                            var stream = new FileStream(finf.FullName, FileMode.Open);
+                            stream = new FileStream(finf.FullName, FileMode.Open);
 
                             HttpContent  content = new StreamContent(stream);
                             content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
@@ -110,6 +110,7 @@ namespace REST_Helper.Utilities
                                 FileName = finf.Name
                             };
                             form.Add(content, "image");
+                            
                         }
                            
 
@@ -125,6 +126,11 @@ namespace REST_Helper.Utilities
                             response = await client.SendAsync(httpRequestMessage);
                             else
                             response = await client.PostAsync(model.URL, form);
+                            if (stream != null)
+                            {
+                                stream.Close();
+                                stream.Dispose();
+                            }
                             break;
                         }
                     case "GET":
@@ -209,7 +215,7 @@ namespace REST_Helper.Utilities
             byte[] bytes = new byte[fs.Length];
             fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
             fs.Close();
-            
+            fs.Dispose();
 
             return bytes;
         }

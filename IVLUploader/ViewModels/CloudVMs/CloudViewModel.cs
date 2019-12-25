@@ -125,9 +125,9 @@ namespace IntuUploader.ViewModels
 
                 if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
                     Login();
-                else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
+                else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus || ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode != System.Net.HttpStatusCode.OK)
                     CreateAnalysis();
-                else if (!ActiveCloudModel.UploadModel.CompletedStatus)
+                else if (!ActiveCloudModel.UploadModel.CompletedStatus || ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode != System.Net.HttpStatusCode.OK)
                     UploadFiles2Analysis();
                 else if (!ActiveCloudModel.InitiateAnalysisModel.CompletedStatus)
                     StartAnalysis();
