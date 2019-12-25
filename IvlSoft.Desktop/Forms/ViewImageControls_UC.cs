@@ -3412,9 +3412,13 @@ namespace INTUSOFT.Desktop.Forms
                 cloudModel.UploadModel.checksums = new string[currentReportImageFiles.Length];
                 cloudModel.UploadModel.relative_path = new string[currentReportImageFiles.Length];
                 cloudModel.UploadModel.eyeSideArr = currentReportLabelNames;
+                var directoryName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+               DirectoryInfo directoryInfo =  Directory.CreateDirectory(Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.CloudImagesDir, AnalysisType.Fundus), directoryName));
                 for (int i = 0; i < currentReportImageFiles.Length; i++)
                 {
                     FileInfo ImgFinf = new FileInfo(currentReportImageFiles[i]);
+                    cloudModel.UploadModel.images[i] = Path.Combine(directoryInfo.FullName, ImgFinf.Name);
+                    ImgFinf.CopyTo(cloudModel.UploadModel.images[i]);
                    eye_fundus_image eye =  NewDataVariables.GetCurrentPat().observations.Where(x => x.value == ImgFinf.Name).ToList()[0];
                     if (string.IsNullOrEmpty(eye.checkSum))
                     {
@@ -3453,7 +3457,7 @@ namespace INTUSOFT.Desktop.Forms
 
                 cloudModel.GetAnalysisPostDoctorApproval.URL_Model.API_URL = IVLVariables.CurrentSettings.CloudSettings.API_URL.val;
                 var cloudModelJson = JsonConvert.SerializeObject(cloudModel, Newtonsoft.Json.Formatting.Indented);
-                var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus), DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".json");
+                var outboxFilePath = Path.Combine(IVLVariables.GetCloudDirPath(DirectoryEnum.OutboxDir,AnalysisType.Fundus), directoryName + ".json");
                 File.WriteAllText(outboxFilePath, cloudModelJson);
                 cloudAnalysisReport.fileName = new FileInfo(outboxFilePath).Name;
                 NewDataVariables._Repo.Update(cloudAnalysisReport);

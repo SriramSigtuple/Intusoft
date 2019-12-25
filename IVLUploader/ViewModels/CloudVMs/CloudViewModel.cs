@@ -658,6 +658,8 @@ namespace IntuUploader.ViewModels
                 else
                 {
                     ActiveCloudModel.UploadModel.CompletedStatus = true;
+                    DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.CloudImagesDir, AnalysisType), ActiveFnf.Name.Split('.')[0]));
+                    directoryInfo.Delete(true);
                     nextDirectory = DirectoryEnum.SentItemsDir;
                     IsMove2NextDir = true;
                     // StartAnalsysisFlow();

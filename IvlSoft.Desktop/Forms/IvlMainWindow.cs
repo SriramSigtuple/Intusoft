@@ -565,6 +565,11 @@ namespace INTUSOFT.Desktop.Forms
 
             if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus)))
                 Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.ProcessedDir, AnalysisType.Fundus));
+
+
+            if (!Directory.Exists(IVLVariables.GetCloudDirPath(DirectoryEnum.CloudImagesDir, AnalysisType.Fundus)))
+                Directory.CreateDirectory(IVLVariables.GetCloudDirPath(DirectoryEnum.CloudImagesDir, AnalysisType.Fundus));
+
             #endregion
 
             #region Create QI Analysis Directories
@@ -3036,6 +3041,10 @@ namespace INTUSOFT.Desktop.Forms
                 if (inboxTimer != null)
                 {
                     inboxTimer.Change(-1, -1);
+                    while(imaging_UC.GetGridPopulatingStatus())
+                    {
+                        ;
+                    }
                     UpdateCloudReport2DB();
                 }
                 //UpdateQIAnalysis2DB();

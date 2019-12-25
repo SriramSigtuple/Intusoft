@@ -14,6 +14,6 @@ namespace Common.Enums
     public enum QIStatus { NotAnalysed = 0, Initialised = 1, Uploading, Processing, Gradable, NonGradable, Failed };
 
     public enum AnalysisType { QI, Fundus }
-    public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir };
+    public enum DirectoryEnum { OutboxDir, ActiveDir, LoginDir, CreateAnalysis, UploadDir, StartAnalysisDir, SentItemsDir, ProcessedDir, InboxDir, ReadDir,CloudImagesDir };
 }
 

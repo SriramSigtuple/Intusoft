@@ -179,6 +179,9 @@ namespace INTUSOFT.Desktop
                 case DirectoryEnum.StartAnalysisDir:
                     dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.StartAnalysisPath.val);
                     break;
+                case DirectoryEnum.CloudImagesDir:
+                    dirName = Path.Combine(analysisName, "CloudImages");
+                    break;
             }
             return Path.Combine(CurrentSettings.CloudSettings.CloudPath.val, dirName);
 

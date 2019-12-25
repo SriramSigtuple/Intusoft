@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace IntuUploader
 {
-    public enum DirectoryEnum {OutboxDir,ActiveDir,LoginDir,CreateAnalysis,UploadDir,StartAnalysisDir,SentItemsDir,ProcessedDir,InboxDir,ReadDir };
+    public enum DirectoryEnum {OutboxDir,ActiveDir,LoginDir,CreateAnalysis,UploadDir,StartAnalysisDir,SentItemsDir,ProcessedDir,InboxDir,ReadDir,CloudImagesDir };
 
     public enum AnalysisType { QI, Fundus }
 

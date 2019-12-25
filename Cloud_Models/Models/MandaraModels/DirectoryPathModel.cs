@@ -20,6 +20,7 @@ namespace Cloud_Models.Models
         public  string inboxStr = "Inbox";
         public  string ReadStr = "Read";
         public  string ProcessedStr = "Processed";
+        public string CloudImagesStr = "CloudImages";
         public  string CloudPath = @"C:\IVLImageRepo\Cloud";
 
         

@@ -83,18 +83,21 @@ namespace IntuUploader
                 case DirectoryEnum.ReadDir:
                     dirName = Path.Combine(analysisName,GlobalVariables.CloudPaths.ReadStr);
                     break;
-                //case DirectoryEnum.LoginDir:
-                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.LoginPath.val);
-                //    break;
-                //case DirectoryEnum.CreateAnalysis:
-                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.CreateAnalysisPath.val);
-                //    break;
-                //case DirectoryEnum.UploadDir:
-                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.UploadPath.val);
-                //    break;
-                //case DirectoryEnum.StartAnalysisDir:
-                //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.StartAnalysisPath.val);
-                //    break;
+                case DirectoryEnum.CloudImagesDir:
+                    dirName = Path.Combine(analysisName, GlobalVariables.CloudPaths.CloudImagesStr);
+                    break;
+                    //case DirectoryEnum.LoginDir:
+                    //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.LoginPath.val);
+                    //    break;
+                    //case DirectoryEnum.CreateAnalysis:
+                    //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.CreateAnalysisPath.val);
+                    //    break;
+                    //case DirectoryEnum.UploadDir:
+                    //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.UploadPath.val);
+                    //    break;
+                    //case DirectoryEnum.StartAnalysisDir:
+                    //    dirName = Path.Combine(CurrentSettings.CloudSettings.ActiveDirPath.val, CurrentSettings.CloudSettings.StartAnalysisPath.val);
+                    //    break;
             }
             return Path.Combine(GlobalVariables.CloudPaths.CloudPath, dirName);
 
