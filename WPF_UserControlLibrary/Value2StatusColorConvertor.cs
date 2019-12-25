@@ -67,9 +67,15 @@ namespace Intusoft.WPF.UserControls.Convertor
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var cloudReport = (CloudAnalysisReport)value;
-            var failureMessage = string.IsNullOrEmpty(cloudReport.failureMessage) ? "" : cloudReport.failureMessage;
-            return Enum.GetName(typeof(CloudReportStatus),(int)cloudReport.cloudAnalysisReportStatus) + " " + failureMessage ;
+            if (value != null)
+            {
+                var cloudReport = (CloudAnalysisReport)value;
+                var failureMessage = string.IsNullOrEmpty(cloudReport.failureMessage) ? "" : cloudReport.failureMessage;
+                return Enum.GetName(typeof(CloudReportStatus), (int)cloudReport.cloudAnalysisReportStatus) + " " + failureMessage;
+            }
+            return string.Empty;
+
+
 
         }
 

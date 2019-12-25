@@ -34,6 +34,7 @@ namespace REST_Helper.Utilities
             // reference https://stackoverflow.com/questions/19954287/how-to-upload-file-to-server-with-http-post-multipart-form-data
             //reference https://stackoverflow.com/questions/10679214/how-do-you-set-the-content-type-header-for-an-httpclient-request
 
+            Stream stream = null;
             try
             {
                 System.Net.ServicePointManager.Expect100Continue = false;
@@ -81,7 +82,6 @@ namespace REST_Helper.Utilities
                 client.DefaultRequestHeaders.Add("checksum", keyValuePairs["checksum"].ToString());
                 // Setting of Content Type to application/json or multipart/form-data
                 httpRequestMessage.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue(model.ContentType);
-                Stream stream = null;
                 if (model.BodyMessageType != "raw")
                 {
                     form = new MultipartFormDataContent();
@@ -162,6 +162,11 @@ namespace REST_Helper.Utilities
             }
             catch (Exception ex)
             {
+                if (stream != null)
+                {
+                    stream.Close();
+                    stream.Dispose();
+                }
                 Response_CookieModel r = new Response_CookieModel();
                 r.responseBody = "Check internet Connection";
                 responseMsg = JsonConvert.SerializeObject(r);

@@ -185,10 +185,17 @@ namespace IntuUploader.ViewModels
                 }
                 else if (activeFileCloudVM == null)
                 {
+                    StartStopSentItemsTimer(false);
+
                     GetFileFromActiveDir(DirectoryEnum.ActiveDir);
                 }
                 else if (!activeFileCloudVM.IsBusy)// == null)
+                {
+                    StartStopSentItemsTimer(false);
+
                     GetFileFromActiveDir(DirectoryEnum.ActiveDir);
+
+                }
 
             }
 
@@ -316,6 +323,7 @@ namespace IntuUploader.ViewModels
         {
             if (isStart)
             {
+                if(!activeFileCloudVM.IsBusy)
                 OutboxFileChecker.Change(0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));
                 //OutboxFileChecker = new System.Threading.Timer(OutBoxTimerCallback, null, 0, (int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// new Timer((int)(GlobalVariables.UploaderSettings.OutboxTimerInterval * 1000));// 
 

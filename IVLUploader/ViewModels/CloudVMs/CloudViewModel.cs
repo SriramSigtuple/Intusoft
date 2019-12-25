@@ -125,9 +125,9 @@ namespace IntuUploader.ViewModels
 
                 if (ActiveCloudModel.LoginCookie == null || ActiveCloudModel.LoginCookie.Expires < DateTime.Now)
                     Login();
-                else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus || ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode != System.Net.HttpStatusCode.OK)
+                else if (!ActiveCloudModel.CreateAnalysisModel.CompletedStatus)
                     CreateAnalysis();
-                else if (!ActiveCloudModel.UploadModel.CompletedStatus || ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode != System.Net.HttpStatusCode.OK)
+                else if (!ActiveCloudModel.UploadModel.CompletedStatus)
                     UploadFiles2Analysis();
                 else if (!ActiveCloudModel.InitiateAnalysisModel.CompletedStatus)
                     StartAnalysis();
@@ -199,7 +199,9 @@ namespace IntuUploader.ViewModels
 
                     //startStopEvent(true);
                     // this.IsBusy = false; ;
-                    StartAnalysisFlow();
+                    IsMove2NextDir = false;
+
+                    //StartAnalysisFlow();
 
                 }
                 else
@@ -234,7 +236,8 @@ namespace IntuUploader.ViewModels
             {
 
                 ActiveCloudModel.DoctorApprovalModel.CompletedStatus = true;
-                StartAnalysisFlow();
+                IsMove2NextDir = false;
+                //StartAnalysisFlow();
             }
             else
             {
@@ -267,7 +270,8 @@ namespace IntuUploader.ViewModels
             if (ActiveCloudModel.AnalysisFlowResponseModel.NotifyEmail2DoctorResponse.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 ActiveCloudModel.NotifyEmailModel.CompletedStatus = true;
-                StartAnalysisFlow();
+                        IsMove2NextDir = false;
+                //StartAnalysisFlow();
             }
             else
             {
@@ -315,7 +319,8 @@ namespace IntuUploader.ViewModels
                 }
                 else
                     RejectComments = "No comment found";
-                StartAnalysisFlow();
+                IsMove2NextDir = false;
+                //StartAnalysisFlow();
             }
             else
             {
@@ -356,7 +361,8 @@ namespace IntuUploader.ViewModels
 
                             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.GetAnalysisResultModel, Formatting.Indented));
                             ActiveCloudModel.GetAnalysisModel.CompletedStatus = true;
-                            StartAnalysisFlow();
+                            IsMove2NextDir = false;
+                            //StartAnalysisFlow();
                         }
                         else if ((string)analysisStatus_JObject["status"] == "failure")
                         {
@@ -438,7 +444,8 @@ namespace IntuUploader.ViewModels
 
                             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.GetAnalysisPostDoctorApproval, Formatting.Indented));
                             ActiveCloudModel.GetAnalysisPostDoctorApproval.CompletedStatus = true;
-                            StartAnalysisFlow();
+                            IsMove2NextDir = false;
+                            //StartAnalysisFlow();
                         }
                         else if ((string)analysisStatus_JObject["status"] == "failure")
                         {
@@ -501,7 +508,8 @@ namespace IntuUploader.ViewModels
                     {
                         ActiveCloudModel.LoginCookie = ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse.Cookie;
                         ActiveCloudModel.LoginModel.CompletedStatus = true;
-                        StartAnalysisFlow();
+                        IsMove2NextDir = false;
+                        //StartAnalysisFlow();
                     }
                     else
                     {
@@ -564,8 +572,8 @@ namespace IntuUploader.ViewModels
                 if (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     ActiveCloudModel.CreateAnalysisModel.CompletedStatus = (ActiveCloudModel.AnalysisFlowResponseModel.CreateAnalysisResponse.StatusCode == System.Net.HttpStatusCode.OK);
-
-                    StartAnalysisFlow();
+                    IsMove2NextDir = false;
+                    //StartAnalysisFlow();
 
                 }
                 else
@@ -627,24 +635,38 @@ namespace IntuUploader.ViewModels
 
                     kvp.Add("slide_id", ActiveCloudModel.UploadModel.slide_id);
                     kvp.Add("upload_type", ActiveCloudModel.UploadModel.upload_type);
-
-                    for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
+                    //if(ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList.Any())
                     {
+                        //if()
                         response = ActiveUploadImagesViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, kvp).Result;
-                        logger.Info(response.responseBody);
-                        logger.Info(response.StatusCode);
-                        logger.Info(response.Cookie);
                         if (response.StatusCode != System.Net.HttpStatusCode.OK)
                         {
-                            response = ActiveUploadImagesViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, kvp).Result;
+                            for (int j = 0; j < ActiveCloudModel.UploadModel.RetryCount; j++)
+                            {
+                                logger.Info(response.responseBody);
+                                logger.Info(response.StatusCode);
+                                logger.Info(response.Cookie);
+                                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    ActiveCloudModel.UploadModel.Body = string.Empty;
+                                    response = ActiveUploadImagesViewModel.InitiateRestCall(ActiveCloudModel.LoginCookie, kvp).Result;
+                                }
+                                else
+                                {
+                                    ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList.Add(response);
+                                    break;
+                                }
+
+                            }
                         }
                         else
                         {
                             ActiveCloudModel.AnalysisFlowResponseModel.UploadResponseList.Add(response);
-                            break;
+                            //IsMove2NextDir = false;
                         }
-
                     }
+                   
+
 
 
                 }
