@@ -87,6 +87,7 @@ namespace IntuUploader.ViewModels
             ActiveDoctorCommentsViewModel = new AnalysisViewModel(ActiveCloudModel.DoctorCommentsModel);
             RightEyeComments = string.Empty;
             LeftEyeComments = string.Empty;
+            RejectComments = string.Empty;
             //ac = new AnalysisViewModel(ActiveCloudModel.DoctorApprovalModel);
             //ActiveCloudModel.AnalysisFlowResponseModel = new AnalysisFlowResponseModel();
             //SetValue = new RelayCommand(param=> SetValueMethod(param));
@@ -292,7 +293,8 @@ namespace IntuUploader.ViewModels
                 if(doctorComments["message"].HasValues)
                 {
                     if (doctorComments["message"].ToString().Contains("REJECT-FUNDUS") && doctorComments["message"]["REJECT-FUNDUS"].Last.HasValues)
-                        RejectComments += doctorComments["message"]["REJECT-FUNDUS"].Last["description"].ToString();
+                        RejectComments = doctorComments["message"]["REJECT-FUNDUS"].Last["description"].ToString();
+
                     if (doctorComments["message"]["DR-RE"].Last.HasValues)
                         RightEyeComments += " DR - " + doctorComments["message"]["DR-RE"].Last["description"].ToString() + ", ";
                     if (doctorComments["message"]["GLAUCOMA-RE"].Last.HasValues)
@@ -312,9 +314,7 @@ namespace IntuUploader.ViewModels
                         LeftEyeComments.TrimEnd(',');
                 }
                 else
-                {
-                    RejectComments = "No Comment found";
-                }
+                    RejectComments = "No comment found";
                 StartAnalysisFlow();
             }
             else
