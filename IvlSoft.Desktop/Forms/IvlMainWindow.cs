@@ -1399,6 +1399,7 @@ namespace INTUSOFT.Desktop.Forms
         {
             if (inboxTimer != null)
             {
+                //NHibernateHelper_MySQL.CloseSession();
                 while (isInboxCloudReportsBusy)
                 {
                     ;
@@ -1411,7 +1412,7 @@ namespace INTUSOFT.Desktop.Forms
 
                         // pendingCloudAnalysisReports.Remove(item);
                     }
-                    Thread.Sleep(500);
+                    //Thread.Sleep(500);
 
                 }
             }

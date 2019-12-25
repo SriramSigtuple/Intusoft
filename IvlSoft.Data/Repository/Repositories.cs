@@ -50,7 +50,7 @@ namespace INTUSOFT.Data.Repository
                 }
                 catch (Exception ex)
                 {
-                    NHibernateHelper_MySQL.CloseSession();
+                    //NHibernateHelper_MySQL.CloseSession();
 
                     ExceptionLogWriter.WriteLog(ex, Exception_Log);
                     return false;
@@ -63,8 +63,10 @@ namespace INTUSOFT.Data.Repository
         {
            // lock (this)
             {
+                var returnVal = false;
                 try
                 {
+
                     NHibernateHelper_MySQL.OpenSession();
                     using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
                     {
@@ -72,14 +74,18 @@ namespace INTUSOFT.Data.Repository
                         transaction.Commit();
                     }
                     //NHibernateHelper_MySQL.CloseSession();
-                    return true;
+                    returnVal = true;
                 }
                 catch (Exception ex)
                 {
-                    NHibernateHelper_MySQL.CloseSession();
                     ExceptionLogWriter.WriteLog(ex, Exception_Log);
-                    return false;
+                    returnVal = false;
                 }
+                finally
+                {
+                   // NHibernateHelper_MySQL.CloseSession();
+                }
+                return returnVal;
             }
            
         }
