@@ -60,7 +60,7 @@ namespace INTUSOFT.Data.Repository
 
             //    throw;
             //}
-            //SessionFactory.Close();
+            SessionFactory.Close();
             //SessionFactory = null;
         }
 

@@ -84,6 +84,11 @@ namespace INTUSOFT.Data
             {
                 isDatabaseConnected = false;
             }
+            finally
+            {
+                NHibernateHelper_MySQL.CloseSession();
+
+            }
             return isDatabaseConnected;
         }
 
