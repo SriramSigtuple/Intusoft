@@ -1397,8 +1397,13 @@ namespace INTUSOFT.Desktop.Forms
 
         public  void UpdateCloudReport2DB()
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(m_DelegateUpdateCloudValues);
+            }
             if (inboxTimer != null)
             {
+                
                 //NHibernateHelper_MySQL.CloseSession();
                 while (isInboxCloudReportsBusy)
                 {
