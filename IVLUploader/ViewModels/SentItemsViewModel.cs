@@ -212,11 +212,11 @@ namespace IntuUploader.ViewModels
             }
         }
 
-        private  void GetFileFromActiveDir(FileInfo activeDirFileInfo)
+        private void GetFileFromActiveDir(FileInfo activeDirFileInfo)
         {
-             
-                try
-                {
+
+            try
+            {
                 if (File.Exists(activeDirFileInfo.FullName))
                 {
                     if (!activeFileCloudVM.IsBusy)
@@ -239,14 +239,17 @@ namespace IntuUploader.ViewModels
 
             }
             catch (Exception ex)
-                {
-                    logger.Info(ex);
+            {
+                logger.Info(ex);
                 exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
 
                 activeFileCloudVM.IsBusy = false;
-                }
+            }
+            finally
+            {
+                StartStopSentItemsTimer(true);
+            }
 
-            
 
         }
 
