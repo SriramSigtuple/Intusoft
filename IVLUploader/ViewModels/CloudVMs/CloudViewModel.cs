@@ -309,8 +309,7 @@ namespace IntuUploader.ViewModels
                         RightEyeComments += "AMD - " + doctorComments["message"]["AMD-RE"].Last["description"].ToString();
                     if (RightEyeComments.EndsWith(","))
                         RightEyeComments.TrimEnd(',');
-                    if (string.IsNullOrEmpty(RightEyeComments))
-                        RightEyeComments = noCommentFoundStr;
+                    
 
                     if (doctorComments["message"].ToString().Contains("DR-LE") && doctorComments["message"]["DR-LE"].Last.HasValues)
                         LeftEyeComments += " DR - " + doctorComments["message"]["DR-LE"].Last["description"].ToString() + ", ";
@@ -320,12 +319,15 @@ namespace IntuUploader.ViewModels
                         LeftEyeComments += "AMD - " + doctorComments["message"]["AMD-LE"].Last["description"].ToString();
                     if (LeftEyeComments.EndsWith(","))
                         LeftEyeComments.TrimEnd(',');
-                    if (string.IsNullOrEmpty(LeftEyeComments))
-                        LeftEyeComments = noCommentFoundStr;
+                    
                 }
                 else
                     RejectComments = noCommentFoundStr;
                 //IsMove2NextDir = false;
+                if (string.IsNullOrEmpty(RightEyeComments))
+                    RightEyeComments = noCommentFoundStr;
+                if (string.IsNullOrEmpty(LeftEyeComments))
+                    LeftEyeComments = noCommentFoundStr;
                 StartAnalysisFlow();
             }
             else
