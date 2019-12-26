@@ -3947,7 +3947,7 @@ namespace INTUSOFT.Desktop.Forms
                     string version = fvi.ProductName;
                     string firmwareVer = IVLVariables.ivl_Camera.camPropsHelper.GetFirmwareVersion();
                     //Common.CustomMessageBox.Show(IVLVariables.LangResourceManager.GetString( "Software_Name + " " + IVLVariables.LangResourceManager.GetString( "Version_Text + " : " + version + Environment.NewLine + Environment.NewLine + IVLVariables.LangResourceManager.GetString( "FirmwareVersion_Text + " : " + IntucamBoardCommHelper.returnVal, IVLVariables.LangResourceManager.GetString( "Information_Text, Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information);
-                    string message = Environment.NewLine + IVLVariables.LangResourceManager.GetString("Software_Text", IVLVariables.LangResourceCultureInfo) + " : " + version +" (" + con.SoftwareReleaseDate +")"+ Environment.NewLine + IVLVariables.LangResourceManager.GetString("Firmware_Text" , IVLVariables.LangResourceCultureInfo) + " : "+ firmwareVer ;
+                    string message = Environment.NewLine + IVLVariables.LangResourceManager.GetString("Software_Text", IVLVariables.LangResourceCultureInfo) + " : " + version +  Environment.NewLine + IVLVariables.LangResourceManager.GetString("Firmware_Text" , IVLVariables.LangResourceCultureInfo) + " : "+ firmwareVer ;
                     Common.CustomMessageBox.Show(message, IVLVariables.LangResourceManager.GetString("Version_Text", IVLVariables.LangResourceCultureInfo), Common.CustomMessageBoxButtons.OK, Common.CustomMessageBoxIcon.Information, 442, 150);
                 }
             }
