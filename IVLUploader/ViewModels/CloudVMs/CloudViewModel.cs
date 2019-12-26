@@ -517,7 +517,7 @@ namespace IntuUploader.ViewModels
                 else
                 {
 
-                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Credentials");
+                    ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.LoginResponse, "Login", "Wrong Credentials or Installation ID");
 
                 }
             }

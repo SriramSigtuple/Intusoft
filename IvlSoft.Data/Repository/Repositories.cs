@@ -78,6 +78,7 @@ namespace INTUSOFT.Data.Repository
 
                     using (ITransaction transaction = NHibernateHelper_MySQL.hibernateSession.BeginTransaction())
                     {
+                        _genericObject =  (T)NHibernateHelper_MySQL.hibernateSession.Merge(_genericObject);
                         NHibernateHelper_MySQL.hibernateSession.Update(_genericObject);
                         transaction.Commit();
                     }
