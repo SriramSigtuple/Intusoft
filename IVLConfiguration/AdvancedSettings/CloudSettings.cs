@@ -161,7 +161,7 @@ namespace INTUSOFT.Configuration.AdvanceSettings
         {
             API_URL = new IVLControlProperties();
             API_URL.name = "API_URL";
-            API_URL.val = "https://ffeddb-mandara-api.sigtuple.com/mandara/api/";
+            API_URL.val = "";
             API_URL.type = "string";
             API_URL.control = "System.Windows.Forms.TextBox";
             API_URL.text = "API URL";
