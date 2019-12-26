@@ -1509,6 +1509,8 @@ namespace INTUSOFT.Desktop.Forms
                             else
                             {
                                 string defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
+                                if(Convert.ToBoolean(IVLVariables.CurrentSettings.ReportSettings.IsTelemedReport.val))
+                                    defaultTemplateFileName = IVLVariables.CurrentSettings.ReportSettings.DefaultTemplate.val + "_DR_" + IVLVariables.CurrentSettings.ReportSettings.ReportSize.val + ".xml";
                                 //reportDic.Add("$currentTemplate", @"ReportTemplates\Landscape\DR\Landscape_DR_A4.xml");
                                 int index = reportTemplates.FindIndex(x => x.Name == defaultTemplateFileName);//Gives the index of the changedTemplateFileName from reportTemplates
                                 if (index >= 0)

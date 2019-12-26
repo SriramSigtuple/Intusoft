@@ -1229,8 +1229,10 @@ namespace IVLReport
                             t.ForeColor = Color.FromName(i.FontColor);//this.FontColor;//
 
                         t.Multiline = IVLProps.MultiLine;
-                        //if (IVLProps.Border)
-                        t.BorderStyle = BorderStyle.FixedSingle;
+                        if (IVLProps.Border)
+                            t.BorderStyle = BorderStyle.FixedSingle;
+                        else
+                            t.BorderStyle = BorderStyle.None;
                         if (IVLProps.Binding != BindingType.None.ToString())
                             t.Tag = "$" + IVLProps.Binding;
                         if (IVLProps.Binding == BindingType.Doctor.ToString())

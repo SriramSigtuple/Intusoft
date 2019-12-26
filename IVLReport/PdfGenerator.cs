@@ -542,7 +542,7 @@ namespace IVLReport
                 double fontSize = props.Font.FontSize;
                 double widthVal = 0;
                 double y = 0;
-                if (!string.IsNullOrEmpty(props.Text))
+                //if (!string.IsNullOrEmpty(props.Text))
                 {
                     if (props.Border)
                     {
@@ -562,7 +562,8 @@ namespace IVLReport
 
                     }
                     y = originY + (double)props.YMarginDecrementValue / dpi;
-                    widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue / dpi, ref y, 0, 0, box);
+                    if (!string.IsNullOrEmpty(props.Text))
+                        widthVal = Contents.DrawText(originX - 0.12 + (double)props.MarginDecrementValue / dpi, ref y, 0, 0, box);
                     //widthVal = Contents.DrawText(pdf, props.Font.FontSize, originX - 0.12 + (double)props.MarginDecrementValue / dpi, originY + (double)props.YMarginDecrementValue / dpi, TextJustify.Left, 0, color, color, props.Text);
 
                 }
@@ -570,9 +571,9 @@ namespace IVLReport
                 {
                     //if(originY == -1)
                     originY = (MappingValue - (double)(props.Location._Y + props.Size.Height)) / dpi;
-                    if(string.IsNullOrEmpty(props.Text))
-                        Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, originY  + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
-                    else
+                    //if(string.IsNullOrEmpty(props.Text))
+                    //    Contents.DrawRectangle(originX -0.15 - (double)props.MarginDecrementValue / dpi, originY  + (double)props.YMarginDecrementValue/dpi , originWidth, originHeight, p);
+                    //else
                         Contents.DrawRectangle(originX - 0.15 - (double)props.MarginDecrementValue / dpi, originY , originWidth, originHeight, p);
                     //Contents.DrawRectangle(originX - 0.12, originY + 0.12, originWidth - 0.13, originHeight - 0.13, p);
                 }

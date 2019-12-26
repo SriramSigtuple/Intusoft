@@ -1063,12 +1063,12 @@
       </Font>
       <Size>
         <Width>444</Width>
-        <Height>18</Height>
+        <Height>14</Height>
       </Size>
       <Binding>None</Binding>
       <Location>
         <_X>391</_X>
-        <_Y>762</_Y>
+        <_Y>763</_Y>
       </Location>
       <MultiLine>true</MultiLine>
       <Border>false</Border>
@@ -1081,8 +1081,8 @@
       </RowsColumns>
       <Text>This report is meant for review and subsequent approval from a certified ophthalmologist</Text>
       <Name>TextBox6</Name>
-      <MarginDecrementValue>0</MarginDecrementValue>
-      <YMarginDecrementValue>0</YMarginDecrementValue>
+      <MarginDecrementValue>-5</MarginDecrementValue>
+      <YMarginDecrementValue>7</YMarginDecrementValue>
       <ImageMedicalName>true</ImageMedicalName>
       <TextAlign>TopLeft</TextAlign>
       <NumberOfImages>1</NumberOfImages>
