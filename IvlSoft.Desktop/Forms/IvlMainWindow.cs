@@ -1401,6 +1401,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 this.Invoke(m_DelegateUpdateCloudValues);
             }
+
             if (inboxTimer != null)
             {
                 

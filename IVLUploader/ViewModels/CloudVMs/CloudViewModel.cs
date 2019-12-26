@@ -376,16 +376,8 @@ namespace IntuUploader.ViewModels
                         else
                         {
                             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, Formatting.Indented));
-                            try
-                            {
                                 IsMove2NextDir = false;
 
-                            }
-                            catch (Exception ex)
-                            {
-                                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
-
-                            }
                         }
                     }
 
@@ -402,6 +394,8 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Info(ex.StackTrace);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisStatusResponse, "Get Analysis Result", ex.StackTrace);
+
                 exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
 
             }
@@ -458,16 +452,8 @@ namespace IntuUploader.ViewModels
                         else
                         {
                             logger.Info(JsonConvert.SerializeObject(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisPostDoctorResponse, Formatting.Indented));
-                            try
-                            {
                                 IsMove2NextDir = false;
 
-                            }
-                            catch (Exception ex)
-                            {
-                                exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
-
-                            }
                         }
                     }
                 }
@@ -483,6 +469,7 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Info(ex.StackTrace);
+                ManageFailureResponse(ActiveCloudModel.AnalysisFlowResponseModel.GetAnalysisPostDoctorResponse, ex.StackTrace);
                 exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
 
             }
@@ -674,8 +661,7 @@ namespace IntuUploader.ViewModels
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    ManageFailureResponse(response, "Upload");
-
+                    ManageFailureResponse(response, "Upload", "Failed Upload");
                 }
                 else
                 {
@@ -1133,33 +1119,7 @@ namespace IntuUploader.ViewModels
             if (response.StatusCode == 0)
             {
                 logger.Info("Internet Connection present = {GlobalVariables.isInternetPresent}");
-                StreamWriter st1 = null;
-                try
-                {
-                    IsMove2NextDir = false;
-                    //st1 =   new StreamWriter(ActiveFnf.FullName, false);
-                    //st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-
-                }
-                catch (Exception exp)
-                {
-                    logger.Error(exp);
-                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(exp));
-
-
-                }
-                finally
-                {
-                    if (st1 != null)
-                    {
-                        st1.Flush();
-                        st1.Close();
-                        st1.Dispose();
-
-                    }
-                    //startStopEvent(true);
-                    //this.IsBusy = false; ;
-                }
+                IsMove2NextDir = false;
 
 
 
@@ -1171,35 +1131,9 @@ namespace IntuUploader.ViewModels
             {
 
                 logger.Info("Retry");
-                StreamWriter st1 = null;
-                try
-                {
                     IsMove2NextDir = false;
                     //st1 = new StreamWriter(ActiveFnf.FullName, false);
                     //st1.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex);
-                    exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
-
-                }
-
-                finally
-                {
-                    if (st1 != null)
-                    {
-                        st1.Flush();
-                        st1.Close();
-                        st1.Dispose();
-                        st1.Dispose();
-
-                    }
-                    //startStopEvent(true);
-                    // this.IsBusy = false; ;
-
-                }
 
             }
             else
@@ -1237,54 +1171,23 @@ namespace IntuUploader.ViewModels
                 st.Close();
                 st.Dispose();
                 IsMove2NextDir = true;
-                // MoveFile2ProcessedDir();
-
-
-
 
             }
             catch (Exception ex)
             {
                 exceptionLog.Error(Common.Exception2StringConverter.GetInstance().ConvertException2String(ex));
-
+                IsMove2NextDir = false;
             }
             finally
             {
 
-                //if (File.Exists(ActiveFnf.FullName))
-                //    File.Delete(ActiveFnf.FullName);
 
                 st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.InboxDir, AnalysisType), ActiveFnf.Name.Split('.')[0] + "_pending"), false);
                 st.Flush();
                 st.Close();
                 st.Dispose();
-                //startStopEvent(true); 
-                //this.IsBusy = false; ;
 
             }
-        }
-        private void MoveFile2ProcessedDir()
-        {
-            try
-            {
-                if (!File.Exists(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name)))
-                {
-
-                    //StreamWriter st = new StreamWriter(Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name), false);
-                    StreamWriter st = new StreamWriter(ActiveFnf.FullName, false);
-                    st.Write(JsonConvert.SerializeObject(ActiveCloudModel, Formatting.Indented));
-                    st.Flush();
-                    st.Close();
-                    st.Dispose();
-                    File.Move(ActiveFnf.FullName, Path.Combine(GlobalMethods.GetDirPath(DirectoryEnum.ProcessedDir, AnalysisType), ActiveFnf.Name));
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-
         }
         private void isValidLoginCookie()
         {
