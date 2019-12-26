@@ -1562,8 +1562,8 @@ namespace INTUSOFT.Desktop.Forms
                         reportDic.Add("$isAnnotation", false);
                         reportDic.Add("$reportNewStatus", IVLVariables.LangResourceManager.GetString("ReportStatusNew_Label_Text", IVLVariables.LangResourceCultureInfo));
                         reportDic.Add("$reportExistingStatus", IVLVariables.LangResourceManager.GetString("ReportStatusExisting_Label_Text", IVLVariables.LangResourceCultureInfo));
-                        reportDic.Add("$CompanyLogo", @"ImageResources\LogoImageResources\CompanyLogo.png");
-                        reportDic.Add("$Signature", @"ImageResources\LogoImageResources\signature.jpg");
+                        reportDic.Add("$CompanyLogo", IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\CompanyLogo.png");
+                        reportDic.Add("$Signature", IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\signature.jpg");
                         Args arg = new Args();
                         arg["isExport"] = false;
                         if (!IVLVariables.isCommandLineArgsPresent)
@@ -3701,8 +3701,8 @@ namespace INTUSOFT.Desktop.Forms
                         UITextValues["$ExportCDRButtonToolTipText"] = IVLVariables.LangResourceManager.GetString("ExportCDRButton_ToolTipText", IVLVariables.LangResourceCultureInfo);
                         UITextValues["$ExportButtonText"] = IVLVariables.LangResourceManager.GetString("Export_Button_Text", IVLVariables.LangResourceCultureInfo);
                         UITextValues["$FileToolsGbxText"] = IVLVariables.LangResourceManager.GetString("FileTools_Gbx_Text", IVLVariables.LangResourceCultureInfo);
-                        UITextValues["$CompanyLogo"] = @"ImageResources\LogoImageResources\companyLogo.jpg";
-                        UITextValues["$HospitalLogo"] = @"ImageResources\LogoImageResources\hospitalLogo.png";
+                        UITextValues["$CompanyLogo"] = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\companyLogo.jpg";
+                        UITextValues["$HospitalLogo"] = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\hospitalLogo.png";
                         if (!UITextValues.ContainsKey("$exportReportText"))//checks if key is not  present. By Ashutosh 23-08-2017.
                             UITextValues.Add("$exportReportText", IVLVariables.LangResourceManager.GetString("Export_Report_Text", IVLVariables.LangResourceCultureInfo));// adding key  to dictionary . ashutosh 20/7
                         if (!UITextValues.ContainsKey("$exportReportHeader"))//checks if key is not  present. By Ashutosh 23-08-2017.

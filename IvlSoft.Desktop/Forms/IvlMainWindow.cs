@@ -59,7 +59,7 @@ namespace INTUSOFT.Desktop.Forms
         DataBaseServiceAndConnection dataBaseServerConnection;
         List<CloudAnalysisReport> pendingCloudAnalysisReports;
         List<eye_fundus_image> pending_eye_fundus_images;
-        delegate void DelegateUpdateCloudValues();
+        delegate void DelegateUpdateCloudValues(int cloudIndx);
         private DelegateUpdateCloudValues m_DelegateUpdateCloudValues;
 
         delegate void DelegateUpdateObsValues();
@@ -429,17 +429,17 @@ namespace INTUSOFT.Desktop.Forms
 
             this.thumbnailUI1.sendFocusBackToParent += thumbnailUI1_sendFocusBackToParent;
             #region Logo Paths for the application
-            string appLogoFilePath = @"ImageResources\LogoImageResources\IntuSoft.ico";
-            string hospitalLogoFilePath = @"ImageResources\LogoImageResources\hospitalLogo.png";
-            string companyLogoFilePath = @"ImageResources\LogoImageResources\CompanyLogo.png";
-            string recordsLogoFilePath = @"ImageResources\PatientDetailsImageResources\Records1.png";
+            string appLogoFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\IntuSoft.ico";
+            string hospitalLogoFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\hospitalLogo.png";
+            string companyLogoFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\CompanyLogo.png";
+            string recordsLogoFilePath = IVLVariables.appDirPathName + @"ImageResources\PatientDetailsImageResources\Records1.png";
             string productImageFilePath = "";
             if (IVLVariables._ivlConfig.Mode == Configuration.ImagingMode.Posterior_45)// && IVLVariables.ivl_Camera.camPropsHelper.ImagingMode != Imaging.ImagingMode.Posterior_Prime)
-                productImageFilePath = @"ImageResources\LogoImageResources\45.jpg";
+                productImageFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\45.jpg";
             else if (IVLVariables._ivlConfig.Mode == Configuration.ImagingMode.FFA_Plus || IVLVariables._ivlConfig.Mode == Configuration.ImagingMode.FFAColor)
-                productImageFilePath = @"ImageResources\LogoImageResources\45+.jpg";
+                productImageFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\45+.jpg";
             else
-                productImageFilePath = @"ImageResources\LogoImageResources\Prime.jpg";
+                productImageFilePath = IVLVariables.appDirPathName + @"ImageResources\LogoImageResources\Prime.jpg";
 
             //if (IVLVariables.ivl_Camera.camPropsHelper.ImagingMode == Imaging.ImagingMode.Posterior_45)// && IVLVariables.ivl_Camera.camPropsHelper.ImagingMode != Imaging.ImagingMode.Posterior_Prime)
             //    productImageFilePath = @"ImageResources\LogoImageResources\45.jpg";
@@ -448,15 +448,15 @@ namespace INTUSOFT.Desktop.Forms
             //else
             //    productImageFilePath = @"ImageResources\LogoImageResources\Prime.jpg";
 
-            string cameraConFilePath = @"ImageResources\ConnectionStatusImageResources\Camera-ON.png";
-            string cameraConnErrorFilePath = @"ImageResources\ConnectionStatusImageResources\Camera-Error2.png";
-            string cameraDisConFilePath = @"ImageResources\ConnectionStatusImageResources\Camera-OFF.png";
-            string powerConFilePath = @"ImageResources\ConnectionStatusImageResources\Power-ON.png";
-            string powerDisConFilePath = @"ImageResources\ConnectionStatusImageResources\Power-OFF.png";
-            string mysqlServiceConFilePath = @"ImageResources\ConnectionStatusImageResources\Database_Server_Running.png";
-            string mysqlServiceDisConFilePath = @"ImageResources\ConnectionStatusImageResources\Database_Server_Stopped.png";
-            string databaseConFilePath = @"ImageResources\ConnectionStatusImageResources\Database_Connected_01.png";
-            string databaseDisConFilePath = @"ImageResources\ConnectionStatusImageResources\Database_No Connection.png";
+            string cameraConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Camera-ON.png";
+            string cameraConnErrorFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Camera-Error2.png";
+            string cameraDisConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Camera-OFF.png";
+            string powerConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Power-ON.png";
+            string powerDisConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Power-OFF.png";
+            string mysqlServiceConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Database_Server_Running.png";
+            string mysqlServiceDisConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Database_Server_Stopped.png";
+            string databaseConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Database_Connected_01.png";
+            string databaseDisConFilePath = IVLVariables.appDirPathName + @"ImageResources\ConnectionStatusImageResources\Database_No Connection.png";
             #endregion
 
             #region Apply logo from paths if the file is available
@@ -610,7 +610,7 @@ namespace INTUSOFT.Desktop.Forms
 
         private void ExceptionLogWriter__exceptionOccuredEvent()
         {
-            UpdateCloudReport2DB();
+            //UpdateCloudReport2DB();
             //UpdateQIAnalysis2DB();
         }
 
@@ -908,7 +908,9 @@ namespace INTUSOFT.Desktop.Forms
                     CreateCloudReport(responseValue);
                     NewDataVariables.CloudAnalysisReports[indx].leftEyeImpression = $"{responseValue.LeftAIImpressionsDR},{responseValue.LeftAIImpressionsAMD},{responseValue.LeftAIImpressionsGlaucoma}";
                     NewDataVariables.CloudAnalysisReports[indx].rightEyeImpression = $"{responseValue.RightAIImpressionsDR},{responseValue.RightAIImpressionsAMD},{responseValue.RightAIImpressionsGlaucoma}";
-                    //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
+                    UpdateCloudReport2DB(indx);
+
+                    //NewDataVariables._Repo.Update(NewDataVariables.CloudAnalysisReports[indx]);
                     changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                     if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
                         pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
@@ -927,6 +929,8 @@ namespace INTUSOFT.Desktop.Forms
                 {
                     NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = 5;
                     NewDataVariables.CloudAnalysisReports[indx].failureMessage = responseValue.FailureMessage;
+                    UpdateCloudReport2DB(indx);
+                    //NewDataVariables._Repo.Update(NewDataVariables.CloudAnalysisReports[indx]);
                     //NewDataVariables._Repo.Update(cloudAnalysisReport[0]);
                     changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                     if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
@@ -1021,6 +1025,8 @@ namespace INTUSOFT.Desktop.Forms
                             if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Initialized)
                             {
                                 NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Initialized;
+                                UpdateCloudReport2DB(indx);
+
                                 changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                                 if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
                                     pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
@@ -1050,6 +1056,8 @@ namespace INTUSOFT.Desktop.Forms
                             {
 
                                 NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Uploading;
+                                UpdateCloudReport2DB(indx);
+
                                 changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                                 if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
                                     pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
@@ -1074,6 +1082,7 @@ namespace INTUSOFT.Desktop.Forms
                             if (NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus != (int)CloudReportStatus.Processing)
                             {
                                 NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportStatus = (int)CloudReportStatus.Processing;
+                                UpdateCloudReport2DB(indx);
                                 changedCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
                                 if (!pendingCloudAnalysisReports.Any(x => x.cloudAnalysisReportId == NewDataVariables.CloudAnalysisReports[indx].cloudAnalysisReportId))
                                     pendingCloudAnalysisReports.Add(NewDataVariables.CloudAnalysisReports[indx]);
@@ -1395,25 +1404,25 @@ namespace INTUSOFT.Desktop.Forms
 
         }
 
-        public  void UpdateCloudReport2DB()
+        public  void UpdateCloudReport2DB(int cloudIndex)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(m_DelegateUpdateCloudValues);
+                this.Invoke(m_DelegateUpdateCloudValues,(cloudIndex));
             }
 
             if (inboxTimer != null)
             {
                 
                 //NHibernateHelper_MySQL.CloseSession();
-                while (isInboxCloudReportsBusy)
-                {
-                    ;
-                }
-                foreach (var item in pendingCloudAnalysisReports)
+                //while (isInboxCloudReportsBusy)
+                //{
+                //    ;
+                //}
+                //foreach (var item in pendingCloudAnalysisReports)
                 {
 
-                    if (NewDataVariables._Repo.Update(item))
+                    if (NewDataVariables._Repo.Update(NewDataVariables.CloudAnalysisReports[cloudIndex]))
                     {
 
                         // pendingCloudAnalysisReports.Remove(item);
@@ -3048,11 +3057,11 @@ namespace INTUSOFT.Desktop.Forms
                 if (inboxTimer != null)
                 {
                     inboxTimer.Change(-1, -1);
-                    while(imaging_UC.GetGridPopulatingStatus())
-                    {
-                        ;
-                    }
-                    UpdateCloudReport2DB();
+                    //while(imaging_UC.GetGridPopulatingStatus())
+                    //{
+                    //    ;
+                    //}
+                    //UpdateCloudReport2DB();
                 }
                 //UpdateQIAnalysis2DB();
 
@@ -3228,7 +3237,7 @@ namespace INTUSOFT.Desktop.Forms
             reportDic.Add("$Age",(DateTime.Now.Year -  p.birthdate.Year).ToString());
             reportDic.Add("$MRN", patIdentifier.value);
             reportDic.Add("$Gender", p.gender);
-            reportDic.Add("$Signature", @"ImageResources\Signature\signature_" + inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorIndex.ToString() + ".jpg");
+            reportDic.Add("$Signature", IVLVariables.appDirPathName + @"ImageResources\Signature\signature_" + inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorIndex.ToString() + ".jpg");
             reportDic.Add("$Specalist", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorName);
             reportDic.Add("$SpecalistQualification", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.DoctorQualifications);
             reportDic.Add("$SpecalistHospital", inboxAnalysisStatusModel.DoctorDetailsForUploadModel.HospitalName);

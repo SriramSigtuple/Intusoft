@@ -319,8 +319,8 @@ namespace IntuUploader.ViewModels
                 }
                 else
                     RejectComments = "No comment found";
-                IsMove2NextDir = false;
-                //StartAnalysisFlow();
+                //IsMove2NextDir = false;
+                StartAnalysisFlow();
             }
             else
             {
