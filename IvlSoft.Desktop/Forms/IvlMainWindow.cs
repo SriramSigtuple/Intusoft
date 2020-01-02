@@ -111,7 +111,7 @@ namespace INTUSOFT.Desktop.Forms
         bool vc2015Count = false;
         bool frameworkVersionCount = false;
 
-        const string preRequisitesFileName = @"Prerequisites.json";
+        
 
         string displayNameText = "DisplayName";
         const string displayVersionText = "DisplayVersion";
@@ -145,25 +145,7 @@ namespace INTUSOFT.Desktop.Forms
             IVLVariables.GradientColorValues = new Desktop.GradientColor();
             ExceptionLogWriter._exceptionOccuredEvent += ExceptionLogWriter__exceptionOccuredEvent;
             #region Read or write the prerequisite json file
-            try
-            {
-                if (File.Exists(preRequisitesFileName))
-                {
-                    string str = File.ReadAllText(preRequisitesFileName);
-                    con = (Constants)JsonConvert.DeserializeObject(str, typeof(Constants));
-                }
-                if (con == null)
-                {
-                    con = new Constants();
-                    string str = JsonConvert.SerializeObject(con);
-                    File.WriteAllText(preRequisitesFileName, str);
-                }
-            }
-            catch (Exception)
-            {
-                con = new Constants();
-                
-            }
+            con = Constants.GetConstants(IVLVariables.appDirPathName);
 
             #endregion
 
@@ -304,7 +286,9 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 //MessageBox.Show(process.HasExited.ToString());
                 this.Cursor = Cursors.Default;
-
+                NHibernateHelper_MySQL.EvaluateConnectionString();
+                dataBasebackupPath = NHibernateHelper_MySQL.IntuSoftRuntimeProperties.db_backup_path;
+                databaseTimerIntervel = Convert.ToInt32(NHibernateHelper_MySQL.IntuSoftRuntimeProperties.db_interval);
                 //if (!NHibernateHelper_MySQL.DbExists(NHibernateHelper_MySQL.dbName))
 
 
@@ -333,7 +317,7 @@ namespace INTUSOFT.Desktop.Forms
 
             InitializeComponent();
 
-
+            Themes.SetThemePath(IVLVariables.appDirPathName);
             IVLVariables.IVLThemes = Themes.GetInstance();
             IVLVariables.IVLThemes.GetAllThemeNames();
             IVLVariables.GradientColorValues = IVLVariables.IVLThemes.GetCurrentTheme();
@@ -1792,6 +1776,7 @@ namespace INTUSOFT.Desktop.Forms
             {
                 if (dataBaseServerConnection.GetDataBaseConnectionStatus())
                 {
+
                     // int patCount =  NewDataVariables._Repo.GetPatientCount();
                     //if (NewDataVariables.Patients == null)
                     //    NewDataVariables.Patients = NewDataVariables._Repo.GetAll<Patient>().ToList();
@@ -1984,7 +1969,6 @@ namespace INTUSOFT.Desktop.Forms
                         databaseTimer = new System.Threading.Timer(CheckDatabaseConnectivity, null, 0, databaseTimerIntervel);
 
                         //CheckDatabaseConnectivity();
-                        dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
                         //databaseTimer.Start();
                         emr = new EmrManage();
                         SetPanels();
@@ -3081,6 +3065,7 @@ namespace INTUSOFT.Desktop.Forms
                 }
                 if (!IVLVariables.isCommandLineAppLaunch && !IVLVariables.isCommandLineArgsPresent && databaseTimer != null)
                         databaseTimer.Change(-1,-1);
+                dataBaseServerConnection.DatabaseBackup(dataBasebackupPath);
 
                 //INTUSOFT.Configuration.ConfigVariables.SetCurrentSettings();
 
@@ -3994,7 +3979,7 @@ namespace INTUSOFT.Desktop.Forms
             }
             else if (keyData == (Keys.Alt | Keys.C))
             {
-                if (IVLVariables.pageDisplayed == PageDisplayed.Emr && (NewDataVariables.Active_User.role.role.roleId == "ADMIN"))
+                if (IVLVariables.pageDisplayed == PageDisplayed.Emr)
                 {
                     if (tForm == null)
                     {

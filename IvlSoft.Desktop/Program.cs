@@ -33,7 +33,7 @@ namespace INTUSOFT.Desktop
         private static extern Boolean ShowWindow(IntPtr hWnd, Int32 nCmdShow);
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
-        static RegistryKey registryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Intuvision Labs Pvt Ltd\\");
+        static RegistryKey registryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Intusoft\\");
         private const int SW_SHOWMAXIMIZED = 3;
         private const int SW_RESTORE = 9;
         public static IvlMainWindow _currentInstance;

@@ -21,14 +21,47 @@ namespace INTUSOFT.Desktop
         public string windowsVersion8 = "Windows 8";
         public string sqlServiceText = "57";
         public int prerquisitesCount = 9;
-
         public string SoftwareReleaseDate = string.Empty;
-
+        const string preRequisitesFileName = @"Prerequisites.json";
+        private static Constants con;
         public Constants()
         {
             
             
         }
+
+        private static string SetPrerequisitePath(string path)
+        {
+             return Path.Combine(path, preRequisitesFileName);
+        }
+
+        public static Constants GetConstants(string path)
+        {
+            var filePath = SetPrerequisitePath(path);
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    string str = File.ReadAllText(filePath);
+                    con = (Constants)JsonConvert.DeserializeObject(str, typeof(Constants));
+                }
+                if (con == null)
+                {
+                    con = new Constants();
+                    string str = JsonConvert.SerializeObject(con);
+                    File.WriteAllText(filePath, str);
+                }
+            }
+            catch (Exception)
+            {
+                con = new Constants();
+                string str = JsonConvert.SerializeObject(con);
+                File.WriteAllText(filePath, str);
+            }
+            return con;
+        }
+
+
 
     }
 }
