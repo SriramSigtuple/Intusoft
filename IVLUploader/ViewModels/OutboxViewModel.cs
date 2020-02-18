@@ -267,6 +267,10 @@ namespace IntuUploader.ViewModels
 
                 activeFileCloudVM.IsBusy = false;
             }
+            finally
+            {
+                StartStopSentItemsTimer(true);
+            }
 
         }
 

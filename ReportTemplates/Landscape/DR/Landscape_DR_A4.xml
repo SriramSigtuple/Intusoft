@@ -938,7 +938,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$ReportNumber</Text>
+      <Text></Text>
       <Name>Label31</Name>
       <MarginDecrementValue>-3</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1395,7 +1395,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$SpecalistQualification</Text>
+      <Text />
       <Name>Label41</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>
@@ -1430,7 +1430,7 @@
         <_Rows>1</_Rows>
         <_Columns>1</_Columns>
       </RowsColumns>
-      <Text>$SpecalistHospital</Text>
+      <Text />
       <Name>Label42</Name>
       <MarginDecrementValue>0</MarginDecrementValue>
       <YMarginDecrementValue>0</YMarginDecrementValue>

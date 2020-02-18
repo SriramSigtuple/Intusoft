@@ -17,7 +17,14 @@ namespace CopyAppData
                 sourcePath = args[0];
                 destinationPath = args[1];
             }
-           
+            var destFileName = Path.Combine(destinationPath, @"Intusoft-runtime.json");
+            var srcFileName = Path.Combine(sourcePath, @"Intusoft-runtime.json");
+            if (!File.Exists(destFileName))
+            {
+                File.Copy(srcFileName, destFileName);
+                Console.WriteLine($"Destination File copy ={destFileName}");
+
+            }
             GetDirFiles("ReportTemplates");
             GetDirFiles("ImageResources");
             Console.WriteLine("Completed ...");

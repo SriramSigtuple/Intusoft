@@ -105,13 +105,20 @@ namespace INTUSOFT.Desktop
 
     public class Themes
     {
-        static string themeFileName = @"Theme.json";
+        const string themeFileName = @"Theme.json";
+        static string themeFileNamePath = string.Empty;
         private static string[] ThemesArr = null;
         private static Themes themes;
         public List<GradientColor> ThemesList;
         public byte CurrentTheme = byte.MinValue;
         private Themes()
         {
+
+        }
+
+        public static void SetThemePath(string themePath)
+        {
+            themeFileNamePath = Path.Combine(themePath, themeFileName);
         }
 
         /// <summary>
@@ -169,13 +176,13 @@ namespace INTUSOFT.Desktop
         public void SerializeTheme()
         {
             string themeJson = JsonConvert.SerializeObject(themes);
-            System.IO.File.WriteAllText(themeFileName, themeJson);
+            System.IO.File.WriteAllText(themeFileNamePath, themeJson);
         }
         public  static Themes GetInstance()
         {
             if (themes == null)
             {
-                if (!Deserialize(themeFileName))
+                if (!Deserialize(themeFileNamePath))
                     AddDefaultThemes();
             }
             return themes;

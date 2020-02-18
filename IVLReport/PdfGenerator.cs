@@ -149,9 +149,9 @@ namespace IVLReport
             {
                 color = ColorTranslator.FromHtml("#" + color.Name);
             }
-            
-            //if (props.Text != null)
-            //    props.Text = Regex.Replace(props.Text, @"\r\n?|\n", " ");
+
+            if (props.Text != null)
+                props.Text = Regex.Replace(props.Text, @"\r\n?|\n", " ");
 
             //cb.BeginText();
             //cb.SetFontAndSize(f_cn, props.Font.FontSize);
